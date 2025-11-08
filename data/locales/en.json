@@ -1,48 +1,31 @@
 {
   "nav": {
     "dashboard": "Dashboard",
-    "leadGeneration": "Lead Generation",
-    "microCRM": "Micro-CRM",
+    "leadGen": "Lead Generation",
+    "microCrm": "Micro-CRM",
     "micrositeBuilder": "Microsite Builder",
     "gapAnalysis": "Gap Analysis",
     "onboarding": "Onboarding",
-    "billing": "Billing",
-    "brand": "Insurance Portal"
+    "billing": "Billing"
   },
   "header": {
+    "search": "Search...",
     "online": "Online",
     "offline": "Offline",
-    "welcome": "Welcome",
     "profile": "Profile",
     "settings": "Settings",
     "logout": "Logout"
   },
   "dashboard": {
     "title": "Dashboard",
-    "newLeads": "New Leads (This Month)",
-    "monthlyRevenue": "Monthly Revenue",
-    "revenueTitle": "Monthly Revenue Overview",
-    "policyTitle": "Policy Type Distribution"
-  },
-  "policyTypes": {
-    "auto": "Auto Insurance",
-    "home": "Home Insurance",
-    "life": "Life Insurance",
-    "health": "Health Insurance"
-  },
-  "statusLabels": {
-    "new": "New",
-    "contacted": "Contacted",
-    "qualified": "Qualified",
-    "closed": "Closed",
-    "rejected": "Rejected",
-    "active": "Active",
-    "inactive": "Inactive",
-    "expired": "Expired"
+    "newLeads": "New Leads (Last 7 Days)",
+    "monthlyRevenue": "Est. Monthly Premium Revenue",
+    "activePolicies": "Total Active Policies",
+    "policyDistribution": "Policy Distribution"
   },
   "leadGen": {
     "title": "Social Media Leads",
-    "description": "View and manage incoming leads from your social media campaigns.",
+    "description": "Manage and qualify leads coming from your social media channels.",
     "filterBySource": "Filter by Source",
     "allSources": "All Sources",
     "filterByPolicy": "Filter by Policy",
@@ -54,95 +37,89 @@
     "nameDesc": "Name (Z-A)",
     "valueDesc": "Value (High-Low)",
     "valueAsc": "Value (Low-High)",
-    "createdAt": "Created",
+    "createdAt": "Created At",
     "tags": "Tags",
     "addTag": "Add tag...",
     "noLeads": "No leads match the current filters."
   },
   "crm": {
     "title": "Micro-CRM",
+    "description": "A centralized place to manage your customers and leads.",
+    "searchCustomers": "Search customers...",
     "addCustomer": "Add Customer",
-    "customers": "Customers",
-    "leads": "Leads",
-    "searchPlaceholder": "Search by name or email...",
+    "editCustomer": "Edit Customer",
+    "customerList": "Customers",
+    "leadList": "CRM Leads",
     "confirmDelete": "Are you sure you want to delete this customer?",
     "name": "Name",
     "source": "Source",
     "status": "Status",
     "potentialValue": "Potential Value",
+    "actions": "Actions",
     "viewProfile": "View Profile",
     "edit": "Edit",
     "delete": "Delete",
     "cancel": "Cancel",
     "save": "Save",
-    "editCustomer": "Edit Customer",
-    "actions": "Actions",
     "form": {
       "firstName": "First Name",
       "lastName": "Last Name",
-      "email": "Email Address",
-      "phone": "Phone Number",
+      "email": "Email",
+      "phone": "Phone",
       "address": "Address",
       "dob": "Date of Birth",
       "policies": "Policies",
       "policyNumber": "Policy Number",
       "insurer": "Insurer",
-      "premium": "Premium (€)",
+      "premium": "Premium",
       "startDate": "Start Date",
       "endDate": "End Date",
-      "noPolicies": "No policies added.",
+      "noPolicies": "No policies added for this customer.",
       "addPolicy": "Add Policy"
     }
   },
   "customer": {
-    "notFound": "Customer not found.",
-    "changeAddress": "Change Address",
-    "policiesTitle": "Active Policies",
-    "timelineTitle": "Activity Timeline",
-    "renewPolicy": "Renew Policy",
-    "changeAddressTitle": "Update Address",
-    "newEndDate": "New End Date",
-    "newPremium": "New Premium (€)",
-    "renewPolicyTitle": "Renew Policy",
-    "noTimelineEvents": "No timeline events recorded yet.",
-    "contactInfoTab": "Contact Info",
-    "policyManagementTab": "Policy Management",
-    "renewalNeeded": "Renewal Needed",
-    "checkPremiums": "Check for Due Premiums",
+    "changeAddress": "Update Address",
     "aiReview": "AI Review",
-    "aiReviewTitle": "AI Policy Analysis",
-    "aiReviewPrompt": "You are an expert insurance auditor. Review the following policy details for this customer. Flag any potential inconsistencies, gaps, or missing information (e.g., a life insurance policy with no listed beneficiaries, unusually low coverage for a valuable asset). Provide your findings as a short, actionable list in markdown.",
-    "timelineEvents": {
-      "policy_renewal": {
-        "title": "Policy Renewed",
-        "content": "Policy {policyNumber} was renewed. New end date: {endDate}, new premium: €{premium}."
-      },
-      "premium_reminder": {
-        "title": "Premium Reminder Sent",
-        "content": "A premium payment reminder was sent for policy {policyNumber}."
-      },
-      "address_change": {
-        "title": "Address Updated",
-        "content": "Customer's address was updated to: {newAddress}."
-      },
-      "ai_review": {
-        "title": "AI Policy Review",
-        "content": "An AI-powered analysis was performed on policy {policyNumber}."
-      }
-    }
+    "timeline": "Activity Timeline",
+    "renewalNeeded": "Renewal Needed",
+    "renewPolicy": "Renew Policy",
+    "changeAddressTitle": "Update Customer Address",
+    "noTimelineEvents": "No timeline events recorded.",
+    "renewPolicyTitle": "Renew Policy",
+    "newEndDate": "New End Date",
+    "newPremium": "New Premium"
+  },
+  "gapAnalysis": {
+    "title": "Insurance Gap Analysis",
+    "description": "Upload a policy document to automatically extract key details and analyze potential coverage gaps.",
+    "parsingPrompt": "Extract key information from this insurance policy document. I need the policy number, insurer name, total premium, and the policy start and end dates. Return the data as a JSON object.",
+    "analysisPrompt": "Act as an expert insurance agent. Analyze the provided policy details against the user's stated needs. Identify any potential gaps in coverage, areas where they might be over-insured, or opportunities for cost savings. Provide a concise, actionable summary in simple markdown format.",
+    "parsingError": "Failed to parse the policy document. Please try a clearer image or a different document.",
+    "analysisError": "Failed to perform the gap analysis. Please try again.",
+    "parsingPolicy": "Parsing policy document...",
+    "extractedInfo": "Extracted Information",
+    "userNeedsTitle": "Describe Your Needs",
+    "userNeedsPlaceholder": "e.g., 'I am a family of four, I want to ensure my home is protected against flood damage, and I want to make sure my life insurance covers my mortgage.'",
+    "analyzing": "Analyzing...",
+    "analyzeGaps": "Analyze Gaps",
+    "analysisComplete": "Analysis Complete",
+    "dragDrop": "Drag and drop your policy document here, or",
+    "browse": "browse to upload",
+    "fileTypes": "Supports: PDF, PNG, JPG, DOCX"
   },
   "micrositeBuilder": {
     "title": "Microsite Builder",
-    "description": "Create and customize a dedicated microsite for an insurance product.",
+    "description": "Create and customize a dedicated, single-page website for an insurance product.",
     "editorTitle": "Editor",
-    "saveDraft": "Save as Draft",
     "draftSaved": "Draft Saved!",
+    "saveDraft": "Save as Draft",
     "blockProductInfo": "+ Product Info",
     "blockCta": "+ Contact Button",
     "blockForm": "+ Lead Form",
-    "emptyBuilder": "Add some blocks to get started!",
+    "emptyBuilder": "Your microsite is empty. Add a block to get started!",
     "previewTitle": "Live Preview",
-    "previewSwitch": "Preview in:",
+    "previewSwitch": "View as:",
     "english": "English",
     "greek": "Greek",
     "emptyPreview": "Your microsite preview will appear here.",
@@ -151,24 +128,22 @@
     "buttonTextLabel": "Button Text",
     "formNamePlaceholder": "Your Name",
     "formEmailPlaceholder": "Your Email",
-    "formSubmit": "Submit Inquiry"
+    "formSubmit": "Submit"
   },
-  "gapAnalysis": {
-    "title": "AI Gap Analysis",
-    "description": "Upload a policy document to automatically extract details and analyze coverage gaps.",
-    "dragDrop": "Drag & drop your policy document here, or",
-    "browse": "browse",
-    "fileTypes": "Supports PDF, PNG, JPG",
-    "parsingPolicy": "Parsing policy with AI...",
-    "extractedInfo": "Extracted Information (Review)",
-    "userNeedsTitle": "Describe Your Needs",
-    "userNeedsPlaceholder": "e.g., 'I am a family of four, I just bought a new car, and I'm worried about flood damage for my house.'",
-    "analyzing": "Analyzing...",
-    "analyzeGaps": "Analyze for Gaps",
-    "analysisComplete": "Analysis Complete",
-    "parsingPrompt": "Extract the following details from the insurance policy document into a JSON object: policyNumber, insurer, premium (as a number), startDate (in YYYY-MM-DD format), and endDate (in YYYY-MM-DD format).",
-    "analysisPrompt": "You are an expert insurance advisor. Analyze the provided policy details against the user's needs. Provide a clear, concise gap analysis. Identify areas where the user is under-insured, over-insured, or has potential risks not covered. Format your response in markdown.",
-    "parsingError": "Failed to parse the policy document. Please try a clearer image or a different document.",
-    "analysisError": "An error occurred during the analysis. Please try again."
+  "policyTypes": {
+    "auto": "Auto Insurance",
+    "home": "Home Insurance",
+    "life": "Life Insurance",
+    "health": "Health Insurance"
+  },
+  "statusLabels": {
+    "new": "New",
+    "contacted": "Contacted",
+    "qualified": "Qualified",
+    "rejected": "Rejected",
+    "closed": "Closed",
+    "active": "Active",
+    "inactive": "Inactive",
+    "expired": "Expired"
   }
 }

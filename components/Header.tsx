@@ -1,9 +1,8 @@
-
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useLocalization } from '../hooks/useLocalization';
 import { useOnlineStatus } from '../hooks/useOnlineStatus';
+import { useClickOutside } from '../hooks/useClickOutside';
 import { Language } from '../types';
-import { ICONS } from '../constants';
 
 interface HeaderProps {
   onToggleSidebar: () => void;
@@ -12,43 +11,70 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
   const { language, setLanguage, t } = useLocalization();
   const isOnline = useOnlineStatus();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isProfileMenuOpen, setProfileMenuOpen] = useState(false);
+  const profileMenuRef = useRef<HTMLDivElement>(null);
 
+  useClickOutside(profileMenuRef, () => setProfileMenuOpen(false));
+
+  const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setLanguage(e.target.value as Language);
+  };
+  
   return (
-    <header className="flex items-center justify-between px-6 py-3 bg-white dark:bg-gray-800 border-b dark:border-gray-700 shadow-sm">
+    <header className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 border-b dark:border-gray-700">
       <div className="flex items-center">
-        <button onClick={onToggleSidebar} className="text-gray-500 focus:outline-none lg:hidden">
-          <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M4 6H20M4 12H20M4 18H11Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        <button
+          onClick={onToggleSidebar}
+          className="text-gray-500 dark:text-gray-400 focus:outline-none lg:hidden"
+          aria-label="Toggle sidebar"
+        >
+          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
-        <div className="relative mx-4 lg:mx-0">
-          <span className={`flex items-center gap-2 px-3 py-1 text-sm rounded-full ${isOnline ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-            {isOnline ? ICONS.online : ICONS.offline}
-            {isOnline ? t('header.online') : t('header.offline')}
-          </span>
+        <div className="relative text-gray-600 dark:text-gray-300 ml-4 hidden sm:block">
+          <input
+            type="search"
+            name="search"
+            placeholder={t('header.search')}
+            className="bg-gray-100 dark:bg-gray-700 h-10 px-5 pr-10 rounded-full text-sm focus:outline-none"
+          />
+          <button type="submit" className="absolute right-0 top-0 mt-3 mr-4">
+            <svg className="h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <path d="M12.9 14.32a8 8 0 111.41-1.41l5.35 5.33-1.42 1.42-5.33-5.34zM8 14A6 6 0 108 2a6 6 0 000 12z" />
+            </svg>
+          </button>
         </div>
       </div>
 
-      <div className="flex items-center space-x-4">
-        {/* Language Switcher */}
-        <div className="relative">
-          <button onClick={() => setLanguage(language === Language.EN ? Language.EL : Language.EN)} className="flex items-center justify-center w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded-full text-sm font-semibold uppercase">
-            {language}
-          </button>
+      <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 text-sm">
+            <span className={`h-2 w-2 rounded-full ${isOnline ? 'bg-green-500' : 'bg-red-500'}`}></span>
+            <span className="hidden sm:inline">{isOnline ? t('header.online') : t('header.offline')}</span>
         </div>
+        
+        <select
+          value={language}
+          onChange={handleLanguageChange}
+          className="bg-transparent text-sm p-1 rounded border border-gray-300 dark:border-gray-600 focus:outline-none"
+        >
+          <option value={Language.EN}>EN</option>
+          <option value={Language.EL}>EL</option>
+        </select>
 
-        {/* Profile Dropdown */}
-        <div className="relative">
-          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="relative z-10 block h-10 w-10 rounded-full overflow-hidden border-2 border-gray-300 dark:border-gray-600 focus:outline-none focus:border-blue-500">
-            <img className="h-full w-full object-cover" src="https://picsum.photos/100/100" alt="Your avatar" />
+        <div className="relative" ref={profileMenuRef}>
+          <button onClick={() => setProfileMenuOpen(!isProfileMenuOpen)} aria-label="Your avatar">
+            <img
+              className="h-9 w-9 rounded-full object-cover"
+              src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+              alt="User avatar"
+            />
           </button>
-          {isMenuOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md overflow-hidden shadow-xl z-10">
-              <a href="#" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">{t('header.welcome')}, Alex</a>
-              <a href="#" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">{t('header.profile')}</a>
-              <a href="#" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">{t('header.settings')}</a>
-              <a href="#" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">{t('header.logout')}</a>
+          {isProfileMenuOpen && (
+            <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-20">
+              <a href="#profile" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">{t('header.profile')}</a>
+              <a href="#settings" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">{t('header.settings')}</a>
+              <a href="#logout" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">{t('header.logout')}</a>
             </div>
           )}
         </div>

@@ -1,45 +1,50 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useLocalization } from '../hooks/useLocalization';
-import { NAV_LINKS } from '../constants';
+import { ICONS } from '../constants';
 
 interface SidebarProps {
   isOpen: boolean;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
-  const { t } = useLocalization();
-  const sidebarClasses = `
-    z-30 inset-y-0 left-0 w-64
-    bg-gray-900 dark:bg-gray-900 text-white
-    transform transition-transform duration-300 ease-in-out
-    ${isOpen ? 'translate-x-0' : '-translate-x-full'}
-    lg:translate-x-0 lg:static lg:inset-0 flex-shrink-0
-  `;
-  const linkBaseClasses = "flex items-center px-6 py-3 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-200";
-  const linkActiveClasses = "bg-gray-700 text-white";
+    const { t } = useLocalization();
+
+    const navItems = [
+        { path: '/', label: 'nav.dashboard', icon: ICONS.dashboard },
+        { path: '/lead-generation', label: 'nav.leadGen', icon: ICONS.leadGen },
+        { path: '/micro-crm', label: 'nav.microCrm', icon: ICONS.microCrm },
+        { path: '/microsite-builder', label: 'nav.micrositeBuilder', icon: ICONS.micrositeBuilder },
+        { path: '/gap-analysis', label: 'nav.gapAnalysis', icon: ICONS.gapAnalysis },
+        { path: '/onboarding', label: 'nav.onboarding', icon: ICONS.onboarding },
+        { path: '/billing', label: 'nav.billing', icon: ICONS.billing },
+    ];
+    
+    const baseLinkClass = "flex items-center p-2 text-base font-normal rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700";
+    const activeLinkClass = "bg-blue-100 dark:bg-gray-700 text-blue-600 dark:text-white";
+    const inactiveLinkClass = "text-gray-900 dark:text-white";
 
   return (
-    <aside className={sidebarClasses}>
-      <div className="flex items-center justify-center mt-8">
-        <div className="flex items-center">
-            <svg className="w-8 h-8 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
-            <span className="text-white text-2xl mx-2 font-semibold">{t('nav.brand')}</span>
-        </div>
+    <aside className={`z-30 flex-shrink-0 w-64 overflow-y-auto bg-white dark:bg-gray-800 ${isOpen ? 'block' : 'hidden'} lg:block`}>
+      <div className="py-4 text-gray-500 dark:text-gray-400">
+        <a className="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200" href="#">
+          Agent CRM
+        </a>
+        <ul className="mt-6">
+          {navItems.map(item => (
+            <li className="relative px-6 py-3" key={item.path}>
+                <NavLink 
+                    to={item.path}
+                    end={item.path === '/'}
+                    className={({ isActive }) => `${baseLinkClass} ${isActive ? activeLinkClass : inactiveLinkClass}`}
+                >
+                    {React.cloneElement(item.icon, { className: "w-6 h-6" })}
+                    <span className="ml-4">{t(item.label)}</span>
+              </NavLink>
+            </li>
+          ))}
+        </ul>
       </div>
-      <nav className="mt-10">
-        {NAV_LINKS.map(link => (
-          <NavLink
-            key={link.to}
-            to={link.to}
-            end={link.to === '/'}
-            className={({ isActive }) => `${linkBaseClasses} ${isActive ? linkActiveClasses : ''}`}
-          >
-            {link.icon}
-            <span className="mx-4">{t(`nav.${link.labelKey}`)}</span>
-          </NavLink>
-        ))}
-      </nav>
     </aside>
   );
 };
