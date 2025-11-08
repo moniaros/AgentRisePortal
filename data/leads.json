@@ -1,0 +1,7 @@
+[
+  { "id": "lead1", "customerId": "cust1", "firstName": "Γιάννης", "lastName": "Παπαδόπουλος", "email": "yannis@example.com", "phone": "6971234567", "status": "new", "source": "Website", "createdAt": "2023-10-26T10:00:00Z", "potentialValue": 500 },
+  { "id": "lead2", "customerId": "cust2", "firstName": "Μαρία", "lastName": "Ιωάννου", "email": "maria@example.com", "phone": "6987654321", "status": "contacted", "source": "Referral", "createdAt": "2023-10-25T14:30:00Z", "potentialValue": 1200 },
+  { "id": "lead3", "firstName": "John", "lastName": "Smith", "email": "john.smith@example.com", "phone": "123-456-7890", "status": "qualified", "source": "Facebook", "createdAt": "2023-10-24T09:00:00Z", "potentialValue": 800 },
+  { "id": "lead4", "customerId": "cust1", "firstName": "Ελένη", "lastName": "Γεωργίου", "email": "eleni.g@example.com", "phone": "6945551234", "status": "closed", "source": "Website", "createdAt": "2023-10-23T11:45:00Z", "potentialValue": 2500 },
+  { "id": "lead5", "firstName": "Peter", "lastName": "Jones", "email": "peter.j@example.com", "phone": "987-654-3210", "status": "rejected", "source": "Cold Call", "createdAt": "2023-10-22T16:20:00Z", "potentialValue": 300 }
+]

@@ -1,0 +1,92 @@
+[
+  {
+    "id": "cust1",
+    "firstName": "Αλέξανδρος",
+    "lastName": "Παπαγεωργίου",
+    "email": "alex.papageorgiou@example.com",
+    "phone": "6971112233",
+    "address": "Λεωφ. Κηφισίας 123, Αθήνα, 11526",
+    "dateOfBirth": "1985-05-20",
+    "policies": [
+      {
+        "id": "pol1",
+        "type": "auto",
+        "policyNumber": "CAR-12345",
+        "premium": 350.50,
+        "startDate": "2023-01-15",
+        "endDate": "2024-01-14",
+        "isActive": true,
+        "insurer": "Generali"
+      },
+      {
+        "id": "pol2",
+        "type": "home",
+        "policyNumber": "HOME-67890",
+        "premium": 500.00,
+        "startDate": "2022-08-01",
+        "endDate": "2023-07-31",
+        "isActive": false,
+        "insurer": "Interamerican"
+      }
+    ],
+    "timeline": [
+      {
+        "id": "evt1",
+        "date": "2023-10-20T10:00:00Z",
+        "type": "call",
+        "title": "Initial Consultation",
+        "content": "Discussed auto and home insurance options. Client is interested in a new home policy.",
+        "author": "Agent Smith"
+      },
+      {
+        "id": "evt2",
+        "date": "2023-10-25T14:30:00Z",
+        "type": "email",
+        "title": "Sent Quotes",
+        "content": "Emailed quotes for three different home insurance packages.",
+        "author": "Agent Smith"
+      }
+    ]
+  },
+  {
+    "id": "cust2",
+    "firstName": "Jane",
+    "lastName": "Doe",
+    "email": "jane.doe@example.com",
+    "phone": "555-123-4567",
+    "address": "123 Main St, Anytown, USA 12345",
+    "dateOfBirth": "1990-11-12",
+    "policies": [
+      {
+        "id": "pol3",
+        "type": "life",
+        "policyNumber": "LIFE-ABCDE",
+        "premium": 1200.00,
+        "startDate": "2021-06-01",
+        "endDate": "2041-05-31",
+        "isActive": true,
+        "insurer": "MetLife"
+      },
+      {
+        "id": "pol4",
+        "type": "health",
+        "policyNumber": "HEALTH-FGHIJ",
+        "premium": 2500.75,
+        "startDate": "2023-01-01",
+        "endDate": "2023-12-31",
+        "isActive": true,
+        "insurer": "NN Hellas"
+      }
+    ],
+    "timeline": [
+       {
+        "id": "evt3",
+        "date": "2023-09-15T09:00:00Z",
+        "type": "meeting",
+        "title": "Annual Review",
+        "content": "Reviewed life and health policies. No changes requested.",
+        "author": "Agent Smith"
+      }
+    ]
+  }
+]

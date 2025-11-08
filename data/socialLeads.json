@@ -1,0 +1,8 @@
+[
+  { "id": "soc1", "firstName": "Γιώργος", "lastName": "Μαρίνης", "email": "g.marinis@example.com", "phone": "6971112233", "status": "new", "source": "Facebook", "createdAt": "2023-10-27T10:00:00Z", "potentialValue": 750, "policyType": "auto", "customerId": "cust1" },
+  { "id": "soc2", "firstName": "Emily", "lastName": "Carter", "email": "em.carter@example.com", "phone": "555-0101", "status": "contacted", "source": "LinkedIn", "createdAt": "2023-10-26T15:30:00Z", "potentialValue": 2500, "policyType": "life", "customerId": "cust2" },
+  { "id": "soc3", "firstName": "Αννα", "lastName": "Στεφάνου", "email": "anna.s@example.com", "phone": "6982223344", "status": "new", "source": "Instagram", "createdAt": "2023-10-26T11:00:00Z", "potentialValue": 400, "policyType": "home" },
+  { "id": "soc4", "firstName": "David", "lastName": "Chen", "email": "d.chen@example.com", "phone": "555-0102", "status": "qualified", "source": "Facebook", "createdAt": "2023-10-25T09:20:00Z", "potentialValue": 1800 },
+  { "id": "soc5", "firstName": "Σοφία", "lastName": "Κωνσταντίνου", "email": "sofia.k@example.com", "phone": "6943334455", "status": "contacted", "source": "LinkedIn", "createdAt": "2023-10-24T18:00:00Z", "potentialValue": 3200, "policyType": "health" },
+  { "id": "soc6", "firstName": "Michael", "lastName": "Rodriguez", "email": "m.rod@example.com", "phone": "555-0103", "status": "new", "source": "Instagram", "createdAt": "2023-10-27T12:45:00Z", "potentialValue": 600 }
+]
