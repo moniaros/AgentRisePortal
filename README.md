@@ -1,4 +1,3 @@
-
 # AgentRise: Insurance Lead & Policy Management Platform
 
 ## Project Description
@@ -91,11 +90,11 @@ We welcome contributions to enhance the AgentRise platform! To contribute, pleas
 
 ## License
 
-This project is licensed under the **MIT License**. See the `LICENSE` file for more details.
+This project is licensed under the **MIT License**.
 
 ---
 
 ## Contact and Support
 
 -   **Reporting Issues:** For any bugs or issues, please open an issue on the project's GitHub repository.
--   **General Inquiries:** For other questions or support, please contact [Your Name/Email] or the project maintainers.
+-   **General Inquiries:** For other questions or support, please contact the project maintainers.
