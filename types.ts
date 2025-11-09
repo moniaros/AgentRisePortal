@@ -84,6 +84,8 @@ export interface Campaign {
     id: string;
     name: string;
     objective: CampaignObjective;
+    network: 'facebook' | 'instagram' | 'linkedin' | 'x';
+    language: Language;
     audience: {
         ageRange: [number, number];
         interests: string[];
@@ -101,3 +103,14 @@ export interface Campaign {
         fields: LeadCaptureFormField[];
     }
 }
+
+export interface CampaignPerformanceMetrics {
+    date: string; // YYYY-MM-DD
+    campaignId: string;
+    impressions: number;
+    clicks: number;
+    conversions: number;
+    spend: number;
+}
+
+export type AnalyticsData = CampaignPerformanceMetrics[];

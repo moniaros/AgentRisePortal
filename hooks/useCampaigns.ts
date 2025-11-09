@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useOfflineSync } from './useOfflineSync';
-import { Campaign, CampaignObjective } from '../types';
+import { Campaign, CampaignObjective, Language } from '../types';
 
 // In a real app, this would be an API call
 const fetchCampaigns = async (): Promise<Campaign[]> => {
@@ -12,6 +12,8 @@ const fetchCampaigns = async (): Promise<Campaign[]> => {
                     id: 'camp_1',
                     name: 'Summer Auto Insurance Promo',
                     objective: CampaignObjective.LEAD_GENERATION,
+                    network: 'facebook',
+                    language: Language.EN,
                     audience: { ageRange: [25, 55], interests: ['cars', 'driving'] },
                     budget: 500,
                     startDate: '2024-07-01',
@@ -19,6 +21,19 @@ const fetchCampaigns = async (): Promise<Campaign[]> => {
                     creative: { headline: 'Save Big on Car Insurance This Summer!', body: 'Get a free quote today and see how much you can save.', image: 'https://via.placeholder.com/1200x628.png?text=Summer+Car+Insurance' },
                     status: 'active',
                 },
+                {
+                    id: 'camp_2',
+                    name: 'Προσφορά Ασφάλειας Κατοικίας',
+                    objective: CampaignObjective.BRAND_AWARENESS,
+                    network: 'instagram',
+                    language: Language.EL,
+                    audience: { ageRange: [30, 65], interests: ['home improvement', 'real estate'] },
+                    budget: 750,
+                    startDate: '2024-08-01',
+                    endDate: '2024-08-31',
+                    creative: { headline: 'Προστατέψτε το Σπίτι σας!', body: 'Ασφάλεια κατοικίας με κορυφαίες καλύψεις. Ζητήστε προσφορά.', image: 'https://via.placeholder.com/1080x1080.png?text=Home+Insurance' },
+                    status: 'active',
+                }
             ];
             resolve(mockCampaigns);
         }, 500);

@@ -1,4 +1,4 @@
-import { Customer, Lead, PolicyType } from '../types';
+import { Customer, Lead, PolicyType, AnalyticsData } from '../types';
 
 // Mock data
 const mockCustomers: Customer[] = [
@@ -60,4 +60,18 @@ export const fetchCustomers = async (): Promise<Customer[]> => {
             resolve(mockCustomers);
         }, 500);
     });
+};
+
+export const fetchAnalyticsData = async (): Promise<AnalyticsData> => {
+    try {
+        const response = await fetch('/data/analytics.json');
+        if (!response.ok) {
+            throw new Error('Failed to fetch analytics data');
+        }
+        const data = await response.json();
+        return data as AnalyticsData;
+    } catch (error) {
+        console.error('Error fetching analytics data:', error);
+        return []; // Return empty array on error
+    }
 };

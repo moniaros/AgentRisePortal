@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Campaign, CampaignObjective } from '../../types';
+// FIX: Import Language enum to use for default campaign data.
+import { Campaign, CampaignObjective, Language } from '../../types';
 import Step1Objective from './steps/Step1_Objective';
 import Step2Audience from './steps/Step2_Audience';
 import Step3Budget from './steps/Step3_Budget';
@@ -10,6 +11,9 @@ import Step6Review from './steps/Step5_Review';
 const initialCampaignData: Omit<Campaign, 'id'> = {
     name: '',
     objective: CampaignObjective.LEAD_GENERATION,
+    // FIX: Add missing properties to satisfy the Campaign type.
+    network: 'facebook',
+    language: Language.EN,
     audience: {
         ageRange: [18, 65],
         interests: [],

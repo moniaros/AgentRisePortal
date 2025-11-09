@@ -200,6 +200,35 @@
     "changePassword": "Change Password",
     "deleteAccount": "Delete Account"
   },
+  "analytics": {
+    "title": "Campaign Analytics",
+    "filters": {
+      "campaign": "Filter by Campaign",
+      "allCampaigns": "All Campaigns",
+      "network": "Filter by Network",
+      "allNetworks": "All Networks",
+      "period": "Filter by Period",
+      "last7": "Last 7 Days",
+      "last30": "Last 30 Days",
+      "last90": "Last 90 Days",
+      "language": "Filter by Language",
+      "allLanguages": "All Languages"
+    },
+    "kpis": {
+      "totalSpend": "Total Ad Spend",
+      "totalImpressions": "Total Impressions",
+      "ctr": "Click-Through Rate",
+      "totalConversions": "Total Conversions"
+    },
+    "charts": {
+      "performanceTitle": "Performance Over Time",
+      "spendTitle": "Ad Spend by Network",
+      "impressions": "Impressions",
+      "clicks": "Clicks",
+      "conversions": "Conversions"
+    },
+    "noData": "No analytics data available for the selected filters."
+  },
   "common": {
     "loading": "Loading..."
   }
