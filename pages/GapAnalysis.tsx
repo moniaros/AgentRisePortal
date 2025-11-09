@@ -1,22 +1,10 @@
 import React, { useState } from 'react';
-import { GoogleGenAI, GenerateContentResponse, Type } from "@google/genai";
 import { useLocalization } from '../hooks/useLocalization';
 import { Policy } from '../types';
 import FileUploader from '../components/gap-analysis/FileUploader';
 import PolicyParser from '../components/gap-analysis/PolicyParser';
 import PolicyReviewForm from '../components/gap-analysis/PolicyReviewForm';
-
-// Helper to convert file to base64
-const fileToGenerativePart = async (file: File) => {
-  const base64EncodedDataPromise = new Promise<string>((resolve) => {
-    const reader = new FileReader();
-    reader.onloadend = () => resolve((reader.result as string).split(',')[1]);
-    reader.readAsDataURL(file);
-  });
-  return {
-    inlineData: { data: await base64EncodedDataPromise, mimeType: file.type },
-  };
-};
+import { GoogleGenAI, Type } from '@google/genai';
 
 const GapAnalysis: React.FC = () => {
     const { t } = useLocalization();
@@ -27,7 +15,22 @@ const GapAnalysis: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
+    const fileToGenerativePart = async (file: File) => {
+        const base64EncodedDataPromise = new Promise<string>((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve((reader.result as string).split(',')[1]);
+            reader.readAsDataURL(file);
+        });
+        return {
+            inlineData: { data: await base64EncodedDataPromise, mimeType: file.type },
+        };
+    };
+
     const handleFileUpload = async (uploadedFile: File) => {
+        if (!process.env.API_KEY) {
+            setError("API key is not configured.");
+            return;
+        }
         setFile(uploadedFile);
         setParsedPolicy(null);
         setAnalysisResult(null);
@@ -35,111 +38,102 @@ const GapAnalysis: React.FC = () => {
         setIsLoading(true);
 
         try {
-            // FIX: Initialize GoogleGenAI with API key from environment variables.
-            const ai = new GoogleGenAI({apiKey: process.env.API_KEY!});
+            // FIX: Initialize GoogleGenAI with apiKey property
+            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             const imagePart = await fileToGenerativePart(uploadedFile);
-
-            const responseSchema = {
-                type: Type.OBJECT,
-                properties: {
-                    policyNumber: { type: Type.STRING },
-                    insurer: { type: Type.STRING },
-                    premium: { type: Type.NUMBER },
-                    startDate: { type: Type.STRING, description: "Date in YYYY-MM-DD format" },
-                    endDate: { type: Type.STRING, description: "Date in YYYY-MM-DD format" },
-                }
-            };
-
-            const prompt = t('gapAnalysis.parsingPrompt');
-
-            // FIX: Use ai.models.generateContent to generate content.
-            const response: GenerateContentResponse = await ai.models.generateContent({
+            
+            // FIX: Use ai.models.generateContent and correct payload structure
+            const response = await ai.models.generateContent({
                 model: 'gemini-2.5-flash',
-                contents: { parts: [imagePart, { text: prompt }] },
+                contents: [
+                    { parts: [imagePart, { text: "Extract key information from this insurance policy document." }] }
+                ],
                 config: {
-                    responseMimeType: "application/json",
-                    responseSchema: responseSchema,
-                },
+                    responseMimeType: 'application/json',
+                    responseSchema: {
+                        type: Type.OBJECT,
+                        properties: {
+                            policyNumber: { type: Type.STRING },
+                            insurer: { type: Type.STRING },
+                            premium: { type: Type.NUMBER },
+                            startDate: { type: Type.STRING },
+                            endDate: { type: Type.STRING },
+                        }
+                    }
+                }
             });
-
-            // FIX: Access the 'text' property directly from the response.
-            const text = response.text;
-            const parsedJson: Partial<Policy> = JSON.parse(text);
-            setParsedPolicy(parsedJson);
+            
+            // FIX: Access text directly from response
+            const jsonStr = response.text;
+            const parsed = JSON.parse(jsonStr);
+            setParsedPolicy(parsed);
 
         } catch (err) {
-            console.error("Error during policy parsing:", err);
-            setError(err instanceof Error ? err.message : t('gapAnalysis.parsingError'));
+            console.error("Error parsing policy:", err);
+            setError("Failed to parse the policy document. Please try a clearer image or a different file.");
         } finally {
             setIsLoading(false);
         }
     };
 
-    const handleAnalyze = async () => {
-        if (!parsedPolicy || !userNeeds) return;
-
+    const handleAnalyzeGaps = async () => {
+        if (!parsedPolicy || !userNeeds || !process.env.API_KEY) return;
+        
         setIsLoading(true);
         setAnalysisResult(null);
         setError(null);
 
         try {
-            // FIX: Initialize GoogleGenAI with API key from environment variables.
-            const ai = new GoogleGenAI({apiKey: process.env.API_KEY!});
-            const prompt = `${t('gapAnalysis.analysisPrompt')}
+            // FIX: Initialize GoogleGenAI with apiKey property
+            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            const prompt = `Perform a gap analysis.
+            Current Policy Details: ${JSON.stringify(parsedPolicy)}
+            Customer Needs: "${userNeeds}"
             
-            Policy Details: ${JSON.stringify(parsedPolicy, null, 2)}
-            
-            User Needs: ${userNeeds}
-            `;
+            Based on the customer's needs, identify any gaps in their current policy coverage. Suggest specific types of coverage or policy adjustments they should consider. Format your response as markdown.`;
 
-            // FIX: Use ai.models.generateContent to generate content.
-            const response: GenerateContentResponse = await ai.models.generateContent({
-                model: 'gemini-2.5-pro',
-                contents: prompt,
+            // FIX: Use ai.models.generateContent
+            const response = await ai.models.generateContent({
+                model: 'gemini-2.5-pro', // Using Pro for more complex reasoning
+                contents: prompt
             });
-
-            // FIX: Access the 'text' property directly from the response.
+            // FIX: Access text directly from response
             setAnalysisResult(response.text);
 
         } catch (err) {
-            console.error("Error during gap analysis:", err);
-            setError(err instanceof Error ? err.message : t('gapAnalysis.analysisError'));
+            console.error("Error analyzing gaps:", err);
+            setError("Failed to perform gap analysis. Please try again.");
         } finally {
             setIsLoading(false);
         }
     };
-
+    
     return (
         <div>
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">{t('gapAnalysis.title')}</h1>
+            <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">{t('nav.gapAnalysis')}</h1>
             <p className="text-gray-600 dark:text-gray-400 mb-6">{t('gapAnalysis.description')}</p>
-            
-            <FileUploader onFileUpload={handleFileUpload} isLoading={isLoading && !parsedPolicy} />
-            
-            {error && <div className="mt-4 text-red-500 bg-red-100 dark:bg-red-900 p-3 rounded-md">{error}</div>}
 
+            {!file && <FileUploader onFileUpload={handleFileUpload} isLoading={isLoading} />}
+            
+            {error && <div className="mt-4 p-4 bg-red-100 text-red-700 rounded">{error}</div>}
+
+            {file && <p className="mt-4">Uploaded: <strong>{file.name}</strong></p>}
+            
             <PolicyParser parsedPolicy={parsedPolicy} isLoading={isLoading && !parsedPolicy} />
 
             {parsedPolicy && (
                 <PolicyReviewForm 
                     userNeeds={userNeeds}
                     setUserNeeds={setUserNeeds}
-                    onSubmit={handleAnalyze}
-                    isLoading={isLoading && !!analysisResult === false}
+                    onSubmit={handleAnalyzeGaps}
+                    isLoading={isLoading && !!userNeeds}
                 />
             )}
             
-            {isLoading && analysisResult === null && parsedPolicy && (
-                 <div className="text-center p-8 mt-6">
-                    <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
-                    <p>{t('gapAnalysis.analyzing')}</p>
-                 </div>
-            )}
-
             {analysisResult && (
-                <div className="mt-8 bg-green-50 dark:bg-gray-800 p-6 rounded-lg shadow-md">
-                    <h3 className="text-2xl font-semibold mb-4 text-green-800 dark:text-green-300">{t('gapAnalysis.analysisComplete')}</h3>
-                    <div className="prose dark:prose-invert max-w-none whitespace-pre-wrap">{analysisResult}</div>
+                 <div className="mt-8 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h3 className="text-xl font-semibold mb-4">{t('gapAnalysis.resultsTitle')}</h3>
+                    <div className="prose dark:prose-invert max-w-none" dangerouslySetInnerHTML={{ __html: analysisResult.replace(/\n/g, '<br />') }} />
                 </div>
             )}
         </div>

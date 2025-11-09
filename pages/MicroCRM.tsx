@@ -1,11 +1,12 @@
-import React, { useState, useMemo } from 'react';
-import { useLocalization } from '../hooks/useLocalization';
+import React, { useState } from 'react';
 import { useCrmData } from '../hooks/useCrmData';
-import { Customer } from '../types';
+import { useLocalization } from '../hooks/useLocalization';
 import CustomersTable from '../components/crm/CustomersTable';
 import CrmLeadsTable from '../components/crm/CrmLeadsTable';
 import CustomerFormModal from '../components/crm/CustomerFormModal';
+import { Customer } from '../types';
 import ErrorMessage from '../components/ui/ErrorMessage';
+import SkeletonLoader from '../components/ui/SkeletonLoader';
 
 const MicroCRM: React.FC = () => {
     const { t } = useLocalization();
@@ -14,92 +15,79 @@ const MicroCRM: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null);
     const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
-    const [searchTerm, setSearchTerm] = useState('');
 
-    const handleAddCustomer = () => {
+    const handleOpenAddModal = () => {
         setEditingCustomer(null);
         setModalMode('add');
         setIsModalOpen(true);
     };
 
-    const handleEditCustomer = (customer: Customer) => {
+    const handleOpenEditModal = (customer: Customer) => {
         setEditingCustomer(customer);
         setModalMode('edit');
         setIsModalOpen(true);
     };
+    
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        setEditingCustomer(null);
+    };
 
+    const handleFormSubmit = (customerData: Customer) => {
+        if (modalMode === 'add') {
+            addCustomer(customerData as Omit<Customer, 'id' | 'timeline'>);
+        } else {
+            updateCustomer(customerData);
+        }
+        handleCloseModal();
+    };
+    
     const handleDeleteCustomer = (customerId: string) => {
         if (window.confirm(t('crm.confirmDelete'))) {
             deleteCustomer(customerId);
         }
     };
     
-    const handleFormSubmit = (customerData: Customer) => {
-        if (modalMode === 'add') {
-            const { id, timeline, ...rest } = customerData;
-            addCustomer(rest as Omit<Customer, 'id' | 'timeline'>);
-        } else if (editingCustomer) {
-            updateCustomer(customerData);
-        }
-        setIsModalOpen(false);
-        setEditingCustomer(null);
-    };
-
-    const filteredCustomers = useMemo(() => {
-        if (!searchTerm) return customers;
-        return customers.filter(c =>
-            `${c.firstName} ${c.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            c.email.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-    }, [customers, searchTerm]);
-
-    if (isLoading) {
-        return <div className="flex justify-center items-center h-full"><div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div></div>;
-    }
-
-    if (error) {
-        return <ErrorMessage message={error.message} />;
-    }
-
     return (
         <div>
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">{t('crm.title')}</h1>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">{t('crm.description')}</p>
-            
-            <div className="mb-6 space-y-4 sm:space-y-0 sm:flex sm:justify-between sm:items-center">
-                <input
-                    type="text"
-                    placeholder={t('crm.searchCustomers')}
-                    value={searchTerm}
-                    onChange={e => setSearchTerm(e.target.value)}
-                    className="w-full sm:w-1/3 p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
-                />
-                <button
-                    onClick={handleAddCustomer}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            <div className="flex justify-between items-center mb-6">
+                <h1 className="text-3xl font-bold text-gray-800 dark:text-white">{t('nav.crm')}</h1>
+                <button 
+                    onClick={handleOpenAddModal}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
                 >
-                    + {t('crm.addCustomer')}
+                    {t('crm.addCustomer')}
                 </button>
             </div>
             
+            {error && <ErrorMessage message={error.message} />}
+
             <div className="space-y-8">
                 <div>
-                    <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">{t('crm.customerList')}</h2>
-                    <CustomersTable 
-                        customers={filteredCustomers}
-                        onEdit={handleEditCustomer}
-                        onDelete={handleDeleteCustomer}
-                    />
+                    <h2 className="text-2xl font-semibold mb-4">{t('crm.customers')}</h2>
+                    {isLoading ? (
+                        <SkeletonLoader className="h-48 w-full" />
+                    ) : (
+                        <CustomersTable 
+                            customers={customers} 
+                            onEdit={handleOpenEditModal} 
+                            onDelete={handleDeleteCustomer}
+                        />
+                    )}
                 </div>
                 <div>
-                    <h2 className="text-2xl font-semibold text-gray-800 dark:text-white mb-4">{t('crm.leadList')}</h2>
-                    <CrmLeadsTable leads={leads} />
+                    <h2 className="text-2xl font-semibold mb-4">{t('crm.leads')}</h2>
+                     {isLoading ? (
+                        <SkeletonLoader className="h-48 w-full" />
+                    ) : (
+                        <CrmLeadsTable leads={leads} />
+                    )}
                 </div>
             </div>
 
-            <CustomerFormModal
+            <CustomerFormModal 
                 isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
+                onClose={handleCloseModal}
                 onSubmit={handleFormSubmit}
                 customer={editingCustomer}
                 mode={modalMode}

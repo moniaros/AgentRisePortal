@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { HashRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { LanguageProvider } from './context/LanguageContext';
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
@@ -10,27 +9,30 @@ import CustomerMicrosite from './pages/CustomerMicrosite';
 import GapAnalysis from './pages/GapAnalysis';
 import Onboarding from './pages/Onboarding';
 import Billing from './pages/Billing';
-import MicrositeBuilder from './pages/MicrositeBuilder'; // Import the new component
+import MicrositeBuilder from './pages/MicrositeBuilder';
+import ErrorBoundary from './components/ErrorBoundary';
 
-const App: React.FC = () => {
+function App() {
   return (
-    <LanguageProvider>
-      <HashRouter>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/lead-generation" element={<LeadGeneration />} />
-            <Route path="/micro-crm" element={<MicroCRM />} />
-            <Route path="/customer/:id" element={<CustomerMicrosite />} />
-            <Route path="/microsite-builder" element={<MicrositeBuilder />} /> {/* Add the new route */}
-            <Route path="/gap-analysis" element={<GapAnalysis />} />
-            <Route path="/onboarding" element={<Onboarding />} />
-            <Route path="/billing" element={<Billing />} />
-          </Routes>
-        </Layout>
-      </HashRouter>
-    </LanguageProvider>
+    <ErrorBoundary>
+        <LanguageProvider>
+            <Router>
+                <Layout>
+                    <Routes>
+                        <Route path="/" element={<Dashboard />} />
+                        <Route path="/lead-generation" element={<LeadGeneration />} />
+                        <Route path="/micro-crm" element={<MicroCRM />} />
+                        <Route path="/customer/:id" element={<CustomerMicrosite />} />
+                        <Route path="/gap-analysis" element={<GapAnalysis />} />
+                        <Route path="/microsite-builder" element={<MicrositeBuilder />} />
+                        <Route path="/onboarding" element={<Onboarding />} />
+                        <Route path="/billing" element={<Billing />} />
+                    </Routes>
+                </Layout>
+            </Router>
+        </LanguageProvider>
+    </ErrorBoundary>
   );
-};
+}
 
 export default App;
