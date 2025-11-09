@@ -125,12 +125,45 @@
   "settings": {
     "socialConnections": {
       "title": "Social Media Connections",
-      "facebookDesc": "Post to pages, read analytics, and manage ads.",
-      "instagramDesc": "Post to profiles, read analytics, and manage ads.",
-      "linkedinDesc": "Post to pages, read analytics, and manage ads.",
-      "xDesc": "Post tweets and read analytics.",
       "disconnect": "Disconnect",
-      "connect": "Connect"
+      "connect": "Connect",
+      "modalTitle": "Connect to {platform}",
+      "permissionsTitle": "AgentOS is requesting permission to:",
+      "allow": "Allow",
+      "cancel": "Cancel",
+      "platforms": {
+        "facebook": {
+          "description": "Post to pages, read analytics, and manage ads.",
+          "scopes": [
+            "Post content to your pages",
+            "Read analytics for your posts and ads",
+            "Create and manage ad campaigns"
+          ]
+        },
+        "instagram": {
+          "description": "Post to profiles, read analytics, and manage ads.",
+          "scopes": [
+            "Post photos and stories to your profile",
+            "Access insights for your content",
+            "Manage promotions and ads"
+          ]
+        },
+        "linkedin": {
+          "description": "Post to pages, read analytics, and manage ads.",
+          "scopes": [
+            "Create posts and articles on your company page",
+            "Retrieve analytics for your page updates",
+            "Manage advertising campaigns"
+          ]
+        },
+        "x": {
+          "description": "Post tweets and read analytics.",
+          "scopes": [
+            "Post and delete tweets for you",
+            "Access engagement analytics for your tweets"
+          ]
+        }
+      }
     },
     "notifications": "Notifications",
     "emailNotifications": "Email Notifications",

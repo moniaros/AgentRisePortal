@@ -1,3 +1,5 @@
+import React from 'react';
+
 export enum Language {
     EN = 'en',
     EL = 'el',
@@ -25,6 +27,7 @@ export interface Lead {
     createdAt: string; // ISO string
     policyType: PolicyType;
     customerId?: string;
+    campaignId?: string;
     [key: string]: any; // For sorting
 }
 
@@ -83,7 +86,20 @@ export interface Campaign {
         image: string;
     };
     status: 'draft' | 'active' | 'completed';
+    // FIX: Renamed 'leadCapture' to 'leadCaptureForm' and updated its structure
+    // to match usage in CampaignWizard and related components.
     leadCaptureForm?: {
-        fields: { name: string; type: string; required: boolean }[];
+        fields: {
+            name: string;
+            type: 'text' | 'email' | 'tel' | 'number';
+            required: boolean;
+        }[];
     }
+}
+
+
+export interface SocialPlatform {
+    key: 'facebook' | 'instagram' | 'linkedin' | 'x';
+    name: string;
+    icon: React.ReactElement;
 }
