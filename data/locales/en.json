@@ -13,6 +13,7 @@
     "crm": "Micro-CRM",
     "micrositeBuilder": "Microsite Builder",
     "gapAnalysis": "Gap Analysis",
+    "socialComposer": "Social Composer",
     "onboarding": "Onboarding",
     "billing": "Billing"
   },
@@ -130,6 +131,40 @@
     "analyzeGaps": "Analyze Gaps",
     "analyzing": "Analyzing...",
     "resultsTitle": "Gap Analysis Results"
+  },
+  "socialComposer": {
+    "title": "Create a Post",
+    "placeholder": "What's on your mind?",
+    "uploadImage": "Upload Image",
+    "removeImage": "Remove Image",
+    "preview": "Preview",
+    "postNow": "Post Now",
+    "schedulePost": "Schedule Post",
+    "postScheduled": "Post successfully scheduled for",
+    "postPublished": "Post published successfully!",
+    "errorFutureDate": "Schedule date must be in the future.",
+    "errorContentRequired": "Post content cannot be empty.",
+    "errorCharLimit": "Character limit exceeded.",
+    "characterCount": "Character Count",
+    "templatesTitle": "Post Templates",
+    "templates": [
+      {
+        "title": "Auto Insurance Reminder",
+        "content": "Is your auto insurance up for renewal? 🚗 Don't wait until the last minute! Contact me today for a free quote and ensure you have the best coverage for the road ahead. #AutoInsurance #CarInsurance #DriveSafe"
+      },
+      {
+        "title": "Life Insurance for Families",
+        "content": "Protecting your loved ones is priceless. Life insurance provides peace of mind, ensuring your family's financial security no matter what happens. Let's talk about a plan that's right for you. #LifeInsurance #FamilyFirst #FinancialPlanning"
+      },
+      {
+        "title": "Homeowner's Tip",
+        "content": "Did you know that bundling your home and auto insurance can lead to significant savings? 🏡+🚗=💰 Ask me how much you could save! #HomeInsurance #InsuranceTips #SaveMoney"
+      },
+      {
+        "title": "Travel Insurance PSA",
+        "content": "Planning a trip? Don't forget travel insurance! From flight cancellations to medical emergencies, it's the ultimate travel essential. Travel smart, travel safe. ✈️ #TravelInsurance #Wanderlust #TravelSmart"
+      }
+    ]
   },
   "policyTypes": {
     "auto": "Auto Insurance",

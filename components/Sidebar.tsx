@@ -15,6 +15,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
     { to: '/lead-generation', text: t('nav.leadGen'), icon: ICONS.leadGen },
     { to: '/micro-crm', text: t('nav.crm'), icon: ICONS.crm },
     { to: '/microsite-builder', text: t('nav.micrositeBuilder'), icon: ICONS.micrositeBuilder },
+    { to: '/social-composer', text: t('nav.socialComposer'), icon: ICONS.socialComposer },
     { to: '/gap-analysis', text: t('nav.gapAnalysis'), icon: ICONS.gapAnalysis },
     { to: '/onboarding', text: t('nav.onboarding'), icon: ICONS.onboarding },
     { to: '/billing', text: t('nav.billing'), icon: ICONS.billing },

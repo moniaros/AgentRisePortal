@@ -16,6 +16,7 @@ import Logout from './pages/Logout';
 import ErrorBoundary from './components/ErrorBoundary';
 import GTMProvider from './components/GTMProvider';
 import RouteAnalyticsTracker from './components/RouteAnalyticsTracker';
+import SocialComposer from './pages/SocialComposer';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
                         <Route path="/customer/:id" element={<CustomerMicrosite />} />
                         <Route path="/gap-analysis" element={<GapAnalysis />} />
                         <Route path="/microsite-builder" element={<MicrositeBuilder />} />
+                        <Route path="/social-composer" element={<SocialComposer />} />
                         <Route path="/onboarding" element={<Onboarding />} />
                         <Route path="/billing" element={<Billing />} />
                         <Route path="/profile" element={<Profile />} />

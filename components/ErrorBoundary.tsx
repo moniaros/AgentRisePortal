@@ -9,9 +9,14 @@ interface State {
 }
 
 class ErrorBoundary extends React.Component<ErrorBoundaryProps, State> {
-  public state: State = {
-    hasError: false,
-  };
+  // FIX: The error "Property 'props' does not exist on type 'ErrorBoundary'" can be a sign of a tooling issue
+  // with class fields. Using a constructor is a more robust way to initialize state and ensure `this.props` is set up correctly.
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+    this.state = {
+      hasError: false,
+    };
+  }
 
   static getDerivedStateFromError(_: Error): State {
     // Update state so the next render will show the fallback UI.
