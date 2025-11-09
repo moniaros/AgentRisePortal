@@ -26,7 +26,8 @@ const AdCampaigns: React.FC = () => {
                     {t('campaigns.create')}
                 </button>
             </div>
-            {error && <p className="text-red-500">{error}</p>}
+            {/* FIX: Render the error message string instead of the Error object. */}
+            {error && <p className="text-red-500">{error.message}</p>}
             {isLoading ? (
                 <p>{t('common.loading')}</p>
             ) : (

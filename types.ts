@@ -1,51 +1,36 @@
-import React from 'react';
+import React from "react";
 
 export enum Language {
     EN = 'en',
     EL = 'el',
 }
 
-export interface TranslationTokens {
+export type TranslationTokens = {
     [key: string]: string | TranslationTokens;
-}
+};
 
 export enum PolicyType {
-    AUTO = 'AUTO',
-    HOME = 'HOME',
-    LIFE = 'LIFE',
-    HEALTH = 'HEALTH',
-}
-
-export interface Lead {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    source: string;
-    status: 'new' | 'contacted' | 'qualified';
-    potentialValue: number;
-    createdAt: string; // ISO string
-    policyType: PolicyType;
-    customerId?: string;
-    campaignId?: string;
-    [key: string]: any; // For sorting
+    AUTO = 'auto',
+    HOME = 'home',
+    LIFE = 'life',
+    HEALTH = 'health',
 }
 
 export interface Policy {
     id: string;
     type: PolicyType;
     policyNumber: string;
-    insurer: string;
     premium: number;
     startDate: string;
     endDate: string;
     isActive: boolean;
+    insurer: string;
 }
 
 export interface TimelineEvent {
     id: string;
-    date: string; // ISO string
-    type: 'note' | 'call' | 'email' | 'meeting' | 'policy_update' | 'policy_renewal' | 'premium_reminder' | 'address_change' | 'ai_review';
+    date: string;
+    type: 'call' | 'email' | 'meeting' | 'note' | 'policy_update' | 'policy_renewal' | 'premium_reminder' | 'address_change' | 'ai_review';
     title: string;
     content: string;
     author: string;
@@ -63,10 +48,36 @@ export interface Customer {
     timeline: TimelineEvent[];
 }
 
+export interface Lead {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    source: string;
+    status: 'new' | 'contacted' | 'qualified' | 'closed' | 'rejected';
+    policyType: PolicyType;
+    potentialValue: number;
+    createdAt: string;
+    customerId?: string;
+}
+
+export interface SocialPlatform {
+    key: string;
+    name: string;
+    icon: React.ReactElement;
+}
+
 export enum CampaignObjective {
     LEAD_GENERATION = 'LEAD_GENERATION',
-    WEBSITE_TRAFFIC = 'WEBSITE_TRAFFIC',
     BRAND_AWARENESS = 'BRAND_AWARENESS',
+    WEBSITE_TRAFFIC = 'WEBSITE_TRAFFIC',
+}
+
+export interface LeadCaptureFormField {
+    name: string;
+    type: 'text' | 'email' | 'tel' | 'number';
+    required: boolean;
 }
 
 export interface Campaign {
@@ -86,20 +97,7 @@ export interface Campaign {
         image: string;
     };
     status: 'draft' | 'active' | 'completed';
-    // FIX: Renamed 'leadCapture' to 'leadCaptureForm' and updated its structure
-    // to match usage in CampaignWizard and related components.
     leadCaptureForm?: {
-        fields: {
-            name: string;
-            type: 'text' | 'email' | 'tel' | 'number';
-            required: boolean;
-        }[];
+        fields: LeadCaptureFormField[];
     }
-}
-
-
-export interface SocialPlatform {
-    key: 'facebook' | 'instagram' | 'linkedin' | 'x';
-    name: string;
-    icon: React.ReactElement;
 }

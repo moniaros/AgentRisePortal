@@ -1,5 +1,7 @@
+
 import React from 'react';
-import { Campaign } from '../../../types';
+// FIX: Import LeadCaptureFormField for explicit typing.
+import { Campaign, LeadCaptureFormField } from '../../../types';
 
 interface StepProps {
     data: Omit<Campaign, 'id'>;
@@ -11,7 +13,8 @@ const Step5LeadCapture: React.FC<StepProps> = ({ data, setData }) => {
     const fields = data.leadCaptureForm?.fields || [];
 
     const handleAddField = () => {
-        const newField = { name: '', type: 'text', required: false };
+        // FIX: Explicitly type newField to prevent type widening of the 'type' property.
+        const newField: LeadCaptureFormField = { name: '', type: 'text', required: false };
         setData(prev => ({
             ...prev,
             leadCaptureForm: {

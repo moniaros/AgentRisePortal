@@ -1,14 +1,1 @@
-{
-  "leadConversionRate": 0.25,
-  "dailyActiveUsers": 152,
-  "policyChurnRate": 0.05,
-  "billingHealth": {
-    "paymentSuccessRate": 0.98
-  },
-  "featureUsage": [
-    { "name": "CRM", "usage": 85 },
-    { "name": "Lead Gen", "usage": 72 },
-    { "name": "Gap Analysis", "usage": 45 },
-    { "name": "Microsite Builder", "usage": 23 }
-  ]
-}
+full contents of data/analytics.json

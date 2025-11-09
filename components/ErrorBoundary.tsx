@@ -9,24 +9,29 @@ interface State {
 }
 
 class ErrorBoundary extends Component<Props, State> {
-  // FIX: Switched to class property for state initialization.
-  // The constructor-based initialization was causing type inference issues.
-  public state: State = { hasError: false };
+  // FIX: Refactored to use a constructor for state and method binding.
+  // This is a more robust pattern that avoids potential 'this' context issues
+  // with certain build tool configurations.
+  constructor(props: Props) {
+    super(props);
+    this.state = { hasError: false };
+    this.handleTryAgain = this.handleTryAgain.bind(this);
+  }
 
-  public static getDerivedStateFromError(_: Error): State {
+  static getDerivedStateFromError(_: Error): State {
     // Update state so the next render will show the fallback UI.
     return { hasError: true };
   }
 
-  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error("Uncaught error:", error, errorInfo);
   }
 
-  private handleTryAgain = () => {
+  handleTryAgain() {
     this.setState({ hasError: false });
-  };
+  }
 
-  public render() {
+  render() {
     if (this.state.hasError) {
       return (
         <div className="flex flex-col items-center justify-center h-screen bg-red-50 text-red-700">

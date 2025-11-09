@@ -1,4 +1,4 @@
-
+// FIX: Add import for React to resolve 'React.FC' type.
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { trackPageView } from '../services/analytics';
@@ -8,7 +8,6 @@ import { useLocalization } from '../hooks/useLocalization';
  * This component tracks page views whenever the route changes and
  * pushes the event to the data layer for GTM.
  */
-// FIX: Add import for React to resolve 'React.FC' type.
 const RouteAnalyticsTracker: React.FC = () => {
   const location = useLocation();
   const { language } = useLocalization();
