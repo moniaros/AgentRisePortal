@@ -33,7 +33,16 @@
     "gtmPlaceholder": "GTM-XXXXXXX",
     "gtmDescription": "Enter your GTM container ID to enable analytics tracking across the application.",
     "saveGtmId": "Save GTM ID",
-    "gtmSavedSuccess": "GTM ID saved successfully! The page will now reload to apply changes."
+    "gtmSavedSuccess": "GTM ID saved successfully! The page will now reload to apply changes.",
+    "socialConnections": {
+      "title": "Social Media Connections",
+      "connect": "Connect",
+      "disconnect": "Disconnect",
+      "facebookDesc": "Permissions: Post on your behalf, read analytics.",
+      "instagramDesc": "Permissions: Read profile info and media.",
+      "linkedinDesc": "Permissions: Read profile, post updates, manage ads.",
+      "xDesc": "Permissions: Post tweets, read profile information."
+    }
   },
   "dashboard": {
     "title": "Dashboard",

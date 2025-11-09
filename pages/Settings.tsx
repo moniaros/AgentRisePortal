@@ -5,11 +5,17 @@ const Settings: React.FC = () => {
     const { t } = useLocalization();
     const [gtmId, setGtmId] = useState('');
     const [savedMessage, setSavedMessage] = useState('');
+    const [socialConnections, setSocialConnections] = useState<{ [key: string]: boolean }>({});
 
+    // GTM Logic
     useEffect(() => {
         const storedGtmId = localStorage.getItem('gtmContainerId');
         if (storedGtmId) {
             setGtmId(storedGtmId);
+        }
+        const storedConnections = localStorage.getItem('socialConnections');
+        if (storedConnections) {
+            setSocialConnections(JSON.parse(storedConnections));
         }
     }, []);
 
@@ -18,6 +24,25 @@ const Settings: React.FC = () => {
         localStorage.setItem('gtmContainerId', gtmId.trim());
         setSavedMessage(t('settings.gtmSavedSuccess'));
         setTimeout(() => window.location.reload(), 1500); // Give user time to read the message
+    };
+
+    // Social Connections Logic
+    const socialPlatforms = ['Facebook', 'Instagram', 'LinkedIn', 'X'];
+
+    const handleSocialConnect = (platform: string) => {
+        // Simulate OAuth flow
+        alert(`Redirecting to ${platform} for authentication... (This is a simulation)`);
+        setTimeout(() => {
+            const updatedConnections = { ...socialConnections, [platform]: true };
+            setSocialConnections(updatedConnections);
+            localStorage.setItem('socialConnections', JSON.stringify(updatedConnections));
+        }, 1000);
+    };
+
+    const handleSocialDisconnect = (platform: string) => {
+        const updatedConnections = { ...socialConnections, [platform]: false };
+        setSocialConnections(updatedConnections);
+        localStorage.setItem('socialConnections', JSON.stringify(updatedConnections));
     };
 
 
@@ -30,11 +55,47 @@ const Settings: React.FC = () => {
         </div>
     );
 
+    // Fix: Define a props interface and use React.FC to correctly type the component, allowing the 'key' prop.
+    interface SocialConnectionCardProps {
+        platform: string;
+    }
+
+    const SocialConnectionCard: React.FC<SocialConnectionCardProps> = ({ platform }) => {
+        const isConnected = socialConnections[platform];
+        const platformKey = platform.toLowerCase();
+        
+        return (
+             <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                <div>
+                    <h4 className="font-semibold">{platform}</h4>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">{t(`settings.socialConnections.${platformKey}Desc`)}</p>
+                </div>
+                {isConnected ? (
+                    <button onClick={() => handleSocialDisconnect(platform)} className="px-4 py-2 text-sm bg-red-600 text-white rounded-md hover:bg-red-700 transition">
+                        {t('settings.socialConnections.disconnect')}
+                    </button>
+                ) : (
+                    <button onClick={() => handleSocialConnect(platform)} className="px-4 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+                        {t('settings.socialConnections.connect')}
+                    </button>
+                )}
+            </div>
+        )
+    };
+
     return (
         <div>
             <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-6">{t('header.settings')}</h1>
             
             <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md max-w-2xl mx-auto space-y-8">
+                {/* Social Media Connections */}
+                <div>
+                    <h2 className="text-xl font-semibold border-b dark:border-gray-700 pb-2 mb-4">{t('settings.socialConnections.title')}</h2>
+                    <div className="space-y-4">
+                        {socialPlatforms.map(platform => <SocialConnectionCard key={platform} platform={platform} />)}
+                    </div>
+                </div>
+
                 {/* Notifications Section */}
                 <div>
                     <h2 className="text-xl font-semibold border-b dark:border-gray-700 pb-2 mb-4">{t('settings.notifications')}</h2>
