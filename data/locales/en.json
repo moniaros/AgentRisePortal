@@ -16,6 +16,25 @@
     "onboarding": "Onboarding",
     "billing": "Billing"
   },
+  "settings": {
+    "notifications": "Notifications",
+    "emailNotifications": "Email Notifications",
+    "pushNotifications": "Push Notifications",
+    "monthlyReports": "Monthly Reports",
+    "appearance": "Appearance",
+    "appearanceDesc": "Theme settings are currently managed by your browser preferences.",
+    "lightMode": "Light Mode",
+    "darkMode": "Dark Mode",
+    "account": "Account",
+    "changePassword": "Change Password",
+    "deleteAccount": "Delete Account",
+    "integrations": "Integrations",
+    "gtmId": "Google Tag Manager ID",
+    "gtmPlaceholder": "GTM-XXXXXXX",
+    "gtmDescription": "Enter your GTM container ID to enable analytics tracking across the application.",
+    "saveGtmId": "Save GTM ID",
+    "gtmSavedSuccess": "GTM ID saved successfully! The page will now reload to apply changes."
+  },
   "dashboard": {
     "title": "Dashboard",
     "newLeads": "New Leads",

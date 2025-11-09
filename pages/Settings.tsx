@@ -1,8 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocalization } from '../hooks/useLocalization';
 
 const Settings: React.FC = () => {
     const { t } = useLocalization();
+    const [gtmId, setGtmId] = useState('');
+    const [savedMessage, setSavedMessage] = useState('');
+
+    useEffect(() => {
+        const storedGtmId = localStorage.getItem('gtmContainerId');
+        if (storedGtmId) {
+            setGtmId(storedGtmId);
+        }
+    }, []);
+
+    const handleSaveGtmId = (e: React.FormEvent) => {
+        e.preventDefault();
+        localStorage.setItem('gtmContainerId', gtmId.trim());
+        setSavedMessage(t('settings.gtmSavedSuccess'));
+        setTimeout(() => window.location.reload(), 1500); // Give user time to read the message
+    };
+
 
     const Toggle = ({ label, enabled }: { label: string, enabled: boolean }) => (
         <div className="flex items-center justify-between py-2">
@@ -20,40 +37,67 @@ const Settings: React.FC = () => {
             <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md max-w-2xl mx-auto space-y-8">
                 {/* Notifications Section */}
                 <div>
-                    <h2 className="text-xl font-semibold border-b dark:border-gray-700 pb-2 mb-4">Notifications</h2>
+                    <h2 className="text-xl font-semibold border-b dark:border-gray-700 pb-2 mb-4">{t('settings.notifications')}</h2>
                     <div className="space-y-2">
-                        <Toggle label="Email Notifications" enabled={true} />
-                        <Toggle label="Push Notifications" enabled={false} />
-                        <Toggle label="Monthly Reports" enabled={true} />
+                        <Toggle label={t('settings.emailNotifications')} enabled={true} />
+                        <Toggle label={t('settings.pushNotifications')} enabled={false} />
+                        <Toggle label={t('settings.monthlyReports')} enabled={true} />
                     </div>
                 </div>
 
                 {/* Appearance Section */}
                  <div>
-                    <h2 className="text-xl font-semibold border-b dark:border-gray-700 pb-2 mb-4">Appearance</h2>
-                     <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Theme settings are currently managed by your browser preferences.</p>
+                    <h2 className="text-xl font-semibold border-b dark:border-gray-700 pb-2 mb-4">{t('settings.appearance')}</h2>
+                     <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{t('settings.appearanceDesc')}</p>
                      <div className="flex items-center space-x-4">
                         <button className="flex-1 p-4 border-2 border-blue-500 rounded-lg text-center">
                             <span role="img" aria-label="sun" className="text-2xl">☀️</span>
-                            <p>Light Mode</p>
+                            <p>{t('settings.lightMode')}</p>
                         </button>
                          <button className="flex-1 p-4 border-2 border-gray-300 dark:border-gray-600 rounded-lg text-center opacity-50">
                             <span role="img" aria-label="moon" className="text-2xl">🌙</span>
-                            <p>Dark Mode</p>
+                            <p>{t('settings.darkMode')}</p>
                         </button>
                      </div>
                 </div>
 
+                {/* Integrations Section */}
+                <div>
+                    <h2 className="text-xl font-semibold border-b dark:border-gray-700 pb-2 mb-4">{t('settings.integrations')}</h2>
+                    <form onSubmit={handleSaveGtmId} className="space-y-4">
+                        <div>
+                            <label htmlFor="gtm-id" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                {t('settings.gtmId')}
+                            </label>
+                            <input
+                                id="gtm-id"
+                                type="text"
+                                value={gtmId}
+                                onChange={(e) => setGtmId(e.target.value)}
+                                placeholder={t('settings.gtmPlaceholder')}
+                                className="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
+                            />
+                            <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">{t('settings.gtmDescription')}</p>
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <button type="submit" className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+                                {t('settings.saveGtmId')}
+                            </button>
+                            {savedMessage && <span className="text-sm text-green-600 dark:text-green-400">{savedMessage}</span>}
+                        </div>
+                    </form>
+                </div>
+
                 {/* Account Section */}
                 <div>
-                    <h2 className="text-xl font-semibold border-b dark:border-gray-700 pb-2 mb-4">Account</h2>
+                    <h2 className="text-xl font-semibold border-b dark:border-gray-700 pb-2 mb-4">{t('settings.account')}</h2>
                     <div className="space-y-4">
                         <button className="w-full text-left p-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md transition">
-                            Change Password
+                            {t('settings.changePassword')}
                         </button>
                          <button className="w-full text-left p-3 bg-red-50 dark:bg-red-900/50 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/80 rounded-md transition font-semibold">
-                            Delete Account
-                        </button>
+                            {t('settings.deleteAccount')}
+                         </button>
                     </div>
                 </div>
             </div>

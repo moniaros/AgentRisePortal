@@ -16,6 +16,25 @@
     "onboarding": "Έναρξη",
     "billing": "Χρεώσεις"
   },
+  "settings": {
+    "notifications": "Ειδοποιήσεις",
+    "emailNotifications": "Ειδοποιήσεις Email",
+    "pushNotifications": "Push Notifications",
+    "monthlyReports": "Μηνιαίες Αναφορές",
+    "appearance": "Εμφάνιση",
+    "appearanceDesc": "Οι ρυθμίσεις θέματος διαχειρίζονται προς το παρόν από τις προτιμήσεις του προγράμματος περιήγησής σας.",
+    "lightMode": "Φωτεινή Λειτουργία",
+    "darkMode": "Σκοτεινή Λειτουργία",
+    "account": "Λογαριασμός",
+    "changePassword": "Αλλαγή Κωδικού",
+    "deleteAccount": "Διαγραφή Λογαριασμού",
+    "integrations": "Ενσωματώσεις",
+    "gtmId": "Αναγνωριστικό Google Tag Manager",
+    "gtmPlaceholder": "GTM-XXXXXXX",
+    "gtmDescription": "Εισαγάγετε το αναγνωριστικό του κοντέινερ GTM για να ενεργοποιήσετε την παρακολούθηση αναλυτικών στοιχείων σε όλη την εφαρμογή.",
+    "saveGtmId": "Αποθήκευση GTM ID",
+    "gtmSavedSuccess": "Το GTM ID αποθηκεύτηκε επιτυχώς! Η σελίδα θα φορτώσει ξανά για να εφαρμοστούν οι αλλαγές."
+  },
   "dashboard": {
     "title": "Πίνακας Ελέγχου",
     "newLeads": "Νέα Leads",

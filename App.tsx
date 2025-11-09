@@ -14,10 +14,12 @@ import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Logout from './pages/Logout';
 import ErrorBoundary from './components/ErrorBoundary';
+import GTMProvider from './components/GTMProvider';
 
 function App() {
   return (
     <ErrorBoundary>
+      <GTMProvider>
         <LanguageProvider>
             <Router>
                 <Layout>
@@ -37,6 +39,7 @@ function App() {
                 </Layout>
             </Router>
         </LanguageProvider>
+      </GTMProvider>
     </ErrorBoundary>
   );
 }
