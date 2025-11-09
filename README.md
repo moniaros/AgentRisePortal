@@ -61,19 +61,149 @@ This project is designed to run directly in the browser without a complex build 
 
 ---
 
-## Usage Guide
-
--   **Navigation:** Use the sidebar on the left to navigate between the different modules of the platform.
--   **Bilingual Support:** Switch between Greek (EL) and English (EN) at any time using the language toggle button in the header. All UI elements will update instantly.
--   **Offline Capabilities:** The application caches all CRM and lead data in your browser's `localStorage`. This allows you to view and manage information even when you are offline. Any changes made offline will be available when you reconnect.
-
----
-
 ## API and Data Standards
 
 -   **Data Interchange:** The application uses structured **JSON** for all data operations, simulating a modern REST API.
 -   **Industry Vocabulary:** The data models for insurance policies and customer information are designed to be compatible with industry-standard vocabulary, such as **ACORD**, to ensure realistic and interoperable data structures.
 
+---
+
+## API Endpoint Payloads (Examples)
+
+Below are examples of JSON payloads for core entities, designed for compatibility with standard insurtech APIs.
+
+### 1. Parties (Customers)
+
+A "Party" represents an individual or entity involved in an insurance policy.
+
+#### `POST /api/v1/parties` (Create a new Party)
+
+**Request Body:**
+
+```json
+{
+  "partyType": "Person",
+  "firstName": "Alexandros",
+  "lastName": "Papageorgiou",
+  "dateOfBirth": "1985-05-20",
+  "contact": {
+    "email": "alex.papageorgiou@example.com",
+    "phone": "6971112233"
+  },
+  "address": {
+    "street": "Leof. Kifisias 123",
+    "city": "Athens",
+    "postalCode": "11526",
+    "country": "GR"
+  }
+}
+```
+
+#### `GET /api/v1/parties/{partyId}` (Retrieve a Party)
+
+**Response Body:**
+
+```json
+{
+  "id": "cust1",
+  "partyType": "Person",
+  "firstName": "Alexandros",
+  "lastName": "Papageorgiou",
+  "dateOfBirth": "1985-05-20",
+  "contact": {
+    "email": "alex.papageorgiou@example.com",
+    "phone": "6971112233"
+  },
+  "address": {
+    "street": "Leof. Kifisias 123",
+    "city": "Athens",
+    "postalCode": "11526",
+    "country": "GR"
+  }
+}
+```
+
+### 2. Policies
+
+A "Policy" represents an insurance contract.
+
+#### `POST /api/v1/policies` (Create a new Policy)
+
+**Request Body:**
+
+```json
+{
+  "policyNumber": "CAR-12345",
+  "policyType": "auto",
+  "insurer": "Generali",
+  "status": "active",
+  "effectiveDate": "2023-01-15",
+  "expirationDate": "2024-01-14",
+  "premium": {
+    "amount": 350.50,
+    "currency": "EUR"
+  },
+  "parties": [
+    {
+      "partyId": "cust1",
+      "role": "Insured"
+    }
+  ]
+}
+```
+
+#### `GET /api/v1/policies/{policyId}` (Retrieve a Policy)
+
+**Response Body:**
+
+```json
+{
+  "id": "pol1",
+  "policyNumber": "CAR-12345",
+  "policyType": "auto",
+  "insurer": "Generali",
+  "status": "active",
+  "effectiveDate": "2023-01-15",
+  "expirationDate": "2024-01-14",
+  "premium": {
+    "amount": 350.50,
+    "currency": "EUR"
+  },
+  "parties": [
+    {
+      "partyId": "cust1",
+      "role": "Insured"
+    }
+  ],
+  "timeline": [
+    {
+      "id": "evt1",
+      "date": "2023-10-20T10:00:00Z",
+      "type": "note",
+      "title": "Policy Issued",
+      "content": "New auto policy created and activated.",
+      "author": "System"
+    }
+  ]
+}
+```
+
+#### `PATCH /api/v1/policies/{policyId}` (Update a Policy)
+
+Used for partial updates, such as renewing a policy.
+
+**Request Body:**
+
+```json
+{
+  "status": "active",
+  "expirationDate": "2025-01-14",
+  "premium": {
+    "amount": 365.00,
+    "currency": "EUR"
+  }
+}
+```
 ---
 
 ## Contribution Guidelines
