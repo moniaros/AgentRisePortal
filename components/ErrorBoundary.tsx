@@ -1,43 +1,39 @@
-import React, { ErrorInfo, ReactNode } from 'react';
+import React, { Component, ErrorInfo, ReactNode } from "react";
 
-interface ErrorBoundaryProps {
-  children: ReactNode;
+interface Props {
+  children?: ReactNode;
 }
 
 interface State {
   hasError: boolean;
 }
 
-class ErrorBoundary extends React.Component<ErrorBoundaryProps, State> {
-  // FIX: The error "Property 'props' does not exist on type 'ErrorBoundary'" can be a sign of a tooling issue
-  // with class fields. Using a constructor is a more robust way to initialize state and ensure `this.props` is set up correctly.
-  constructor(props: ErrorBoundaryProps) {
-    super(props);
-    this.state = {
-      hasError: false,
-    };
-  }
+class ErrorBoundary extends Component<Props, State> {
+  // FIX: Replaced the constructor with a class property for state initialization.
+  // This modern syntax explicitly declares the 'state' property on the class,
+  // resolving TypeScript errors where component instance properties were not being found.
+  public state: State = { hasError: false };
 
-  static getDerivedStateFromError(_: Error): State {
+  public static getDerivedStateFromError(_: Error): State {
     // Update state so the next render will show the fallback UI.
     return { hasError: true };
   }
 
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error("Uncaught error:", error, errorInfo);
   }
 
-  render() {
+  public render() {
     if (this.state.hasError) {
       return (
-        <div className="flex flex-col items-center justify-center h-screen bg-red-50 text-red-800">
-            <h1 className="text-2xl font-bold mb-4">Oops! Something went wrong.</h1>
-            <p>We've been notified of the issue. Please try refreshing the page.</p>
+        <div className="flex flex-col items-center justify-center h-screen bg-red-50 text-red-700">
+            <h1 className="text-3xl font-bold mb-4">Oops! Something went wrong.</h1>
+            <p>We've logged the error and our team will look into it.</p>
             <button
-                onClick={() => window.location.reload()}
-                className="mt-6 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                onClick={() => this.setState({ hasError: false })}
+                className="mt-6 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
             >
-                Refresh Page
+                Try again
             </button>
         </div>
       );
