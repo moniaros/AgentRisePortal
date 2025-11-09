@@ -9,6 +9,7 @@ import AddressChangeModal from '../components/customer/AddressChangeModal';
 import RenewalModal from '../components/customer/RenewalModal';
 import ErrorMessage from '../components/ui/ErrorMessage';
 import SkeletonLoader from '../components/ui/SkeletonLoader';
+// Fix: Correct import for GoogleGenAI
 import { GoogleGenAI } from '@google/genai';
 
 const CustomerMicrosite: React.FC = () => {

@@ -27,7 +27,8 @@ const Step1Objective: React.FC<StepProps> = ({ data, setData }) => {
                     className="mt-1 w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
                 >
                     {Object.values(CampaignObjective).map(obj => (
-                        <option key={obj} value={obj}>{obj.replace(/_/g, ' ')}</option>
+                        // FIX: Cast enum value to string to resolve 'replace does not exist on type unknown' error.
+                        <option key={obj} value={obj}>{(obj as string).replace(/_/g, ' ')}</option>
                     ))}
                 </select>
             </div>

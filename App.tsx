@@ -1,25 +1,25 @@
-
 import React from 'react';
-import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import LeadGeneration from './pages/LeadGeneration';
 import MicroCRM from './pages/MicroCRM';
 import CustomerMicrosite from './pages/CustomerMicrosite';
 import GapAnalysis from './pages/GapAnalysis';
-import Onboarding from './pages/Onboarding';
-import Billing from './pages/Billing';
 import SocialComposer from './pages/SocialComposer';
 import AdCampaigns from './pages/AdCampaigns';
 import Analytics from './pages/Analytics';
+import Onboarding from './pages/Onboarding';
+import Billing from './pages/Billing';
+import MicrositeBuilder from './pages/MicrositeBuilder';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Logout from './pages/Logout';
-import MicrositeBuilder from './pages/MicrositeBuilder';
+import ErrorBoundary from './components/ErrorBoundary';
 import { LanguageProvider } from './context/LanguageContext';
 import GTMProvider from './components/GTMProvider';
-import ErrorBoundary from './components/ErrorBoundary';
 import RouteAnalyticsTracker from './components/RouteAnalyticsTracker';
+import LeadCapturePage from './pages/LeadCapturePage';
 
 const App: React.FC = () => {
   return (
@@ -28,25 +28,23 @@ const App: React.FC = () => {
         <GTMProvider>
           <Router>
             <RouteAnalyticsTracker />
-            <Layout>
-              <Routes>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="/lead-generation" element={<LeadGeneration />} />
-                <Route path="/micro-crm" element={<MicroCRM />} />
-                <Route path="/customer/:id" element={<CustomerMicrosite />} />
-                <Route path="/gap-analysis" element={<GapAnalysis />} />
-                <Route path="/onboarding" element={<Onboarding />} />
-                <Route path="/billing" element={<Billing />} />
-                <Route path="/social-composer" element={<SocialComposer />} />
-                <Route path="/ad-campaigns" element={<AdCampaigns />} />
-                <Route path="/analytics" element={<Analytics />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/settings" element={<Settings />} />
-                <Route path="/logout" element={<Logout />} />
-                <Route path="/microsite-builder" element={<MicrositeBuilder />} />
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
-            </Layout>
+            <Routes>
+              <Route path="/" element={<Layout><Dashboard /></Layout>} />
+              <Route path="/lead-generation" element={<Layout><LeadGeneration /></Layout>} />
+              <Route path="/micro-crm" element={<Layout><MicroCRM /></Layout>} />
+              <Route path="/customer/:id" element={<Layout><CustomerMicrosite /></Layout>} />
+              <Route path="/gap-analysis" element={<Layout><GapAnalysis /></Layout>} />
+              <Route path="/social-composer" element={<Layout><SocialComposer /></Layout>} />
+              <Route path="/ad-campaigns" element={<Layout><AdCampaigns /></Layout>} />
+              <Route path="/analytics" element={<Layout><Analytics /></Layout>} />
+              <Route path="/onboarding" element={<Layout><Onboarding /></Layout>} />
+              <Route path="/billing" element={<Layout><Billing /></Layout>} />
+              <Route path="/microsite-builder" element={<Layout><MicrositeBuilder /></Layout>} />
+              <Route path="/profile" element={<Layout><Profile /></Layout>} />
+              <Route path="/settings" element={<Layout><Settings /></Layout>} />
+              <Route path="/logout" element={<Layout><Logout /></Layout>} />
+              <Route path="/capture/:campaignId" element={<LeadCapturePage />} />
+            </Routes>
           </Router>
         </GTMProvider>
       </LanguageProvider>

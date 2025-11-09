@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useLocalization } from '../../hooks/useLocalization';
-import { Policy } from '../../types';
+import { useLocalization } from '../hooks/useLocalization';
+import { Policy } from '../types';
 import FileUploader from '../components/gap-analysis/FileUploader';
 import PolicyParser from '../components/gap-analysis/PolicyParser';
 import PolicyReviewForm from '../components/gap-analysis/PolicyReviewForm';

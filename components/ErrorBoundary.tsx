@@ -9,10 +9,12 @@ interface State {
 }
 
 class ErrorBoundary extends Component<Props, State> {
-  // FIX: Replaced the constructor with a class property for state initialization.
-  // This modern syntax explicitly declares the 'state' property on the class,
-  // resolving TypeScript errors where component instance properties were not being found.
-  public state: State = { hasError: false };
+  // FIX: Reverted to constructor-based state initialization.
+  // The class property syntax was not resolving type inference issues with base Component properties like `props` and `setState`.
+  constructor(props: Props) {
+    super(props);
+    this.state = { hasError: false };
+  }
 
   public static getDerivedStateFromError(_: Error): State {
     // Update state so the next render will show the fallback UI.
@@ -23,6 +25,10 @@ class ErrorBoundary extends Component<Props, State> {
     console.error("Uncaught error:", error, errorInfo);
   }
 
+  private handleTryAgain = () => {
+    this.setState({ hasError: false });
+  };
+
   public render() {
     if (this.state.hasError) {
       return (
@@ -30,7 +36,7 @@ class ErrorBoundary extends Component<Props, State> {
             <h1 className="text-3xl font-bold mb-4">Oops! Something went wrong.</h1>
             <p>We've logged the error and our team will look into it.</p>
             <button
-                onClick={() => this.setState({ hasError: false })}
+                onClick={this.handleTryAgain}
                 className="mt-6 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
             >
                 Try again

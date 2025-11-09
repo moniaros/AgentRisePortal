@@ -1,9 +1,17 @@
 {
+  "header": {
+    "search": "Search...",
+    "online": "Online",
+    "offline": "Offline",
+    "profile": "Your Profile",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
   "nav": {
     "dashboard": "Dashboard",
     "leadGen": "Lead Generation",
     "crm": "Micro-CRM",
-    "gapAnalysis": "AI Gap Analysis",
+    "gapAnalysis": "Gap Analysis",
     "socialComposer": "Social Composer",
     "adCampaigns": "Ad Campaigns",
     "analytics": "Analytics",
@@ -11,27 +19,25 @@
     "billing": "Billing",
     "micrositeBuilder": "Microsite Builder"
   },
-  "header": {
-    "search": "Search...",
-    "online": "Online",
-    "offline": "Offline",
-    "profile": "Profile",
-    "settings": "Settings",
-    "logout": "Logout"
-  },
   "dashboard": {
-    "title": "Agent Dashboard",
+    "title": "Dashboard",
     "newLeads": "New Leads",
     "monthlyRevenue": "Monthly Revenue",
     "activePolicies": "Active Policies",
     "policyDistribution": "Policy Distribution"
   },
+  "policyTypes": {
+    "AUTO": "Auto Insurance",
+    "HOME": "Home Insurance",
+    "LIFE": "Life Insurance",
+    "HEALTH": "Health Insurance"
+  },
   "leadGen": {
-    "filterBySource": "Filter by Source",
+    "filterBySource": "Filter by source",
     "allSources": "All Sources",
-    "filterByPolicy": "Filter by Policy",
+    "filterByPolicy": "Filter by policy type",
     "allPolicies": "All Policies",
-    "sortBy": "Sort By",
+    "sortBy": "Sort by",
     "dateDesc": "Date (Newest)",
     "dateAsc": "Date (Oldest)",
     "nameAsc": "Name (A-Z)",
@@ -41,24 +47,20 @@
     "createdAt": "Created At",
     "tags": "Tags",
     "addTag": "Add tag...",
-    "noLeads": "No leads found matching your criteria."
+    "noLeads": "No leads match the current filters."
   },
   "crm": {
-    "addCustomer": "Add Customer",
-    "editCustomer": "Edit Customer",
-    "customers": "Customers",
-    "leads": "Associated Leads",
-    "confirmDelete": "Are you sure you want to delete this customer?",
     "name": "Name",
     "source": "Source",
     "status": "Status",
     "potentialValue": "Potential Value",
     "actions": "Actions",
     "viewProfile": "View Profile",
-    "edit": "Edit",
-    "delete": "Delete",
-    "cancel": "Cancel",
-    "save": "Save",
+    "confirmDelete": "Are you sure you want to delete this customer? This action cannot be undone.",
+    "addCustomer": "Add Customer",
+    "editCustomer": "Edit Customer",
+    "customers": "Customers",
+    "leads": "Leads from CRM",
     "form": {
       "firstName": "First Name",
       "lastName": "Last Name",
@@ -69,107 +71,16 @@
       "policies": "Policies",
       "policyNumber": "Policy Number",
       "insurer": "Insurer",
-      "premium": "Premium",
+      "premium": "Premium (€)",
       "startDate": "Start Date",
       "endDate": "End Date",
-      "noPolicies": "No policies added.",
+      "noPolicies": "No policies added yet.",
       "addPolicy": "Add Policy"
-    }
-  },
-  "customer": {
-      "notFound": "Customer Not Found",
-      "backToCrm": "Back to Micro-CRM",
-      "changeAddress": "Change Address",
-      "policies": "Policies",
-      "noPolicies": "This customer has no active policies.",
-      "timeline": "Customer Timeline",
-      "noTimelineEvents": "No timeline events recorded.",
-      "changeAddressTitle": "Update Customer Address",
-      "renewPolicy": "Renew Policy",
-      "aiReview": "AI Review",
-      "renewalNeeded": "Renewal Needed",
-      "renewPolicyTitle": "Renew Policy",
-      "newEndDate": "New End Date",
-      "newPremium": "New Premium (€)",
-      "aiReviewTitle": "AI Policy Summary"
-  },
-  "gapAnalysis": {
-      "description": "Upload a customer's existing policy document (PDF, PNG, JPG) to analyze it with AI and identify coverage gaps.",
-      "dragDrop": "Drag & drop a file here or",
-      "browse": "browse",
-      "fileTypes": "PDF, PNG, JPG up to 10MB",
-      "parsingPolicy": "Analyzing document with AI...",
-      "extractedInfo": "Extracted Policy Information",
-      "userNeedsTitle": "Describe Customer Needs",
-      "userNeedsPlaceholder": "e.g., 'The customer recently bought a new, more expensive car and has a teenager who will start driving soon. They also travel internationally twice a year.'",
-      "analyzing": "Analyzing...",
-      "analyzeGaps": "Analyze Gaps",
-      "resultsTitle": "Gap Analysis Results"
-  },
-  "socialComposer": {
-    "title": "Social Post Composer",
-    "placeholder": "What's on your mind?",
-    "uploadImage": "Upload Image",
-    "removeImage": "Remove Image",
-    "schedulePost": "Schedule",
-    "postNow": "Post Now",
-    "preview": "Live Preview",
-    "templatesTitle": "Use a Template",
-    "errorContentRequired": "Post content cannot be empty.",
-    "errorCharLimit": "Character limit exceeded.",
-    "errorFutureDate": "Scheduled date must be in the future.",
-    "postScheduled": "Post successfully scheduled for",
-    "postPublished": "Post published successfully!",
-    "templates": [
-      { "title": "New Driver Discount", "content": "Just got your license? 🚗 We offer special discounts for new drivers! Contact us for a free quote. #NewDriver #CarInsurance #InsuranceDeals" },
-      { "title": "Home Protection Tips", "content": "Protect your biggest investment! 🏡 Check your smoke detectors and clean your gutters this weekend. #HomeownerTips #HomeInsurance #SafetyFirst" }
-    ]
-  },
-  "campaigns": {
-    "create": "Create Campaign",
-    "name": "Campaign Name",
-    "budget": "Budget",
-    "objective": "Objective",
-    "audience": "Audience",
-    "schedule": "Schedule",
-    "creative": "Creative"
-  },
-  "settings": {
-    "notifications": "Notifications",
-    "emailNotifications": "Email Notifications",
-    "pushNotifications": "Push Notifications",
-    "monthlyReports": "Monthly Reports",
-    "appearance": "Appearance",
-    "appearanceDesc": "Choose your preferred interface theme.",
-    "lightMode": "Light Mode",
-    "darkMode": "Dark Mode",
-    "integrations": "Integrations",
-    "gtmId": "Google Tag Manager ID",
-    "gtmPlaceholder": "GTM-XXXXXXX",
-    "gtmDescription": "Add your GTM container ID to enable analytics tracking.",
-    "saveGtmId": "Save & Reload",
-    "gtmSavedSuccess": "GTM ID saved! The page will now reload.",
-    "account": "Account",
-    "changePassword": "Change Password",
-    "deleteAccount": "Delete Account",
-    "socialConnections": {
-        "title": "Social Media Connections",
-        "connect": "Connect",
-        "disconnect": "Disconnect",
-        "facebookDesc": "Post to pages, read analytics, and manage ads.",
-        "instagramDesc": "Post to business profiles and view insights.",
-        "linkedinDesc": "Post to company pages and manage ad campaigns.",
-        "xDesc": "Post tweets and analyze engagement."
-    }
-  },
-  "common": {
-    "loading": "Loading..."
-  },
-  "policyTypes": {
-    "AUTO": "Auto",
-    "HOME": "Home",
-    "LIFE": "Life",
-    "HEALTH": "Health"
+    },
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete"
   },
   "statusLabels": {
     "new": "New",
@@ -180,5 +91,98 @@
     "active": "Active",
     "inactive": "Inactive",
     "expired": "Expired"
+  },
+  "customer": {
+    "notFound": "Customer not found",
+    "backToCrm": "Back to CRM",
+    "changeAddress": "Change Address",
+    "policies": "Policies",
+    "noPolicies": "This customer has no policies.",
+    "aiReviewTitle": "AI-Powered Policy Review",
+    "timeline": "Customer Timeline",
+    "noTimelineEvents": "No events recorded for this customer.",
+    "changeAddressTitle": "Update Customer Address",
+    "renewPolicy": "Renew Policy",
+    "aiReview": "AI Review",
+    "renewalNeeded": "Renewal Needed",
+    "renewPolicyTitle": "Renew Policy",
+    "newEndDate": "New End Date",
+    "newPremium": "New Premium (€)"
+  },
+  "gapAnalysis": {
+    "description": "Upload a customer's existing policy document (PDF, PNG, JPG) to analyze it with AI.",
+    "dragDrop": "Drag & drop your file here, or",
+    "browse": "browse",
+    "fileTypes": "PDF, PNG, JPG, JPEG supported",
+    "parsingPolicy": "Analyzing policy document...",
+    "extractedInfo": "Extracted Policy Information",
+    "userNeedsTitle": "Describe the Customer's Needs",
+    "userNeedsPlaceholder": "e.g., 'The customer recently bought a new, more expensive car and is worried about theft. They also have a teenage driver starting soon.'",
+    "analyzing": "Analyzing...",
+    "analyzeGaps": "Analyze Gaps",
+    "resultsTitle": "Gap Analysis Results"
+  },
+  "settings": {
+    "socialConnections": {
+      "title": "Social Media Connections",
+      "facebookDesc": "Post to pages, read analytics, and manage ads.",
+      "instagramDesc": "Post to profiles, read analytics, and manage ads.",
+      "linkedinDesc": "Post to pages, read analytics, and manage ads.",
+      "xDesc": "Post tweets and read analytics.",
+      "disconnect": "Disconnect",
+      "connect": "Connect"
+    },
+    "notifications": "Notifications",
+    "emailNotifications": "Email Notifications",
+    "pushNotifications": "Push Notifications",
+    "monthlyReports": "Monthly Reports",
+    "appearance": "Appearance",
+    "appearanceDesc": "Customize the look and feel of the application.",
+    "lightMode": "Light Mode",
+    "darkMode": "Dark Mode",
+    "integrations": "Integrations",
+    "gtmId": "Google Tag Manager Container ID",
+    "gtmPlaceholder": "GTM-XXXXXXX",
+    "gtmDescription": "Add your GTM ID to enable analytics and tracking scripts.",
+    "saveGtmId": "Save & Reload",
+    "gtmSavedSuccess": "GTM ID Saved! The page will now reload.",
+    "account": "Account",
+    "changePassword": "Change Password",
+    "deleteAccount": "Delete Account"
+  },
+  "socialComposer": {
+    "title": "Social Post Composer",
+    "placeholder": "What's on your mind?",
+    "uploadImage": "Upload Image",
+    "removeImage": "Remove Image",
+    "schedulePost": "Schedule",
+    "postNow": "Post Now",
+    "preview": "Preview",
+    "templatesTitle": "Use a Template",
+    "templates": [
+      {
+        "title": "Auto Insurance Reminder",
+        "content": "Is your car insurance renewal just around the corner? 🚗 Don't wait until the last minute! Let's review your policy to ensure you have the best coverage at the best price. Contact me today! #CarInsurance #AutoPolicy #InsuranceAgent"
+      },
+      {
+        "title": "Homeowner Tips",
+        "content": "Protect your biggest investment! 🏡 Regular maintenance can prevent costly claims. Have you checked your roof and cleaned your gutters this season? A small check-up can make a big difference. #HomeownersInsurance #ProtectYourHome #InsuranceTips"
+      },
+      {
+        "title": "Life Insurance Explained",
+        "content": "Life insurance is about protecting the ones you love. It's not for you, it's for them. Let's talk about a plan that secures your family's future. It's more affordable than you think. #LifeInsurance #FamilyFirst #FinancialPlanning"
+      }
+    ],
+    "errorContentRequired": "Post content cannot be empty.",
+    "errorCharLimit": "Character limit exceeded.",
+    "errorFutureDate": "Scheduled date must be in the future.",
+    "postScheduled": "Post scheduled for",
+    "postPublished": "Post published successfully!"
+  },
+  "campaigns": {
+    "create": "Create Campaign"
+  },
+  "common": {
+    "loading": "Loading..."
   }
 }
