@@ -93,7 +93,6 @@ const CustomerFormModal: React.FC<CustomerFormModalProps> = ({ isOpen, onClose, 
                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                 <input type="text" name="policyNumber" value={policy.policyNumber} onChange={(e) => handlePolicyChange(index, e)} placeholder={t('crm.form.policyNumber')} className="p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
                                 <select name="type" value={policy.type} onChange={(e) => handlePolicyChange(index, e)} className="p-2 border rounded dark:bg-gray-700 dark:border-gray-600">
-                                    {/* FIX: Explicitly type 'pt' as a string to resolve the 'unknown' type error for the 'key' prop. */}
                                     {Object.values(PolicyType).map((pt: string) => <option key={pt} value={pt}>{t(`policyTypes.${pt}`)}</option>)}
                                 </select>
                                 <input type="text" name="insurer" value={policy.insurer} onChange={(e) => handlePolicyChange(index, e)} placeholder={t('crm.form.insurer')} className="p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />

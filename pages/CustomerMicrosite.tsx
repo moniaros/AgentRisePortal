@@ -71,17 +71,14 @@ const CustomerMicrosite: React.FC = () => {
     setIsAiLoading(true);
     setAiReview(null);
     try {
-      // FIX: Initialize GoogleGenAI with apiKey property
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const prompt = `Review this insurance policy and provide a simple, friendly summary for the customer. Highlight key coverages, renewal date, and any potential gaps or savings opportunities. Policy details: ${JSON.stringify(policy)}`;
       
-      // FIX: Use ai.models.generateContent
       const response = await ai.models.generateContent({
         model: 'gemini-2.5-flash',
         contents: prompt
       });
 
-      // FIX: Access text directly from the response
       const text = response.text;
       setAiReview(text);
       logCustomerEvent(customer!.id, {

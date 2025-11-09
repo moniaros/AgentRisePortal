@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { initSession } from '../services/analytics';
 
 interface GTMProviderProps {
     children: React.ReactNode;
@@ -6,6 +7,9 @@ interface GTMProviderProps {
 
 const GTMProvider: React.FC<GTMProviderProps> = ({ children }) => {
   useEffect(() => {
+    // Initialize session for analytics tracking on app load.
+    initSession();
+    
     const gtmId = localStorage.getItem('gtmContainerId');
 
     if (gtmId && !document.getElementById('gtm-script')) {

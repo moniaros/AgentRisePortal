@@ -7,9 +7,10 @@ import LeadControls from '../components/leads/LeadControls';
 import LeadsTable from '../components/leads/LeadsTable';
 import SkeletonLoader from '../components/ui/SkeletonLoader';
 import ErrorMessage from '../components/ui/ErrorMessage';
+import { trackLeadGenAction } from '../services/analytics';
 
 const LeadGeneration: React.FC = () => {
-    const { t } = useLocalization();
+    const { t, language } = useLocalization();
     
     const { data: leads, isLoading, error } = useOfflineSync<Lead[]>('leads_data', fetchLeads, []);
     const [tags, setTags] = useState<{ [key: string]: string[] }>(() => {
@@ -57,8 +58,10 @@ const LeadGeneration: React.FC = () => {
         if (type === 'sort') {
             const [sortKey, sortOrder] = value.split('-');
             setPreferences(prev => ({ ...prev, sorting: { key: sortKey, order: sortOrder } }));
+            trackLeadGenAction('sort_leads', `By: ${sortKey} ${sortOrder}`, language);
         } else {
             setPreferences(prev => ({ ...prev, filters: { ...prev.filters, [key]: value } }));
+            trackLeadGenAction('filter_leads', `By: ${key}, Value: ${value}`, language);
         }
     };
     

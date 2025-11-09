@@ -39,7 +39,6 @@ const LeadControls: React.FC<LeadControlsProps> = ({ sources, preferences, onPre
                     className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
                 >
                     <option value="all">{t('leadGen.allPolicies')}</option>
-                    {/* FIX: Explicitly type 'pt' as a string to resolve the 'unknown' type error for the 'key' prop. */}
                     {Object.values(PolicyType).map((pt: string) => <option key={pt} value={pt}>{t(`policyTypes.${pt}`)}</option>)}
                 </select>
             </div>

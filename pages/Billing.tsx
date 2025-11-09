@@ -1,10 +1,14 @@
-
 import React from 'react';
 import { useLocalization } from '../hooks/useLocalization';
 import { ICONS } from '../constants';
+import { trackBillingAction } from '../services/analytics';
 
 const Billing: React.FC = () => {
-    const { t } = useLocalization();
+    const { t, language } = useLocalization();
+
+    const handlePayClick = () => {
+        trackBillingAction('click_pay_disabled', language);
+    };
 
     return (
         <div className="flex flex-col items-center justify-center h-full text-center">
@@ -22,7 +26,11 @@ const Billing: React.FC = () => {
                     This would allow for secure collection of payment details and management of subscriptions or one-time payments for insurance premiums.
                     The backend would need a corresponding Stripe webhook handler to confirm payment success.
                 </p>
-                <button className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-gray-400" disabled>
+                <button 
+                    onClick={handlePayClick}
+                    className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-gray-400" 
+                    disabled
+                >
                     Pay with Stripe (Disabled)
                 </button>
             </div>

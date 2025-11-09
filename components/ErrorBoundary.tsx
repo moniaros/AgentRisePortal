@@ -1,6 +1,5 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 
-// FIX: Renamed Props to ErrorBoundaryProps to avoid potential global name conflicts.
 interface ErrorBoundaryProps {
   children: ReactNode;
 }

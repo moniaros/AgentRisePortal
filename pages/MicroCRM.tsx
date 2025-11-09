@@ -7,9 +7,10 @@ import CustomerFormModal from '../components/crm/CustomerFormModal';
 import { Customer } from '../types';
 import ErrorMessage from '../components/ui/ErrorMessage';
 import SkeletonLoader from '../components/ui/SkeletonLoader';
+import { trackCrmAction } from '../services/analytics';
 
 const MicroCRM: React.FC = () => {
-    const { t } = useLocalization();
+    const { t, language } = useLocalization();
     const { customers, leads, isLoading, error, addCustomer, updateCustomer, deleteCustomer } = useCrmData();
     
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -36,8 +37,10 @@ const MicroCRM: React.FC = () => {
     const handleFormSubmit = (customerData: Customer) => {
         if (modalMode === 'add') {
             addCustomer(customerData as Omit<Customer, 'id' | 'timeline'>);
+            trackCrmAction('add_customer', `${customerData.firstName} ${customerData.lastName}`, language);
         } else {
             updateCustomer(customerData);
+            trackCrmAction('update_customer', customerData.id, language);
         }
         handleCloseModal();
     };
@@ -45,6 +48,7 @@ const MicroCRM: React.FC = () => {
     const handleDeleteCustomer = (customerId: string) => {
         if (window.confirm(t('crm.confirmDelete'))) {
             deleteCustomer(customerId);
+            trackCrmAction('delete_customer', customerId, language);
         }
     };
     

@@ -3,7 +3,6 @@
  */
 import { renderHook, act } from '@testing-library/react';
 import { useOnlineStatus } from '../useOnlineStatus';
-// FIX: Import Jest globals to resolve TypeScript errors.
 import { describe, it, expect, jest } from '@jest/globals';
 
 // Example Test Suite for a Custom Hook (using Jest & React Testing Library)

@@ -15,6 +15,7 @@ import Settings from './pages/Settings';
 import Logout from './pages/Logout';
 import ErrorBoundary from './components/ErrorBoundary';
 import GTMProvider from './components/GTMProvider';
+import RouteAnalyticsTracker from './components/RouteAnalyticsTracker';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
       <GTMProvider>
         <LanguageProvider>
             <Router>
+                <RouteAnalyticsTracker />
                 <Layout>
                     <Routes>
                         <Route path="/" element={<Dashboard />} />

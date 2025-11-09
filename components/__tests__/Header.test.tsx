@@ -4,7 +4,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-// FIX: Import Jest globals to resolve TypeScript errors.
 import { describe, it, expect, jest } from '@jest/globals';
 import Header from '../Header';
 import { LanguageProvider } from '../../context/LanguageContext';

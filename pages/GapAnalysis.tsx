@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useLocalization } from '../hooks/useLocalization';
-import { Policy } from '../types';
+import { useLocalization } from '../../hooks/useLocalization';
+import { Policy } from '../../types';
 import FileUploader from '../components/gap-analysis/FileUploader';
 import PolicyParser from '../components/gap-analysis/PolicyParser';
 import PolicyReviewForm from '../components/gap-analysis/PolicyReviewForm';
@@ -38,11 +38,9 @@ const GapAnalysis: React.FC = () => {
         setIsLoading(true);
 
         try {
-            // FIX: Initialize GoogleGenAI with apiKey property
             const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             const imagePart = await fileToGenerativePart(uploadedFile);
             
-            // FIX: Use ai.models.generateContent and correct payload structure
             const response = await ai.models.generateContent({
                 model: 'gemini-2.5-flash',
                 contents: [
@@ -63,7 +61,6 @@ const GapAnalysis: React.FC = () => {
                 }
             });
             
-            // FIX: Access text directly from response
             const jsonStr = response.text;
             const parsed = JSON.parse(jsonStr);
             setParsedPolicy(parsed);
@@ -84,7 +81,6 @@ const GapAnalysis: React.FC = () => {
         setError(null);
 
         try {
-            // FIX: Initialize GoogleGenAI with apiKey property
             const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             const prompt = `Perform a gap analysis.
             Current Policy Details: ${JSON.stringify(parsedPolicy)}
@@ -92,12 +88,10 @@ const GapAnalysis: React.FC = () => {
             
             Based on the customer's needs, identify any gaps in their current policy coverage. Suggest specific types of coverage or policy adjustments they should consider. Format your response as markdown.`;
 
-            // FIX: Use ai.models.generateContent
             const response = await ai.models.generateContent({
                 model: 'gemini-2.5-pro', // Using Pro for more complex reasoning
                 contents: prompt
             });
-            // FIX: Access text directly from response
             setAnalysisResult(response.text);
 
         } catch (err) {
