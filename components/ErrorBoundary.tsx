@@ -9,8 +9,7 @@ interface State {
 }
 
 class ErrorBoundary extends Component<Props, State> {
-  // FIX: Removed 'public' access modifiers which are default and can sometimes cause type inference issues with certain tooling.
-  state: State = {
+  public state: State = {
     hasError: false,
   };
 

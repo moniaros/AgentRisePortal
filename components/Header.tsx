@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { useLocalization } from '../hooks/useLocalization';
 import { useOnlineStatus } from '../hooks/useOnlineStatus';
 import { useClickOutside } from '../hooks/useClickOutside';
@@ -72,9 +73,9 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
           </button>
           {isProfileMenuOpen && (
             <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-20">
-              <a href="#profile" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">{t('header.profile')}</a>
-              <a href="#settings" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">{t('header.settings')}</a>
-              <a href="#logout" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">{t('header.logout')}</a>
+              <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">{t('header.profile')}</Link>
+              <Link to="/settings" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">{t('header.settings')}</Link>
+              <Link to="/logout" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">{t('header.logout')}</Link>
             </div>
           )}
         </div>

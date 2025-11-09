@@ -10,6 +10,9 @@ import GapAnalysis from './pages/GapAnalysis';
 import Onboarding from './pages/Onboarding';
 import Billing from './pages/Billing';
 import MicrositeBuilder from './pages/MicrositeBuilder';
+import Profile from './pages/Profile';
+import Settings from './pages/Settings';
+import Logout from './pages/Logout';
 import ErrorBoundary from './components/ErrorBoundary';
 
 function App() {
@@ -27,6 +30,9 @@ function App() {
                         <Route path="/microsite-builder" element={<MicrositeBuilder />} />
                         <Route path="/onboarding" element={<Onboarding />} />
                         <Route path="/billing" element={<Billing />} />
+                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/settings" element={<Settings />} />
+                        <Route path="/logout" element={<Logout />} />
                     </Routes>
                 </Layout>
             </Router>
