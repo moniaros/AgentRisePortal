@@ -1,7 +1,7 @@
-
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useLocalization } from '../hooks/useLocalization';
+import { useAuth } from '../hooks/useAuth';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -9,6 +9,7 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
   const { t } = useLocalization();
+  const { currentUser } = useAuth();
 
   const navItems = [
     { path: '/', label: t('nav.dashboard') },
@@ -22,6 +23,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
     { path: '/onboarding', label: t('nav.onboarding') },
     { path: '/billing', label: t('nav.billing') },
     { path: '/microsite-builder', label: t('nav.micrositeBuilder') },
+    // Conditionally add User Management for admins
+    ...(currentUser?.role === 'admin' ? [{ path: '/user-management', label: t('nav.userManagement') }] : [])
   ];
 
   const baseLinkClass = "flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700";
@@ -38,14 +41,16 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                     item.type === 'divider' ? (
                         <hr key={`divider-${index}`} className="my-4 border-gray-200 dark:border-gray-700" />
                     ) : (
-                        <NavLink
-                            key={item.path}
-                            to={item.path!}
-                            className={({ isActive }) => `${baseLinkClass} ${isActive ? activeLinkClass : ''}`}
-                            end={item.path === '/'}
-                        >
-                            <span className="mx-4">{item.label}</span>
-                        </NavLink>
+                        item.path && (
+                          <NavLink
+                              key={item.path}
+                              to={item.path}
+                              className={({ isActive }) => `${baseLinkClass} ${isActive ? activeLinkClass : ''}`}
+                              end={item.path === '/'}
+                          >
+                              <span className="mx-4">{item.label}</span>
+                          </NavLink>
+                        )
                     )
                 )}
             </nav>

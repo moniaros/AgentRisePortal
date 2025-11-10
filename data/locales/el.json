@@ -9,7 +9,8 @@
     "analytics": "Αναλυτικά Στοιχεία",
     "onboarding": "Έναρξη",
     "billing": "Χρεώσεις",
-    "micrositeBuilder": "Δημιουργία Microsite"
+    "micrositeBuilder": "Δημιουργία Microsite",
+    "userManagement": "Διαχείριση Χρηστών"
   },
   "header": {
     "search": "Αναζήτηση...",
@@ -266,6 +267,30 @@
       "conversions": "Μετατροπές"
     },
     "noData": "Δεν υπάρχουν διαθέσιμα δεδομένα για τα επιλεγμένα φίλτρα."
+  },
+  "userManagement": {
+    "title": "Διαχείριση Χρηστών",
+    "inviteUser": "Πρόσκληση Χρήστη",
+    "users": "Χρήστες Πρακτορείου",
+    "auditLog": "Αρχείο Ελέγχου",
+    "role": "Ρόλος",
+    "admin": "Διαχειριστής",
+    "agent": "Πράκτορας",
+    "changeRole": "Αλλαγή Ρόλου",
+    "removeUser": "Αφαίρεση Χρήστη",
+    "confirmRemove": "Είστε βέβαιοι ότι θέλετε να αφαιρέσετε τον/την {userName} από το πρακτορείο;",
+    "cannotRemoveSelf": "Δεν μπορείτε να αφαιρέσετε τον εαυτό σας.",
+    "inviteModalTitle": "Πρόσκληση Νέου Χρήστη",
+    "sendInvite": "Αποστολή Πρόσκλησης",
+    "accessDenied": "Άρνηση Πρόσβασης",
+    "accessDeniedMessage": "Δεν έχετε δικαίωμα προβολής αυτής της σελίδας.",
+    "log": {
+      "actor": "Δράστης",
+      "action": "Ενέργεια",
+      "target": "Στόχος",
+      "details": "Λεπτομέρειες",
+      "timestamp": "Χρονική Σήμανση"
+    }
   },
   "common": {
     "loading": "Φόρτωση..."

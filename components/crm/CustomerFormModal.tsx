@@ -10,8 +10,9 @@ interface CustomerFormModalProps {
   mode: 'add' | 'edit';
 }
 
+// FIX: Added missing 'agencyId' property to satisfy the Omit<Customer, 'id' | 'timeline'> type.
 const emptyCustomer: Omit<Customer, 'id' | 'timeline'> = {
-  firstName: '', lastName: '', email: '', phone: '', address: '', dateOfBirth: '', policies: []
+  firstName: '', lastName: '', email: '', phone: '', address: '', dateOfBirth: '', policies: [], agencyId: ''
 };
 
 const CustomerFormModal: React.FC<CustomerFormModalProps> = ({ isOpen, onClose, onSubmit, customer, mode }) => {

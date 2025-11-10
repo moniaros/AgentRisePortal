@@ -9,7 +9,8 @@
     "analytics": "Analytics",
     "onboarding": "Onboarding",
     "billing": "Billing",
-    "micrositeBuilder": "Microsite Builder"
+    "micrositeBuilder": "Microsite Builder",
+    "userManagement": "User Management"
   },
   "header": {
     "search": "Search...",
@@ -266,6 +267,30 @@
       "conversions": "Conversions"
     },
     "noData": "No analytics data available for the selected filters."
+  },
+  "userManagement": {
+    "title": "User Management",
+    "inviteUser": "Invite User",
+    "users": "Agency Users",
+    "auditLog": "Audit Log",
+    "role": "Role",
+    "admin": "Admin",
+    "agent": "Agent",
+    "changeRole": "Change Role",
+    "removeUser": "Remove User",
+    "confirmRemove": "Are you sure you want to remove {userName} from the agency?",
+    "cannotRemoveSelf": "You cannot remove yourself.",
+    "inviteModalTitle": "Invite New User",
+    "sendInvite": "Send Invite",
+    "accessDenied": "Access Denied",
+    "accessDeniedMessage": "You do not have permission to view this page.",
+    "log": {
+      "actor": "Actor",
+      "action": "Action",
+      "target": "Target",
+      "details": "Details",
+      "timestamp": "Timestamp"
+    }
   },
   "common": {
     "loading": "Loading..."

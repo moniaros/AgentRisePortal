@@ -46,6 +46,7 @@ export interface Customer {
     dateOfBirth: string;
     policies: Policy[];
     timeline: TimelineEvent[];
+    agencyId: string;
 }
 
 export interface Lead {
@@ -61,6 +62,7 @@ export interface Lead {
     createdAt: string;
     customerId?: string;
     campaignId?: string;
+    agencyId: string;
 }
 
 export interface SocialPlatform {
@@ -102,7 +104,8 @@ export interface Campaign {
     status: 'draft' | 'active' | 'completed';
     leadCaptureForm?: {
         fields: LeadCaptureFormField[];
-    }
+    };
+    agencyId: string;
 }
 
 export interface CampaignPerformanceMetrics {
@@ -115,3 +118,28 @@ export interface CampaignPerformanceMetrics {
 }
 
 export type AnalyticsData = CampaignPerformanceMetrics[];
+
+export type UserRole = 'admin' | 'agent';
+
+export interface User {
+    id: string;
+    name: string;
+    email: string;
+    role: UserRole;
+    agencyId: string;
+}
+
+export interface Agency {
+    id: string;
+    name: string;
+}
+
+export interface AuditLog {
+    id: string;
+    timestamp: string;
+    actorName: string;
+    action: 'user_invited' | 'user_removed' | 'role_changed';
+    targetName: string;
+    details: string;
+    agencyId: string;
+}

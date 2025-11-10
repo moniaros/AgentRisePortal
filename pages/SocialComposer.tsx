@@ -7,6 +7,7 @@ import CharacterCount from '../components/composer/CharacterCount';
 import { SOCIAL_PLATFORMS } from '../constants';
 import { useCampaigns } from '../hooks/useCampaigns';
 import { CampaignObjective, Language, Campaign } from '../types';
+import { useAuth } from '../hooks/useAuth';
 
 const MAX_CHARS = 280;
 
@@ -23,6 +24,7 @@ interface SuccessState {
 const SocialComposer: React.FC = () => {
     const { t, language } = useLocalization();
     const { addCampaign } = useCampaigns();
+    const { currentUser } = useAuth();
     const [postContent, setPostContent] = useState('');
     const [image, setImage] = useState<string | null>(null);
     const [scheduleDate, setScheduleDate] = useState('');
@@ -121,6 +123,12 @@ const SocialComposer: React.FC = () => {
                 // SUCCESS
                 let link: string | undefined;
                 if (attachLeadForm) {
+                    // FIX: Add agencyId to satisfy the Campaign type.
+                    if (!currentUser) {
+                        setError({ type: 'AUTH_ERROR', platformName: 'Application' });
+                        setIsLoading(false);
+                        return;
+                    }
                     const newCampaign: Omit<Campaign, 'id'> = {
                         name: `Social Post: ${postContent.substring(0, 30)}...`,
                         objective: CampaignObjective.LEAD_GENERATION,
@@ -142,7 +150,8 @@ const SocialComposer: React.FC = () => {
                                 { name: 'email', type: 'email', required: true },
                                 { name: 'phone', type: 'tel', required: false },
                             ]
-                        }
+                        },
+                        agencyId: currentUser.agencyId,
                     };
                     const campaignWithId = { ...newCampaign, id: `social_${Date.now()}`};
                     addCampaign(campaignWithId);

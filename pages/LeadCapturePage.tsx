@@ -29,6 +29,7 @@ const LeadCapturePage: React.FC = () => {
         const [firstName, ...lastNameParts] = fullName.split(' ');
         const lastName = lastNameParts.join(' ');
 
+        // FIX: Add agencyId to satisfy the Lead type.
         const newLead: Omit<Lead, 'id' | 'createdAt'> = {
             firstName,
             lastName: lastName || '', // Handle cases with only a first name
@@ -39,6 +40,7 @@ const LeadCapturePage: React.FC = () => {
             status: 'new',
             policyType: PolicyType.AUTO, // Default policy type for new leads
             potentialValue: 0,
+            agencyId: campaign.agencyId,
         };
 
         addLead(newLead);

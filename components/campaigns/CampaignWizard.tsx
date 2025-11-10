@@ -29,7 +29,9 @@ const initialCampaignData: Omit<Campaign, 'id'> = {
     status: 'draft',
     leadCaptureForm: {
       fields: [{name: 'email', type: 'email', required: true}]
-    }
+    },
+    // FIX: Added missing 'agencyId' property to satisfy the Omit<Campaign, 'id'> type.
+    agencyId: '',
 };
 
 interface CampaignWizardProps {

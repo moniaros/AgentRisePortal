@@ -1,6 +1,21 @@
-import { Customer, Lead, PolicyType, AnalyticsData } from '../types';
+import { Customer, Lead, PolicyType, AnalyticsData, Agency, User, AuditLog } from '../types';
 
 // Mock data
+const mockAgencies: Agency[] = [
+    { id: 'agency_1', name: 'Alpha Insurance' },
+    { id: 'agency_2', name: 'Beta Brokers' },
+];
+
+const mockUsers: User[] = [
+    { id: 'user_1', name: 'Admin User', email: 'admin@alpha.com', role: 'admin', agencyId: 'agency_1' },
+    { id: 'user_2', name: 'Agent Smith', email: 'agent.smith@alpha.com', role: 'agent', agencyId: 'agency_1' },
+    { id: 'user_3', name: 'Beta Admin', email: 'admin@beta.com', role: 'admin', agencyId: 'agency_2' },
+];
+
+const mockAuditLogs: AuditLog[] = [
+    { id: 'log_1', timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), actorName: 'Admin User', action: 'user_invited', targetName: 'agent.smith@alpha.com', details: 'Invited with role: agent', agencyId: 'agency_1' },
+];
+
 const mockCustomers: Customer[] = [
   {
     id: 'cust_1',
@@ -16,13 +31,29 @@ const mockCustomers: Customer[] = [
     ],
     timeline: [
         { id: 'tl_1', date: '2023-10-26T10:00:00Z', type: 'note', title: 'Initial contact', content: 'Customer interested in life insurance.', author: 'Agent' }
-    ]
+    ],
+    agencyId: 'agency_1',
+  },
+  {
+    id: 'cust_2',
+    firstName: 'Maria',
+    lastName: 'Garcia',
+    email: 'maria.g@example.com',
+    phone: '555-111-2222',
+    address: '456 Oak Ave, Otherville, USA',
+    dateOfBirth: '1990-02-20',
+    policies: [
+      { id: 'pol_3', type: PolicyType.HEALTH, policyNumber: 'HEA54321', premium: 3200, startDate: '2023-03-15', endDate: '2024-03-15', isActive: true, insurer: 'HealthFirst' },
+    ],
+    timeline: [],
+    agencyId: 'agency_2',
   },
 ];
 
 const mockLeads: Lead[] = [
-  { id: 'lead_1', firstName: 'Jane', lastName: 'Smith', email: 'jane.s@example.com', phone: '987-654-3210', source: 'Facebook', status: 'new', policyType: PolicyType.LIFE, potentialValue: 500, createdAt: new Date().toISOString(), customerId: 'cust_1' },
-  { id: 'lead_2', firstName: 'Peter', lastName: 'Jones', email: 'p.jones@example.com', phone: '555-555-5555', source: 'Website Form', status: 'contacted', policyType: PolicyType.AUTO, potentialValue: 750, createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString() },
+  { id: 'lead_1', firstName: 'Jane', lastName: 'Smith', email: 'jane.s@example.com', phone: '987-654-3210', source: 'Facebook', status: 'new', policyType: PolicyType.LIFE, potentialValue: 500, createdAt: new Date().toISOString(), customerId: 'cust_1', agencyId: 'agency_1' },
+  { id: 'lead_2', firstName: 'Peter', lastName: 'Jones', email: 'p.jones@example.com', phone: '555-555-5555', source: 'Website Form', status: 'contacted', policyType: PolicyType.AUTO, potentialValue: 750, createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(), agencyId: 'agency_1' },
+  { id: 'lead_3', firstName: 'Sam', lastName: 'Wilson', email: 's.wilson@example.com', phone: '555-222-1111', source: 'Referral', status: 'new', policyType: PolicyType.HOME, potentialValue: 950, createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(), agencyId: 'agency_2' },
 ];
 
 export const fetchDashboardData = async () => {
@@ -58,6 +89,22 @@ export const fetchCustomers = async (): Promise<Customer[]> => {
     return new Promise(resolve => {
         setTimeout(() => {
             resolve(mockCustomers);
+        }, 500);
+    });
+};
+
+export const fetchUsers = async (): Promise<User[]> => {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve(mockUsers);
+        }, 500);
+    });
+};
+
+export const fetchAuditLogs = async (): Promise<AuditLog[]> => {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve(mockAuditLogs);
         }, 500);
     });
 };
