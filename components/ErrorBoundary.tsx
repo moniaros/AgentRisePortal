@@ -9,14 +9,18 @@ interface State {
   error?: Error;
 }
 
+// FIX: The class must extend `Component<Props, State>` to be a valid React component,
+// giving it access to props, state, and lifecycle methods, resolving errors about
+// missing `state` and `props` properties.
 class ErrorBoundary extends Component<Props, State> {
-  // FIX: Initialize state in the constructor for robust `this` context across different build configurations.
+  // FIX: State must be initialized. Using a constructor that calls `super(props)` is a robust way to do this.
   constructor(props: Props) {
     super(props);
     this.state = {
       hasError: false,
       error: undefined,
     };
+    // FIX: Bind class methods to ensure `this` refers to the component instance when called from event handlers.
     this.handleTryAgain = this.handleTryAgain.bind(this);
   }
 
@@ -28,8 +32,8 @@ class ErrorBoundary extends Component<Props, State> {
     console.error('Uncaught error:', error, errorInfo);
   }
 
-  // FIX: Define as a class method and bind `this` in the constructor to resolve context issues, ensuring `this.setState` is available.
   private handleTryAgain() {
+    // FIX: `this.setState` is available because the class extends React.Component.
     this.setState({ hasError: false, error: undefined });
   }
 
@@ -59,7 +63,7 @@ class ErrorBoundary extends Component<Props, State> {
       );
     }
 
-    // FIX: `this.props` is now correctly typed and accessible because the component correctly inherits from React.Component.
+    // FIX: `this.props.children` is accessible because the class correctly inherits from React.Component.
     return this.props.children;
   }
 }

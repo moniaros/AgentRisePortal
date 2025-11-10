@@ -75,6 +75,7 @@ export interface Customer {
   timeline: TimelineEvent[];
   agencyId: string;
   attentionFlag?: string;
+  communicationPreferences?: ('email' | 'sms')[];
 }
 
 export type LeadStatus = 'new' | 'contacted' | 'qualified' | 'closed' | 'rejected';

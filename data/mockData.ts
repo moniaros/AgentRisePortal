@@ -22,6 +22,7 @@ export const MOCK_CUSTOMERS: Customer[] = [
         dateOfBirth: '1985-05-15',
         agencyId: 'agency_1',
         attentionFlag: 'High value client, review policies annually.',
+        communicationPreferences: ['email'],
         policies: [
             { 
                 id: 'pol_1', 
@@ -82,6 +83,7 @@ export const MOCK_CUSTOMERS: Customer[] = [
         address: '456 Oak Ave, Anytown, USA',
         dateOfBirth: '1990-11-20',
         agencyId: 'agency_1',
+        communicationPreferences: ['email', 'sms'],
         policies: [
             { 
                 id: 'pol_3', 

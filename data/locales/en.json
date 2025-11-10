@@ -92,7 +92,8 @@
       "endDate": "End Date",
       "insurer": "Insurer",
       "noPolicies": "No policies added yet.",
-      "addPolicy": "Add Policy"
+      "addPolicy": "Add Policy",
+      "communicationPreferences": "Communication Preferences"
     }
   },
   "customer": {
@@ -128,7 +129,11 @@
     "uploadAttachment": "Upload File (mock)",
     "flagEvent": "Flag Event",
     "unflagEvent": "Unflag Event",
-    "attachmentSize": "({size} KB)"
+    "attachmentSize": "({size} KB)",
+    "editProfile": "Edit Profile",
+    "profileUpdated": "Customer profile details updated.",
+    "communicationPreferences": "Communication Preferences",
+    "sms": "SMS"
   },
   "gapAnalysis": {
     "description": "Upload a policy document to analyze coverage gaps against client needs.",

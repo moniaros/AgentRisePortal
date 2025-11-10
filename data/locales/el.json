@@ -92,7 +92,8 @@
       "endDate": "Ημ/νία Λήξης",
       "insurer": "Ασφαλιστική",
       "noPolicies": "Δεν έχουν προστεθεί συμβόλαια.",
-      "addPolicy": "Προσθήκη Συμβολαίου"
+      "addPolicy": "Προσθήκη Συμβολαίου",
+      "communicationPreferences": "Προτιμήσεις Επικοινωνίας"
     }
   },
   "customer": {
@@ -128,7 +129,11 @@
     "uploadAttachment": "Μεταφόρτωση Αρχείου (mock)",
     "flagEvent": "Σήμανση Γεγονότος",
     "unflagEvent": "Αφαίρεση Σήμανσης",
-    "attachmentSize": "({size} KB)"
+    "attachmentSize": "({size} KB)",
+    "editProfile": "Επεξεργασία Προφίλ",
+    "profileUpdated": "Τα στοιχεία προφίλ του πελάτη ενημερώθηκαν.",
+    "communicationPreferences": "Προτιμήσεις Επικοινωνίας",
+    "sms": "SMS"
   },
   "gapAnalysis": {
     "description": "Ανεβάστε ένα έγγραφο συμβολαίου για να αναλύσετε τα κενά κάλυψης σε σχέση με τις ανάγκες του πελάτη.",

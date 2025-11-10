@@ -12,6 +12,7 @@ import RenewalModal from '../components/customer/RenewalModal';
 import { useAuth } from '../hooks/useAuth';
 import AttentionFlagModal from '../components/customer/AttentionFlagModal';
 import AddTimelineEventModal from '../components/customer/AddTimelineEventModal';
+import EditProfileModal from '../components/customer/EditProfileModal';
 
 const CustomerMicrosite: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -32,6 +33,7 @@ const CustomerMicrosite: React.FC = () => {
     const [isRenewalModalOpen, setRenewalModalOpen] = useState(false);
     const [isAttentionModalOpen, setAttentionModalOpen] = useState(false);
     const [isAddEventModalOpen, setAddEventModalOpen] = useState(false);
+    const [isProfileModalOpen, setProfileModalOpen] = useState(false);
     const [selectedPolicy, setSelectedPolicy] = useState<Policy | null>(null);
     const [isAiLoading, setIsAiLoading] = useState(false);
 
@@ -49,6 +51,18 @@ const CustomerMicrosite: React.FC = () => {
             });
         }
         setAddressModalOpen(false);
+    };
+    
+    const handleProfileSubmit = (updatedCustomerData: Customer) => {
+        if (customer) {
+            updateCustomer(updatedCustomerData);
+            addTimelineEvent(customer.id, {
+                type: 'system',
+                content: t('customer.profileUpdated'),
+                author: currentUser?.name || 'System',
+            });
+        }
+        setProfileModalOpen(false);
     };
 
     const handleRenewalSubmit = (renewalDetails: { newEndDate: string, newPremium: number }) => {
@@ -130,8 +144,16 @@ const CustomerMicrosite: React.FC = () => {
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mb-8">
                 <div className="flex flex-col sm:flex-row justify-between items-start">
                     <div>
-                        <h1 className="text-3xl font-bold text-gray-800 dark:text-white">{customer.firstName} {customer.lastName}</h1>
+                        <div className="flex items-center gap-4">
+                            <h1 className="text-3xl font-bold text-gray-800 dark:text-white">{customer.firstName} {customer.lastName}</h1>
+                            <button onClick={() => setProfileModalOpen(true)} className="text-xs text-blue-500 hover:underline">
+                                {t('customer.editProfile')}
+                            </button>
+                        </div>
                         <p className="text-gray-500 dark:text-gray-400 mt-1">{customer.email}</p>
+                         <div className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                            <strong>{t('customer.communicationPreferences')}:</strong> {(customer.communicationPreferences || []).join(', ').toUpperCase() || 'Not set'}
+                        </div>
                     </div>
                     <div className="flex flex-col sm:items-end mt-4 sm:mt-0">
                          <p className="text-sm text-gray-500 dark:text-gray-400">{customer.phone}</p>
@@ -183,6 +205,7 @@ const CustomerMicrosite: React.FC = () => {
             {selectedPolicy && <RenewalModal isOpen={isRenewalModalOpen} onClose={() => {setRenewalModalOpen(false); setSelectedPolicy(null);}} policy={selectedPolicy} onSubmit={handleRenewalSubmit} />}
             <AttentionFlagModal isOpen={isAttentionModalOpen} onClose={() => setAttentionModalOpen(false)} onSubmit={handleAttentionSubmit} currentReason={customer.attentionFlag} />
             <AddTimelineEventModal isOpen={isAddEventModalOpen} onClose={() => setAddEventModalOpen(false)} onSubmit={handleAddEvent} />
+            {isProfileModalOpen && <EditProfileModal isOpen={isProfileModalOpen} onClose={() => setProfileModalOpen(false)} customer={customer} onSubmit={handleProfileSubmit} />}
         </div>
     );
 };

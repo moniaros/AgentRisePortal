@@ -12,7 +12,7 @@ interface CustomerFormModalProps {
 }
 
 const emptyCustomer: Omit<Customer, 'id' | 'timeline'> = {
-  firstName: '', lastName: '', email: '', phone: '', address: '', dateOfBirth: '', policies: [], agencyId: ''
+  firstName: '', lastName: '', email: '', phone: '', address: '', dateOfBirth: '', policies: [], agencyId: '', communicationPreferences: []
 };
 
 const CustomerFormModal: React.FC<CustomerFormModalProps> = ({ isOpen, onClose, onSubmit, customer, mode }) => {
@@ -81,6 +81,20 @@ const CustomerFormModal: React.FC<CustomerFormModalProps> = ({ isOpen, onClose, 
             <input type="tel" {...register("phone")} placeholder={t('crm.form.phone')} className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
             <input type="text" {...register("address")} placeholder={t('crm.form.address')} className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
             <input type="date" {...register("dateOfBirth")} placeholder={t('crm.form.dob')} className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
+
+            <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('crm.form.communicationPreferences')}</label>
+                <div className="mt-2 flex gap-4">
+                    <label className="flex items-center">
+                        <input type="checkbox" {...register("communicationPreferences")} value="email" className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                        <span className="ml-2 text-sm">{t('timelineTypes.email')}</span>
+                    </label>
+                    <label className="flex items-center">
+                        <input type="checkbox" {...register("communicationPreferences")} value="sms" className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                        <span className="ml-2 text-sm">{t('customer.sms')}</span>
+                    </label>
+                </div>
+            </div>
 
             <div className="pt-4">
                 <h3 className="text-lg font-semibold mb-2">{t('crm.form.policies')}</h3>
