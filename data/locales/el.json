@@ -31,6 +31,12 @@
   },
   "dashboard": {
     "title": "Πίνακας Ελέγχου Πράκτορα",
+    "agency": "Πρακτορείο",
+    "greeting": {
+      "morning": "Καλημέρα",
+      "afternoon": "Καλό απόγευμα",
+      "evening": "Καλησπέρα"
+    },
     "newLeads": "Νέα Leads",
     "monthlyRevenue": "Εκτ. Μηνιαία Έσοδα",
     "activePolicies": "Ενεργά Συμβόλαια",

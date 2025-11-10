@@ -31,6 +31,12 @@
   },
   "dashboard": {
     "title": "Agent Dashboard",
+    "agency": "Agency",
+    "greeting": {
+      "morning": "Good morning",
+      "afternoon": "Good afternoon",
+      "evening": "Good evening"
+    },
     "newLeads": "New Leads",
     "monthlyRevenue": "Est. Monthly Revenue",
     "activePolicies": "Active Policies",

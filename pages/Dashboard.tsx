@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLocalization } from '../hooks/useLocalization';
+import { useAuth } from '../hooks/useAuth';
 import { fetchDashboardData } from '../services/api';
 import ErrorMessage from '../components/ui/ErrorMessage';
 import SkeletonLoader from '../components/ui/SkeletonLoader';
@@ -8,8 +9,10 @@ import { useOnboardingStatus } from '../hooks/useOnboardingStatus';
 import TestimonialCarousel from '../components/testimonials/TestimonialCarousel';
 
 const Dashboard: React.FC = () => {
-    const { t } = useLocalization();
+    const { t, language } = useLocalization();
+    const { currentUser } = useAuth();
     const { isSkipped, completeOnboarding } = useOnboardingStatus();
+
     const [data, setData] = useState<{
         newLeadsCount: number;
         monthlyRevenue: number;
@@ -31,12 +34,36 @@ const Dashboard: React.FC = () => {
         };
         loadData();
     }, []);
-    
+
+    const getGreeting = () => {
+        const hour = new Date().getHours();
+        if (hour < 12) {
+            return t('dashboard.greeting.morning');
+        } else if (hour < 18) {
+            return t('dashboard.greeting.afternoon');
+        } else {
+            return t('dashboard.greeting.evening');
+        }
+    };
+
+    const formattedDate = new Date().toLocaleDateString(language, {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    });
+
+    const agencyMap: { [key: string]: string } = {
+        'agency_1': 'Scranton Branch',
+        'agency_2': 'Stamford Branch',
+    };
+    const agencyName = currentUser ? agencyMap[currentUser.agencyId] || 'Default Agency' : '';
+
     const WelcomeBanner = () => {
         if (isSkipped) return null;
 
         return (
-            <div className="bg-blue-500 text-white p-6 rounded-lg shadow-lg mb-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div className="bg-blue-500 text-white p-6 rounded-lg shadow-lg flex flex-col sm:flex-row justify-between items-center gap-4">
                 <div>
                     <h2 className="text-2xl font-bold">{t('dashboard.welcomeBanner.title')}</h2>
                     <p className="mt-1 max-w-2xl">{t('dashboard.welcomeBanner.description')}</p>
@@ -53,9 +80,9 @@ const Dashboard: React.FC = () => {
         );
     };
 
-    const renderStatCard = (title: string, value: string | number, isLoading: boolean) => (
+    const renderStatCard = (title: string, value: string | number, isLoadingFlag: boolean) => (
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-            {isLoading ? (
+            {isLoadingFlag ? (
                 <SkeletonLoader className="h-16 w-3/4" />
             ) : (
                 <>
@@ -71,9 +98,26 @@ const Dashboard: React.FC = () => {
     }
 
     return (
-        <div>
+        <div className="space-y-6">
+            <header className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+                <div>
+                    <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
+                        {getGreeting()}, {currentUser?.party.partyName.firstName}!
+                    </h1>
+                    <p className="text-md text-gray-500 dark:text-gray-400 mt-1">{formattedDate}</p>
+                </div>
+                <div className="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm flex items-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                    <div>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">{t('dashboard.agency')}</p>
+                        <p className="text-sm font-semibold text-gray-800 dark:text-white">{agencyName}</p>
+                    </div>
+                </div>
+            </header>
+
             <WelcomeBanner />
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-6">{t('dashboard.title')}</h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {renderStatCard(t('dashboard.newLeads'), isLoading ? 0 : data?.newLeadsCount ?? 0, isLoading)}
@@ -90,7 +134,7 @@ const Dashboard: React.FC = () => {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-2">
                 <div className="lg:col-span-2 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">{t('dashboard.policyDistribution')}</h2>
                     {isLoading ? (

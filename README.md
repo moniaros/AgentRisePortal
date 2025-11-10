@@ -57,7 +57,11 @@ This section provides a clear overview of the project's current status for produ
 
 The platform is currently a high-fidelity MVP with a simulated backend. The following features are implemented and functional from a UI and front-end logic perspective.
 
-#### 1. Multi-Tenant Architecture & RBAC
+#### 1. Modern Dashboard & UI
+-   **Description:** A clean, responsive user dashboard serves as the landing page post-login. It features a dynamic, time-aware greeting, the current date, and the user's agency affiliation. The entire UI is built with Tailwind CSS, supports bilingual (Greek/English) toggling, and is designed for a seamless experience on all devices.
+-   **Components:** `Dashboard.tsx`, `Layout.tsx`, `Header.tsx`, `Sidebar.tsx`.
+
+#### 2. Multi-Tenant Architecture & RBAC
 -   **Description:** The application is structured to support multiple insurance agencies on a single instance. Data is segregated based on the logged-in user's agency. Role-Based Access Control (RBAC) is implemented, with a UI for administrators to manage users. The user profile includes a read-only audit trail showing recent logins, key actions, and system notifications. The data model for users has been refactored to align with the ACORD industry standard, separating personal identity (`Party`) from contextual role (`PartyRole`) for easier future API integration.
 -   **Components:** `UserManagement.tsx`, `UsersTable.tsx`, `InviteUserModal.tsx`, `AuditLogsTable.tsx`, `Profile.tsx`.
 -   **Data Structures (ACORD-Aligned):**
@@ -113,7 +117,7 @@ The platform is currently a high-fidelity MVP with a simulated backend. The foll
     }
     ```
 
-#### 2. Micro-CRM
+#### 3. Micro-CRM
 -   **Description:** A core CRM for managing customers and leads. Users can add, edit, and delete customer profiles, view associated leads, and manage policies. All data is scoped to the user's agency.
 -   **Components:** `MicroCRM.tsx`, `CustomersTable.tsx`, `CrmLeadsTable.tsx`, `CustomerFormModal.tsx`.
 -   **Data Structures:**
@@ -139,7 +143,7 @@ The platform is currently a high-fidelity MVP with a simulated backend. The foll
     }
     ```
 
-#### 3. Customer Microsite & Timeline
+#### 4. Customer Microsite & Timeline
 -   **Description:** A detailed view for each customer, showing their contact information, policies, and a chronological timeline of interactions (notes, policy changes, etc.).
 -   **Components:** `CustomerMicrosite.tsx`, `PolicyCard.tsx`, `CustomerTimeline.tsx`.
 -   **Data Structures:**
@@ -160,12 +164,12 @@ The platform is currently a high-fidelity MVP with a simulated backend. The foll
     }
     ```
 
-#### 4. AI-Powered Gap Analysis
+#### 5. AI-Powered Gap Analysis
 -   **Description:** Agents can upload a client's existing policy document (PDF/Image). Google Gemini API extracts key policy information and then analyzes it against user-described needs to identify coverage gaps.
 -   **Components:** `GapAnalysis.tsx`, `FileUploader.tsx`, `PolicyParser.tsx`.
 -   **Technology:** `@google/genai` (Gemini API).
 
-#### 5. Social Media Composer & Lead Capture
+#### 6. Social Media Composer & Lead Capture
 -   **Description:** A tool for drafting and "publishing" social media posts. It includes templates, character limits, and image previews. Crucially, it can attach a lead capture form, which generates a unique landing page to convert prospects into leads directly within the CRM. Includes robust, bilingual error handling.
 -   **Components:** `SocialComposer.tsx`, `PostPreview.tsx`, `LeadCapturePage.tsx`.
 -   **Data Structures:**
@@ -179,7 +183,7 @@ The platform is currently a high-fidelity MVP with a simulated backend. The foll
     }
     ```
 
-#### 6. Campaign Management & Analytics
+#### 7. Campaign Management & Analytics
 -   **Description:** A foundational module for creating and viewing advertising campaigns. The accompanying analytics dashboard visualizes performance data (spend, impressions, CTR, conversions) with robust filtering.
 -   **Components:** `AdCampaigns.tsx`, `CampaignWizard.tsx`, `Analytics.tsx`, `PerformanceChart.tsx`, `SpendChart.tsx`.
 -   **Data Structures:**
@@ -194,7 +198,7 @@ The platform is currently a high-fidelity MVP with a simulated backend. The foll
     }
     ```
 
-#### 7. SEO & Analytics Integration
+#### 8. SEO & Analytics Integration
 -   **Description:** The platform incorporates SEO best practices and comprehensive analytics tracking to monitor traffic and user engagement.
 -   **SEO Features:**
     -   **Dynamic Meta Tags:** Pages like News Articles dynamically update `document.title` and `meta description` tags for better search engine results.
