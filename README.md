@@ -58,13 +58,15 @@ This section provides a clear overview of the project's current status for produ
 The platform is currently a high-fidelity MVP with a simulated backend. The following features are implemented and functional from a UI and front-end logic perspective.
 
 #### 1. Multi-Tenant Architecture & RBAC
--   **Description:** The application is structured to support multiple insurance agencies on a single instance. Data is segregated based on the logged-in user's agency. Role-Based Access Control (RBAC) is implemented, with a UI for administrators to manage users.
--   **Components:** `UserManagement.tsx`, `UsersTable.tsx`, `InviteUserModal.tsx`, `AuditLogsTable.tsx`.
+-   **Description:** The application is structured to support multiple insurance agencies on a single instance. Data is segregated based on the logged-in user's agency. Role-Based Access Control (RBAC) is implemented, with a UI for administrators to manage users. The user model includes detailed identity, contact, role, and licensing information aligned with ACORD standards, including profile photo and digital signature uploads.
+-   **Components:** `UserManagement.tsx`, `UsersTable.tsx`, `InviteUserModal.tsx`, `AuditLogsTable.tsx`, `Profile.tsx`.
 -   **Data Structures:**
     ```typescript
     interface User {
         id: string;
         name: string; // Corresponds to PartyName in ACORD
+        profilePhotoUrl?: string; // Base64 encoded profile image data URL
+        signature?: string; // Base64 encoded signature image for documents (ACORD PartySignature)
         jobTitle?: string;
         email: string;
         contact?: {
@@ -75,6 +77,18 @@ The platform is currently a high-fidelity MVP with a simulated backend. The foll
         department?: string;
         role: 'admin' | 'agent';
         agencyId: string;
+        // ACORD-aligned RoleType information
+        roleInfo?: {
+            roleTitle: string;
+            permissionsScope: 'agency' | 'global' | 'team';
+        };
+        // ACORD-aligned licensing information
+        licenses?: {
+            type: string;
+            licenseNumber: string;
+            expirationDate: string;
+            status: 'valid' | 'expired' | 'pending_review';
+        }[];
     }
     interface Agency {
         id: string;

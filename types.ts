@@ -16,9 +16,25 @@ export enum UserRole {
     ADMIN = 'admin',
 }
 
+export type LicenseStatus = 'valid' | 'expired' | 'pending_review';
+
+export interface License {
+    type: string;
+    licenseNumber: string;
+    expirationDate: string;
+    status: LicenseStatus;
+}
+
+export interface RoleInfo {
+    roleTitle: string;
+    permissionsScope: 'agency' | 'global' | 'team';
+}
+
 export interface User {
     id: string;
     name: string; // Corresponds to PartyName in ACORD
+    profilePhotoUrl?: string; // Base64 data URL
+    signature?: string; // Base64 data URL for PartySignature
     jobTitle?: string;
     email: string;
     contact?: {
@@ -29,6 +45,8 @@ export interface User {
     department?: string;
     role: UserRole;
     agencyId: string;
+    roleInfo?: RoleInfo;
+    licenses?: License[];
 }
 
 // CRM - Leads & Customers

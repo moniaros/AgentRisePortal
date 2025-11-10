@@ -464,7 +464,24 @@
     "mobilePhone": "Mobile Phone",
     "personalInfo": "Personal Information",
     "contactDetails": "Contact Details",
-    "updateSuccess": "Profile updated successfully!"
+    "updateSuccess": "Profile updated successfully!",
+    "roleAndPermissions": "Role & Permissions",
+    "licensesAndCertifications": "Licenses & Certifications",
+    "roleTitle": "Role Title",
+    "permissionsScope": "Permissions Scope",
+    "licenseType": "License Type",
+    "licenseNumber": "License Number",
+    "expirationDate": "Expiration Date",
+    "status": "Status",
+    "profilePhoto": "Profile Photo",
+    "digitalSignature": "Digital Signature",
+    "signatureDescription": "This signature can be used in email footers and document watermarks.",
+    "change": "Change"
+  },
+  "licenseStatus": {
+    "valid": "Valid",
+    "expired": "Expired",
+    "pending_review": "Pending Review"
   },
   "policyTypes": {
     "auto": "Auto Insurance",

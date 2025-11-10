@@ -464,7 +464,24 @@
     "mobilePhone": "Κινητό Τηλέφωνο",
     "personalInfo": "Προσωπικές Πληροφορίες",
     "contactDetails": "Στοιχεία Επικοινωνίας",
-    "updateSuccess": "Το προφίλ ενημερώθηκε με επιτυχία!"
+    "updateSuccess": "Το προφίλ ενημερώθηκε με επιτυχία!",
+    "roleAndPermissions": "Ρόλος & Δικαιώματα",
+    "licensesAndCertifications": "Άδειες & Πιστοποιήσεις",
+    "roleTitle": "Τίτλος Ρόλου",
+    "permissionsScope": "Εύρος Δικαιωμάτων",
+    "licenseType": "Τύπος Άδειας",
+    "licenseNumber": "Αριθμός Άδειας",
+    "expirationDate": "Ημερομηνία Λήξης",
+    "status": "Κατάσταση",
+    "profilePhoto": "Φωτογραφία Προφίλ",
+    "digitalSignature": "Ψηφιακή Υπογραφή",
+    "signatureDescription": "Αυτή η υπογραφή μπορεί να χρησιμοποιηθεί σε υποσέλιδα email και υδατογραφήματα εγγράφων.",
+    "change": "Αλλαγή"
+  },
+  "licenseStatus": {
+    "valid": "Σε ισχύ",
+    "expired": "Έληξε",
+    "pending_review": "Εκκρεμεί έλεγχος"
   },
   "policyTypes": {
     "auto": "Ασφάλεια Αυτοκινήτου",
