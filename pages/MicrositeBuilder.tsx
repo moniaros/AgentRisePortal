@@ -5,8 +5,9 @@ import BuilderControls from '../components/microsite/BuilderControls';
 import SitePreview from '../components/microsite/SitePreview';
 
 const initialBlocks: MicrositeBlock[] = [
-    { id: 'hero_1', type: 'hero', title: 'Welcome to Your Insurance Microsite', subtitle: 'Your trusted partner in protection.', ctaText: 'Get a Quote' },
-    { id: 'products_1', type: 'products', title: 'Our Insurance Products', products: [{id: 'p1', name: 'Auto Insurance', description: 'Comprehensive coverage for your vehicle.'}, {id: 'p2', name: 'Home Insurance', description: 'Protect your home and belongings.'}] },
+    { id: 'hero_1', type: 'hero', title: 'Your Trusted Insurance Partner', subtitle: 'Providing peace of mind for you and your family.', ctaText: 'Get a Free Quote' },
+    { id: 'about_1', type: 'about', title: 'About Our Agency', content: 'We are a dedicated team of professionals committed to providing personalized insurance solutions.', imageUrl: 'https://via.placeholder.com/500x300.png?text=Our+Team' },
+    { id: 'services_1', type: 'services', title: 'Our Insurance Services', services: [{id: 's1', name: 'Auto Insurance', description: 'Comprehensive coverage for your vehicle.'}, {id: 's2', name: 'Home Insurance', description: 'Protect your home and belongings.'}] },
     { id: 'contact_1', type: 'contact', title: 'Contact Us', subtitle: 'Reach out for a personalized consultation.' },
 ];
 

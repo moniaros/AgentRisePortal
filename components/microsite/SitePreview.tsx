@@ -1,12 +1,16 @@
 import React from 'react';
 import { MicrositeBlock, MicrositeConfig } from '../../types';
 import HeroBlockPreview from './blocks/HeroBlockPreview';
-import ProductsBlockPreview from './blocks/ProductsBlockPreview';
+import ServicesBlockPreview from './blocks/ProductsBlockPreview';
 import TestimonialsBlockPreview from './blocks/TestimonialsBlockPreview';
-import FaqBlockPreview from './blocks/FaqBlockPreview';
+import AboutBlockPreview from './blocks/AboutBlockPreview';
+import AwardsBlockPreview from './blocks/AwardsBlockPreview';
+import NewsBlockPreview from './blocks/NewsBlockPreview';
 import ContactFormPreview from './blocks/ContactFormPreview';
 import MicrositeHeader from './MicrositeHeader';
 import MicrositeFooter from './MicrositeFooter';
+import SkeletonLoader from '../ui/SkeletonLoader';
+import FaqBlockPreview from './blocks/FaqBlockPreview';
 
 interface SitePreviewProps {
     blocks: MicrositeBlock[];
@@ -15,12 +19,18 @@ interface SitePreviewProps {
 
 const SitePreview: React.FC<SitePreviewProps> = ({ blocks, config }) => {
     const renderBlock = (block: MicrositeBlock) => {
+        if (block.isLoading) {
+            return <SkeletonLoader className="h-48 w-full my-2" />;
+        }
         switch (block.type) {
             case 'hero': return <HeroBlockPreview {...block} />;
-            case 'products': return <ProductsBlockPreview {...block} />;
+            case 'about': return <AboutBlockPreview {...block} />;
+            case 'services': return <ServicesBlockPreview {...block} />;
+            case 'awards': return <AwardsBlockPreview {...block} />;
             case 'testimonials': return <TestimonialsBlockPreview {...block} />;
-            case 'faq': return <FaqBlockPreview {...block} />;
+            case 'news': return <NewsBlockPreview {...block} />;
             case 'contact': return <ContactFormPreview {...block} />;
+            case 'faq': return <FaqBlockPreview {...block} />;
             default: return null;
         }
     };

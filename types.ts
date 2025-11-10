@@ -227,11 +227,12 @@ export interface AuditLog {
 }
 
 // Microsite Builder types
-export type MicrositeBlockType = 'hero' | 'products' | 'testimonials' | 'faq' | 'contact';
+export type MicrositeBlockType = 'hero' | 'about' | 'services' | 'awards' | 'testimonials' | 'news' | 'contact';
 
 interface BaseBlock {
     id: string;
     title: string;
+    isLoading?: boolean;
 }
 
 export interface HeroBlock extends BaseBlock {
@@ -240,15 +241,33 @@ export interface HeroBlock extends BaseBlock {
     ctaText: string;
 }
 
-export interface ProductItem {
+export interface AboutBlock extends BaseBlock {
+    type: 'about';
+    content: string;
+    imageUrl: string;
+}
+
+export interface ServiceItem {
     id: string;
     name: string;
     description: string;
 }
 
-export interface ProductsBlock extends BaseBlock {
-    type: 'products';
-    products: ProductItem[];
+export interface ServicesBlock extends BaseBlock {
+    type: 'services';
+    services: ServiceItem[];
+}
+
+export interface AwardItem {
+    id: string;
+    title: string;
+    issuer: string;
+    year: string;
+}
+
+export interface AwardsBlock extends BaseBlock {
+    type: 'awards';
+    awards: AwardItem[];
 }
 
 export interface TestimonialItem {
@@ -262,6 +281,19 @@ export interface TestimonialsBlock extends BaseBlock {
     testimonials: TestimonialItem[];
 }
 
+export interface NewsItem {
+    id: string;
+    title: string;
+    date: string;
+    summary: string;
+}
+
+export interface NewsBlock extends BaseBlock {
+    type: 'news';
+    items: NewsItem[];
+}
+
+// FIX: Added missing FaqBlock and FaqItem types to resolve compilation error in FaqBlockPreview.tsx
 export interface FaqItem {
     id: string;
     question: string;
@@ -278,7 +310,7 @@ export interface ContactBlock extends BaseBlock {
     subtitle: string;
 }
 
-export type MicrositeBlock = HeroBlock | ProductsBlock | TestimonialsBlock | FaqBlock | ContactBlock;
+export type MicrositeBlock = HeroBlock | AboutBlock | ServicesBlock | AwardsBlock | TestimonialsBlock | NewsBlock | ContactBlock | FaqBlock;
 
 export interface MicrositeConfig {
     siteTitle: string;
