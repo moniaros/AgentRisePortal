@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLocalization } from '../hooks/useLocalization';
@@ -6,6 +5,8 @@ import PostPreview from '../components/composer/PostPreview';
 import TemplateSelector from '../components/composer/TemplateSelector';
 import CharacterCount from '../components/composer/CharacterCount';
 import { SOCIAL_PLATFORMS } from '../constants';
+import { useCampaigns } from '../hooks/useCampaigns';
+import { CampaignObjective, Language, Campaign } from '../types';
 
 const MAX_CHARS = 280;
 
@@ -14,12 +15,20 @@ interface PostError {
     platformName: string;
 }
 
+interface SuccessState {
+    message: string;
+    link?: string;
+}
+
 const SocialComposer: React.FC = () => {
-    const { t } = useLocalization();
+    const { t, language } = useLocalization();
+    const { addCampaign } = useCampaigns();
     const [postContent, setPostContent] = useState('');
     const [image, setImage] = useState<string | null>(null);
     const [scheduleDate, setScheduleDate] = useState('');
-    const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const [successState, setSuccessState] = useState<SuccessState | null>(null);
+    const [attachLeadForm, setAttachLeadForm] = useState(false);
+    const [isLinkCopied, setIsLinkCopied] = useState(false);
 
     const [selectedPlatformKey, setSelectedPlatformKey] = useState(SOCIAL_PLATFORMS[0].key);
     const [connections, setConnections] = useState<{ [key: string]: boolean }>({});
@@ -41,7 +50,7 @@ const SocialComposer: React.FC = () => {
     const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setPostContent(e.target.value);
         if (error) setError(null);
-        if (successMessage) setSuccessMessage(null);
+        if (successState) setSuccessState(null);
     };
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,7 +66,7 @@ const SocialComposer: React.FC = () => {
     const applyTemplate = (content: string) => {
         setPostContent(content);
         setError(null);
-        setSuccessMessage(null);
+        setSuccessState(null);
     };
 
     const isSchedulingValid = useMemo(() => {
@@ -65,9 +74,16 @@ const SocialComposer: React.FC = () => {
         return new Date(scheduleDate).getTime() > new Date().getTime();
     }, [scheduleDate]);
 
+    const handleCopyToClipboard = (text: string) => {
+        navigator.clipboard.writeText(text).then(() => {
+            setIsLinkCopied(true);
+            setTimeout(() => setIsLinkCopied(false), 2000);
+        });
+    };
+
     const handleSubmit = (isScheduled: boolean) => {
         setError(null);
-        setSuccessMessage(null);
+        setSuccessState(null);
 
         const platform = SOCIAL_PLATFORMS.find(p => p.key === selectedPlatformKey);
         if (!platform) return;
@@ -102,15 +118,47 @@ const SocialComposer: React.FC = () => {
             } else if (randomNumber < 0.5) {
                 setError({ type: 'POST_FAILED', platformName: platform.name });
             } else {
-                if (isScheduled) {
+                // SUCCESS
+                let link: string | undefined;
+                if (attachLeadForm) {
+                    const newCampaign: Omit<Campaign, 'id'> = {
+                        name: `Social Post: ${postContent.substring(0, 30)}...`,
+                        objective: CampaignObjective.LEAD_GENERATION,
+                        network: selectedPlatformKey as 'facebook' | 'instagram' | 'linkedin' | 'x',
+                        language: language,
+                        status: 'active',
+                        audience: { ageRange: [18, 65], interests: [] },
+                        budget: 0,
+                        startDate: new Date().toISOString().split('T')[0],
+                        endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                        creative: {
+                            headline: t('leadCapture.title'),
+                            body: postContent,
+                            image: image || ''
+                        },
+                        leadCaptureForm: {
+                            fields: [
+                                { name: 'name', type: 'text', required: true },
+                                { name: 'email', type: 'email', required: true },
+                                { name: 'phone', type: 'tel', required: false },
+                            ]
+                        }
+                    };
+                    const campaignWithId = { ...newCampaign, id: `social_${Date.now()}`};
+                    addCampaign(campaignWithId);
+                    link = `${window.location.origin}${window.location.pathname}#/capture/${campaignWithId.id}`;
+                    setSuccessState({ message: t('socialComposer.leadCaptureLinkSuccess'), link });
+                } else if (isScheduled) {
                     const formattedDate = new Date(scheduleDate).toLocaleString();
-                    setSuccessMessage(`${t('socialComposer.postScheduled')} ${formattedDate}`);
+                    setSuccessState({ message: `${t('socialComposer.postScheduled')} ${formattedDate}` });
                 } else {
-                    setSuccessMessage(t('socialComposer.postPublished'));
+                    setSuccessState({ message: t('socialComposer.postPublished') });
                 }
+
                 setPostContent('');
                 setImage(null);
                 setScheduleDate('');
+                setAttachLeadForm(false);
             }
             setIsLoading(false);
         }, 1200);
@@ -179,36 +227,61 @@ const SocialComposer: React.FC = () => {
                         <CharacterCount current={characterCount} max={MAX_CHARS} />
                     </div>
 
-                    <div className="flex flex-col sm:flex-row gap-4 items-center">
-                        <input type="file" id="imageUpload" className="hidden" accept="image/*" onChange={handleImageUpload} />
-                        <label htmlFor="imageUpload" className="cursor-pointer px-4 py-2 text-sm bg-gray-200 dark:bg-gray-600 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500 transition">
-                            {t('socialComposer.uploadImage')}
-                        </label>
-                        {image && <button onClick={() => setImage(null)} className="text-sm text-red-500 hover:underline">{t('socialComposer.removeImage')}</button>}
+                    <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
+                        <div className="flex items-center gap-4">
+                            <input type="file" id="imageUpload" className="hidden" accept="image/*" onChange={handleImageUpload} />
+                            <label htmlFor="imageUpload" className="cursor-pointer px-4 py-2 text-sm bg-gray-200 dark:bg-gray-600 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500 transition">
+                                {t('socialComposer.uploadImage')}
+                            </label>
+                            {image && <button onClick={() => setImage(null)} className="text-sm text-red-500 hover:underline">{t('socialComposer.removeImage')}</button>}
+                        </div>
                         <input
                             type="datetime-local"
                             value={scheduleDate}
                             onChange={(e) => setScheduleDate(e.target.value)}
-                            className="p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 sm:ml-auto"
+                            className="p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
                         />
                     </div>
                     
-                    <div className="flex justify-end gap-4 border-t dark:border-gray-700 pt-4">
-                        <button 
-                            onClick={() => handleSubmit(true)}
-                            disabled={isLoading || isPostEmpty || isCharLimitExceeded || !scheduleDate}
-                            className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed">
-                            {isLoading ? t('socialComposer.scheduling') : t('socialComposer.schedulePost')}
-                        </button>
-                        <button 
-                            onClick={() => handleSubmit(false)}
-                            disabled={isLoading || isPostEmpty || isCharLimitExceeded}
-                            className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed">
-                            {isLoading ? t('socialComposer.posting') : t('socialComposer.postNow')}
-                        </button>
+                    <div className="flex items-center justify-between border-t dark:border-gray-700 pt-4">
+                        <label className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+                            <input
+                                type="checkbox"
+                                checked={attachLeadForm}
+                                onChange={(e) => setAttachLeadForm(e.target.checked)}
+                                className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                            />
+                            {t('socialComposer.attachLeadForm')}
+                        </label>
+                        <div className="flex justify-end gap-4">
+                            <button 
+                                onClick={() => handleSubmit(true)}
+                                disabled={isLoading || isPostEmpty || isCharLimitExceeded || !scheduleDate}
+                                className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed">
+                                {isLoading ? t('socialComposer.scheduling') : t('socialComposer.schedulePost')}
+                            </button>
+                            <button 
+                                onClick={() => handleSubmit(false)}
+                                disabled={isLoading || isPostEmpty || isCharLimitExceeded}
+                                className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed">
+                                {isLoading ? t('socialComposer.posting') : t('socialComposer.postNow')}
+                            </button>
+                        </div>
                     </div>
 
-                    {successMessage && <p className="text-sm text-green-500 text-right -mt-2">{successMessage}</p>}
+                    {successState && (
+                        <div className="p-3 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 rounded-md text-sm">
+                            <p>{successState.message}</p>
+                            {successState.link && (
+                                <div className="mt-2 flex items-center gap-2">
+                                    <input type="text" readOnly value={successState.link} className="w-full p-1 text-xs bg-white dark:bg-gray-700 border rounded" />
+                                    <button onClick={() => handleCopyToClipboard(successState.link!)} className="px-3 py-1 text-xs bg-green-600 text-white rounded hover:bg-green-700">
+                                        {isLinkCopied ? t('socialComposer.copied') : t('socialComposer.copyLink')}
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    )}
                     <ErrorAlert />
 
                     <div className="border-t dark:border-gray-700 pt-4">

@@ -14,7 +14,8 @@ export const useCrmData = () => {
   const { 
     data: leads, 
     isLoading: isLeadsLoading, 
-    error: leadsError 
+    error: leadsError,
+    updateData: setLeads
   } = useOfflineSync<Lead[]>('leads_data', fetchLeads, []);
 
   const isLoading = isCustomersLoading || isLeadsLoading;
@@ -37,6 +38,15 @@ export const useCrmData = () => {
     };
     setCustomers([...customers, newCustomer]);
   }, [customers, setCustomers]);
+  
+  const addLead = useCallback((leadData: Omit<Lead, 'id' | 'createdAt'>) => {
+    const newLead: Lead = {
+      ...leadData,
+      id: `lead_${Date.now()}`,
+      createdAt: new Date().toISOString(),
+    };
+    setLeads([...leads, newLead]);
+  }, [leads, setLeads]);
 
   const updateCustomer = useCallback((updatedCustomer: Customer) => {
     setCustomers(customers.map(c => c.id === updatedCustomer.id ? updatedCustomer : c));
@@ -63,5 +73,5 @@ export const useCrmData = () => {
     }
   }, [customers, updateCustomer]);
 
-  return { customers, leads, isLoading, error, addCustomer, updateCustomer, deleteCustomer, logCustomerEvent };
+  return { customers, leads, isLoading, error, addCustomer, addLead, updateCustomer, deleteCustomer, logCustomerEvent };
 };

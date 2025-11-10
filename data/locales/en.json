@@ -1,4 +1,3 @@
-
 {
   "nav": {
     "dashboard": "Dashboard",
@@ -72,6 +71,7 @@
     "editCustomer": "Edit Customer",
     "customers": "Customers",
     "leads": "Associated Leads",
+    "campaign": "Campaign",
     "cancel": "Cancel",
     "save": "Save",
     "edit": "Edit",
@@ -134,6 +134,10 @@
     "templatesTitle": "Use a Template",
     "postScheduled": "Post scheduled for",
     "postPublished": "Post published successfully!",
+    "leadCaptureLinkSuccess": "Post successful! Use this link to capture leads:",
+    "attachLeadForm": "Attach Lead Capture Form",
+    "copyLink": "Copy Link",
+    "copied": "Copied!",
     "errorContentRequired": "Post content cannot be empty.",
     "errorCharLimit": "Character limit exceeded.",
     "errorFutureDate": "Scheduled date must be in the future.",
@@ -174,6 +178,19 @@
   },
   "campaigns": {
     "create": "Create Campaign"
+  },
+  "leadCapture": {
+    "title": "Get a Free Insurance Quote",
+    "subtitle": "Fill out your details below and one of our expert agents will contact you shortly.",
+    "submitButton": "Get My Free Quote",
+    "thankYouTitle": "Thank You!",
+    "thankYouMessage": "Your information has been submitted. An agent will contact you shortly.",
+    "invalidCampaign": "This campaign is no longer active or is invalid.",
+    "form": {
+      "name": "Full Name",
+      "email": "Email",
+      "phone": "Phone Number"
+    }
   },
   "settings": {
     "gtmSavedSuccess": "GTM ID saved! Reloading...",

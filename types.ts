@@ -60,6 +60,7 @@ export interface Lead {
     potentialValue: number;
     createdAt: string;
     customerId?: string;
+    campaignId?: string;
 }
 
 export interface SocialPlatform {
