@@ -1,5 +1,4 @@
-
-import { Customer, Lead, User, PolicyType, UserSystemRole, Language, CampaignObjective, AuditLog, AnalyticsRecord, ExecutiveData, LeadStatus, NewsArticle, Testimonial, UserActivityEvent } from '../types';
+import { Customer, Lead, User, PolicyType, UserSystemRole, Language, CampaignObjective, AuditLog, AnalyticsRecord, ExecutiveData, LeadStatus, NewsArticle, Testimonial, UserActivityEvent, ReminderLogEntry } from '../types';
 
 export const MOCK_USERS: User[] = [
     { 
@@ -94,6 +93,12 @@ const lastDayOfNextYear = new Date(thisYear + 1, thisMonth, 15);
 const fortyFiveDaysFromNow = new Date();
 fortyFiveDaysFromNow.setDate(today.getDate() + 45);
 
+const getDateInFuture = (days: number) => {
+    const date = new Date();
+    date.setDate(date.getDate() + days);
+    return date.toISOString().split('T')[0];
+};
+
 export const MOCK_LEADS: Lead[] = [
     // Leads for this month
     { id: 'lead_1', firstName: 'Alice', lastName: 'Smith', email: 'alice.s@email.com', source: 'Facebook Campaign', status: 'new', potentialValue: 500, createdAt: new Date(thisYear, thisMonth, 2).toISOString(), policyType: PolicyType.AUTO, agencyId: 'agency_1' },
@@ -136,12 +141,16 @@ export const MOCK_CUSTOMERS: Customer[] = [
             
             // Due to expire this month, NOT renewed yet
             { id: 'pol_2', type: PolicyType.HOME, policyNumber: 'HOM67890', premium: 850, startDate: '2023-10-26', endDate: aLaterDayThisMonth.toISOString().split('T')[0], isActive: true, insurer: 'Commonwealth Ins.', coverages: [{ type: 'Dwelling', limit: '300k' }, { type: 'Personal Property', limit: '150k' }] },
+             // For Renewal Automation
+            { id: 'pol_rem_1', type: PolicyType.LIFE, policyNumber: 'LIFE-REM-1', premium: 1800, startDate: '2020-01-01', endDate: getDateInFuture(90), isActive: true, insurer: 'MetLife', coverages: [] },
+
         ],
         timeline: [
             { id: 'evt_1', date: '2023-09-15T14:30:00Z', type: 'call', content: 'Discussed renewal options for auto policy.', author: 'John Agent' },
             { id: 'evt_2', date: '2023-03-20T09:00:00Z', type: 'system', content: 'Home policy created.', author: 'System' },
         ],
-        agencyId: 'agency_1'
+        agencyId: 'agency_1',
+        assignedAgentId: 'user_1',
     },
     {
         id: 'cust_2',
@@ -159,12 +168,18 @@ export const MOCK_CUSTOMERS: Customer[] = [
             // Due to expire this month, NOT renewed
             { id: 'pol_4', type: PolicyType.LIFE, policyNumber: 'LIFE111', premium: 1500, startDate: '2020-10-10', endDate: new Date(thisYear, thisMonth, 28).toISOString().split('T')[0], isActive: true, insurer: 'MetLife', coverages: [] },
              // Expires in 45 days, should not be in "expiring soon" list
-            { id: 'pol_5', type: PolicyType.AUTO, policyNumber: 'AUT-EXP45', premium: 950, startDate: '2023-12-01', endDate: fortyFiveDaysFromNow.toISOString().split('T')[0], isActive: true, insurer: 'Geico', coverages: [] }
+            { id: 'pol_5', type: PolicyType.AUTO, policyNumber: 'AUT-EXP45', premium: 950, startDate: '2023-12-01', endDate: fortyFiveDaysFromNow.toISOString().split('T')[0], isActive: true, insurer: 'Geico', coverages: [] },
+            // For Renewal Automation
+            { id: 'pol_rem_2', type: PolicyType.AUTO, policyNumber: 'AUTO-REM-2', premium: 980, startDate: '2021-01-01', endDate: getDateInFuture(60), isActive: true, insurer: 'Progressive', coverages: [] },
+            { id: 'pol_rem_3', type: PolicyType.HOME, policyNumber: 'HOME-REM-3', premium: 1200, startDate: '2022-01-01', endDate: getDateInFuture(30), isActive: true, insurer: 'State Farm', coverages: [] },
+            { id: 'pol_rem_4', type: PolicyType.HEALTH, policyNumber: 'HLTH-REM-4', premium: 3200, startDate: '2023-01-01', endDate: getDateInFuture(15), isActive: true, insurer: 'Blue Cross', coverages: [] },
+            { id: 'pol_rem_5', type: PolicyType.AUTO, policyNumber: 'AUTO-REM-5', premium: 760, startDate: '2022-01-01', endDate: getDateInFuture(7), isActive: true, insurer: 'Allstate', coverages: [] },
         ],
         timeline: [
             { id: 'evt_3', date: '2023-09-25T10:00:00Z', type: 'email', content: 'Welcome email sent with policy documents.', author: 'John Agent' },
         ],
-        agencyId: 'agency_1'
+        agencyId: 'agency_1',
+        assignedAgentId: 'user_1',
     }
 ];
 
@@ -351,3 +366,7 @@ export const MOCK_EXECUTIVE_DATA: ExecutiveData = {
         { area: 'Commercial Liability', exposure: 2500000, mitigation: 1500000 },
     ]
 };
+
+// This simulates a persistent DB for the renewal automation log. 
+// It's `let` so it can be mutated by the service.
+export let MOCK_REMINDER_LOG: ReminderLogEntry[] = [];

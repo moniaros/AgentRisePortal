@@ -11,8 +11,9 @@ interface CustomerFormModalProps {
   mode: 'add' | 'edit';
 }
 
+// FIX: Added missing 'assignedAgentId' to satisfy the Customer type.
 const emptyCustomer: Omit<Customer, 'id' | 'timeline'> = {
-  firstName: '', lastName: '', email: '', phone: '', address: '', dateOfBirth: '', policies: [], agencyId: '', communicationPreferences: []
+  firstName: '', lastName: '', email: '', phone: '', address: '', dateOfBirth: '', policies: [], agencyId: '', communicationPreferences: [], assignedAgentId: ''
 };
 
 const CustomerFormModal: React.FC<CustomerFormModalProps> = ({ isOpen, onClose, onSubmit, customer, mode }) => {

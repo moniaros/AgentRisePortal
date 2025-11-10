@@ -65,7 +65,11 @@
     "expiresIn": "Λήγει σε {days} ημέρες",
     "noPoliciesExpireSoon": "Όλα τα συμβόλαια είναι ενημερωμένα!",
     "testimonials": "Μαρτυρίες Πελατών",
-    "activityFeed": "Πρόσφατη Δραστηριότητα"
+    "activityFeed": "Πρόσφατη Δραστηριότητα",
+    "automatedTasks": "Αυτόματες Εργασίες & Υπενθυμίσεις"
+  },
+  "reminders": {
+    "renewalTemplate": "Απαιτείται ανανέωση για συμβόλαιο {policyType} {policyNumber} ({policyholderName}) που λήγει στις {expiryDate}. Ανατέθηκε στον/ην {agentAssigned} για παρακολούθηση."
   },
   "leads": {
     "searchPlaceholder": "Αναζήτηση με όνομα ή email...",

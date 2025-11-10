@@ -65,7 +65,11 @@
     "expiresIn": "Expires in {days} days",
     "noPoliciesExpireSoon": "All policies are up to date!",
     "testimonials": "Client Testimonials",
-    "activityFeed": "Recent Activity"
+    "activityFeed": "Recent Activity",
+    "automatedTasks": "Automated Tasks & Reminders"
+  },
+  "reminders": {
+    "renewalTemplate": "Renewal for {policyType} policy {policyNumber} ({policyholderName}) expires on {expiryDate}. Assigned to {agentAssigned} for follow-up."
   },
   "leads": {
     "searchPlaceholder": "Search by name or email...",

@@ -162,6 +162,7 @@ export interface Customer {
     policies: Policy[];
     timeline: TimelineEvent[];
     agencyId: string;
+    assignedAgentId: string;
     attentionFlag?: string;
 }
 
@@ -494,7 +495,7 @@ export interface MicrositeConfig {
     };
 }
 
-// Rules Engine
+// Rules Engine & Automation
 export enum RuleCategory {
     RENEWAL_REMINDER = 'RENEWAL_REMINDER',
     PAYMENT_REMINDER = 'PAYMENT_REMINDER',
@@ -555,4 +556,21 @@ export interface RuleDefinition {
     priority: number;
     isEnabled: boolean;
     agencyId: 'global' | string;
+}
+
+export interface AutomatedTask {
+    id: string;
+    type: 'RENEWAL_REMINDER';
+    policyId: string;
+    customerId: string;
+    agentId: string;
+    message: string;
+    createdAt: string;
+}
+  
+export interface ReminderLogEntry {
+    logKey: string; // e.g., "pol_1_30_days"
+    policyId: string;
+    reminderInterval: number; // 90, 60, 30 etc.
+    sentAt: string;
 }
