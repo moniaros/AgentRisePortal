@@ -1,25 +1,37 @@
 import React from 'react';
 
-// This file contains type definitions for the entire application.
-
-// From context/LanguageContext.tsx, data/mockData.ts, etc.
+// GENERAL
 export enum Language {
     EN = 'en',
     EL = 'el',
 }
 
-// From context/LanguageContext.tsx
-// A generic type for translation token objects.
-export type TranslationTokens = { [key: string]: any };
+export type TranslationTokens = {
+    [key: string]: string | TranslationTokens;
+};
 
-// From constants.tsx
-export interface SocialPlatform {
-    key: string;
-    name: string;
-    icon: React.ReactElement;
+// USER & AUTH
+export type UserRole = 'admin' | 'agent';
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: UserRole;
+  agencyId: string;
 }
 
-// From data/mockData.ts and various pages
+export interface AuditLog {
+  id: string;
+  timestamp: string;
+  actorName: string;
+  action: 'user_invited' | 'role_changed' | 'user_removed';
+  targetName: string;
+  details: string;
+  agencyId: string;
+}
+
+// CRM
 export enum PolicyType {
     AUTO = 'auto',
     HOME = 'home',
@@ -61,7 +73,7 @@ export interface Annotation {
 export interface TimelineEvent {
     id: string;
     date: string;
-    type: 'call' | 'email' | 'note' | 'meeting' | 'policy_update' | 'claim' | 'system';
+    type: 'call' | 'email' | 'note' | 'system' | 'policy_update' | 'meeting' | 'claim';
     content: string;
     author: string;
     isFlagged?: boolean;
@@ -70,22 +82,22 @@ export interface TimelineEvent {
 }
 
 export interface Customer {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone?: string;
-    address?: string;
-    dateOfBirth?: string;
-    agencyId: string;
-    attentionFlag?: string;
-    communicationPreferences?: ('email' | 'sms')[];
-    policies: Policy[];
-    timeline: TimelineEvent[];
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string;
+  address?: string;
+  dateOfBirth?: string;
+  agencyId: string;
+  attentionFlag?: string;
+  communicationPreferences?: ('email' | 'sms')[];
+  policies: Policy[];
+  timeline: TimelineEvent[];
 }
 
+// LEADS
 export type LeadStatus = 'new' | 'contacted' | 'qualified' | 'closed' | 'rejected';
-
 export interface Lead {
     id: string;
     firstName: string;
@@ -102,6 +114,7 @@ export interface Lead {
     customerId?: string;
 }
 
+// GAP ANALYSIS
 export interface DetailedPolicy {
     policyNumber: string;
     insurer: string;
@@ -116,57 +129,57 @@ export interface DetailedPolicy {
     }[];
 }
 
-// From pages/Analytics.tsx (from MOCK_ANALYTICS_DATA in data/mockData.ts)
-export type AnalyticsData = {
-    campaignId: string;
-    date: string;
-    impressions: number;
-    clicks: number;
-    conversions: number;
-    spend: number;
-}[];
+export interface Gap {
+    area: string;
+    current: string;
+    recommended: string;
+    reason: string;
+}
 
-// From data/mockData.ts, pages/UserManagement.tsx
-export type UserRole = 'admin' | 'agent';
+export interface Opportunity {
+    product: string;
+    recommendation: string;
+    benefit: string;
+}
 
-export interface User {
-    id: string;
+export interface GapAnalysisResult {
+    gaps: Gap[];
+    upsell_opportunities: Opportunity[];
+    cross_sell_opportunities: Opportunity[];
+}
+
+
+// ONBOARDING
+export interface OnboardingProgress {
+    profileCompleted: boolean;
+    policyAnalyzed: boolean;
+    campaignCreated: boolean;
+}
+
+// SOCIAL & CAMPAIGNS
+export interface SocialPlatform {
+    key: string;
     name: string;
-    email: string;
-    role: UserRole;
-    agencyId: string;
+    icon: React.ReactElement;
 }
 
-export interface AuditLog {
-    id: string;
-    timestamp: string;
-    actorName: string;
-    action: 'user_invited' | 'user_removed' | 'role_changed';
-    targetName: string;
-    details: string;
-    agencyId: string;
-}
-
-// From data/mockData.ts, hooks/useCampaigns.ts
 export enum CampaignObjective {
-    LEAD_GENERATION = 'LEAD_GENERATION',
-    BRAND_AWARENESS = 'BRAND_AWARENESS',
-    WEBSITE_TRAFFIC = 'WEBSITE_TRAFFIC',
+    LEAD_GENERATION = 'lead_generation',
+    BRAND_AWARENESS = 'brand_awareness',
+    WEBSITE_TRAFFIC = 'website_traffic',
 }
 
-// From components/campaigns/steps/Step5_LeadCapture.tsx
 export interface LeadCaptureFormField {
     name: string;
     type: 'text' | 'email' | 'tel' | 'number';
     required: boolean;
 }
 
-// From hooks/useCampaigns.ts and related components
 export interface Campaign {
     id: string;
     name: string;
     objective: CampaignObjective;
-    network: 'facebook' | 'instagram' | 'linkedin' | 'x';
+    network: string; // 'facebook' | 'instagram' | 'linkedin' | 'x'
     language: Language;
     audience: {
         ageRange: [number, number];
@@ -178,67 +191,31 @@ export interface Campaign {
     creative: {
         headline: string;
         body: string;
-        image: string;
+        image?: string;
     };
     status: 'active' | 'draft' | 'completed';
     agencyId: string;
     leadCaptureForm?: {
-        fields: LeadCaptureFormField[];
-    };
+      fields: LeadCaptureFormField[];
+    }
 }
 
-// From pages/GapAnalysis.tsx
-export interface GapAnalysisResult {
-    gaps: {
-        area: string;
-        current: string;
-        recommended: string;
-        reason: string;
-    }[];
-    upsell_opportunities: {
-        product: string;
-        recommendation: string;
-        benefit: string;
-    }[];
-    cross_sell_opportunities: {
-        product: string;
-        recommendation: string;
-        benefit: string;
-    }[];
+// ANALYTICS
+export interface AnalyticsRecord {
+    campaignId: string;
+    date: string;
+    impressions: number;
+    clicks: number;
+    conversions: number;
+    spend: number;
 }
+export type AnalyticsData = AnalyticsRecord[];
 
-// From hooks/useOnboardingStatus.ts
-export interface OnboardingProgress {
-    profileCompleted: boolean;
-    policyAnalyzed: boolean;
-    campaignCreated: boolean;
-}
-
-// Microsite Builder Types
-export type BlockType = 'hero' | 'products' | 'testimonials' | 'faq' | 'contact';
-
-export interface BaseBlock {
-    id: string;
-    type: BlockType;
-}
-
-export interface HeroBlock extends BaseBlock {
-    type: 'hero';
-    title: string;
-    subtitle: string;
-    ctaText: string;
-}
-
+// MICROSITE BUILDER
 export interface Product {
     id: string;
     name: string;
     description: string;
-}
-
-export interface ProductsBlock extends BaseBlock {
-    type: 'products';
-    title: string;
-    products: Product[];
 }
 
 export interface Testimonial {
@@ -247,28 +224,53 @@ export interface Testimonial {
     author: string;
 }
 
-export interface TestimonialsBlock extends BaseBlock {
-    type: 'testimonials';
-    title: string;
-    testimonials: Testimonial[];
-}
-
 export interface FaqItem {
     id: string;
     question: string;
     answer: string;
 }
 
-export interface FaqBlock extends BaseBlock {
+export type HeroBlock = {
+    id: string;
+    type: 'hero';
+    title: string;
+    subtitle: string;
+    ctaText: string;
+};
+
+export type ProductsBlock = {
+    id: string;
+    type: 'products';
+    title: string;
+    products: Product[];
+};
+
+export type TestimonialsBlock = {
+    id: string;
+    type: 'testimonials';
+    title: string;
+    testimonials: Testimonial[];
+};
+
+export type FaqBlock = {
+    id: string;
     type: 'faq';
     title: string;
     items: FaqItem[];
-}
+};
 
-export interface ContactBlock extends BaseBlock {
+export type ContactBlock = {
+    id: string;
     type: 'contact';
     title: string;
     subtitle: string;
-}
+};
 
 export type MicrositeBlock = HeroBlock | ProductsBlock | TestimonialsBlock | FaqBlock | ContactBlock;
+
+export interface MicrositeSettings {
+    themeColor: string;
+    font: string;
+    companyName: string;
+    logoUrl?: string;
+}

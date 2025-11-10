@@ -25,8 +25,8 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onClose, on
 
   if (!isOpen) return null;
 
-  // FIX: Cast error message to string to satisfy function signature.
-  const renderError = (error: FieldError | undefined) => error?.message ? <span className="text-red-500 text-xs mt-1">{error.message}</span> : null;
+  // FIX: Broaden the error type to 'any' to handle complex error objects from react-hook-form.
+  const renderError = (error: any) => error?.message ? <span className="text-red-500 text-xs mt-1">{error.message as string}</span> : null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center p-4">
