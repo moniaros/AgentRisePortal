@@ -2,7 +2,7 @@ import { Customer, Lead, User, PolicyType, UserRole, Language, CampaignObjective
 
 export const MOCK_USERS: User[] = [
     { id: 'user_1', name: 'John Agent', email: 'john.agent@example.com', role: UserRole.AGENT, agencyId: 'agency_1' },
-    { id: 'user_2', name: 'Jane Admin', email: 'jane.admin@example.com', role: UserRole.ADMIN, agencyId: 'agency_1' },
+    { id: 'user_2', name: 'Jane Admin', email: 'moniaros@gmail.com', role: UserRole.ADMIN, agencyId: 'agency_1' },
     { id: 'user_3', name: 'Peter Broker', email: 'peter.broker@example.com', role: UserRole.AGENT, agencyId: 'agency_2' },
 ];
 
