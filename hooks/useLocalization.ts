@@ -1,6 +1,8 @@
 
+
 import { useContext } from 'react';
 import { LanguageContext } from '../context/LanguageContext';
+import { TranslationTokens } from '../types';
 
 export const useLocalization = () => {
   const context = useContext(LanguageContext);
@@ -9,13 +11,23 @@ export const useLocalization = () => {
   }
 
   // Helper function to get nested translation values
-  const t = (key: string): string => {
-    return key.split('.').reduce((acc, currentKey) => {
+  const t = (key: string, replacements?: { [key: string]: string | number }): any => {
+    const value = key.split('.').reduce((acc: TranslationTokens, currentKey: string): any => {
         if (typeof acc === 'object' && acc !== null && currentKey in acc) {
             return acc[currentKey];
         }
         return key; // Return the key itself if not found
-    }, context.translations) as string;
+    }, context.translations);
+
+    if (typeof value === 'string' && replacements) {
+      let result = value;
+      for (const placeholder in replacements) {
+        result = result.replace(`{${placeholder}}`, String(replacements[placeholder]));
+      }
+      return result;
+    }
+
+    return value;
   };
 
   return { ...context, t };

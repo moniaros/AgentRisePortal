@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useLocalization } from '../hooks/useLocalization';
 import { fetchDashboardData } from '../services/api';
 import ErrorMessage from '../components/ui/ErrorMessage';
 import SkeletonLoader from '../components/ui/SkeletonLoader';
+import { useOnboardingStatus } from '../hooks/useOnboardingStatus';
 
 const Dashboard: React.FC = () => {
     const { t } = useLocalization();
+    const { isSkipped, completeOnboarding } = useOnboardingStatus();
     const [data, setData] = useState<{
         newLeadsCount: number;
         monthlyRevenue: number;
@@ -27,6 +30,27 @@ const Dashboard: React.FC = () => {
         };
         loadData();
     }, []);
+    
+    const WelcomeBanner = () => {
+        if (isSkipped) return null;
+
+        return (
+            <div className="bg-blue-500 text-white p-6 rounded-lg shadow-lg mb-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div>
+                    <h2 className="text-2xl font-bold">{t('dashboard.welcomeBanner.title')}</h2>
+                    <p className="mt-1 max-w-2xl">{t('dashboard.welcomeBanner.description')}</p>
+                </div>
+                <div className="flex-shrink-0 flex gap-4">
+                    <Link to="/onboarding" className="px-5 py-2 bg-white text-blue-600 font-semibold rounded-md hover:bg-gray-100 transition">
+                        {t('dashboard.welcomeBanner.button')}
+                    </Link>
+                    <button onClick={completeOnboarding} className="text-white hover:underline text-sm">
+                        {t('dashboard.welcomeBanner.dismiss')}
+                    </button>
+                </div>
+            </div>
+        );
+    };
 
     const renderStatCard = (title: string, value: string | number, isLoading: boolean) => (
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
@@ -47,6 +71,7 @@ const Dashboard: React.FC = () => {
 
     return (
         <div>
+            <WelcomeBanner />
             <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-6">{t('dashboard.title')}</h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

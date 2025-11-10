@@ -74,7 +74,8 @@ const Login: React.FC = () => {
                                 id="email"
                                 type="email"
                                 {...register('email', {
-                                    required: t('validation.required').replace('{fieldName}', t('login.emailLabel')),
+                                    // Fix: Use replacement syntax for translations
+                                    required: t('validation.required', {fieldName: t('login.emailLabel')}),
                                     pattern: { value: /^\S+@\S+$/i, message: t('validation.invalidEmail') }
                                 })}
                                 className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 dark:bg-gray-700 focus:outline-none sm:text-sm ${errors.email ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500'}`}
@@ -90,7 +91,8 @@ const Login: React.FC = () => {
                             <input
                                 id="password"
                                 type="password"
-                                {...register('password', { required: t('validation.required').replace('{fieldName}', t('login.passwordLabel')) })}
+                                // Fix: Use replacement syntax for translations
+                                {...register('password', { required: t('validation.required', {fieldName: t('login.passwordLabel')}) })}
                                 className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 dark:bg-gray-700 focus:outline-none sm:text-sm ${errors.password ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500'}`}
                             />
                              {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>}

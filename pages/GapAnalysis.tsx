@@ -7,9 +7,11 @@ import PolicyReviewForm from '../components/gap-analysis/PolicyReviewForm';
 import { GoogleGenAI, Type } from '@google/genai';
 import { fetchParsedPolicy } from '../services/api';
 import GapAnalysisResults from '../components/gap-analysis/GapAnalysisResults';
+import { useOnboardingStatus } from '../hooks/useOnboardingStatus';
 
 const GapAnalysis: React.FC = () => {
     const { t } = useLocalization();
+    const { markTaskCompleted } = useOnboardingStatus();
     const [file, setFile] = useState<File | null>(null);
     const [parsedPolicy, setParsedPolicy] = useState<DetailedPolicy | null>(null);
     const [userNeeds, setUserNeeds] = useState('');
@@ -24,7 +26,7 @@ const GapAnalysis: React.FC = () => {
         setAnalysisResult(null);
         setError(null);
         setIsLoading(true);
-        setLoadingStep(t('gapAnalysis.fetchingPolicy'));
+        setLoadingStep(t('gapAnalysis.fetchingPolicy') as string);
 
         try {
             // Instead of parsing, we fetch the mock structured data
@@ -43,11 +45,12 @@ const GapAnalysis: React.FC = () => {
         if (!parsedPolicy || !userNeeds || !process.env.API_KEY) return;
         
         setIsLoading(true);
-        setLoadingStep(t('gapAnalysis.analyzing'));
+        setLoadingStep(t('gapAnalysis.analyzing') as string);
         setAnalysisResult(null);
         setError(null);
 
         try {
+            // FIX: Use correct Gemini API initialization
             const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             const prompt = `
               Perform a gap analysis for an insurance policy.
@@ -103,10 +106,12 @@ const GapAnalysis: React.FC = () => {
                     }
                 }
             });
-
+            
+            // FIX: Use the `.text` accessor for the response
             const jsonStr = response.text;
             const result = JSON.parse(jsonStr) as GapAnalysisResult;
             setAnalysisResult(result);
+            markTaskCompleted('policyAnalyzed'); // Mark task as complete on successful analysis
 
         } catch (err) {
             console.error("Error analyzing gaps:", err);
@@ -119,8 +124,8 @@ const GapAnalysis: React.FC = () => {
     
     return (
         <div>
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">{t('nav.gapAnalysis')}</h1>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">{t('gapAnalysis.description')}</p>
+            <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">{t('nav.gapAnalysis') as string}</h1>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">{t('gapAnalysis.description') as string}</p>
 
             {!file && <FileUploader onFileUpload={handleFileUpload} isLoading={isLoading} />}
             
@@ -148,7 +153,7 @@ const GapAnalysis: React.FC = () => {
             
             {analysisResult && (
                  <div className="mt-8">
-                    <h2 className="text-2xl font-semibold mb-4">{t('gapAnalysis.resultsTitle')}</h2>
+                    <h2 className="text-2xl font-semibold mb-4">{t('gapAnalysis.resultsTitle') as string}</h2>
                     <GapAnalysisResults result={analysisResult} />
                 </div>
             )}

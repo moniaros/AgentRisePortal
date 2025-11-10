@@ -57,13 +57,15 @@ const Analytics: React.FC = () => {
         const totalConversions = filteredData.reduce((sum, d) => sum + d.conversions, 0);
         const ctr = totalImpressions > 0 ? (totalClicks / totalImpressions) * 100 : 0;
 
-        const spendByNetwork = filteredData.reduce<Record<string, number>>((acc, d) => {
+        // FIX: Explicitly type the accumulator to prevent type errors.
+        const spendByNetwork = filteredData.reduce((acc: Record<string, number>, d) => {
             const network = campaignMap.get(d.campaignId)?.network || 'unknown';
             acc[network] = (acc[network] || 0) + d.spend;
             return acc;
         }, {});
         
-        const performanceOverTime = filteredData.reduce<Record<string, { date: string; impressions: number; clicks: number; conversions: number; }>>((acc, d) => {
+        // FIX: Explicitly type the accumulator to prevent type errors.
+        const performanceOverTime = filteredData.reduce((acc: Record<string, { date: string; impressions: number; clicks: number; conversions: number; }>, d) => {
             if (!acc[d.date]) {
                 acc[d.date] = { date: d.date, impressions: 0, clicks: 0, conversions: 0 };
             }
@@ -80,7 +82,7 @@ const Analytics: React.FC = () => {
             totalConversions,
             ctr,
             spendByNetwork: Object.entries(spendByNetwork).map(([name, value]) => ({ name, spend: value })),
-            performanceOverTime: Object.values(performanceOverTime).sort((a: { date: string },b: { date: string }) => new Date(a.date).getTime() - new Date(b.date).getTime()),
+            performanceOverTime: Object.values(performanceOverTime).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()),
         };
     }, [filteredData, campaigns]);
     
@@ -90,7 +92,7 @@ const Analytics: React.FC = () => {
 
     return (
         <div>
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-6">{t('analytics.title')}</h1>
+            <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-6">{t('analytics.title') as string}</h1>
             
             {isLoading ? <SkeletonLoader className="h-24 w-full mb-6" /> : (
                 <AnalyticsFilters
@@ -106,10 +108,10 @@ const Analytics: React.FC = () => {
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
-                    <KpiCard title={t('analytics.kpis.totalSpend')} value={`€${aggregatedData.totalSpend.toLocaleString('el-GR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} />
-                    <KpiCard title={t('analytics.kpis.totalImpressions')} value={aggregatedData.totalImpressions.toLocaleString('el-GR')} />
-                    <KpiCard title={t('analytics.kpis.ctr')} value={`${aggregatedData.ctr.toFixed(2)}%`} />
-                    <KpiCard title={t('analytics.kpis.totalConversions')} value={aggregatedData.totalConversions.toLocaleString('el-GR')} />
+                    <KpiCard title={t('analytics.kpis.totalSpend') as string} value={`€${aggregatedData.totalSpend.toLocaleString('el-GR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} />
+                    <KpiCard title={t('analytics.kpis.totalImpressions') as string} value={aggregatedData.totalImpressions.toLocaleString('el-GR')} />
+                    <KpiCard title={t('analytics.kpis.ctr') as string} value={`${aggregatedData.ctr.toFixed(2)}%`} />
+                    <KpiCard title={t('analytics.kpis.totalConversions') as string} value={aggregatedData.totalConversions.toLocaleString('el-GR')} />
                 </div>
             )}
             
@@ -130,7 +132,7 @@ const Analytics: React.FC = () => {
                     </div>
                 ) : (
                     <div className="mt-6 text-center py-10 bg-white dark:bg-gray-800 rounded-lg shadow-md">
-                        <p>{t('analytics.noData')}</p>
+                        <p>{t('analytics.noData') as string}</p>
                     </div>
                 )
             )}

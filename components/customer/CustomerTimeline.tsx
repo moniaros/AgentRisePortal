@@ -46,7 +46,7 @@ const TimelineEventItem: React.FC<{ event: TimelineEvent; onAddAnnotation: (even
             </div>
             <div className="w-full bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md ml-4">
                 <div className="flex items-center justify-between space-x-2 mb-1">
-                    <div className="font-bold text-gray-900 dark:text-white capitalize">{t(`timelineTypes.${event.type}`)}</div>
+                    <div className="font-bold text-gray-900 dark:text-white capitalize">{t(`timelineTypes.${event.type}`) as string}</div>
                     <time className="font-caveat font-medium text-xs text-blue-500">{new Date(event.date).toLocaleString()}</time>
                 </div>
                 <p className="text-sm text-gray-600 dark:text-gray-400">{event.content}</p>
@@ -54,12 +54,13 @@ const TimelineEventItem: React.FC<{ event: TimelineEvent; onAddAnnotation: (even
                 
                 {event.attachments && event.attachments.length > 0 && (
                     <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
-                        <h5 className="text-xs font-semibold mb-2">{t('customer.attachments')}</h5>
+                        <h5 className="text-xs font-semibold mb-2">{t('customer.attachments') as string}</h5>
                         <div className="space-y-1">
                             {event.attachments.map((file, index) => (
                                 <a href={file.url} key={index} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-500 hover:underline flex items-center gap-2">
                                     📎 {file.name}
-                                    <span className="text-gray-400">{t('customer.attachmentSize', {size: formatBytes(file.size)})}</span>
+                                    {/* Fix: Use replacement syntax for translations */}
+                                    <span className="text-gray-400">{t('customer.attachmentSize', {size: formatBytes(file.size)}) as string}</span>
                                 </a>
                             ))}
                         </div>
@@ -82,12 +83,12 @@ const TimelineEventItem: React.FC<{ event: TimelineEvent; onAddAnnotation: (even
                         <textarea
                             value={annotation}
                             onChange={(e) => setAnnotation(e.target.value)}
-                            placeholder={t('customer.annotationPlaceholder')}
+                            placeholder={t('customer.annotationPlaceholder') as string}
                             className="w-full text-xs p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
                             rows={2}
                         />
                         <button type="submit" className="mt-1 px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-400" disabled={!annotation.trim()}>
-                            {t('customer.saveAnnotation')}
+                            {t('customer.saveAnnotation') as string}
                         </button>
                     </form>
                     <button 
@@ -109,7 +110,8 @@ const CustomerTimeline: React.FC<CustomerTimelineProps> = ({ timeline, onAddAnno
     const groupedTimeline = useMemo(() => {
         const sortedTimeline = [...timeline].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
         
-        const groups = sortedTimeline.reduce((acc, event) => {
+        // FIX: Add explicit type for the accumulator in the reduce function to prevent type errors.
+        const groups = sortedTimeline.reduce<Record<string, { title: string, events: TimelineEvent[] }>>((acc, event) => {
             const date = new Date(event.date);
             const groupKey = `${date.getFullYear()}-${date.getMonth()}`;
             if (!acc[groupKey]) {
@@ -120,7 +122,7 @@ const CustomerTimeline: React.FC<CustomerTimelineProps> = ({ timeline, onAddAnno
             }
             acc[groupKey].events.push(event);
             return acc;
-        }, {} as Record<string, { title: string, events: TimelineEvent[] }>);
+        }, {});
         
         // Set the first group to be expanded by default
         const firstGroupKey = Object.keys(groups)[0];
@@ -137,7 +139,7 @@ const CustomerTimeline: React.FC<CustomerTimelineProps> = ({ timeline, onAddAnno
     };
 
     if (!timeline || timeline.length === 0) {
-        return <p className="text-gray-500 dark:text-gray-400">{t('customer.noTimeline')}</p>;
+        return <p className="text-gray-500 dark:text-gray-400">{t('customer.noTimeline') as string}</p>;
     }
 
     return (

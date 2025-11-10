@@ -1,157 +1,88 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useLocalization } from '../hooks/useLocalization';
+import { SOCIAL_PLATFORMS } from '../constants';
 import { SocialPlatform } from '../types';
 import SocialAuthModal from '../components/settings/SocialAuthModal';
-import { SOCIAL_PLATFORMS } from '../constants';
 
 const Settings: React.FC = () => {
     const { t } = useLocalization();
-    const [gtmId, setGtmId] = useState('');
-    const [savedMessage, setSavedMessage] = useState('');
-    const [connections, setConnections] = useState<{ [key: string]: boolean }>({});
-    const [authPlatform, setAuthPlatform] = useState<SocialPlatform | null>(null);
+    const [connectedAccounts, setConnectedAccounts] = useState<Set<string>>(() => new Set(['facebook']));
+    const [selectedPlatform, setSelectedPlatform] = useState<SocialPlatform | null>(null);
+    const [gtmId, setGtmId] = useState(() => localStorage.getItem('gtmContainerId') || '');
 
-    useEffect(() => {
-        const storedGtmId = localStorage.getItem('gtmContainerId');
-        if (storedGtmId) setGtmId(storedGtmId);
-
-        const storedConnections = localStorage.getItem('socialConnections');
-        if (storedConnections) setConnections(JSON.parse(storedConnections));
-    }, []);
-
-    const handleSaveGtmId = (e: React.FormEvent) => {
-        e.preventDefault();
-        localStorage.setItem('gtmContainerId', gtmId.trim());
-        setSavedMessage(t('settings.gtmSavedSuccess'));
-        setTimeout(() => window.location.reload(), 1500);
+    const handleConnect = (platform: SocialPlatform) => {
+        setSelectedPlatform(platform);
     };
 
-    const updateConnections = (updated: { [key: string]: boolean }) => {
-        setConnections(updated);
-        localStorage.setItem('socialConnections', JSON.stringify(updated));
+    const handleDisconnect = (platformKey: string) => {
+        setConnectedAccounts(prev => {
+            const newSet = new Set(prev);
+            newSet.delete(platformKey);
+            return newSet;
+        });
     };
     
     const handleAuthSuccess = (platformKey: string) => {
-        const mockToken = `${platformKey}_token_${Date.now()}`;
-        localStorage.setItem(`${platformKey}_token`, mockToken);
-        updateConnections({ ...connections, [platformKey]: true });
-        setAuthPlatform(null);
-    };
-    
-    const handleDisconnect = (platformKey: string) => {
-        localStorage.removeItem(`${platformKey}_token`);
-        updateConnections({ ...connections, [platformKey]: false });
+        setConnectedAccounts(prev => new Set(prev).add(platformKey));
+        setSelectedPlatform(null);
     };
 
-    const Toggle = ({ label, enabled }: { label: string, enabled: boolean }) => (
-        <div className="flex items-center justify-between py-2">
-            <span className="text-gray-700 dark:text-gray-300">{label}</span>
-            <div className={`relative inline-block w-12 h-6 rounded-full transition-colors duration-300 ${enabled ? 'bg-blue-500' : 'bg-gray-300 dark:bg-gray-600'}`}>
-                <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-md transform transition-transform duration-300 ${enabled ? 'translate-x-6' : ''}`}></span>
-            </div>
-        </div>
-    );
+    const handleGtmSave = () => {
+        localStorage.setItem('gtmContainerId', gtmId);
+        alert('GTM ID saved. Please refresh the page for it to take effect.');
+    };
 
     return (
-        <div>
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-6">{t('header.settings')}</h1>
-            
-            <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md max-w-2xl mx-auto space-y-8">
-                <div>
-                    <h2 className="text-xl font-semibold border-b dark:border-gray-700 pb-2 mb-4">{t('settings.socialConnections.title')}</h2>
-                    <div className="space-y-4">
-                        {SOCIAL_PLATFORMS.map(platform => {
-                            const isConnected = !!connections[platform.key];
-                            return (
-                                <div key={platform.key} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                                    <div className="flex items-center gap-4">
-                                        {platform.icon}
-                                        <div>
-                                            <h4 className="font-semibold">{platform.name}</h4>
-                                            <p className="text-xs text-gray-500 dark:text-gray-400">{t(`settings.socialConnections.platforms.${platform.key}.description`)}</p>
-                                        </div>
-                                    </div>
-                                    {isConnected ? (
-                                        <button onClick={() => handleDisconnect(platform.key)} className="px-4 py-2 text-sm bg-red-600 text-white rounded-md hover:bg-red-700 transition">
-                                            {t('settings.socialConnections.disconnect')}
-                                        </button>
-                                    ) : (
-                                        <button onClick={() => setAuthPlatform(platform)} className="px-4 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
-                                            {t('settings.socialConnections.connect')}
-                                        </button>
-                                    )}
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
+        <div className="max-w-4xl mx-auto space-y-8">
+            <h1 className="text-3xl font-bold text-gray-800 dark:text-white">{t('header.settings') as string}</h1>
 
-                {/* Other sections remain unchanged... */}
-                 <div>
-                    <h2 className="text-xl font-semibold border-b dark:border-gray-700 pb-2 mb-4">{t('settings.notifications')}</h2>
-                    <div className="space-y-2">
-                        <Toggle label={t('settings.emailNotifications')} enabled={true} />
-                        <Toggle label={t('settings.pushNotifications')} enabled={false} />
-                        <Toggle label={t('settings.monthlyReports')} enabled={true} />
-                    </div>
-                </div>
-                 <div>
-                    <h2 className="text-xl font-semibold border-b dark:border-gray-700 pb-2 mb-4">{t('settings.appearance')}</h2>
-                     <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{t('settings.appearanceDesc')}</p>
-                     <div className="flex items-center space-x-4">
-                        <button className="flex-1 p-4 border-2 border-blue-500 rounded-lg text-center">
-                            <span role="img" aria-label="sun" className="text-2xl">☀️</span>
-                            <p>{t('settings.lightMode')}</p>
-                        </button>
-                         <button className="flex-1 p-4 border-2 border-gray-300 dark:border-gray-600 rounded-lg text-center opacity-50">
-                            <span role="img" aria-label="moon" className="text-2xl">🌙</span>
-                            <p>{t('settings.darkMode')}</p>
-                        </button>
-                     </div>
-                </div>
-                <div>
-                    <h2 className="text-xl font-semibold border-b dark:border-gray-700 pb-2 mb-4">{t('settings.integrations')}</h2>
-                    <form onSubmit={handleSaveGtmId} className="space-y-4">
-                        <div>
-                            <label htmlFor="gtm-id" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                {t('settings.gtmId')}
-                            </label>
-                            <input
-                                id="gtm-id"
-                                type="text"
-                                value={gtmId}
-                                onChange={(e) => setGtmId(e.target.value)}
-                                placeholder={t('settings.gtmPlaceholder')}
-                                className="mt-1 block w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
-                            />
-                            <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">{t('settings.gtmDescription')}</p>
+            {/* Social Connections */}
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 className="text-xl font-semibold mb-4">{t('settings.socialConnections.title') as string}</h2>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">{t('settings.socialConnections.description') as string}</p>
+                <div className="space-y-4">
+                    {SOCIAL_PLATFORMS.map(platform => (
+                        <div key={platform.key} className="flex items-center justify-between p-4 border dark:border-gray-700 rounded-md">
+                            <div className="flex items-center gap-4">
+                                {platform.icon}
+                                <span className="font-medium">{platform.name}</span>
+                            </div>
+                            {connectedAccounts.has(platform.key) ? (
+                                <button onClick={() => handleDisconnect(platform.key)} className="px-4 py-1.5 text-sm bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300 rounded-full hover:bg-red-200">
+                                    {t('settings.socialConnections.disconnect') as string}
+                                </button>
+                            ) : (
+                                <button onClick={() => handleConnect(platform)} className="px-4 py-1.5 text-sm bg-blue-600 text-white rounded-full hover:bg-blue-700">
+                                    {t('settings.socialConnections.connect') as string}
+                                </button>
+                            )}
                         </div>
-                        <div className="flex items-center justify-between">
-                            <button type="submit" className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
-                                {t('settings.saveGtmId')}
-                            </button>
-                            {savedMessage && <span className="text-sm text-green-600 dark:text-green-400">{savedMessage}</span>}
-                        </div>
-                    </form>
-                </div>
-                <div>
-                    <h2 className="text-xl font-semibold border-b dark:border-gray-700 pb-2 mb-4">{t('settings.account')}</h2>
-                    <div className="space-y-4">
-                        <button className="w-full text-left p-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md transition">
-                            {t('settings.changePassword')}
-                        </button>
-                         <button className="w-full text-left p-3 bg-red-50 dark:bg-red-900/50 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/80 rounded-md transition font-semibold">
-                            {t('settings.deleteAccount')}
-                         </button>
-                    </div>
+                    ))}
                 </div>
             </div>
 
-            {authPlatform && (
-                <SocialAuthModal
-                    platform={authPlatform}
-                    onClose={() => setAuthPlatform(null)}
+            {/* GTM Configuration */}
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                 <h2 className="text-xl font-semibold mb-4">{t('settings.gtm.title') as string}</h2>
+                 <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{t('settings.gtm.description') as string}</p>
+                 <div className="flex items-center gap-4">
+                    <input 
+                        type="text"
+                        value={gtmId}
+                        onChange={(e) => setGtmId(e.target.value)}
+                        placeholder="GTM-XXXXXXX"
+                        className="flex-grow p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
+                    />
+                    <button onClick={handleGtmSave} className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                        {t('crm.save') as string}
+                    </button>
+                 </div>
+            </div>
+
+            {selectedPlatform && (
+                <SocialAuthModal 
+                    platform={selectedPlatform}
+                    onClose={() => setSelectedPlatform(null)}
                     onSuccess={handleAuthSuccess}
                 />
             )}

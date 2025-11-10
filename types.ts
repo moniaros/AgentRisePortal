@@ -1,24 +1,30 @@
-import React from 'react';
 
 export enum Language {
-    EN = 'en',
-    EL = 'el',
-}
-
-export type TranslationTokens = { [key: string]: string | TranslationTokens };
-
-export interface SocialPlatform {
-    key: string;
-    name: string;
-    icon: React.ReactElement;
+  EN = 'en',
+  EL = 'el',
 }
 
 export enum PolicyType {
-    AUTO = 'auto',
-    HOME = 'home',
-    LIFE = 'life',
-    HEALTH = 'health',
-    OTHER = 'other',
+  AUTO = 'auto',
+  HOME = 'home',
+  LIFE = 'life',
+  HEALTH = 'health',
+}
+
+export enum CampaignObjective {
+    LEAD_GENERATION = 'LEAD_GENERATION',
+    BRAND_AWARENESS = 'BRAND_AWARENESS',
+    WEBSITE_TRAFFIC = 'WEBSITE_TRAFFIC',
+}
+
+export type UserRole = 'admin' | 'agent';
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: UserRole;
+  agencyId: string;
 }
 
 export interface Coverage {
@@ -39,6 +45,12 @@ export interface Policy {
   coverages: Coverage[];
 }
 
+export interface Attachment {
+    name: string;
+    url: string;
+    size: number;
+}
+
 export interface Annotation {
     id: string;
     date: string;
@@ -46,21 +58,15 @@ export interface Annotation {
     author: string;
 }
 
-export interface Attachment {
-    name: string;
-    url: string; // For MVP, this will be a placeholder
-    size: number; // in bytes
-}
-
 export interface TimelineEvent {
-    id: string;
-    date: string;
-    type: 'note' | 'call' | 'email' | 'meeting' | 'policy_update' | 'claim' | 'system';
-    content: string;
-    author: string;
-    annotations?: Annotation[];
-    attachments?: Attachment[];
-    isFlagged?: boolean;
+  id: string;
+  date: string;
+  type: 'note' | 'call' | 'email' | 'meeting' | 'policy_update' | 'claim' | 'system';
+  content: string;
+  author: string;
+  isFlagged?: boolean;
+  attachments?: Attachment[];
+  annotations?: Annotation[];
 }
 
 export interface Customer {
@@ -71,11 +77,11 @@ export interface Customer {
   phone: string;
   address: string;
   dateOfBirth: string;
-  policies: Policy[];
-  timeline: TimelineEvent[];
   agencyId: string;
   attentionFlag?: string;
-  communicationPreferences?: ('email' | 'sms')[];
+  communicationPreferences: ('email' | 'sms')[];
+  policies: Policy[];
+  timeline: TimelineEvent[];
 }
 
 export type LeadStatus = 'new' | 'contacted' | 'qualified' | 'closed' | 'rejected';
@@ -87,31 +93,24 @@ export interface Lead {
   email: string;
   phone?: string;
   source: string;
-  campaignId?: string;
-  customerId?: string;
   status: LeadStatus;
-  policyType: PolicyType;
   potentialValue: number;
   createdAt: string;
+  policyType: PolicyType;
   agencyId: string;
+  campaignId?: string;
+  customerId?: string;
 }
 
 export interface DetailedPolicy {
-  policyNumber: string;
-  insurer: string;
-  policyholder: {
-    name: string;
-    address: string;
-  };
-  insuredItems: {
-    id: string;
-    description: string;
-    coverages: {
-      type: string;
-      limit: string;
-      deductible?: string;
+    policyNumber: string;
+    insurer: string;
+    policyholder: { name: string; address: string };
+    insuredItems: {
+        id: string;
+        description: string;
+        coverages: Coverage[];
     }[];
-  }[];
 }
 
 export interface GapAnalysisResult {
@@ -133,10 +132,35 @@ export interface GapAnalysisResult {
     }[];
 }
 
-export enum CampaignObjective {
-    LEAD_GENERATION = 'lead_generation',
-    BRAND_AWARENESS = 'brand_awareness',
-    WEBSITE_TRAFFIC = 'website_traffic',
+export interface TranslationTokens {
+  [key: string]: string | TranslationTokens;
+}
+
+export interface SocialPlatform {
+  key: string;
+  name: string;
+  icon: React.ReactElement;
+}
+
+export interface AnalyticsDataRecord {
+    campaignId: string;
+    date: string; // YYYY-MM-DD
+    impressions: number;
+    clicks: number;
+    conversions: number;
+    spend: number;
+}
+
+export type AnalyticsData = AnalyticsDataRecord[];
+
+export interface AuditLog {
+    id: string;
+    timestamp: string;
+    actorName: string;
+    action: 'user_invited' | 'user_removed' | 'role_changed';
+    targetName: string;
+    details: string;
+    agencyId: string;
 }
 
 export interface LeadCaptureFormField {
@@ -163,38 +187,15 @@ export interface Campaign {
         body: string;
         image: string;
     };
-    status: 'draft' | 'active' | 'completed' | 'paused';
+    status: 'active' | 'draft' | 'completed';
     leadCaptureForm?: {
         fields: LeadCaptureFormField[];
     };
     agencyId: string;
 }
 
-export type AnalyticsData = {
-    campaignId: string;
-    date: string; // YYYY-MM-DD
-    impressions: number;
-    clicks: number;
-    conversions: number;
-    spend: number;
-}[];
-
-export type UserRole = 'admin' | 'agent';
-
-export interface User {
-    id: string;
-    name: string;
-    email: string;
-    role: UserRole;
-    agencyId: string;
-}
-
-export interface AuditLog {
-    id: string;
-    timestamp: string;
-    actorName: string;
-    action: 'user_invited' | 'user_removed' | 'role_changed';
-    targetName: string;
-    details: string;
-    agencyId: string;
+export interface OnboardingProgress {
+    profileCompleted: boolean;
+    policyAnalyzed: boolean;
+    campaignCreated: boolean;
 }
