@@ -1,46 +1,51 @@
 import React from 'react';
 
-// enums
+// General
 export enum Language {
-  EN = 'en',
-  EL = 'el',
+    EN = 'en',
+    EL = 'el',
 }
 
+export type TranslationTokens = { [key: string]: any };
+
+// User Management & Auth
 export enum UserRole {
-  AGENT = 'agent',
-  ADMIN = 'admin',
+    ADMIN = 'admin',
+    AGENT = 'agent',
 }
 
+export interface User {
+    id: string;
+    name: string;
+    email: string;
+    role: UserRole;
+    agencyId: string;
+}
+
+// CRM & Leads
 export enum PolicyType {
-  AUTO = 'auto',
-  HOME = 'home',
-  LIFE = 'life',
-  HEALTH = 'health',
+    AUTO = 'auto',
+    HOME = 'home',
+    LIFE = 'life',
+    HEALTH = 'health',
 }
 
-export enum CampaignObjective {
-  LEAD_GENERATION = 'LEAD_GENERATION',
-  BRAND_AWARENESS = 'BRAND_AWARENESS',
-  SALES = 'SALES',
-}
-
-// CRM types
 export type LeadStatus = 'new' | 'contacted' | 'qualified' | 'closed' | 'rejected';
 
 export interface Lead {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone?: string;
-  source: string;
-  status: LeadStatus;
-  potentialValue: number;
-  createdAt: string;
-  policyType: PolicyType;
-  customerId?: string;
-  agencyId: string;
-  campaignId?: string;
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone?: string;
+    source: string;
+    status: LeadStatus;
+    potentialValue: number;
+    createdAt: string;
+    customerId?: string;
+    policyType: PolicyType;
+    agencyId: string;
+    campaignId?: string;
 }
 
 export interface Coverage {
@@ -50,22 +55,22 @@ export interface Coverage {
 }
 
 export interface Policy {
-  id: string;
-  type: PolicyType;
-  policyNumber: string;
-  premium: number;
-  startDate: string;
-  endDate: string;
-  isActive: boolean;
-  insurer: string;
-  coverages: Coverage[];
+    id: string;
+    type: PolicyType;
+    policyNumber: string;
+    premium: number;
+    startDate: string;
+    endDate: string;
+    isActive: boolean;
+    insurer: string;
+    coverages: Coverage[];
 }
 
 export interface Annotation {
     id: string;
     date: string;
-    author: string;
     content: string;
+    author: string;
 }
 
 export interface Attachment {
@@ -75,42 +80,76 @@ export interface Attachment {
 }
 
 export interface TimelineEvent {
-  id: string;
-  date: string;
-  type: 'note' | 'call' | 'email' | 'meeting' | 'policy_update' | 'claim' | 'system';
-  content: string;
-  author: string;
-  attachments?: Attachment[];
-  annotations?: Annotation[];
-  isFlagged?: boolean;
+    id: string;
+    date: string;
+    type: 'note' | 'call' | 'email' | 'meeting' | 'system' | 'policy_update' | 'claim';
+    content: string;
+    author: string;
+    annotations?: Annotation[];
+    attachments?: Attachment[];
+    isFlagged?: boolean;
 }
-
 
 export interface Customer {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone?: string;
-  address?: string;
-  dateOfBirth?: string;
-  communicationPreferences: ('email' | 'sms')[];
-  policies: Policy[];
-  timeline: TimelineEvent[];
-  agencyId: string;
-  attentionFlag?: string;
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone?: string;
+    address?: string;
+    dateOfBirth?: string;
+    communicationPreferences: ('email' | 'sms')[];
+    policies: Policy[];
+    timeline: TimelineEvent[];
+    agencyId: string;
+    attentionFlag?: string;
 }
 
-// User and Auth types
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: UserRole;
-  agencyId: string;
+// Social & Campaigns
+export interface SocialPlatform {
+    key: string;
+    name: string;
+    icon: React.ReactElement<React.SVGProps<SVGSVGElement>>;
 }
 
-// Gap Analysis types
+export enum CampaignObjective {
+    LEAD_GENERATION = 'lead_generation',
+    BRAND_AWARENESS = 'brand_awareness',
+    WEBSITE_TRAFFIC = 'website_traffic',
+}
+
+export interface LeadCaptureFormField {
+    name: string;
+    type: 'text' | 'email' | 'tel' | 'number';
+    required: boolean;
+}
+
+export interface Campaign {
+    id: string;
+    name: string;
+    objective: CampaignObjective;
+    network: string; // e.g., 'facebook', 'instagram'
+    language: Language;
+    audience: {
+        ageRange: [number, number];
+        interests: string[];
+    };
+    budget: number;
+    startDate: string;
+    endDate: string;
+    creative: {
+        headline: string;
+        body: string;
+        image: string;
+    };
+    status: 'draft' | 'active' | 'completed';
+    agencyId: string;
+    leadCaptureForm?: {
+        fields: LeadCaptureFormField[];
+    }
+}
+
+// Gap Analysis
 export interface DetailedPolicy {
     policyNumber: string;
     insurer: string;
@@ -144,46 +183,8 @@ export interface GapAnalysisResult {
     }[];
 }
 
-// Social and Campaign types
-export interface SocialPlatform {
-  key: string;
-  name: string;
-  icon: React.ReactElement<React.SVGProps<SVGSVGElement>>;
-}
 
-export interface LeadCaptureFormField {
-    name: string;
-    type: 'text' | 'email' | 'tel' | 'number';
-    required: boolean;
-}
-
-export interface Campaign {
-    id: string;
-    name: string;
-    objective: CampaignObjective;
-    network: 'facebook' | 'instagram' | 'linkedin' | 'x';
-    language: Language;
-    audience: {
-        ageRange: [number, number];
-        interests: string[];
-    };
-    budget: number;
-    startDate: string;
-    endDate: string;
-    creative: {
-        headline: string;
-        body: string;
-        image?: string;
-    };
-    status: 'draft' | 'active' | 'completed';
-    agencyId: string;
-    leadCaptureForm?: {
-        fields: LeadCaptureFormField[];
-    };
-}
-
-
-// Analytics and Reporting types
+// Analytics & Reporting
 export interface AnalyticsRecord {
     date: string;
     campaignId: string;
@@ -195,27 +196,6 @@ export interface AnalyticsRecord {
 
 export type AnalyticsData = AnalyticsRecord[];
 
-export interface ExecutiveData {
-    agencyGrowth: { month: string; premium: number; policies: number }[];
-    productMix: { name: PolicyType; value: number }[];
-    claimsTrend: { month: string; submitted: number; approved: number; paid: number }[];
-    leadFunnel: { status: LeadStatus; count: number }[];
-    campaignRoi: { id: string; name: string; spend: number; revenue: number }[];
-    riskExposure: { area: string; exposure: number; mitigation: number }[];
-}
-
-// Localization types
-export interface TranslationTokens {
-  [key: string]: string | TranslationTokens;
-}
-
-// Settings and Onboarding
-export interface OnboardingProgress {
-    profileCompleted: boolean;
-    policyAnalyzed: boolean;
-    campaignCreated: boolean;
-}
-
 export interface AuditLog {
     id: string;
     timestamp: string;
@@ -226,13 +206,43 @@ export interface AuditLog {
     agencyId: string;
 }
 
-// Microsite Builder types
-export type MicrositeBlockType = 'hero' | 'about' | 'services' | 'awards' | 'testimonials' | 'news' | 'contact';
+export interface ExecutiveData {
+    agencyGrowth: { month: string; premium: number; policies: number }[];
+    productMix: { name: PolicyType; value: number }[];
+    claimsTrend: { month: string; submitted: number; approved: number; paid: number }[];
+    leadFunnel: { status: LeadStatus; count: number }[];
+    campaignRoi: { id: string; name: string; spend: number; revenue: number }[];
+    riskExposure: { area: string; exposure: number; mitigation: number }[];
+}
 
-interface BaseBlock {
+// Onboarding
+export interface OnboardingProgress {
+    profileCompleted: boolean;
+    policyAnalyzed: boolean;
+    campaignCreated: boolean;
+}
+
+// Microsite Builder
+export interface MicrositeConfig {
+    siteTitle: string;
+    themeColor: string;
+    contactEmail: string;
+    contactPhone: string;
+    address: string;
+    social: {
+        facebook: string;
+        linkedin: string;
+        x: string;
+    };
+}
+
+export type MicrositeBlockType = 'hero' | 'about' | 'services' | 'awards' | 'testimonials' | 'news' | 'contact' | 'faq';
+
+export interface BaseBlock {
     id: string;
-    title: string;
+    type: MicrositeBlockType;
     isLoading?: boolean;
+    title: string;
 }
 
 export interface HeroBlock extends BaseBlock {
@@ -293,7 +303,11 @@ export interface NewsBlock extends BaseBlock {
     items: NewsItem[];
 }
 
-// FIX: Added missing FaqBlock and FaqItem types to resolve compilation error in FaqBlockPreview.tsx
+export interface ContactBlock extends BaseBlock {
+    type: 'contact';
+    subtitle: string;
+}
+
 export interface FaqItem {
     id: string;
     question: string;
@@ -305,22 +319,4 @@ export interface FaqBlock extends BaseBlock {
     items: FaqItem[];
 }
 
-export interface ContactBlock extends BaseBlock {
-    type: 'contact';
-    subtitle: string;
-}
-
 export type MicrositeBlock = HeroBlock | AboutBlock | ServicesBlock | AwardsBlock | TestimonialsBlock | NewsBlock | ContactBlock | FaqBlock;
-
-export interface MicrositeConfig {
-    siteTitle: string;
-    themeColor: string;
-    contactEmail: string;
-    contactPhone: string;
-    address: string;
-    social: {
-        facebook: string;
-        linkedin: string;
-        x: string;
-    };
-}

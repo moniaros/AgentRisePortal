@@ -1,6 +1,5 @@
 import React from 'react';
-import { MicrositeBlock, HeroBlock, AboutBlock, ServicesBlock, ServiceItem, AwardsBlock, AwardItem, TestimonialsBlock, TestimonialItem, NewsBlock, NewsItem, ContactBlock } from '../../types';
-import { useLocalization } from '../../hooks/useLocalization';
+import { MicrositeBlock, HeroBlock, AboutBlock, ServicesBlock, AwardItem, AwardsBlock, TestimonialItem, TestimonialsBlock, NewsItem, NewsBlock, ContactBlock } from '../../types';
 
 interface BlockEditorProps {
     block: MicrositeBlock;
@@ -10,150 +9,124 @@ interface BlockEditorProps {
 const generateId = () => `item_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
 const BlockEditor: React.FC<BlockEditorProps> = ({ block, onUpdate }) => {
-    const { t } = useLocalization();
 
-    const handleCommonChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        onUpdate({ ...block, [e.target.name]: e.target.value });
-    };
-
-    const handleNestedChange = (index: number, field: string, value: string, arrayName: string) => {
-        const items = (block as any)[arrayName];
-        const newItems = [...items];
-        newItems[index] = { ...newItems[index], [field]: value };
-        onUpdate({ ...block, [arrayName]: newItems });
-    };
-
-    const addNestedItem = (arrayName: string, newItem: object) => {
-        const items = (block as any)[arrayName] || [];
-        onUpdate({ ...block, [arrayName]: [...items, { ...newItem, id: generateId() }] });
-    };
-
-    const removeNestedItem = (index: number, arrayName: string) => {
-        const items = (block as any)[arrayName];
-        onUpdate({ ...block, [arrayName]: items.filter((_: any, i: number) => i !== index) });
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        onUpdate({ ...block, [e.target.name]: e.target.value } as MicrositeBlock);
     };
     
-    const LabeledInput: React.FC<{ label: string; name: string; value: string; onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; }> = ({ label, name, value, onChange }) => (
-        <div>
-            <label className="block text-sm font-medium">{label}</label>
-            <input
-                type="text"
-                name={name}
-                value={value}
-                onChange={onChange}
-                className="mt-1 w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
-            />
-        </div>
-    );
+    // Generic handler for nested items (services, awards, etc.)
+    const handleItemChange = (itemId: string, field: string, value: string, listName: string) => {
+        const list = (block as any)[listName] as any[];
+        const updatedList = list.map(item => item.id === itemId ? { ...item, [field]: value } : item);
+        onUpdate({ ...block, [listName]: updatedList } as MicrositeBlock);
+    };
 
-     const LabeledTextarea: React.FC<{ label: string; name: string; value: string; onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void; rows?: number }> = ({ label, name, value, onChange, rows=3 }) => (
-        <div>
-            <label className="block text-sm font-medium">{label}</label>
-            <textarea
-                name={name}
-                value={value}
-                onChange={onChange}
-                rows={rows}
-                className="mt-1 w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
-            />
-        </div>
-    );
+    const addItem = (listName: string, newItem: any) => {
+        const list = (block as any)[listName] || [];
+        onUpdate({ ...block, [listName]: [...list, { ...newItem, id: generateId() }] } as MicrositeBlock);
+    };
 
-    if (block.isLoading) {
-        return <p className="text-sm text-gray-500">{t('micrositeBuilder.generatingAiContent')}</p>;
-    }
+    const removeItem = (itemId: string, listName: string) => {
+        const list = (block as any)[listName] as any[];
+        onUpdate({ ...block, [listName]: list.filter(item => item.id !== itemId) } as MicrositeBlock);
+    };
 
-    const renderHeroEditor = (b: HeroBlock) => (
-        <div className="space-y-4">
-            <LabeledInput label="Title" name="title" value={b.title} onChange={handleCommonChange} />
-            <LabeledInput label="Subtitle" name="subtitle" value={b.subtitle} onChange={(e) => onUpdate({ ...b, subtitle: e.target.value })} />
-            <LabeledInput label="CTA Button Text" name="ctaText" value={b.ctaText} onChange={(e) => onUpdate({ ...b, ctaText: e.target.value })} />
-        </div>
-    );
-
-    const renderAboutEditor = (b: AboutBlock) => (
-        <div className="space-y-4">
-            <LabeledInput label="Title" name="title" value={b.title} onChange={handleCommonChange} />
-            <LabeledTextarea label={t('micrositeBuilder.editor.content')} name="content" value={b.content} onChange={(e) => onUpdate({...b, content: e.target.value})} rows={5} />
-            <LabeledInput label={t('micrositeBuilder.editor.imageUrl')} name="imageUrl" value={b.imageUrl} onChange={(e) => onUpdate({...b, imageUrl: e.target.value})} />
-        </div>
-    );
-
-    const renderServicesEditor = (b: ServicesBlock) => (
-        <div className="space-y-4">
-            <LabeledInput label="Title" name="title" value={b.title} onChange={handleCommonChange} />
-            {b.services.map((p, i) => (
-                <div key={p.id} className="p-2 border rounded space-y-2 dark:border-gray-600">
-                    <input value={p.name} onChange={(e) => handleNestedChange(i, 'name', e.target.value, 'services')} placeholder={t('micrositeBuilder.editor.serviceName')} className="w-full p-1 border rounded dark:bg-gray-600"/>
-                    <textarea value={p.description} onChange={(e) => handleNestedChange(i, 'description', e.target.value, 'services')} placeholder={t('micrositeBuilder.editor.serviceDescription')} className="w-full p-1 border rounded dark:bg-gray-600"/>
-                    <button onClick={() => removeNestedItem(i, 'services')} className="text-xs text-red-500">{t('micrositeBuilder.editor.remove')}</button>
-                </div>
-            ))}
-            <button onClick={() => addNestedItem('services', { name: '', description: '' })} className="text-sm text-blue-500">+ {t('micrositeBuilder.editor.addService')}</button>
-        </div>
-    );
+    const renderEditor = () => {
+        switch (block.type) {
+            case 'hero':
+                const heroBlock = block as HeroBlock;
+                return (
+                    <div className="space-y-4">
+                        <input name="title" value={heroBlock.title} onChange={handleInputChange} placeholder="Title" className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
+                        <textarea name="subtitle" value={heroBlock.subtitle} onChange={handleInputChange} placeholder="Subtitle" className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
+                        <input name="ctaText" value={heroBlock.ctaText} onChange={handleInputChange} placeholder="Button Text" className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
+                    </div>
+                );
+            case 'about':
+                const aboutBlock = block as AboutBlock;
+                return (
+                     <div className="space-y-4">
+                        <input name="title" value={aboutBlock.title} onChange={handleInputChange} placeholder="Title" className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
+                        <textarea name="content" value={aboutBlock.content} onChange={handleInputChange} placeholder="Content" className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" rows={5} />
+                        <input name="imageUrl" value={aboutBlock.imageUrl} onChange={handleInputChange} placeholder="Image URL" className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
+                    </div>
+                );
+            case 'services':
+                 const servicesBlock = block as ServicesBlock;
+                 return (
+                     <div className="space-y-4">
+                         <input name="title" value={servicesBlock.title} onChange={handleInputChange} placeholder="Title" className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
+                         {servicesBlock.services.map((service) => (
+                             <div key={service.id} className="p-2 border rounded dark:border-gray-600 space-y-2">
+                                 <input value={service.name} onChange={e => handleItemChange(service.id, 'name', e.target.value, 'services')} placeholder="Service Name" className="w-full p-1 border rounded dark:bg-gray-600" />
+                                 <textarea value={service.description} onChange={e => handleItemChange(service.id, 'description', e.target.value, 'services')} placeholder="Description" className="w-full p-1 border rounded dark:bg-gray-600" rows={2} />
+                                 <button onClick={() => removeItem(service.id, 'services')} className="text-red-500 text-xs">Remove</button>
+                             </div>
+                         ))}
+                         <button onClick={() => addItem('services', { name: '', description: '' })} className="text-blue-500 text-sm">+ Add Service</button>
+                     </div>
+                 );
+             case 'awards':
+                const awardsBlock = block as AwardsBlock;
+                return (
+                    <div className="space-y-4">
+                        <input name="title" value={awardsBlock.title} onChange={handleInputChange} placeholder="Title" className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
+                        {awardsBlock.awards.map((award) => (
+                            <div key={award.id} className="p-2 border rounded dark:border-gray-600 space-y-2">
+                                <input value={award.title} onChange={e => handleItemChange(award.id, 'title', e.target.value, 'awards')} placeholder="Award Title" className="w-full p-1 border rounded dark:bg-gray-600" />
+                                <input value={award.issuer} onChange={e => handleItemChange(award.id, 'issuer', e.target.value, 'awards')} placeholder="Issuer" className="w-full p-1 border rounded dark:bg-gray-600" />
+                                <input value={award.year} onChange={e => handleItemChange(award.id, 'year', e.target.value, 'awards')} placeholder="Year" className="w-full p-1 border rounded dark:bg-gray-600" />
+                                <button onClick={() => removeItem(award.id, 'awards')} className="text-red-500 text-xs">Remove</button>
+                            </div>
+                        ))}
+                        <button onClick={() => addItem('awards', { title: '', issuer: '', year: '' })} className="text-blue-500 text-sm">+ Add Award</button>
+                    </div>
+                );
+            case 'testimonials':
+                const testimonialsBlock = block as TestimonialsBlock;
+                 return (
+                     <div className="space-y-4">
+                         <input name="title" value={testimonialsBlock.title} onChange={handleInputChange} placeholder="Title" className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
+                         {testimonialsBlock.testimonials.map((item) => (
+                             <div key={item.id} className="p-2 border rounded dark:border-gray-600 space-y-2">
+                                 <textarea value={item.quote} onChange={e => handleItemChange(item.id, 'quote', e.target.value, 'testimonials')} placeholder="Quote" className="w-full p-1 border rounded dark:bg-gray-600" rows={3} />
+                                 <input value={item.author} onChange={e => handleItemChange(item.id, 'author', e.target.value, 'testimonials')} placeholder="Author" className="w-full p-1 border rounded dark:bg-gray-600" />
+                                 <button onClick={() => removeItem(item.id, 'testimonials')} className="text-red-500 text-xs">Remove</button>
+                             </div>
+                         ))}
+                         <button onClick={() => addItem('testimonials', { quote: '', author: '' })} className="text-blue-500 text-sm">+ Add Testimonial</button>
+                     </div>
+                 );
+            case 'news':
+                const newsBlock = block as NewsBlock;
+                return (
+                     <div className="space-y-4">
+                         <input name="title" value={newsBlock.title} onChange={handleInputChange} placeholder="Title" className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
+                         {newsBlock.items.map((item) => (
+                             <div key={item.id} className="p-2 border rounded dark:border-gray-600 space-y-2">
+                                 <input value={item.title} onChange={e => handleItemChange(item.id, 'title', e.target.value, 'items')} placeholder="News Title" className="w-full p-1 border rounded dark:bg-gray-600" />
+                                 <input type="date" value={item.date} onChange={e => handleItemChange(item.id, 'date', e.target.value, 'items')} className="w-full p-1 border rounded dark:bg-gray-600" />
+                                 <textarea value={item.summary} onChange={e => handleItemChange(item.id, 'summary', e.target.value, 'items')} placeholder="Summary" className="w-full p-1 border rounded dark:bg-gray-600" rows={3} />
+                                 <button onClick={() => removeItem(item.id, 'items')} className="text-red-500 text-xs">Remove</button>
+                             </div>
+                         ))}
+                         <button onClick={() => addItem('items', { title: '', date: new Date().toISOString().split('T')[0], summary: '' })} className="text-blue-500 text-sm">+ Add News</button>
+                     </div>
+                 );
+            case 'contact':
+                const contactBlock = block as ContactBlock;
+                 return (
+                     <div className="space-y-4">
+                         <input name="title" value={contactBlock.title} onChange={handleInputChange} placeholder="Title" className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
+                         <textarea name="subtitle" value={contactBlock.subtitle} onChange={handleInputChange} placeholder="Subtitle" className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
+                     </div>
+                 );
+            default:
+                return <div>Select a block to edit its content.</div>;
+        }
+    };
     
-    const renderAwardsEditor = (b: AwardsBlock) => (
-        <div className="space-y-4">
-            <LabeledInput label="Title" name="title" value={b.title} onChange={handleCommonChange} />
-            {b.awards.map((item, i) => (
-                <div key={item.id} className="p-2 border rounded space-y-2 dark:border-gray-600">
-                    <input value={item.title} onChange={(e) => handleNestedChange(i, 'title', e.target.value, 'awards')} placeholder={t('micrositeBuilder.editor.awardTitle')} className="w-full p-1 border rounded dark:bg-gray-600"/>
-                    <input value={item.issuer} onChange={(e) => handleNestedChange(i, 'issuer', e.target.value, 'awards')} placeholder={t('micrositeBuilder.editor.awardIssuer')} className="w-full p-1 border rounded dark:bg-gray-600"/>
-                    <input value={item.year} onChange={(e) => handleNestedChange(i, 'year', e.target.value, 'awards')} placeholder={t('micrositeBuilder.editor.awardYear')} className="w-full p-1 border rounded dark:bg-gray-600"/>
-                    <button onClick={() => removeNestedItem(i, 'awards')} className="text-xs text-red-500">{t('micrositeBuilder.editor.remove')}</button>
-                </div>
-            ))}
-            <button onClick={() => addNestedItem('awards', { title: '', issuer: '', year: '' })} className="text-sm text-blue-500">+ {t('micrositeBuilder.editor.addAward')}</button>
-        </div>
-    );
-    
-    const renderTestimonialsEditor = (b: TestimonialsBlock) => (
-         <div className="space-y-4">
-            <LabeledInput label="Title" name="title" value={b.title} onChange={handleCommonChange} />
-            {b.testimonials.map((item, i) => (
-                <div key={item.id} className="p-2 border rounded space-y-2 dark:border-gray-600">
-                    <textarea value={item.quote} onChange={(e) => handleNestedChange(i, 'quote', e.target.value, 'testimonials')} placeholder={t('micrositeBuilder.editor.quote')} className="w-full p-1 border rounded dark:bg-gray-600"/>
-                    <input value={item.author} onChange={(e) => handleNestedChange(i, 'author', e.target.value, 'testimonials')} placeholder={t('micrositeBuilder.editor.author')} className="w-full p-1 border rounded dark:bg-gray-600"/>
-                    <button onClick={() => removeNestedItem(i, 'testimonials')} className="text-xs text-red-500">{t('micrositeBuilder.editor.remove')}</button>
-                </div>
-            ))}
-            <button onClick={() => addNestedItem('testimonials', { quote: '', author: '' })} className="text-sm text-blue-500">+ {t('micrositeBuilder.editor.addTestimonial')}</button>
-        </div>
-    );
-    
-    const renderNewsEditor = (b: NewsBlock) => (
-        <div className="space-y-4">
-           <LabeledInput label="Title" name="title" value={b.title} onChange={handleCommonChange} />
-           {b.items.map((item, i) => (
-               <div key={item.id} className="p-2 border rounded space-y-2 dark:border-gray-600">
-                   <input value={item.title} onChange={(e) => handleNestedChange(i, 'title', e.target.value, 'items')} placeholder={t('micrositeBuilder.editor.newsTitle')} className="w-full p-1 border rounded dark:bg-gray-600"/>
-                   <input type="date" value={item.date} onChange={(e) => handleNestedChange(i, 'date', e.target.value, 'items')} placeholder={t('micrositeBuilder.editor.newsDate')} className="w-full p-1 border rounded dark:bg-gray-600"/>
-                   <textarea value={item.summary} onChange={(e) => handleNestedChange(i, 'summary', e.target.value, 'items')} placeholder={t('micrositeBuilder.editor.newsSummary')} className="w-full p-1 border rounded dark:bg-gray-600"/>
-                   <button onClick={() => removeNestedItem(i, 'items')} className="text-xs text-red-500">{t('micrositeBuilder.editor.remove')}</button>
-               </div>
-           ))}
-           <button onClick={() => addNestedItem('items', { title: '', date: '', summary: '' })} className="text-sm text-blue-500">+ {t('micrositeBuilder.editor.addNews')}</button>
-       </div>
-   );
-
-    const renderContactEditor = (b: ContactBlock) => (
-        <div className="space-y-4">
-            <LabeledInput label="Title" name="title" value={b.title} onChange={handleCommonChange} />
-            <LabeledInput label="Subtitle" name="subtitle" value={b.subtitle} onChange={(e) => onUpdate({ ...b, subtitle: e.target.value })} />
-        </div>
-    );
-
-    switch (block.type) {
-        case 'hero': return renderHeroEditor(block);
-        case 'about': return renderAboutEditor(block);
-        case 'services': return renderServicesEditor(block);
-        case 'awards': return renderAwardsEditor(block);
-        case 'testimonials': return renderTestimonialsEditor(block);
-        case 'news': return renderNewsEditor(block);
-        case 'contact': return renderContactEditor(block);
-        default: return <p>Unknown block type.</p>;
-    }
+    return <div>{renderEditor()}</div>;
 };
 
 export default BlockEditor;
