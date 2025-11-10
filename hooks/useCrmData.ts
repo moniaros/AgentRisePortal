@@ -5,84 +5,79 @@ import { Customer, Lead, TimelineEvent } from '../types';
 import { useAuth } from './useAuth';
 
 export const useCrmData = () => {
-  const { currentUser } = useAuth();
-  const agencyId = currentUser?.agencyId;
+    const { currentUser } = useAuth();
+    const agencyId = currentUser?.agencyId;
 
-  const { 
-    data: allCustomers, 
-    isLoading: isCustomersLoading, 
-    error: customersError, 
-    updateData: setAllCustomers 
-  } = useOfflineSync<Customer[]>('customers_data', fetchCustomers, []);
+    const {
+        data: customers,
+        isLoading: customersLoading,
+        error: customersError,
+        updateData: setCustomers,
+    } = useOfflineSync<Customer[]>('customers_data', fetchCustomers, []);
 
-  const { 
-    data: allLeads, 
-    isLoading: isLeadsLoading, 
-    error: leadsError,
-    updateData: setAllLeads
-  } = useOfflineSync<Lead[]>('leads_data', fetchLeads, []);
-
-  const customers = useMemo(() => allCustomers.filter(c => c.agencyId === agencyId), [allCustomers, agencyId]);
-  const leads = useMemo(() => allLeads.filter(l => l.agencyId === agencyId), [allLeads, agencyId]);
-
-  const isLoading = isCustomersLoading || isLeadsLoading;
-  const error = customersError || leadsError;
-
-  const addCustomer = useCallback((customerData: Omit<Customer, 'id' | 'timeline' | 'agencyId'>) => {
-    if (!agencyId) return;
-    const newCustomer: Customer = {
-      ...customerData,
-      id: `cust_${Date.now()}`,
-      agencyId: agencyId,
-      timeline: [
-        {
-          id: `tl_${Date.now()}`,
-          date: new Date().toISOString(),
-          type: 'note',
-          title: 'Customer Created',
-          content: 'Manually added via CRM.',
-          author: currentUser?.name || 'Agent',
-        }
-      ],
-    };
-    setAllCustomers([...allCustomers, newCustomer]);
-  }, [allCustomers, setAllCustomers, agencyId, currentUser]);
-  
-  const addLead = useCallback((leadData: Omit<Lead, 'id' | 'createdAt' | 'agencyId'>) => {
-    if (!agencyId) return;
-    const newLead: Lead = {
-      ...leadData,
-      id: `lead_${Date.now()}`,
-      createdAt: new Date().toISOString(),
-      agencyId: agencyId,
-    };
-    setAllLeads([...allLeads, newLead]);
-  }, [allLeads, setAllLeads, agencyId]);
-
-  const updateCustomer = useCallback((updatedCustomer: Customer) => {
-    setAllCustomers(allCustomers.map(c => c.id === updatedCustomer.id ? updatedCustomer : c));
-  }, [allCustomers, setAllCustomers]);
-
-  const deleteCustomer = useCallback((customerId: string) => {
-    setAllCustomers(allCustomers.filter(c => c.id !== customerId));
-  }, [allCustomers, setAllCustomers]);
-
-  const logCustomerEvent = useCallback((customerId: string, eventData: Omit<TimelineEvent, 'id' | 'date' | 'author'> & { author: string }) => {
-    const newEvent: TimelineEvent = {
-        ...eventData,
-        id: `tl_${Date.now()}`,
-        date: new Date().toISOString(),
-    };
+    const {
+        data: leads,
+        isLoading: leadsLoading,
+        error: leadsError,
+        updateData: setLeads,
+    } = useOfflineSync<Lead[]>('leads_data', fetchLeads, []);
     
-    const customer = allCustomers.find(c => c.id === customerId);
-    if (customer) {
-        const updatedCustomer = {
-            ...customer,
-            timeline: [...(customer.timeline || []), newEvent],
-        };
-        updateCustomer(updatedCustomer);
-    }
-  }, [allCustomers, updateCustomer]);
+    const agencyCustomers = useMemo(() => customers.filter(c => c.agencyId === agencyId), [customers, agencyId]);
+    const agencyLeads = useMemo(() => leads.filter(l => l.agencyId === agencyId), [leads, agencyId]);
 
-  return { customers, leads, isLoading, error, addCustomer, addLead, updateCustomer, deleteCustomer, logCustomerEvent };
+
+    const addLead = useCallback((leadData: Omit<Lead, 'id' | 'createdAt'>) => {
+        const newLead: Lead = {
+            ...leadData,
+            id: `lead_${Date.now()}`,
+            createdAt: new Date().toISOString(),
+        };
+        setLeads([...leads, newLead]);
+    }, [leads, setLeads]);
+    
+    const addCustomer = useCallback((customerData: Omit<Customer, 'id' | 'timeline'>) => {
+        if (!agencyId) return;
+        const newCustomer: Customer = {
+            ...customerData,
+            id: `cust_${Date.now()}`,
+            timeline: [],
+            agencyId: agencyId,
+        };
+        setCustomers([...customers, newCustomer]);
+    }, [customers, setCustomers, agencyId]);
+
+    const updateCustomer = useCallback((updatedCustomer: Customer) => {
+        setCustomers(customers.map(c => c.id === updatedCustomer.id ? updatedCustomer : c));
+    }, [customers, setCustomers]);
+    
+    const deleteCustomer = useCallback((customerId: string) => {
+        setCustomers(customers.filter(c => c.id !== customerId));
+    }, [customers, setCustomers]);
+
+    const logCustomerEvent = useCallback((customerId: string, eventData: Omit<TimelineEvent, 'id' | 'date'>) => {
+        const newEvent: TimelineEvent = {
+            ...eventData,
+            id: `tl_${Date.now()}`,
+            date: new Date().toISOString(),
+        };
+        const updatedCustomers = customers.map(c => {
+            if (c.id === customerId) {
+                return { ...c, timeline: [...c.timeline, newEvent] };
+            }
+            return c;
+        });
+        setCustomers(updatedCustomers);
+    }, [customers, setCustomers]);
+
+    return {
+        customers: agencyCustomers,
+        leads: agencyLeads,
+        isLoading: customersLoading || leadsLoading,
+        error: customersError || leadsError,
+        addLead,
+        addCustomer,
+        updateCustomer,
+        deleteCustomer,
+        logCustomerEvent,
+    };
 };

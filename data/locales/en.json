@@ -1,16 +1,8 @@
+
 {
-  "nav": {
-    "dashboard": "Dashboard",
-    "leadGen": "Lead Generation",
-    "crm": "Micro-CRM",
-    "gapAnalysis": "Gap Analysis",
-    "socialComposer": "Social Composer",
-    "adCampaigns": "Ad Campaigns",
-    "analytics": "Analytics",
-    "onboarding": "Onboarding",
-    "billing": "Billing",
-    "micrositeBuilder": "Microsite Builder",
-    "userManagement": "User Management"
+  "common": {
+    "loading": "Loading...",
+    "close": "Close"
   },
   "header": {
     "search": "Search...",
@@ -20,11 +12,32 @@
     "settings": "Settings",
     "logout": "Logout"
   },
+  "nav": {
+    "dashboard": "Dashboard",
+    "leadsDashboard": "Leads Dashboard",
+    "leadGen": "Leads List",
+    "crm": "Micro-CRM",
+    "gapAnalysis": "Gap Analysis",
+    "onboarding": "Onboarding",
+    "billing": "Billing",
+    "micrositeBuilder": "Microsite Builder",
+    "socialComposer": "Social Composer",
+    "adCampaigns": "Ad Campaigns",
+    "analytics": "Analytics",
+    "userManagement": "User Management",
+    "settings": "Settings",
+    "logout": "Logout",
+    "sections": {
+      "main": "Main",
+      "tools": "Tools",
+      "account": "Account"
+    }
+  },
   "dashboard": {
     "title": "Dashboard",
-    "newLeads": "New Leads (Last 30 Days)",
-    "monthlyRevenue": "Monthly Revenue (est.)",
-    "activePolicies": "Active Policies",
+    "newLeads": "New Leads (This Month)",
+    "monthlyRevenue": "Monthly Revenue",
+    "activePolicies": "Total Active Policies",
     "policyDistribution": "Policy Distribution"
   },
   "policyTypes": {
@@ -43,45 +56,37 @@
     "inactive": "Inactive",
     "expired": "Expired"
   },
-  "leadGen": {
-    "filterBySource": "Filter by Source",
+  "leads": {
+    "searchPlaceholder": "Search by name or email...",
+    "allStatuses": "All Statuses",
     "allSources": "All Sources",
-    "filterByPolicy": "Filter by Policy Type",
-    "allPolicies": "All Policies",
-    "sortBy": "Sort By",
-    "dateDesc": "Date (Newest First)",
-    "dateAsc": "Date (Oldest First)",
-    "nameAsc": "Name (A-Z)",
-    "nameDesc": "Name (Z-A)",
-    "valueDesc": "Value (High-Low)",
-    "valueAsc": "Value (Low-High)",
-    "createdAt": "Created At",
-    "tags": "Tags",
-    "addTag": "Add tag",
-    "noLeads": "No leads found matching your criteria."
+    "noLeadsFound": "No leads found matching your criteria.",
+    "viewDetails": "View Details",
+    "leadDetails": "Lead Details",
+    "source": "Source",
+    "policyInterest": "Policy Interest",
+    "createdDate": "Created Date"
   },
   "crm": {
-    "name": "Name",
-    "source": "Source",
-    "status": "Status",
-    "potentialValue": "Potential Value",
-    "actions": "Actions",
-    "viewProfile": "View Profile",
-    "confirmDelete": "Are you sure you want to delete this customer? This action cannot be undone.",
     "addCustomer": "Add Customer",
     "editCustomer": "Edit Customer",
     "customers": "Customers",
-    "leads": "Associated Leads",
-    "campaign": "Campaign",
+    "leads": "Recent Leads",
+    "confirmDelete": "Are you sure you want to delete this customer? This action cannot be undone.",
     "cancel": "Cancel",
     "save": "Save",
     "edit": "Edit",
     "delete": "Delete",
+    "name": "Name",
+    "status": "Status",
+    "potentialValue": "Potential Value",
+    "viewProfile": "View Profile",
+    "campaign": "Campaign/Source",
     "form": {
       "firstName": "First Name",
       "lastName": "Last Name",
-      "email": "Email",
-      "phone": "Phone",
+      "email": "Email Address",
+      "phone": "Phone Number",
       "address": "Address",
       "dob": "Date of Birth",
       "policies": "Policies",
@@ -90,7 +95,7 @@
       "premium": "Premium",
       "startDate": "Start Date",
       "endDate": "End Date",
-      "noPolicies": "This customer has no policies.",
+      "noPolicies": "No policies added yet.",
       "addPolicy": "Add Policy"
     }
   },
@@ -98,127 +103,137 @@
     "notFound": "Customer Not Found",
     "backToCrm": "Back to CRM",
     "changeAddress": "Change Address",
+    "changeAddressTitle": "Update Customer Address",
     "policies": "Policies",
     "noPolicies": "This customer has no active policies.",
-    "aiReviewTitle": "AI-Powered Policy Review",
     "timeline": "Customer Timeline",
-    "changeAddressTitle": "Update Customer Address",
-    "renewPolicy": "Renew Policy",
+    "noTimelineEvents": "No timeline events recorded.",
     "aiReview": "AI Review",
-    "renewalNeeded": "Renewal Needed",
-    "noTimelineEvents": "No timeline events recorded for this customer.",
+    "aiReviewTitle": "AI-Powered Policy Summary",
+    "renewPolicy": "Renew",
     "renewPolicyTitle": "Renew Policy",
+    "renewalNeeded": "Renewal due soon",
     "newEndDate": "New End Date",
-    "newPremium": "New Annual Premium (€)"
+    "newPremium": "New Annual Premium"
   },
   "gapAnalysis": {
-    "description": "Upload a customer's existing policy document (PDF, PNG, JPG) to analyze for coverage gaps.",
-    "dragDrop": "Drag & drop your file here or",
+    "description": "Upload a client's current insurance policy document (PDF, PNG, or JPG) to automatically extract key information and analyze it for potential coverage gaps.",
+    "dragDrop": "Drag & drop your file here, or",
     "browse": "browse",
-    "fileTypes": "Supports: PDF, PNG, JPG, JPEG",
-    "parsingPolicy": "Analyzing document with AI...",
+    "fileTypes": "PDF, PNG, JPG, JPEG",
+    "parsingPolicy": "Parsing policy with AI...",
     "extractedInfo": "Extracted Policy Information",
     "userNeedsTitle": "Describe Customer Needs",
-    "userNeedsPlaceholder": "e.g., 'Customer just bought a new, more expensive car and is worried about theft. They also have a teenager who will start driving soon.'",
+    "userNeedsPlaceholder": "e.g., 'The client recently bought a new car and is concerned about coverage for their teenage driver. They also have expensive jewelry they want to ensure is covered.'",
+    "analyzeGaps": "Analyze for Gaps",
     "analyzing": "Analyzing...",
-    "analyzeGaps": "Analyze Gaps",
     "resultsTitle": "Gap Analysis Results"
   },
   "socialComposer": {
     "title": "Social Post Composer",
-    "placeholder": "What's on your mind?",
+    "selectPlatform": "Post to",
+    "placeholder": "What's on your mind? Use a template or start typing...",
     "uploadImage": "Upload Image",
-    "removeImage": "Remove Image",
+    "removeImage": "Remove",
     "schedulePost": "Schedule",
-    "postNow": "Post Now",
-    "preview": "Preview",
-    "templatesTitle": "Use a Template",
-    "postScheduled": "Post scheduled for",
-    "postPublished": "Post published successfully!",
-    "leadCaptureLinkSuccess": "Post successful! Use this link to capture leads:",
-    "attachLeadForm": "Attach Lead Capture Form",
-    "copyLink": "Copy Link",
-    "copied": "Copied!",
-    "errorContentRequired": "Post content cannot be empty.",
-    "errorCharLimit": "Character limit exceeded.",
-    "errorFutureDate": "Scheduled date must be in the future.",
-    "selectPlatform": "Post to Platform",
-    "notConnected": "Not Connected",
-    "connectAccount": "Connect Account",
-    "posting": "Posting...",
     "scheduling": "Scheduling...",
+    "postNow": "Post Now",
+    "posting": "Posting...",
+    "preview": "Live Preview",
+    "attachLeadForm": "Attach Lead Capture Form",
+    "leadCaptureLinkSuccess": "Post published! Your unique lead capture link is ready.",
+    "copyLink": "Copy",
+    "copied": "Copied!",
+    "postScheduled": "Post successfully scheduled for",
+    "postPublished": "Post successfully published!",
+    "notConnected": "Not Connected",
+    "connectAccount": "Connect",
     "retry": "Retry",
     "reauthenticate": "Re-authenticate",
-    "errors": {
-      "title": "Could Not Complete Action",
-      "POST_FAILED_message": "We couldn't publish your post to {platform}.",
-      "POST_FAILED_guidance": "Please check your internet connection and try again. If the problem persists, the service may be temporarily unavailable.",
-      "AUTH_ERROR_message": "Your connection to {platform} has expired or is invalid.",
-      "AUTH_ERROR_guidance": "Please re-authenticate your account in the settings to continue posting.",
-      "RATE_LIMIT_message": "You are posting too frequently to {platform}.",
-      "RATE_LIMIT_guidance": "Please wait a few minutes before trying to post again. Social networks limit the number of posts in a short period.",
-      "UNSUPPORTED_FEATURE_message": "Scheduling posts is not supported for {platform}.",
-      "UNSUPPORTED_FEATURE_guidance": "You can post this immediately, or choose a different platform that supports scheduling.",
-      "NOT_CONNECTED_message": "The selected account for {platform} is not connected.",
-      "NOT_CONNECTED_guidance": "Please connect your account in the settings before posting."
-    },
+    "errorContentRequired": "Post content cannot be empty.",
+    "errorCharLimit": "Character limit exceeded.",
+    "errorFutureDate": "Schedule date must be in the future.",
+    "templatesTitle": "Use a Template",
     "templates": [
       {
-        "title": "New Driver Discount",
-        "content": "Did you know new drivers can get special discounts? Contact me to learn how to save on your auto insurance! #Insurance #AutoInsurance #NewDriver"
+        "title": "New Policy Announcement",
+        "content": "Excited to offer new [Policy Type] policies! Protect what matters most. Contact me for a free quote today! #Insurance #[YourCity]Insurance"
       },
       {
-        "title": "Home Protection Tips",
-        "content": "Protect your biggest investment! Regular maintenance on your roof and plumbing can prevent costly claims. #Homeowner #InsuranceTips #HomeInsurance"
+        "title": "Seasonal Reminder (Home)",
+        "content": "Winter is coming! ❄️ Is your home ready? Let's review your home insurance to make sure you're covered for seasonal risks. #HomeInsurance #WinterPrep"
       },
       {
-        "title": "Life Insurance Myth",
-        "content": "Myth: Life insurance is too expensive. Fact: A healthy 30-year-old can often get significant coverage for less than the cost of a daily coffee. Let's talk! #LifeInsurance #FinancialPlanning"
+        "title": "Promotional Offer",
+        "content": "Get a 10% discount when you bundle your auto and home insurance! Offer ends this month. DM me for details. #InsuranceDeals #SaveMoney"
       }
-    ]
-  },
-  "campaigns": {
-    "create": "Create Campaign"
+    ],
+    "errors": {
+      "title": "Error",
+      "POST_FAILED_message": "Failed to publish post to {platform}. An unknown error occurred.",
+      "POST_FAILED_guidance": "Please try publishing the post again. If the problem persists, check the platform's status page.",
+      "AUTH_ERROR_message": "Authentication failed for {platform}. Your access token may have expired.",
+      "AUTH_ERROR_guidance": "Please go to Settings and reconnect your {platform} account to refresh your credentials.",
+      "RATE_LIMIT_message": "You've posted too frequently to {platform}. The platform has temporarily limited your activity.",
+      "RATE_LIMIT_guidance": "Please wait a few minutes before trying to post again.",
+      "UNSUPPORTED_FEATURE_message": "The action you're trying to perform is not supported by {platform}'s API.",
+      "UNSUPPORTED_FEATURE_guidance": "For example, scheduling posts to Instagram Stories is not possible via third-party tools. Please try a different action.",
+      "NOT_CONNECTED_message": "Your {platform} account is not connected.",
+      "NOT_CONNECTED_guidance": "Please go to Settings to connect your account before posting."
+    }
   },
   "leadCapture": {
-    "title": "Get a Free Insurance Quote",
-    "subtitle": "Fill out your details below and one of our expert agents will contact you shortly.",
-    "submitButton": "Get My Free Quote",
+    "title": "Get Your Free Insurance Quote",
+    "subtitle": "Fill out the form below and one of our agents will contact you shortly.",
     "thankYouTitle": "Thank You!",
-    "thankYouMessage": "Your information has been submitted. An agent will contact you shortly.",
+    "thankYouMessage": "Your request has been received. We will be in touch soon.",
     "invalidCampaign": "This campaign is no longer active or is invalid.",
+    "submitButton": "Get My Quote",
     "form": {
       "name": "Full Name",
       "email": "Email",
-      "phone": "Phone Number"
+      "phone": "Phone (Optional)"
     }
   },
   "settings": {
-    "gtmSavedSuccess": "GTM ID saved! Reloading...",
+    "gtmSavedSuccess": "GTM ID saved! The page will now reload.",
     "socialConnections": {
-      "title": "Social Media Connections",
-      "disconnect": "Disconnect",
+      "title": "Social Connections",
       "connect": "Connect",
+      "disconnect": "Disconnect",
       "modalTitle": "Allow AgentOS to connect to {platform}?",
       "permissionsTitle": "AgentOS will be able to:",
       "cancel": "Cancel",
-      "allow": "Allow & Connect",
+      "allow": "Allow Access",
       "platforms": {
         "facebook": {
-          "description": "Connect to manage pages, ads, and leads.",
-          "scopes": [ "Post content to your pages", "Read page and post analytics", "Manage ad campaigns and read performance data" ]
+          "description": "Publish posts and create ad campaigns.",
+          "scopes": [
+            "Read your profile and posts",
+            "Publish posts on your behalf",
+            "Manage your advertising campaigns"
+          ]
         },
         "instagram": {
-          "description": "Connect for business profiles and ads.",
-          "scopes": [ "Post content to your business profile", "Read profile and post analytics", "Manage ad campaigns via Facebook Ads Manager" ]
+          "description": "Publish posts to your feed.",
+          "scopes": [
+            "Read your profile information",
+            "Publish photos and videos to your feed"
+          ]
         },
         "linkedin": {
-          "description": "Connect for company pages and lead gen forms.",
-          "scopes": [ "Post content to your company page", "Read page analytics", "Manage ad campaigns and retrieve leads from Lead Gen Forms" ]
+          "description": "Publish professional updates and articles.",
+          "scopes": [
+            "Use your name and photo",
+            "Publish posts and articles to your profile"
+          ]
         },
         "x": {
-          "description": "Connect to manage posts and ads.",
-          "scopes": [ "Post and delete tweets for you", "Read profile and tweet analytics", "Create and manage ad campaigns" ]
+          "description": "Post updates to your timeline.",
+          "scopes": [
+            "Read Tweets from your timeline",
+            "Post and delete Tweets for you"
+          ]
         }
       }
     },
@@ -233,86 +248,91 @@
     "integrations": "Integrations",
     "gtmId": "Google Tag Manager ID",
     "gtmPlaceholder": "GTM-XXXXXX",
-    "gtmDescription": "Add your GTM container ID to enable analytics and tracking.",
-    "saveGtmId": "Save GTM ID",
-    "account": "Account",
+    "gtmDescription": "Add your GTM container ID to enable analytics tracking. The page will reload after saving.",
+    "saveGtmId": "Save",
+    "account": "Account Management",
     "changePassword": "Change Password",
     "deleteAccount": "Delete Account"
-  },
-  "analytics": {
-    "title": "Campaign Analytics",
-    "filters": {
-      "campaign": "Filter by Campaign",
-      "allCampaigns": "All Campaigns",
-      "network": "Filter by Network",
-      "allNetworks": "All Networks",
-      "period": "Filter by Period",
-      "last7": "Last 7 Days",
-      "last30": "Last 30 Days",
-      "last90": "Last 90 Days",
-      "language": "Filter by Language",
-      "allLanguages": "All Languages"
-    },
-    "kpis": {
-      "totalSpend": "Total Ad Spend",
-      "totalImpressions": "Total Impressions",
-      "ctr": "Click-Through Rate",
-      "totalConversions": "Total Conversions"
-    },
-    "charts": {
-      "performanceTitle": "Performance Over Time",
-      "spendTitle": "Ad Spend by Network",
-      "impressions": "Impressions",
-      "clicks": "Clicks",
-      "conversions": "Conversions"
-    },
-    "noData": "No analytics data available for the selected filters."
   },
   "userManagement": {
     "title": "User Management",
     "inviteUser": "Invite User",
+    "removeUser": "Remove",
     "users": "Agency Users",
     "auditLog": "Audit Log",
+    "accessDenied": "Access Denied",
+    "accessDeniedMessage": "You must be an administrator to view this page.",
+    "confirmRemove": "Are you sure you want to remove {userName}?",
+    "cannotRemoveSelf": "You cannot remove yourself.",
+    "inviteModalTitle": "Invite a New User",
+    "sendInvite": "Send Invite",
     "role": "Role",
     "admin": "Admin",
     "agent": "Agent",
-    "changeRole": "Change Role",
-    "removeUser": "Remove User",
-    "confirmRemove": "Are you sure you want to remove {userName} from the agency?",
-    "cannotRemoveSelf": "You cannot remove yourself.",
-    "inviteModalTitle": "Invite New User",
-    "sendInvite": "Send Invite",
-    "accessDenied": "Access Denied",
-    "accessDeniedMessage": "You do not have permission to view this page.",
-    "filters": {
-      "searchByNameEmail": "Search by name or email...",
-      "filterByRole": "Filter by role",
-      "allRoles": "All Roles",
-      "searchLogs": "Search logs...",
-      "filterByAction": "Filter by action",
-      "allActions": "All Actions"
-    },
-    "bulkActions": {
-      "title": "Bulk Actions",
-      "selected": "{count} selected",
-      "deleteSelected": "Delete Selected",
-      "changeRoleTo": "Change role to...",
-      "confirmBulkDelete": "Are you sure you want to remove {count} selected users? This action cannot be undone."
-    },
     "log": {
+      "timestamp": "Timestamp",
       "actor": "Actor",
       "header_action": "Action",
       "target": "Target",
       "details": "Details",
-      "timestamp": "Timestamp",
       "actions": {
         "user_invited": "User Invited",
         "user_removed": "User Removed",
         "role_changed": "Role Changed"
       }
+    },
+    "filters": {
+      "searchByNameEmail": "Search by name or email...",
+      "allRoles": "All Roles",
+      "searchLogs": "Search logs...",
+      "allActions": "All Actions"
+    },
+    "bulkActions": {
+      "selected": "{count} selected",
+      "changeRoleTo": "Change role to...",
+      "deleteSelected": "Delete",
+      "confirmBulkDelete": "Are you sure you want to delete {count} selected users?"
     }
   },
-  "common": {
-    "loading": "Loading..."
+  "analytics": {
+    "title": "Campaign Analytics",
+    "noData": "No data available for the selected filters. Please broaden your search criteria.",
+    "filters": {
+      "campaign": "Campaign",
+      "allCampaigns": "All Campaigns",
+      "network": "Network",
+      "allNetworks": "All Networks",
+      "period": "Period",
+      "last7": "Last 7 Days",
+      "last30": "Last 30 Days",
+      "last90": "Last 90 Days",
+      "language": "Language",
+      "allLanguages": "All Languages"
+    },
+    "kpis": {
+      "totalSpend": "Total Spend",
+      "totalImpressions": "Total Impressions",
+      "ctr": "Click-Through Rate (CTR)",
+      "totalConversions": "Total Conversions"
+    },
+    "charts": {
+      "performanceTitle": "Performance Over Time",
+      "impressions": "Impressions",
+      "clicks": "Clicks",
+      "conversions": "Conversions",
+      "spendTitle": "Spend by Network"
+    }
+  },
+  "leadsDashboard": {
+    "kpis": {
+        "totalLeads": "Total Leads",
+        "newLeads": "New Leads",
+        "conversionRate": "Conversion Rate",
+        "closedDeals": "Closed Deals"
+    },
+    "charts": {
+        "sourceTitle": "Leads by Source",
+        "funnelTitle": "Lead Status Funnel"
+    }
   }
 }

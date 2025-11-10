@@ -1,27 +1,30 @@
 import React from 'react';
-import { HashRouter as Router, Routes, Route } from 'react-router-dom';
-import Layout from './components/Layout';
-import Dashboard from './pages/Dashboard';
-import LeadGeneration from './pages/LeadGeneration';
-import MicroCRM from './pages/MicroCRM';
-import CustomerMicrosite from './pages/CustomerMicrosite';
-import GapAnalysis from './pages/GapAnalysis';
-import SocialComposer from './pages/SocialComposer';
-import AdCampaigns from './pages/AdCampaigns';
-import Analytics from './pages/Analytics';
-import Onboarding from './pages/Onboarding';
-import Billing from './pages/Billing';
-import MicrositeBuilder from './pages/MicrositeBuilder';
-import Profile from './pages/Profile';
-import Settings from './pages/Settings';
-import Logout from './pages/Logout';
-import ErrorBoundary from './components/ErrorBoundary';
+import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { LanguageProvider } from './context/LanguageContext';
 import { AuthProvider } from './context/AuthContext';
+import Layout from './components/Layout';
 import GTMProvider from './components/GTMProvider';
 import RouteAnalyticsTracker from './components/RouteAnalyticsTracker';
-import LeadCapturePage from './pages/LeadCapturePage';
-import UserManagement from './pages/UserManagement';
+import ErrorBoundary from './components/ErrorBoundary';
+
+// Lazy load pages for better performance
+const Dashboard = React.lazy(() => import('./pages/Dashboard'));
+const LeadGeneration = React.lazy(() => import('./pages/LeadGeneration'));
+const MicroCRM = React.lazy(() => import('./pages/MicroCRM'));
+const CustomerMicrosite = React.lazy(() => import('./pages/CustomerMicrosite'));
+const GapAnalysis = React.lazy(() => import('./pages/GapAnalysis'));
+const Onboarding = React.lazy(() => import('./pages/Onboarding'));
+const Billing = React.lazy(() => import('./pages/Billing'));
+const MicrositeBuilder = React.lazy(() => import('./pages/MicrositeBuilder'));
+const SocialComposer = React.lazy(() => import('./pages/SocialComposer'));
+const AdCampaigns = React.lazy(() => import('./pages/AdCampaigns'));
+const Analytics = React.lazy(() => import('./pages/Analytics'));
+const UserManagement = React.lazy(() => import('./pages/UserManagement'));
+const Settings = React.lazy(() => import('./pages/Settings'));
+const Profile = React.lazy(() => import('./pages/Profile'));
+const Logout = React.lazy(() => import('./pages/Logout'));
+const LeadCapturePage = React.lazy(() => import('./pages/LeadCapturePage'));
+const LeadsDashboard = React.lazy(() => import('./pages/LeadsDashboard'));
 
 const App: React.FC = () => {
   return (
@@ -31,24 +34,33 @@ const App: React.FC = () => {
           <GTMProvider>
             <Router>
               <RouteAnalyticsTracker />
-              <Routes>
-                <Route path="/" element={<Layout><Dashboard /></Layout>} />
-                <Route path="/lead-generation" element={<Layout><LeadGeneration /></Layout>} />
-                <Route path="/micro-crm" element={<Layout><MicroCRM /></Layout>} />
-                <Route path="/customer/:id" element={<Layout><CustomerMicrosite /></Layout>} />
-                <Route path="/gap-analysis" element={<Layout><GapAnalysis /></Layout>} />
-                <Route path="/social-composer" element={<Layout><SocialComposer /></Layout>} />
-                <Route path="/ad-campaigns" element={<Layout><AdCampaigns /></Layout>} />
-                <Route path="/analytics" element={<Layout><Analytics /></Layout>} />
-                <Route path="/onboarding" element={<Layout><Onboarding /></Layout>} />
-                <Route path="/billing" element={<Layout><Billing /></Layout>} />
-                <Route path="/microsite-builder" element={<Layout><MicrositeBuilder /></Layout>} />
-                <Route path="/profile" element={<Layout><Profile /></Layout>} />
-                <Route path="/settings" element={<Layout><Settings /></Layout>} />
-                <Route path="/user-management" element={<Layout><UserManagement /></Layout>} />
-                <Route path="/logout" element={<Layout><Logout /></Layout>} />
-                <Route path="/capture/:campaignId" element={<LeadCapturePage />} />
-              </Routes>
+              <React.Suspense fallback={<div className="h-screen w-screen flex items-center justify-center">Loading...</div>}>
+                <Routes>
+                  <Route path="/" element={<Layout><Dashboard /></Layout>} />
+                  <Route path="/dashboard" element={<Navigate to="/" />} />
+                  <Route path="/leads-dashboard" element={<Layout><LeadsDashboard /></Layout>} />
+                  <Route path="/lead-generation" element={<Layout><LeadGeneration /></Layout>} />
+                  <Route path="/micro-crm" element={<Layout><MicroCRM /></Layout>} />
+                  <Route path="/customer/:id" element={<Layout><CustomerMicrosite /></Layout>} />
+                  <Route path="/gap-analysis" element={<Layout><GapAnalysis /></Layout>} />
+                  <Route path="/onboarding" element={<Layout><Onboarding /></Layout>} />
+                  <Route path="/billing" element={<Layout><Billing /></Layout>} />
+                  <Route path="/microsite-builder" element={<Layout><MicrositeBuilder /></Layout>} />
+                  <Route path="/social-composer" element={<Layout><SocialComposer /></Layout>} />
+                  <Route path="/campaigns" element={<Layout><AdCampaigns /></Layout>} />
+                  <Route path="/analytics" element={<Layout><Analytics /></Layout>} />
+                  <Route path="/user-management" element={<Layout><UserManagement /></Layout>} />
+                  <Route path="/settings" element={<Layout><Settings /></Layout>} />
+                  <Route path="/profile" element={<Layout><Profile /></Layout>} />
+                  <Route path="/logout" element={<Layout><Logout /></Layout>} />
+                  
+                  {/* Standalone page without the main layout */}
+                  <Route path="/capture/:campaignId" element={<LeadCapturePage />} />
+
+                  {/* Fallback route */}
+                  <Route path="*" element={<Layout><div>404 - Not Found</div></Layout>} />
+                </Routes>
+              </React.Suspense>
             </Router>
           </GTMProvider>
         </AuthProvider>

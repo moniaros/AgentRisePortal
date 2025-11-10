@@ -1,62 +1,56 @@
 import React from 'react';
 import { useLocalization } from '../../hooks/useLocalization';
-import { PolicyType } from '../../types';
+import { Lead } from '../../types';
 
 interface LeadControlsProps {
-    sources: string[];
-    preferences: {
-        filters: { source: string, policyType: string };
-        sorting: { key: string; order: string };
+    filters: {
+        status: string;
+        source: string;
+        search: string;
     };
-    onPreferencesChange: (type: 'filter' | 'sort', key: string, value: any) => void;
+    onFilterChange: React.Dispatch<React.SetStateAction<any>>;
+    allLeads: Lead[];
 }
 
-const LeadControls: React.FC<LeadControlsProps> = ({ sources, preferences, onPreferencesChange }) => {
+const LeadControls: React.FC<LeadControlsProps> = ({ filters, onFilterChange, allLeads }) => {
     const { t } = useLocalization();
-    
+
+    const uniqueSources = [...new Set(allLeads.map(lead => lead.source))];
+    const statuses = ['new', 'contacted', 'qualified', 'closed', 'rejected'];
+
+    const handleFilterChange = (key: string, value: string) => {
+        onFilterChange((prev: any) => ({ ...prev, [key]: value }));
+    };
+
     return (
-        <div className="flex flex-col sm:flex-row gap-4 mb-6 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
-            {/* Source Filter */}
-            <div className="flex-1">
-                <label htmlFor="source-filter" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('leadGen.filterBySource')}</label>
-                <select 
-                    id="source-filter" 
-                    value={preferences.filters.source} 
-                    onChange={(e) => onPreferencesChange('filter', 'source', e.target.value)}
-                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+        <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <input
+                    type="text"
+                    placeholder={t('leads.searchPlaceholder')}
+                    value={filters.search}
+                    onChange={(e) => handleFilterChange('search', e.target.value)}
+                    className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
+                />
+                <select
+                    value={filters.status}
+                    onChange={(e) => handleFilterChange('status', e.target.value)}
+                    className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
                 >
-                    <option value="all">{t('leadGen.allSources')}</option>
-                    {sources.map(source => <option key={source} value={source}>{source}</option>)}
+                    <option value="all">{t('leads.allStatuses')}</option>
+                    {statuses.map(status => (
+                        <option key={status} value={status} className="capitalize">{t(`statusLabels.${status}`)}</option>
+                    ))}
                 </select>
-            </div>
-            {/* Policy Type Filter */}
-            <div className="flex-1">
-                <label htmlFor="policy-filter" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('leadGen.filterByPolicy')}</label>
-                <select 
-                    id="policy-filter" 
-                    value={preferences.filters.policyType} 
-                    onChange={(e) => onPreferencesChange('filter', 'policyType', e.target.value)}
-                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                <select
+                    value={filters.source}
+                    onChange={(e) => handleFilterChange('source', e.target.value)}
+                    className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
                 >
-                    <option value="all">{t('leadGen.allPolicies')}</option>
-                    {Object.values(PolicyType).map((pt: string) => <option key={pt} value={pt}>{t(`policyTypes.${pt}`)}</option>)}
-                </select>
-            </div>
-            {/* Sorting */}
-            <div className="flex-1">
-                <label htmlFor="sort-by" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('leadGen.sortBy')}</label>
-                <select 
-                    id="sort-by" 
-                    value={`${preferences.sorting.key}-${preferences.sorting.order}`} 
-                    onChange={(e) => onPreferencesChange('sort', 'sorting', e.target.value)}
-                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
-                >
-                    <option value="createdAt-desc">{t('leadGen.dateDesc')}</option>
-                    <option value="createdAt-asc">{t('leadGen.dateAsc')}</option>
-                    <option value="name-asc">{t('leadGen.nameAsc')}</option>
-                    <option value="name-desc">{t('leadGen.nameDesc')}</option>
-                    <option value="potentialValue-desc">{t('leadGen.valueDesc')}</option>
-                    <option value="potentialValue-asc">{t('leadGen.valueAsc')}</option>
+                    <option value="all">{t('leads.allSources')}</option>
+                    {uniqueSources.map(source => (
+                        <option key={source} value={source}>{source}</option>
+                    ))}
                 </select>
             </div>
         </div>
