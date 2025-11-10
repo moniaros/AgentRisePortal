@@ -30,7 +30,8 @@ const Onboarding: React.FC = () => {
         <div className="max-w-4xl mx-auto py-8 px-4">
             <div className="text-center mb-12">
                 <h1 className="text-4xl font-bold text-gray-800 dark:text-white mb-2">
-                    {t('onboarding.title').replace('{name}', currentUser?.name.split(' ')[0] || '')}
+                    {/* FIX: Property 'name' does not exist on type 'User'. Use party.partyName.firstName instead. */}
+                    {t('onboarding.title').replace('{name}', currentUser?.party.partyName.firstName || '')}
                 </h1>
                 <p className="text-lg text-gray-600 dark:text-gray-400">
                     {t('onboarding.subtitle')}

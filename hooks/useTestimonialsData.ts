@@ -26,8 +26,10 @@ export const useTestimonialsData = () => {
 
         const newTestimonial: Testimonial = {
             id: `test_${Date.now()}`,
-            authorName: currentUser.name,
-            authorPhotoUrl: `https://i.pravatar.cc/150?u=${currentUser.email}`,
+            // FIX: Property 'name' does not exist on type 'User'. Use party.partyName properties instead.
+            authorName: `${currentUser.party.partyName.firstName} ${currentUser.party.partyName.lastName}`,
+            // FIX: Property 'email' does not exist on type 'User'. Use party.contactInfo.email instead.
+            authorPhotoUrl: `https://i.pravatar.cc/150?u=${currentUser.party.contactInfo.email}`,
             quote,
             rating,
             status: 'pending',

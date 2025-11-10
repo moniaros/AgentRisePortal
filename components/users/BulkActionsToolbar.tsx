@@ -1,11 +1,12 @@
 import React from 'react';
 import { useLocalization } from '../../hooks/useLocalization';
-import { UserRole } from '../../types';
+// FIX: Module '"../../types"' has no exported member 'UserRole'. Use 'UserSystemRole' instead.
+import { UserSystemRole } from '../../types';
 
 interface BulkActionsToolbarProps {
     selectedIds: Set<string>;
     onBulkDelete: () => void;
-    onBulkRoleChange: (newRole: UserRole) => void;
+    onBulkRoleChange: (newRole: UserSystemRole) => void;
 }
 
 const BulkActionsToolbar: React.FC<BulkActionsToolbarProps> = ({ selectedIds, onBulkDelete, onBulkRoleChange }) => {
@@ -23,7 +24,7 @@ const BulkActionsToolbar: React.FC<BulkActionsToolbarProps> = ({ selectedIds, on
             </span>
             <div className="flex items-center gap-2">
                 <select 
-                    onChange={(e) => onBulkRoleChange(e.target.value as UserRole)}
+                    onChange={(e) => onBulkRoleChange(e.target.value as UserSystemRole)}
                     className="p-2 border rounded-md text-xs dark:bg-gray-700 dark:border-gray-600"
                     defaultValue=""
                 >

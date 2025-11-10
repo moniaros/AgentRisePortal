@@ -1,13 +1,14 @@
 import React from 'react';
 import { useLocalization } from '../../hooks/useLocalization';
-import { UserRole } from '../../types';
+// FIX: Module '"../../types"' has no exported member 'UserRole'. Use 'UserSystemRole' instead.
+import { UserSystemRole } from '../../types';
 
 interface UserFiltersProps {
     filters: {
         search: string;
-        role: 'all' | UserRole;
+        role: 'all' | UserSystemRole;
     };
-    onFilterChange: (filters: { search: string; role: 'all' | UserRole }) => void;
+    onFilterChange: (filters: { search: string; role: 'all' | UserSystemRole }) => void;
 }
 
 const UserFilters: React.FC<UserFiltersProps> = ({ filters, onFilterChange }) => {
@@ -18,7 +19,7 @@ const UserFilters: React.FC<UserFiltersProps> = ({ filters, onFilterChange }) =>
     };
 
     const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        onFilterChange({ ...filters, role: e.target.value as 'all' | UserRole });
+        onFilterChange({ ...filters, role: e.target.value as 'all' | UserSystemRole });
     };
 
     return (

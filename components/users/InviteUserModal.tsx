@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 import { useLocalization } from '../../hooks/useLocalization';
-import { UserRole } from '../../types';
+// FIX: Module '"../../types"' has no exported member 'UserRole'. Use 'UserSystemRole' instead.
+import { UserSystemRole } from '../../types';
 
 interface InviteUserModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onInvite: (name: string, email: string, role: UserRole) => void;
+  onInvite: (name: string, email: string, role: UserSystemRole) => void;
 }
 
 const InviteUserModal: React.FC<InviteUserModalProps> = ({ isOpen, onClose, onInvite }) => {
   const { t } = useLocalization();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  // FIX: Explicitly type the state with UserRole enum to match the onInvite handler's expectation.
-  const [role, setRole] = useState<UserRole>(UserRole.AGENT);
+  // FIX: Explicitly type the state with UserSystemRole enum to match the onInvite handler's expectation.
+  const [role, setRole] = useState<UserSystemRole>(UserSystemRole.AGENT);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,7 +41,7 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({ isOpen, onClose, onIn
             </div>
             <div>
               <label htmlFor="role" className="block text-sm font-medium">{t('userManagement.role')}</label>
-              <select id="role" value={role} onChange={e => setRole(e.target.value as UserRole)} className="mt-1 w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600">
+              <select id="role" value={role} onChange={e => setRole(e.target.value as UserSystemRole)} className="mt-1 w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600">
                 <option value="agent">{t('userManagement.agent')}</option>
                 <option value="admin">{t('userManagement.admin')}</option>
               </select>

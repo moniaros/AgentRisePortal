@@ -2,7 +2,8 @@ import React, { useState, useMemo } from 'react';
 import { useLocalization } from '../hooks/useLocalization';
 import { useTestimonialsData } from '../hooks/useTestimonialsData';
 import { useAuth } from '../hooks/useAuth';
-import { UserRole } from '../types';
+// FIX: Module '"../types"' has no exported member 'UserRole'. Use 'UserSystemRole' instead.
+import { UserSystemRole } from '../types';
 import ErrorMessage from '../components/ui/ErrorMessage';
 import SkeletonLoader from '../components/ui/SkeletonLoader';
 import TestimonialCard from '../components/testimonials/TestimonialCard';
@@ -49,7 +50,8 @@ const Testimonials: React.FC = () => {
                 </button>
             </div>
 
-            {currentUser?.role === UserRole.ADMIN && (
+            {/* FIX: Property 'role' does not exist on type 'User'. Use partyRole.roleType instead. */}
+            {currentUser?.partyRole.roleType === UserSystemRole.ADMIN && (
                 <div className="border-b border-gray-200 dark:border-gray-700 mb-6">
                     <nav className="-mb-px flex space-x-8" aria-label="Tabs">
                         <button onClick={() => setActiveTab('approved')} className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ${activeTab === 'approved' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}>
@@ -82,7 +84,8 @@ const Testimonials: React.FC = () => {
                     </div>
 
                     {/* Pending Moderation */}
-                    {currentUser?.role === UserRole.ADMIN && (
+                    {/* FIX: Property 'role' does not exist on type 'User'. Use partyRole.roleType instead. */}
+                    {currentUser?.partyRole.roleType === UserSystemRole.ADMIN && (
                         <div className={activeTab === 'pending' ? 'block' : 'hidden'}>
                             {pendingTestimonials.length > 0 ? (
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

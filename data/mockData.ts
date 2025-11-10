@@ -1,69 +1,81 @@
-import { Customer, Lead, User, PolicyType, UserRole, Language, CampaignObjective, AuditLog, AnalyticsRecord, ExecutiveData, LeadStatus, NewsArticle, Testimonial, UserActivityEvent } from '../types';
+import { Customer, Lead, User, PolicyType, UserSystemRole, Language, CampaignObjective, AuditLog, AnalyticsRecord, ExecutiveData, LeadStatus, NewsArticle, Testimonial, UserActivityEvent } from '../types';
 
 export const MOCK_USERS: User[] = [
     { 
         id: 'user_1', 
-        name: 'John Agent', 
-        email: 'john.agent@example.com', 
-        role: UserRole.AGENT, 
         agencyId: 'agency_1',
-        profilePhotoUrl: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2NkY2RjZCI+PHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNy41MiAyIDEyIDJ6bTAgM2MxLjY2IDAgMyAxLjM0IDMgM3MtMS4zNCAzLTMgMy0zLTEuMzQtMy0zIDEuMzQtMyAzLTN6bTAgMTRjLTIuMzMgMC00LjMyLS45Ni01LjgzLTIuNTFBMTAuOTkgMTAuOTkgMCAwMTEyIDIwYTQuNDggNC40OCAwIDAwMy44My0yLjUxQzE2LjMyIDE5LjA0IDE0LjMzIDIwIDEyIDIweiIvPjwvc3ZnPg==',
-        signature: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCAyMDAgNjAiPjx0ZXh0IHg9IjEwIiB5PSI0NSIgZm9udC1mYW1pbHk9ImN1cnNpdmUiIGZvbnQtc2l6ZT0iNDAiIGZpbGw9IiMzMzMiPkpvaG4gQWdlbnQ8L3RleHQ+PC9zdmc+',
-        jobTitle: 'Senior Agent',
-        department: 'Sales',
-        officeLocation: 'Scranton Branch',
-        contact: {
-            workPhone: '555-0100-101',
-            mobilePhone: '555-0199-101'
+        party: {
+            partyName: { firstName: 'John', lastName: 'Agent' },
+            contactInfo: {
+                email: 'john.agent@example.com',
+                workPhone: '555-0100-101',
+                mobilePhone: '555-0199-101'
+            },
+            addressInfo: {
+                fullAddress: 'Scranton Branch'
+            },
+            profilePhotoUrl: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2NkY2RjZCI+PHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNy41MiAyIDEyIDJ6bTAgM2MxLjY2IDAgMyAxLjM0IDMgM3MtMS4zNCAzLTMgMy0zLTEuMzQtMy0zIDEuMzQtMyAzLTN6bTAgMTRjLTIuMzMgMC00LjMyLS45Ni01LjgzLTIuNTFBMTAuOTkgMTAuOTkgMCAwMTEyIDIwYTQuNDggNC40OCAwIDAwMy44My0yLjUxQzE2LjMyIDE5LjA0IDE0LjMzIDIwIDEyIDIweiIvPjwvc3ZnPg==',
+            signature: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCAyMDAgNjAiPjx0ZXh0IHg9IjEwIiB5PSI0NSIgZm9udC1mYW1pbHk9ImN1cnNpdmUiIGZvbnQtc2l6ZT0iNDAiIGZpbGw9IiMzMzMiPkpvaG4gQWdlbnQ8L3RleHQ+PC9zdmc+',
         },
-        roleInfo: {
+        partyRole: {
+            roleType: UserSystemRole.AGENT,
             roleTitle: 'Senior Insurance Agent',
-            permissionsScope: 'agency'
-        },
-        licenses: [
-            { type: 'Life & Health', licenseNumber: 'LH-12345', expirationDate: '2025-12-31', status: 'valid' },
-            { type: 'Property & Casualty', licenseNumber: 'PC-67890', expirationDate: '2023-11-30', status: 'expired' }
-        ]
+            permissionsScope: 'agency',
+            jobTitle: 'Senior Agent',
+            department: 'Sales',
+            licenses: [
+                { type: 'Life & Health', licenseNumber: 'LH-12345', expirationDate: '2025-12-31', status: 'valid' },
+                { type: 'Property & Casualty', licenseNumber: 'PC-67890', expirationDate: '2023-11-30', status: 'expired' }
+            ]
+        }
     },
     { 
         id: 'user_2', 
-        name: 'Jane Admin', 
-        email: 'moniaros@gmail.com', 
-        role: UserRole.ADMIN, 
         agencyId: 'agency_1',
-        profilePhotoUrl: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2NkY2RjZCI+PHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNy41MiAyIDEyIDJ6bTAgM2MxLjY2IDAgMyAxLjM0IDMgM3MtMS4zNCAzLTMgMy0zLTEuMzQtMy0zIDEuMzQtMyAzLTN6bTAgMTRjLTIuMzMgMC00LjMyLS45Ni01LjgzLTIuNTFBMTAuOTkgMTAuOTkgMCAwMTEyIDIwYTQuNDggNC40OCAwIDAwMy44My0yLjUxQzE2LjMyIDE5LjA0IDE0LjMzIDIwIDEyIDIweiIvPjwvc3ZnPg==',
-        signature: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCAyMDAgNjAiPjx0ZXh0IHg9IjEwIiB5PSI0NSIgZm9udC1mYW1pbHk9ImN1cnNpdmUiIGZvbnQtc2l6ZT0iNDAiIGZpbGw9IiMzMzMiPkphbmUgQWRtaW48L3RleHQ+PC9zdmc+',
-        jobTitle: 'Office Manager',
-        department: 'Administration',
-        officeLocation: 'Scranton Branch',
-        contact: {
-            workPhone: '555-0100-102'
+        party: {
+            partyName: { firstName: 'Jane', lastName: 'Admin' },
+            contactInfo: {
+                email: 'moniaros@gmail.com',
+                workPhone: '555-0100-102'
+            },
+            addressInfo: {
+                fullAddress: 'Scranton Branch'
+            },
+            profilePhotoUrl: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2NkY2RjZCI+PHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNy41MiAyIDEyIDJ6bTAgM2MxLjY2IDAgMyAxLjM0IDMgM3MtMS4zNCAzLTMgMy0zLTEuMzQtMy0zIDEuMzQtMyAzLTN6bTAgMTRjLTIuMzMgMC00LjMyLS45Ni01LjgzLTIuNTFBMTAuOTkgMTAuOTkgMCAwMTEyIDIwYTQuNDggNC40OCAwIDAwMy44My0yLjUxQzE2LjMyIDE5LjA0IDE0LjMzIDIwIDEyIDIweiIvPjwvc3ZnPg==',
+            signature: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCAyMDAgNjAiPjx0ZXh0IHg9IjEwIiB5PSI0NSIgZm9udC1mYW1pbHk9ImN1cnNpdmUiIGZvbnQtc2l6ZT0iNDAiIGZpbGw9IiMzMzMiPkphbmUgQWRtaW48L3RleHQ+PC9zdmc+',
         },
-        roleInfo: {
+        partyRole: {
+            roleType: UserSystemRole.ADMIN,
             roleTitle: 'Compliance Officer',
-            permissionsScope: 'agency'
-        },
-        licenses: [
-            { type: 'Notary Public', licenseNumber: 'NP-55555', expirationDate: '2026-06-01', status: 'valid' }
-        ]
+            permissionsScope: 'agency',
+            jobTitle: 'Office Manager',
+            department: 'Administration',
+            licenses: [
+                { type: 'Notary Public', licenseNumber: 'NP-55555', expirationDate: '2026-06-01', status: 'valid' }
+            ]
+        }
     },
     { 
         id: 'user_3', 
-        name: 'Peter Broker', 
-        email: 'peter.broker@example.com', 
-        role: UserRole.AGENT, 
         agencyId: 'agency_2',
-        jobTitle: 'Broker',
-        department: 'Commercial Lines',
-        officeLocation: 'Stamford Branch',
-        contact: {
-            workPhone: '555-0200-201'
+        party: {
+            partyName: { firstName: 'Peter', lastName: 'Broker' },
+            contactInfo: {
+                email: 'peter.broker@example.com',
+                workPhone: '555-0200-201'
+            },
+            addressInfo: {
+                fullAddress: 'Stamford Branch'
+            }
         },
-        roleInfo: {
+        partyRole: {
+            roleType: UserSystemRole.AGENT,
             roleTitle: 'Commercial Broker',
-            permissionsScope: 'agency'
-        },
-        licenses: []
+            permissionsScope: 'agency',
+            jobTitle: 'Broker',
+            department: 'Commercial Lines',
+            licenses: []
+        }
     },
 ];
 

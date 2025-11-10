@@ -44,7 +44,8 @@ const CustomerProfile: React.FC = () => {
         addTimelineEvent(customer.id, {
             type: 'system',
             content: `Address updated to: ${newAddress}`,
-            author: currentUser?.name || 'System',
+            // FIX: Property 'name' does not exist on type 'User'. Use party.partyName properties instead.
+            author: currentUser ? `${currentUser.party.partyName.firstName} ${currentUser.party.partyName.lastName}` : 'System',
         });
         setAddressModalOpen(false);
     };
@@ -56,7 +57,8 @@ const CustomerProfile: React.FC = () => {
         addTimelineEvent(customer.id, {
             type: 'policy_update',
             content: `Policy ${selectedPolicy.policyNumber} renewed. New end date: ${newEndDate}`,
-            author: currentUser?.name || 'System',
+            // FIX: Property 'name' does not exist on type 'User'. Use party.partyName properties instead.
+            author: currentUser ? `${currentUser.party.partyName.firstName} ${currentUser.party.partyName.lastName}` : 'System',
         });
         setRenewalModalOpen(false);
     };
@@ -96,7 +98,8 @@ const CustomerProfile: React.FC = () => {
     const handleAddTimelineEvent = (data: Omit<TimelineEvent, 'id' | 'date' | 'author' | 'annotations'>) => {
         addTimelineEvent(customer.id, {
             ...data,
-            author: currentUser?.name || 'System'
+            // FIX: Property 'name' does not exist on type 'User'. Use party.partyName properties instead.
+            author: currentUser ? `${currentUser.party.partyName.firstName} ${currentUser.party.partyName.lastName}` : 'System'
         });
         setTimelineModalOpen(false);
     };
@@ -160,7 +163,8 @@ const CustomerProfile: React.FC = () => {
                 </div>
                 <CustomerTimeline
                     timeline={customer.timeline}
-                    onAddAnnotation={(eventId, content) => addAnnotationToEvent(customer.id, eventId, { content, author: currentUser?.name || 'System' })}
+                    // FIX: Property 'name' does not exist on type 'User'. Use party.partyName properties instead.
+                    onAddAnnotation={(eventId, content) => addAnnotationToEvent(customer.id, eventId, { content, author: currentUser ? `${currentUser.party.partyName.firstName} ${currentUser.party.partyName.lastName}` : 'System' })}
                     onFlagEvent={(eventId) => toggleTimelineEventFlag(customer.id, eventId)}
                 />
             </div>

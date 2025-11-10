@@ -9,7 +9,8 @@ import AuditLogFilters from '../components/users/AuditLogFilters';
 import BulkActionsToolbar from '../components/users/BulkActionsToolbar';
 import ErrorMessage from '../components/ui/ErrorMessage';
 import SkeletonLoader from '../components/ui/SkeletonLoader';
-import { User, UserRole, AuditLog } from '../types';
+// FIX: Module '"../types"' has no exported member 'UserRole'. Use 'UserSystemRole' instead.
+import { User, UserSystemRole, AuditLog } from '../types';
 
 const UserManagement: React.FC = () => {
     const { t } = useLocalization();
@@ -19,7 +20,7 @@ const UserManagement: React.FC = () => {
     const [isInviteModalOpen, setInviteModalOpen] = useState(false);
     
     // State for Users tab
-    const [userFilters, setUserFilters] = useState<{ search: string; role: 'all' | UserRole }>({ search: '', role: 'all' });
+    const [userFilters, setUserFilters] = useState<{ search: string; role: 'all' | UserSystemRole }>({ search: '', role: 'all' });
     const [selectedUserIds, setSelectedUserIds] = useState<Set<string>>(new Set());
 
     // State for Logs tab
@@ -28,9 +29,12 @@ const UserManagement: React.FC = () => {
     const filteredUsers = useMemo(() => {
         return users.filter(user => {
             const searchLower = userFilters.search.toLowerCase();
-            const nameMatch = user.name.toLowerCase().includes(searchLower);
-            const emailMatch = user.email.toLowerCase().includes(searchLower);
-            const roleMatch = userFilters.role === 'all' || user.role === userFilters.role;
+            // FIX: Property 'name' does not exist on type 'User'. Use party.partyName properties instead.
+            const nameMatch = `${user.party.partyName.firstName} ${user.party.partyName.lastName}`.toLowerCase().includes(searchLower);
+            // FIX: Property 'email' does not exist on type 'User'. Use party.contactInfo.email instead.
+            const emailMatch = user.party.contactInfo.email.toLowerCase().includes(searchLower);
+            // FIX: Property 'role' does not exist on type 'User'. Use partyRole.roleType instead.
+            const roleMatch = userFilters.role === 'all' || user.partyRole.roleType === userFilters.role;
             return (nameMatch || emailMatch) && roleMatch;
         });
     }, [users, userFilters]);
@@ -65,7 +69,7 @@ const UserManagement: React.FC = () => {
         }
     };
 
-    const handleInviteUser = (name: string, email: string, role: UserRole) => {
+    const handleInviteUser = (name: string, email: string, role: UserSystemRole) => {
         addUser({ name, email, role });
         setInviteModalOpen(false);
     };
@@ -77,7 +81,7 @@ const UserManagement: React.FC = () => {
         }
     };
     
-    const handleBulkRoleChange = (newRole: UserRole) => {
+    const handleBulkRoleChange = (newRole: UserSystemRole) => {
         selectedUserIds.forEach(id => changeUserRole(id, newRole));
         setSelectedUserIds(new Set());
     };

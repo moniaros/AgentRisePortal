@@ -3,7 +3,7 @@ import { useAuth } from '../hooks/useAuth';
 import { useLocalization } from '../hooks/useLocalization';
 import { useOnboardingStatus } from '../hooks/useOnboardingStatus';
 import { useForm, UseFormSetValue } from 'react-hook-form';
-import { User, License, LicenseStatus, UserActivityType } from '../types';
+import { User, AcordLicense, LicenseStatus, UserActivityType } from '../types';
 import { useNotification } from '../hooks/useNotification';
 import { useUserActivity } from '../hooks/useUserActivity';
 import SkeletonLoader from '../components/ui/SkeletonLoader';
@@ -15,7 +15,7 @@ interface ImageUploadControlProps {
     description?: string;
     currentImage?: string;
     setValue: UseFormSetValue<User>;
-    fieldName: 'profilePhotoUrl' | 'signature';
+    fieldName: 'party.profilePhotoUrl' | 'party.signature';
     previewClassName?: string;
 }
 
@@ -140,27 +140,36 @@ const Profile: React.FC = () => {
                          <div className="md:col-span-1">
                             <ImageUploadControl
                                 label={t('profile.profilePhoto')}
-                                currentImage={watch('profilePhotoUrl')}
+                                currentImage={watch('party.profilePhotoUrl')}
                                 setValue={setValue}
-                                fieldName="profilePhotoUrl"
+                                fieldName="party.profilePhotoUrl"
                             />
                         </div>
                         <div className="md:col-span-2 space-y-6">
-                            <InputField 
-                                label={t('crm.name')}
-                                name="name"
-                                registerFn={register}
-                                requiredMessage="Name is required"
-                                error={errors.name}
-                            />
+                             <div className="grid grid-cols-2 gap-4">
+                                <InputField 
+                                    label={t('profile.firstName')}
+                                    name="party.partyName.firstName"
+                                    registerFn={register}
+                                    requiredMessage="First name is required"
+                                    error={errors.party?.partyName?.firstName}
+                                />
+                                <InputField 
+                                    label={t('profile.lastName')}
+                                    name="party.partyName.lastName"
+                                    registerFn={register}
+                                    requiredMessage="Last name is required"
+                                    error={errors.party?.partyName?.lastName}
+                                />
+                            </div>
                             <InputField 
                                 label={t('profile.jobTitle')}
-                                name="jobTitle"
+                                name="partyRole.jobTitle"
                                 registerFn={register}
                             />
                             <InputField 
                                 label={t('profile.department')}
-                                name="department"
+                                name="partyRole.department"
                                 registerFn={register}
                             />
                         </div>
@@ -172,26 +181,26 @@ const Profile: React.FC = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <InputField 
                             label={t('crm.form.email')}
-                            name="email"
+                            name="party.contactInfo.email"
                             type="email"
                             registerFn={register}
                             requiredMessage="Email is required"
-                            error={errors.email}
+                            error={errors.party?.contactInfo?.email}
                         />
                          <InputField 
                             label={t('profile.officeLocation')}
-                            name="officeLocation"
+                            name="party.addressInfo.fullAddress"
                             registerFn={register}
                         />
                         <InputField 
                             label={t('profile.workPhone')}
-                            name="contact.workPhone"
+                            name="party.contactInfo.workPhone"
                             type="tel"
                             registerFn={register}
                         />
                         <InputField 
                             label={t('profile.mobilePhone')}
-                            name="contact.mobilePhone"
+                            name="party.contactInfo.mobilePhone"
                             type="tel"
                             registerFn={register}
                         />
@@ -203,28 +212,28 @@ const Profile: React.FC = () => {
                     <ImageUploadControl
                         label={t('profile.digitalSignature')}
                         description={t('profile.signatureDescription')}
-                        currentImage={watch('signature')}
+                        currentImage={watch('party.signature')}
                         setValue={setValue}
-                        fieldName="signature"
+                        fieldName="party.signature"
                         previewClassName="w-48 h-16 rounded-md bg-white"
                     />
                 </fieldset>
                 
-                {currentUser?.roleInfo && (
+                {currentUser?.partyRole && (
                     <fieldset>
                         <legend className="text-lg font-semibold border-b dark:border-gray-600 pb-2 mb-4 w-full">{t('profile.roleAndPermissions')}</legend>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <ReadOnlyField label={t('profile.roleTitle')} value={currentUser.roleInfo.roleTitle} />
-                            <ReadOnlyField label={t('profile.permissionsScope')} value={currentUser.roleInfo.permissionsScope} />
+                            <ReadOnlyField label={t('profile.roleTitle')} value={currentUser.partyRole.roleTitle} />
+                            <ReadOnlyField label={t('profile.permissionsScope')} value={currentUser.partyRole.permissionsScope} />
                         </div>
                     </fieldset>
                 )}
                 
-                {currentUser?.licenses && currentUser.licenses.length > 0 && (
+                {currentUser?.partyRole.licenses && currentUser.partyRole.licenses.length > 0 && (
                     <fieldset>
                          <legend className="text-lg font-semibold border-b dark:border-gray-600 pb-2 mb-4 w-full">{t('profile.licensesAndCertifications')}</legend>
                          <div className="space-y-4">
-                            {currentUser.licenses.map((license, index) => (
+                            {currentUser.partyRole.licenses.map((license, index) => (
                                 <div key={index} className="p-4 border dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-700/50">
                                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
                                         <div>

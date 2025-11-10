@@ -1,5 +1,6 @@
 import React from 'react';
-import { User, UserRole } from '../../types';
+// FIX: Module '"../../types"' has no exported member 'UserRole'. Use 'UserSystemRole' instead.
+import { User, UserSystemRole } from '../../types';
 import { useLocalization } from '../../hooks/useLocalization';
 import { useAuth } from '../../hooks/useAuth';
 
@@ -9,7 +10,7 @@ interface UsersTableProps {
   onSelectUser: (userId: string) => void;
   onSelectAllUsers: () => void;
   onRemove: (userId: string) => void;
-  onChangeRole: (userId: string, newRole: UserRole) => void;
+  onChangeRole: (userId: string, newRole: UserSystemRole) => void;
 }
 
 const UsersTable: React.FC<UsersTableProps> = ({ users, selectedUserIds, onSelectUser, onSelectAllUsers, onRemove, onChangeRole }) => {
@@ -21,7 +22,8 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, selectedUserIds, onSelec
       alert(t('userManagement.cannotRemoveSelf'));
       return;
     }
-    if (window.confirm(t('userManagement.confirmRemove').replace('{userName}', user.name))) {
+    // FIX: Property 'name' does not exist on type 'User'. Use party.partyName properties instead.
+    if (window.confirm(t('userManagement.confirmRemove').replace('{userName}', `${user.party.partyName.firstName} ${user.party.partyName.lastName}`))) {
         onRemove(user.id);
     }
   };
@@ -61,14 +63,17 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, selectedUserIds, onSelec
                 />
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm font-medium text-gray-900 dark:text-white">{user.name}</div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">{user.email}</div>
+                {/* FIX: Property 'name' does not exist on type 'User'. Use party.partyName properties instead. */}
+                <div className="text-sm font-medium text-gray-900 dark:text-white">{user.party.partyName.firstName} {user.party.partyName.lastName}</div>
+                {/* FIX: Property 'email' does not exist on type 'User'. Use party.contactInfo.email instead. */}
+                <div className="text-sm text-gray-500 dark:text-gray-400">{user.party.contactInfo.email}</div>
               </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 capitalize">{user.role}</td>
+              {/* FIX: Property 'role' does not exist on type 'User'. Use partyRole.roleType instead. */}
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 capitalize">{user.partyRole.roleType}</td>
               <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-4">
                  <select 
-                    value={user.role}
-                    onChange={(e) => onChangeRole(user.id, e.target.value as UserRole)}
+                    value={user.partyRole.roleType}
+                    onChange={(e) => onChangeRole(user.id, e.target.value as UserSystemRole)}
                     className="p-1 border rounded-md text-xs dark:bg-gray-700 dark:border-gray-600"
                     disabled={user.id === currentUser?.id}
                 >

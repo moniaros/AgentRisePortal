@@ -75,7 +75,8 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
           </button>
           {isProfileMenuOpen && (
             <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-20">
-              <div className="px-4 py-2 text-sm text-gray-500 dark:text-gray-400 border-b dark:border-gray-700">{currentUser?.name}</div>
+              {/* FIX: Property 'name' does not exist on type 'User'. Use party.partyName properties instead. */}
+              <div className="px-4 py-2 text-sm text-gray-500 dark:text-gray-400 border-b dark:border-gray-700">{currentUser ? `${currentUser.party.partyName.firstName} ${currentUser.party.partyName.lastName}` : ''}</div>
               <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">{t('header.profile')}</Link>
               <Link to="/settings" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">{t('header.settings')}</Link>
               <Link to="/logout" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">{t('header.logout')}</Link>

@@ -10,44 +10,60 @@ export interface TranslationTokens {
     [key: string]: string | TranslationTokens;
 }
 
-// User & Auth
-export enum UserRole {
+// User & Auth - ACORD Aligned Schema
+export enum UserSystemRole {
     AGENT = 'agent',
     ADMIN = 'admin',
 }
 
 export type LicenseStatus = 'valid' | 'expired' | 'pending_review';
 
-export interface License {
+export interface AcordLicense {
     type: string;
     licenseNumber: string;
     expirationDate: string;
     status: LicenseStatus;
 }
 
-export interface RoleInfo {
-    roleTitle: string;
+export interface AcordPartyRole {
+    roleType: UserSystemRole; // Maps to system-level permissions
+    roleTitle: string; // e.g., 'Senior Insurance Agent'
     permissionsScope: 'agency' | 'global' | 'team';
+    jobTitle?: string;
+    department?: string;
+    licenses?: AcordLicense[];
+}
+
+export interface AcordPartyName {
+    firstName: string;
+    lastName: string;
+}
+
+export interface AcordContactInfo {
+    email: string;
+    workPhone?: string;
+    mobilePhone?: string;
+}
+
+export interface AcordAddressInfo {
+    fullAddress?: string; // For simplicity, using a single field. Can be expanded.
+}
+
+export interface AcordParty {
+    partyName: AcordPartyName;
+    contactInfo: AcordContactInfo;
+    addressInfo?: AcordAddressInfo;
+    profilePhotoUrl?: string; // Base64 data URL for PartyPhoto
+    signature?: string; // Base64 data URL for PartySignature
 }
 
 export interface User {
     id: string;
-    name: string; // Corresponds to PartyName in ACORD
-    profilePhotoUrl?: string; // Base64 data URL
-    signature?: string; // Base64 data URL for PartySignature
-    jobTitle?: string;
-    email: string;
-    contact?: {
-        workPhone?: string;
-        mobilePhone?: string;
-    };
-    officeLocation?: string;
-    department?: string;
-    role: UserRole;
     agencyId: string;
-    roleInfo?: RoleInfo;
-    licenses?: License[];
+    party: AcordParty;
+    partyRole: AcordPartyRole;
 }
+
 
 // User Activity
 export type UserActivityType = 'login' | 'action' | 'notification';

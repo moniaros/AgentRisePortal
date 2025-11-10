@@ -29,7 +29,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setTimeout(() => {
             // This is a mock authentication check.
             // In a real app, you would make an API call.
-            const user = MOCK_USERS.find(u => u.email === email);
+            // FIX: Property 'email' does not exist on type 'User'. Use party.contactInfo.email instead.
+            const user = MOCK_USERS.find(u => u.party.contactInfo.email === email);
             if (user && password === 'password123') { // Using a simple mock password
                 setCurrentUser(user);
                 resolve(true);

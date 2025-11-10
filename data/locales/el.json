@@ -457,6 +457,8 @@
   },
   "profile": {
     "title": "Προφίλ Χρήστη",
+    "firstName": "Όνομα",
+    "lastName": "Επώνυμο",
     "jobTitle": "Τίτλος Εργασίας",
     "department": "Τμήμα",
     "officeLocation": "Τοποθεσία Γραφείου",

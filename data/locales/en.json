@@ -457,6 +457,8 @@
   },
   "profile": {
     "title": "User Profile",
+    "firstName": "First Name",
+    "lastName": "Last Name",
     "jobTitle": "Job Title",
     "department": "Department",
     "officeLocation": "Office Location",

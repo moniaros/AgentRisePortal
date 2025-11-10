@@ -37,7 +37,8 @@ export const useCrmData = () => {
                 date: new Date().toISOString(),
                 type: 'system',
                 content: 'Customer profile created.',
-                author: currentUser?.name || 'System',
+                // FIX: Property 'name' does not exist on type 'User'. Use party.partyName properties instead.
+                author: currentUser ? `${currentUser.party.partyName.firstName} ${currentUser.party.partyName.lastName}` : 'System',
             }],
             agencyId,
         };
@@ -112,7 +113,8 @@ export const useCrmData = () => {
         addTimelineEvent(customerId, {
             type: 'system',
             content: reason ? `Attention flag set: ${reason}` : 'Attention flag cleared.',
-            author: currentUser?.name || 'System',
+            // FIX: Property 'name' does not exist on type 'User'. Use party.partyName properties instead.
+            author: currentUser ? `${currentUser.party.partyName.firstName} ${currentUser.party.partyName.lastName}` : 'System',
         });
     }, [allCustomers, updateCustomer, addTimelineEvent, currentUser]);
 

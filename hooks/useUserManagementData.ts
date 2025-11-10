@@ -1,7 +1,8 @@
 import { useMemo, useCallback } from 'react';
 import { useOfflineSync } from './useOfflineSync';
 import { fetchUsers, fetchAuditLogs } from '../services/api';
-import { User, AuditLog, UserRole } from '../types';
+// FIX: Module '"../types"' has no exported member 'UserRole'. Use 'UserSystemRole' instead.
+import { User, AuditLog, UserSystemRole } from '../types';
 import { useAuth } from './useAuth';
 
 export const useUserManagementData = () => {
@@ -33,7 +34,8 @@ export const useUserManagementData = () => {
         const newLog: AuditLog = {
             id: `log_${Date.now()}`,
             timestamp: new Date().toISOString(),
-            actorName: currentUser.name,
+            // FIX: Property 'name' does not exist on type 'User'. Use party.partyName properties instead.
+            actorName: `${currentUser.party.partyName.firstName} ${currentUser.party.partyName.lastName}`,
             action,
             targetName,
             details,
@@ -42,12 +44,28 @@ export const useUserManagementData = () => {
         setAllAuditLogs([...allAuditLogs, newLog]);
     }, [allAuditLogs, setAllAuditLogs, agencyId, currentUser]);
     
-    const addUser = useCallback((userData: { name: string; email: string; role: UserRole }) => {
+    const addUser = useCallback((userData: { name: string; email: string; role: UserSystemRole }) => {
         if (!agencyId) return;
+        // FIX: The created User object must match the nested structure defined in 'types.ts'.
+        const [firstName, ...lastNameParts] = userData.name.split(' ');
+        const lastName = lastNameParts.join(' ');
         const newUser: User = {
-            ...userData,
             id: `user_${Date.now()}`,
             agencyId: agencyId,
+            party: {
+                partyName: {
+                    firstName: firstName || '',
+                    lastName: lastName || '',
+                },
+                contactInfo: {
+                    email: userData.email,
+                },
+            },
+            partyRole: {
+                roleType: userData.role,
+                roleTitle: userData.role === UserSystemRole.ADMIN ? 'Administrator' : 'Agent',
+                permissionsScope: 'agency',
+            },
         };
         setAllUsers([...allUsers, newUser]);
         logAuditEvent('user_invited', userData.email, `Invited with role: ${userData.role}`);
@@ -57,16 +75,19 @@ export const useUserManagementData = () => {
         const userToRemove = allUsers.find(u => u.id === userId);
         if (userToRemove) {
             setAllUsers(allUsers.filter(u => u.id !== userId));
-            logAuditEvent('user_removed', userToRemove.name, `User ${userToRemove.email} removed.`);
+            // FIX: Properties 'name' and 'email' do not exist on type 'User'. Use nested properties instead.
+            logAuditEvent('user_removed', `${userToRemove.party.partyName.firstName} ${userToRemove.party.partyName.lastName}`, `User ${userToRemove.party.contactInfo.email} removed.`);
         }
     }, [allUsers, setAllUsers, logAuditEvent]);
 
-    const changeUserRole = useCallback((userId: string, newRole: UserRole) => {
+    const changeUserRole = useCallback((userId: string, newRole: UserSystemRole) => {
         const userToUpdate = allUsers.find(u => u.id === userId);
         if (userToUpdate) {
-            const oldRole = userToUpdate.role;
-            setAllUsers(allUsers.map(u => u.id === userId ? { ...u, role: newRole } : u));
-            logAuditEvent('role_changed', userToUpdate.name, `Role changed from ${oldRole} to ${newRole}.`);
+            // FIX: Property 'role' does not exist on type 'User'. Use partyRole.roleType instead.
+            const oldRole = userToUpdate.partyRole.roleType;
+            setAllUsers(allUsers.map(u => u.id === userId ? { ...u, partyRole: { ...u.partyRole, roleType: newRole } } : u));
+            // FIX: Property 'name' does not exist on type 'User'. Use party.partyName properties instead.
+            logAuditEvent('role_changed', `${userToUpdate.party.partyName.firstName} ${userToUpdate.party.partyName.lastName}`, `Role changed from ${oldRole} to ${newRole}.`);
         }
     }, [allUsers, setAllUsers, logAuditEvent]);
 

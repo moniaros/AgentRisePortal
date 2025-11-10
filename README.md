@@ -58,31 +58,26 @@ This section provides a clear overview of the project's current status for produ
 The platform is currently a high-fidelity MVP with a simulated backend. The following features are implemented and functional from a UI and front-end logic perspective.
 
 #### 1. Multi-Tenant Architecture & RBAC
--   **Description:** The application is structured to support multiple insurance agencies on a single instance. Data is segregated based on the logged-in user's agency. Role-Based Access Control (RBAC) is implemented, with a UI for administrators to manage users. The user profile includes a read-only audit trail showing recent logins, key actions, and system notifications.
+-   **Description:** The application is structured to support multiple insurance agencies on a single instance. Data is segregated based on the logged-in user's agency. Role-Based Access Control (RBAC) is implemented, with a UI for administrators to manage users. The user profile includes a read-only audit trail showing recent logins, key actions, and system notifications. The data model for users has been refactored to align with the ACORD industry standard, separating personal identity (`Party`) from contextual role (`PartyRole`) for easier future API integration.
 -   **Components:** `UserManagement.tsx`, `UsersTable.tsx`, `InviteUserModal.tsx`, `AuditLogsTable.tsx`, `Profile.tsx`.
--   **Data Structures:**
+-   **Data Structures (ACORD-Aligned):**
     ```typescript
-    interface User {
-        id: string;
-        name: string; // Corresponds to PartyName in ACORD
-        profilePhotoUrl?: string; // Base64 encoded profile image data URL
-        signature?: string; // Base64 encoded signature image for documents (ACORD PartySignature)
+    // Represents the individual's identity details
+    interface AcordParty {
+        partyName: { firstName: string; lastName: string; };
+        contactInfo: { email: string; workPhone?: string; mobilePhone?: string; };
+        addressInfo?: { fullAddress?: string; };
+        profilePhotoUrl?: string; // Base64 data URL for PartyPhoto
+        signature?: string;       // Base64 data URL for PartySignature
+    }
+
+    // Represents the user's role and permissions within the system
+    interface AcordPartyRole {
+        roleType: 'agent' | 'admin';
+        roleTitle: string; // e.g., 'Senior Insurance Agent'
+        permissionsScope: 'agency' | 'global' | 'team';
         jobTitle?: string;
-        email: string;
-        contact?: {
-            workPhone?: string;
-            mobilePhone?: string;
-        };
-        officeLocation?: string;
         department?: string;
-        role: 'admin' | 'agent';
-        agencyId: string;
-        // ACORD-aligned RoleType information
-        roleInfo?: {
-            roleTitle: string;
-            permissionsScope: 'agency' | 'global' | 'team';
-        };
-        // ACORD-aligned licensing information
         licenses?: {
             type: string;
             licenseNumber: string;
@@ -90,6 +85,15 @@ The platform is currently a high-fidelity MVP with a simulated backend. The foll
             status: 'valid' | 'expired' | 'pending_review';
         }[];
     }
+
+    // The final User object composes Party and PartyRole
+    interface User {
+        id: string;
+        agencyId: string;
+        party: AcordParty;
+        partyRole: AcordPartyRole;
+    }
+    
     interface UserActivityEvent {
         id: string;
         userId: string;
