@@ -52,7 +52,8 @@
     },
     "testimonialsTitle": "What Our Clients Say",
     "totalPremiumsWritten": "Total Premiums Written",
-    "yoy": "YoY Comparison"
+    "yoy": "YoY Comparison",
+    "onTimeRenewalRate": "On-Time Renewal Rate"
   },
   "leads": {
     "searchPlaceholder": "Search by name or email...",
@@ -165,7 +166,12 @@
     "insuredItems": "Insured Items & Coverages",
     "userNeedsTitle": "Client's Needs & Context",
     "userNeedsPlaceholder": "Describe the client's situation, concerns, or what they want to protect (e.g., 'Client just bought a more expensive car and is worried about theft', 'Wants to make sure their new home office equipment is covered').",
-    "analyzeGaps": "Analyze for Gaps"
+    "analyzeGaps": "Analyze for Gaps",
+    "coverageGaps": "Coverage Gaps",
+    "upsellOpportunities": "Upsell Opportunities",
+    "crossSellOpportunities": "Cross-Sell Opportunities",
+    "current": "Current",
+    "recommended": "Recommended"
   },
   "socialComposer": {
     "placeholder": "What's on your mind?",

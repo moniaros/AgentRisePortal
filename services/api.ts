@@ -12,6 +12,7 @@ export const fetchDashboardData = async () => {
         newLeadsThisMonth: { current: number; previous: number; };
         dailyLeadTrend: { date: string; count: number; }[];
         totalPremiumsWritten: { current: number; previous: number; };
+        onTimeRenewalRate: number;
     }>(resolve => {
         setTimeout(() => {
             // FIX: Explicitly type the accumulator for the reduce function to ensure correct type inference.
@@ -45,6 +46,41 @@ export const fetchDashboardData = async () => {
                 const count = MOCK_LEADS.filter(l => new Date(l.createdAt).toISOString().split('T')[0] === dateStr).length;
                 dailyLeadTrend.push({ date: d.toLocaleDateString(undefined, { day: '2-digit' }), count });
             }
+
+            // --- On-Time Renewal Rate Calculation ---
+            let totalDueForRenewalThisMonth = 0;
+            let alreadyRenewed = 0;
+
+            MOCK_CUSTOMERS.forEach(customer => {
+                const policiesDueThisMonth = customer.policies.filter(p => {
+                    const endDate = new Date(p.endDate);
+                    return endDate.getUTCMonth() === thisMonth && endDate.getUTCFullYear() === thisYear;
+                });
+
+                totalDueForRenewalThisMonth += policiesDueThisMonth.length;
+                
+                policiesDueThisMonth.forEach(expiringPolicy => {
+                    const renewalExists = customer.policies.some(p => {
+                        if (p.type !== expiringPolicy.type || p.id === expiringPolicy.id) return false;
+                        
+                        const startDate = new Date(p.startDate);
+                        const expiringEndDate = new Date(expiringPolicy.endDate);
+
+                        const oneDayAfter = new Date(expiringEndDate);
+                        oneDayAfter.setUTCDate(oneDayAfter.getUTCDate() + 1);
+
+                        return startDate.getTime() === oneDayAfter.getTime();
+                    });
+
+                    if (renewalExists) {
+                        alreadyRenewed++;
+                    }
+                });
+            });
+
+            const onTimeRenewalRate = totalDueForRenewalThisMonth > 0
+                ? (alreadyRenewed / totalDueForRenewalThisMonth) * 100
+                : 100; // If nothing is due, the rate is 100%
             
             resolve({
                 newLeadsCount: MOCK_LEADS.filter(l => l.status === 'new').length,
@@ -57,6 +93,7 @@ export const fetchDashboardData = async () => {
                     current: MOCK_KPI_DATA.totalPremiumsWritten.current,
                     previous: MOCK_KPI_DATA.totalPremiumsWritten.previous
                 },
+                onTimeRenewalRate: Math.round(onTimeRenewalRate),
             });
         }, SIMULATED_DELAY);
     });

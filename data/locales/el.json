@@ -52,7 +52,8 @@
     },
     "testimonialsTitle": "Τι Λένε οι Πελάτες Μας",
     "totalPremiumsWritten": "Συνολικά Ασφαλιστικά Ασφάλιστρα",
-    "yoy": "YoY Σύγκριση"
+    "yoy": "YoY Σύγκριση",
+    "onTimeRenewalRate": "Ποσοστό Ανανέωσης Πολιτικών"
   },
   "leads": {
     "searchPlaceholder": "Αναζήτηση με όνομα ή email...",
@@ -165,7 +166,12 @@
     "insuredItems": "Ασφαλισμένα Αντικείμενα & Καλύψεις",
     "userNeedsTitle": "Ανάγκες & Πλαίσιο Πελάτη",
     "userNeedsPlaceholder": "Περιγράψτε την κατάσταση του πελάτη, τις ανησυχίες του ή τι θέλει να προστατεύσει (π.χ., 'Ο πελάτης αγόρασε ένα ακριβότερο αυτοκίνητο και ανησυχεί για κλοπή').",
-    "analyzeGaps": "Ανάλυση για Κενά"
+    "analyzeGaps": "Ανάλυση για Κενά",
+    "coverageGaps": "Κενά Κάλυψης",
+    "upsellOpportunities": "Ευκαιρίες Upsell",
+    "crossSellOpportunities": "Ευκαιρίες Cross-Sell",
+    "current": "Τρέχον",
+    "recommended": "Προτεινόμενο"
   },
   "socialComposer": {
     "placeholder": "Τι σκέφτεστε;",

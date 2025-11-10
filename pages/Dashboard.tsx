@@ -8,6 +8,7 @@ import SkeletonLoader from '../components/ui/SkeletonLoader';
 import { useOnboardingStatus } from '../hooks/useOnboardingStatus';
 import TestimonialCarousel from '../components/testimonials/TestimonialCarousel';
 import SparklineKpiCard from '../components/dashboard/SparklineKpiCard';
+import GaugeKpiCard from '../components/dashboard/GaugeKpiCard';
 
 const Dashboard: React.FC = () => {
     const { t, language } = useLocalization();
@@ -22,6 +23,7 @@ const Dashboard: React.FC = () => {
         newLeadsThisMonth: { current: number; previous: number; };
         dailyLeadTrend: { date: string; count: number; }[];
         totalPremiumsWritten: { current: number; previous: number; };
+        onTimeRenewalRate: number;
     } | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -162,7 +164,7 @@ const Dashboard: React.FC = () => {
 
             <WelcomeBanner />
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {renderStatCard(t('dashboard.newLeads'), isLoading ? 0 : data?.newLeadsCount ?? 0, isLoading)}
                 <SparklineKpiCard
                     title={t('dashboard.newLeadsThisMonth')}
@@ -185,6 +187,11 @@ const Dashboard: React.FC = () => {
                     isLoadingFlag={isLoading}
                     isCurrency={true}
                     comparisonText={t('dashboard.yoy')}
+                />
+                <GaugeKpiCard 
+                    title={t('dashboard.onTimeRenewalRate')}
+                    value={data?.onTimeRenewalRate ?? 0}
+                    isLoading={isLoading}
                 />
             </div>
 

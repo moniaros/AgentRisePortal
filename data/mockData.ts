@@ -85,6 +85,12 @@ const thisYear = today.getFullYear();
 const lastMonth = thisMonth === 0 ? 11 : thisMonth - 1;
 const lastMonthYear = thisMonth === 0 ? thisYear - 1 : thisYear;
 
+// Dates for renewal calculations
+const aDayThisMonth = new Date(thisYear, thisMonth, 15);
+const nextDayThisMonth = new Date(thisYear, thisMonth, 16);
+const aLaterDayThisMonth = new Date(thisYear, thisMonth, 25);
+const lastDayOfNextYear = new Date(thisYear + 1, thisMonth, 15);
+
 export const MOCK_LEADS: Lead[] = [
     // Leads for this month
     { id: 'lead_1', firstName: 'Alice', lastName: 'Smith', email: 'alice.s@email.com', source: 'Facebook Campaign', status: 'new', potentialValue: 500, createdAt: new Date(thisYear, thisMonth, 2).toISOString(), policyType: PolicyType.AUTO, agencyId: 'agency_1' },
@@ -121,8 +127,12 @@ export const MOCK_CUSTOMERS: Customer[] = [
         dateOfBirth: '1964-08-15',
         communicationPreferences: ['email'],
         policies: [
-            { id: 'pol_1', type: PolicyType.AUTO, policyNumber: 'AUT12345', premium: 1200, startDate: '2023-01-15', endDate: '2024-01-15', isActive: true, insurer: 'Allied Insurance', coverages: [{ type: 'Liability', limit: '100k/300k' }, { type: 'Collision', limit: '$500 Ded.' }] },
-            { id: 'pol_2', type: PolicyType.HOME, policyNumber: 'HOM67890', premium: 850, startDate: '2023-03-20', endDate: '2024-03-20', isActive: true, insurer: 'Commonwealth Ins.', coverages: [{ type: 'Dwelling', limit: '300k' }, { type: 'Personal Property', limit: '150k' }] },
+            // Due to expire this month, and has been renewed
+            { id: 'pol_1', type: PolicyType.AUTO, policyNumber: 'AUT12345', premium: 1200, startDate: '2023-10-16', endDate: aDayThisMonth.toISOString().split('T')[0], isActive: true, insurer: 'Allied Insurance', coverages: [{ type: 'Liability', limit: '100k/300k' }, { type: 'Collision', limit: '$500 Ded.' }] },
+            { id: 'pol_1_renewed', type: PolicyType.AUTO, policyNumber: 'AUT54321', premium: 1250, startDate: nextDayThisMonth.toISOString().split('T')[0], endDate: lastDayOfNextYear.toISOString().split('T')[0], isActive: true, insurer: 'Allied Insurance', coverages: [{ type: 'Liability', limit: '100k/300k' }, { type: 'Collision', limit: '$500 Ded.' }] },
+            
+            // Due to expire this month, NOT renewed yet
+            { id: 'pol_2', type: PolicyType.HOME, policyNumber: 'HOM67890', premium: 850, startDate: '2023-10-26', endDate: aLaterDayThisMonth.toISOString().split('T')[0], isActive: true, insurer: 'Commonwealth Ins.', coverages: [{ type: 'Dwelling', limit: '300k' }, { type: 'Personal Property', limit: '150k' }] },
         ],
         timeline: [
             { id: 'evt_1', date: '2023-09-15T14:30:00Z', type: 'call', content: 'Discussed renewal options for auto policy.', author: 'John Agent' },
@@ -141,7 +151,10 @@ export const MOCK_CUSTOMERS: Customer[] = [
         communicationPreferences: ['email', 'sms'],
         attentionFlag: 'High value client, check in quarterly.',
         policies: [
+            // Active policy, NOT due this month
             { id: 'pol_3', type: PolicyType.HEALTH, policyNumber: 'HLT54321', premium: 4500, startDate: '2023-09-25', endDate: '2024-09-25', isActive: true, insurer: 'Stark Industries Health', coverages: [{ type: 'PPO Plan', limit: 'Gold Tier' }] },
+            // Due to expire this month, NOT renewed
+            { id: 'pol_4', type: PolicyType.LIFE, policyNumber: 'LIFE111', premium: 1500, startDate: '2020-10-10', endDate: new Date(thisYear, thisMonth, 28).toISOString().split('T')[0], isActive: true, insurer: 'MetLife', coverages: [] },
         ],
         timeline: [
             { id: 'evt_3', date: '2023-09-25T10:00:00Z', type: 'email', content: 'Welcome email sent with policy documents.', author: 'John Agent' },
