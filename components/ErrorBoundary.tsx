@@ -9,7 +9,7 @@ interface State {
 }
 
 class ErrorBoundary extends Component<Props, State> {
-  // FIX: Replaced class property state with a constructor to ensure correct component initialization and fix errors where `this.props` and `this.setState` were not found.
+  // FIX: Added a constructor to properly initialize component state and props, resolving errors with `this.state` and `this.props` being undefined.
   constructor(props: Props) {
     super(props);
     this.state = { hasError: false };

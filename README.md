@@ -2,7 +2,7 @@
 
 ## Project Description
 
-AgentRise is a modern, comprehensive, and bilingual (Greek/English) front-end platform designed for insurance professionals. It serves as an MVP to showcase a powerful suite of tools for lead generation, customer relationship management (CRM), and policy administration. Key features include an AI-powered gap analysis tool using Google Gemini, a customizable microsite builder, and full offline capabilities, making it a versatile solution for the modern insurance agent.
+AgentRise is a modern, comprehensive, and bilingual (Greek/English) front-end platform designed for insurance professionals. It serves as an MVP to showcase a powerful suite of tools for lead generation, customer relationship management (CRM), and policy administration. Key features include an AI-powered gap analysis tool using Google Gemini, multi-tenant architecture with role-based access control, and full offline capabilities, making it a versatile solution for the modern insurance agent.
 
 ---
 
@@ -10,12 +10,12 @@ AgentRise is a modern, comprehensive, and bilingual (Greek/English) front-end pl
 
 This project is built with a focus on stability and modern development practices, using a browser-native ES module setup without a build step.
 
-- **Front-End:** [React](https://react.dev/) (v19, Stable), [TypeScript](https://www.typescriptlang.org/)
-- **Routing:** [React Router DOM](https://reactrouter.com/) (v7)
-- **Styling:** [Tailwind CSS](https://tailwindcss.com/) (v3, via CDN)
-- **Data Visualization:** [Recharts](https://recharts.org/)
-- **AI Integration:** [Google Gemini API](https://ai.google.dev/) (`@google/genai`)
-- **Data Source:** Static JSON files simulating a REST API.
+-   **Front-End:** [React](https://react.dev/) (v19, Stable), [TypeScript](https://www.typescriptlang.org/)
+-   **Routing:** [React Router DOM](https://reactrouter.com/) (v7)
+-   **Styling:** [Tailwind CSS](https://tailwindcss.com/) (v3, via CDN)
+-   **Data Visualization:** [Recharts](https://recharts.org/)
+-   **AI Integration:** [Google Gemini API](https://ai.google.dev/) (`@google/genai`)
+-   **Data Source:** Static JSON files and in-memory services simulating a REST API.
 
 ---
 
@@ -49,161 +49,218 @@ This project is designed to run directly in the browser without a complex build 
 
 ---
 
-## Features Overview
+## Platform Status & Feature Breakdown
 
--   **Dashboard:** A central hub visualizing key metrics like new leads, monthly revenue, and policy type distribution.
--   **Lead Generation:** Manage incoming leads from social media with advanced filtering, sorting, and tagging capabilities.
--   **Micro-CRM:** A lightweight CRM to add, view, and edit customer profiles and their associated insurance policies.
--   **Policyholder Self-Service Portal:** An interactive hub for customers to manage policies, receive renewal alerts, use digital forms for updates, and run AI-powered policy reviews.
--   **AI Gap Analysis:** Upload policy documents (PDF, DOCX, images) to have Google Gemini automatically extract structured data and analyze coverage gaps based on client needs.
--   **Microsite Builder:** An intuitive UI for agents to build and customize bilingual, single-page websites for specific insurance products.
--   **Onboarding & Billing:** Placeholder modules designed for future integration with services like DocuSign and Stripe.
+This section provides a clear overview of the project's current status for product managers and stakeholders.
+
+### Implemented Features (Current MVP)
+
+The platform is currently a high-fidelity MVP with a simulated backend. The following features are implemented and functional from a UI and front-end logic perspective.
+
+#### 1. Multi-Tenant Architecture & RBAC
+-   **Description:** The application is structured to support multiple insurance agencies on a single instance. Data is segregated based on the logged-in user's agency. Role-Based Access Control (RBAC) is implemented, with a UI for administrators to manage users.
+-   **Components:** `UserManagement.tsx`, `UsersTable.tsx`, `InviteUserModal.tsx`, `AuditLogsTable.tsx`.
+-   **Data Structures:**
+    ```typescript
+    interface User {
+        id: string;
+        name: string;
+        email: string;
+        role: 'admin' | 'agent';
+        agencyId: string;
+    }
+    interface Agency {
+        id: string;
+        name: string;
+    }
+    interface AuditLog {
+        id: string;
+        timestamp: string;
+        actorName: string;
+        action: 'user_invited' | 'user_removed' | 'role_changed';
+        targetName: string;
+        details: string;
+        agencyId: string;
+    }
+    ```
+
+#### 2. Micro-CRM
+-   **Description:** A core CRM for managing customers and leads. Users can add, edit, and delete customer profiles, view associated leads, and manage policies. All data is scoped to the user's agency.
+-   **Components:** `MicroCRM.tsx`, `CustomersTable.tsx`, `CrmLeadsTable.tsx`, `CustomerFormModal.tsx`.
+-   **Data Structures:**
+    ```typescript
+    interface Customer {
+        id: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+        phone: string;
+        policies: Policy[];
+        timeline: TimelineEvent[];
+        agencyId: string;
+    }
+    interface Lead {
+        id: string;
+        firstName: string;
+        lastName: string;
+        source: string;
+        status: 'new' | 'contacted' | 'qualified' | 'closed' | 'rejected';
+        campaignId?: string;
+        agencyId: string;
+    }
+    ```
+
+#### 3. Customer Microsite & Timeline
+-   **Description:** A detailed view for each customer, showing their contact information, policies, and a chronological timeline of interactions (notes, policy changes, etc.).
+-   **Components:** `CustomerMicrosite.tsx`, `PolicyCard.tsx`, `CustomerTimeline.tsx`.
+-   **Data Structures:**
+    ```typescript
+    interface Policy {
+        id: string;
+        type: 'auto' | 'home' | 'life' | 'health';
+        policyNumber: string;
+        premium: number;
+        isActive: boolean;
+    }
+    interface TimelineEvent {
+        id: string;
+        date: string;
+        type: 'call' | 'email' | 'meeting' | 'note' | 'policy_update';
+        title: string;
+        content: string;
+    }
+    ```
+
+#### 4. AI-Powered Gap Analysis
+-   **Description:** Agents can upload a client's existing policy document (PDF/Image). Google Gemini API extracts key policy information and then analyzes it against user-described needs to identify coverage gaps.
+-   **Components:** `GapAnalysis.tsx`, `FileUploader.tsx`, `PolicyParser.tsx`.
+-   **Technology:** `@google/genai` (Gemini API).
+
+#### 5. Social Media Composer & Lead Capture
+-   **Description:** A tool for drafting and "publishing" social media posts. It includes templates, character limits, and image previews. Crucially, it can attach a lead capture form, which generates a unique landing page to convert prospects into leads directly within the CRM. Includes robust, bilingual error handling.
+-   **Components:** `SocialComposer.tsx`, `PostPreview.tsx`, `LeadCapturePage.tsx`.
+-   **Data Structures:**
+    ```typescript
+    interface Campaign {
+        id: string;
+        name: string;
+        // ... other campaign properties
+        leadCaptureForm?: { fields: LeadCaptureFormField[] };
+        agencyId: string;
+    }
+    ```
+
+#### 6. Campaign Management & Analytics
+-   **Description:** A foundational module for creating and viewing advertising campaigns. The accompanying analytics dashboard visualizes performance data (spend, impressions, CTR, conversions) with robust filtering.
+-   **Components:** `AdCampaigns.tsx`, `CampaignWizard.tsx`, `Analytics.tsx`, `PerformanceChart.tsx`, `SpendChart.tsx`.
+-   **Data Structures:**
+    ```typescript
+    interface CampaignPerformanceMetrics {
+        date: string; // YYYY-MM-DD
+        campaignId: string;
+        impressions: number;
+        clicks: number;
+        conversions: number;
+        spend: number;
+    }
+    ```
 
 ---
 
-## API and Data Standards
+## Product Roadmap: Path to an Enterprise-Level Platform
 
--   **Data Interchange:** The application uses structured **JSON** for all data operations, simulating a modern REST API.
--   **Industry Vocabulary:** The data models for insurance policies and customer information are designed to be compatible with industry-standard vocabulary, such as **ACORD**, to ensure realistic and interoperable data structures.
+The current MVP provides a strong foundation. To evolve AgentRise into a market-ready, enterprise-level SaaS platform, development should focus on the following key areas.
 
----
+### Tier 1: Core Backend & Security (Critical Path)
 
-## API Endpoint Payloads (Examples)
+These items are necessary to move beyond the mocked front-end and create a real, secure product.
 
-Below are examples of JSON payloads for core entities, designed for compatibility with standard insurtech APIs.
+1.  **Develop a Production-Ready Backend API:**
+    -   **Action:** Replace the mock `api.ts` service with a robust backend (e.g., Node.js/Express, Python/Django, or Go).
+    -   **Requirements:**
+        -   Implement a scalable REST or GraphQL API.
+        -   Connect to a production-grade database (e.g., PostgreSQL) to manage all application data.
+        -   Ensure all API endpoints enforce tenant isolation (i.e., an agent from Agency A cannot access data from Agency B).
 
-### 1. Parties (Customers)
+2.  **Implement Real Authentication & Authorization:**
+    -   **Action:** Replace the hardcoded `AuthContext` with a full-featured authentication system.
+    -   **Requirements:**
+        -   User registration, login (with password hashing), and session management (e.g., JWT).
+        -   Implement social logins (Google, LinkedIn).
+        -   Secure password reset functionality.
+        -   Enforce RBAC on the server-side for all API endpoints.
 
-A "Party" represents an individual or entity involved in an insurance policy.
+3.  **Establish Cloud Infrastructure & CI/CD:**
+    -   **Action:** Set up a scalable hosting environment and deployment pipeline.
+    -   **Requirements:**
+        -   Deploy the application to a cloud provider (AWS, Google Cloud, Azure).
+        -   Implement CI/CD pipelines for automated testing and deployment.
+        -   Set up database backups and disaster recovery plans.
 
-#### `POST /api/v1/parties` (Create a new Party)
+### Tier 2: Feature Parity & Commercialization
 
-**Request Body:**
+These features are essential for a commercially viable product in the insurance industry.
 
-```json
-{
-  "partyType": "Person",
-  "firstName": "Alexandros",
-  "lastName": "Papageorgiou",
-  "dateOfBirth": "1985-05-20",
-  "contact": {
-    "email": "alex.papageorgiou@example.com",
-    "phone": "6971112233"
-  },
-  "address": {
-    "street": "Leof. Kifisias 123",
-    "city": "Athens",
-    "postalCode": "11526",
-    "country": "GR"
-  }
-}
-```
+1.  **Advanced Policy Management:**
+    -   **Action:** Expand the `Policy` model and UI to handle the full lifecycle.
+    -   **Requirements:**
+        -   **Endorsements:** Ability to make and track changes to an active policy.
+        -   **Claims:** A system for logging First Notice of Loss (FNOL) and tracking claim status.
+        -   **Cancellations & Reinstatements:** Workflows for managing policy status changes.
 
-#### `GET /api/v1/parties/{partyId}` (Retrieve a Party)
+2.  **Commission Management Module:**
+    -   **Action:** Build a system to calculate, track, and report on agent commissions.
+    -   **Requirements:**
+        -   Configurable commission rates per policy type and insurer.
+        -   Automated calculation upon policy binding or premium payment.
+        -   Reporting for agents and administrators.
 
-**Response Body:**
+3.  **True Customer Portal (Policyholder Access):**
+    -   **Action:** Create a separate, secure login for policyholders (`policyholder` role).
+    -   **Requirements:**
+        -   Allow customers to view their policies and documents.
+        -   Enable online premium payments via Stripe integration.
+        -   Provide a simple interface to initiate a claim or request a policy change.
 
-```json
-{
-  "id": "cust1",
-  "partyType": "Person",
-  "firstName": "Alexandros",
-  "lastName": "Papageorgiou",
-  "dateOfBirth": "1985-05-20",
-  "contact": {
-    "email": "alex.papageorgiou@example.com",
-    "phone": "6971112233"
-  },
-  "address": {
-    "street": "Leof. Kifisias 123",
-    "city": "Athens",
-    "postalCode": "11526",
-    "country": "GR"
-  }
-}
-```
+4.  **Payment Gateway Integration:**
+    -   **Action:** Integrate with Stripe or a similar payment processor to handle premium collections.
+    -   **Requirements:**
+        -   Securely process one-time and recurring payments.
+        -   Update policy status automatically based on payment success.
+        -   Store transaction history.
 
-### 2. Policies
+### Tier 3: Enterprise-Grade Enhancements & Integrations
 
-A "Policy" represents an insurance contract.
+These features will differentiate the platform and make it suitable for larger, more demanding agencies.
 
-#### `POST /api/v1/policies` (Create a new Policy)
+1.  **Third-Party Integrations:**
+    -   **Action:** Connect AgentRise to the wider ecosystem of tools used by insurance professionals.
+    -   **Requirements:**
+        -   **Email & Calendar:** Sync with Google Workspace/Outlook 365 to log communications in the customer timeline and manage appointments.
+        -   **E-Signature:** Integrate with DocuSign or similar for digital document signing.
+        -   **Accounting Software:** Connect with QuickBooks or Xero for financial management.
 
-**Request Body:**
+2.  **Advanced Reporting & Business Intelligence:**
+    -   **Action:** Move beyond the current analytics to provide deeper business insights.
+    -   **Requirements:**
+        -   Customizable report builder.
+        -   Dashboards for agency performance, agent productivity, and sales funnels.
+        -   Data export capabilities (CSV, PDF).
 
-```json
-{
-  "policyNumber": "CAR-12345",
-  "policyType": "auto",
-  "insurer": "Generali",
-  "status": "active",
-  "effectiveDate": "2023-01-15",
-  "expirationDate": "2024-01-14",
-  "premium": {
-    "amount": 350.50,
-    "currency": "EUR"
-  },
-  "parties": [
-    {
-      "partyId": "cust1",
-      "role": "Insured"
-    }
-  ]
-}
-```
+3.  **Workflow Automation:**
+    -   **Action:** Build a rules engine to automate routine tasks.
+    -   **Requirements:**
+        -   Automated email/SMS reminders for renewals and payments.
+        -   Task creation for agents based on triggers (e.g., new lead assigned).
+        -   Automated lead assignment rules.
 
-#### `GET /api/v1/policies/{policyId}` (Retrieve a Policy)
+4.  **Compliance and Security Hardening:**
+    -   **Action:** Ensure the platform meets industry-specific security and data privacy standards.
+    -   **Requirements:**
+        -   Achieve compliance with regulations like GDPR and CCPA.
+        -   Implement two-factor authentication (2FA).
+        -   Conduct regular security audits and penetration testing.
 
-**Response Body:**
-
-```json
-{
-  "id": "pol1",
-  "policyNumber": "CAR-12345",
-  "policyType": "auto",
-  "insurer": "Generali",
-  "status": "active",
-  "effectiveDate": "2023-01-15",
-  "expirationDate": "2024-01-14",
-  "premium": {
-    "amount": 350.50,
-    "currency": "EUR"
-  },
-  "parties": [
-    {
-      "partyId": "cust1",
-      "role": "Insured"
-    }
-  ],
-  "timeline": [
-    {
-      "id": "evt1",
-      "date": "2023-10-20T10:00:00Z",
-      "type": "note",
-      "title": "Policy Issued",
-      "content": "New auto policy created and activated.",
-      "author": "System"
-    }
-  ]
-}
-```
-
-#### `PATCH /api/v1/policies/{policyId}` (Update a Policy)
-
-Used for partial updates, such as renewing a policy.
-
-**Request Body:**
-
-```json
-{
-  "status": "active",
-  "expirationDate": "2025-01-14",
-  "premium": {
-    "amount": 365.00,
-    "currency": "EUR"
-  }
-}
-```
 ---
 
 ## Contribution Guidelines
@@ -221,10 +278,3 @@ We welcome contributions to enhance the AgentRise platform! To contribute, pleas
 ## License
 
 This project is licensed under the **MIT License**.
-
----
-
-## Contact and Support
-
--   **Reporting Issues:** For any bugs or issues, please open an issue on the project's GitHub repository.
--   **General Inquiries:** For other questions or support, please contact the project maintainers.
