@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLocalization } from '../hooks/useLocalization';
@@ -10,6 +11,7 @@ import TestimonialCarousel from '../components/testimonials/TestimonialCarousel'
 import SparklineKpiCard from '../components/dashboard/SparklineKpiCard';
 import GaugeKpiCard from '../components/dashboard/GaugeKpiCard';
 import ConversionFunnelChart from '../components/dashboard/ConversionFunnelChart';
+import ExpiringPoliciesWidget from '../components/dashboard/ExpiringPoliciesWidget';
 
 const Dashboard: React.FC = () => {
     const { t, language } = useLocalization();
@@ -26,6 +28,7 @@ const Dashboard: React.FC = () => {
         totalPremiumsWritten: { current: number; previous: number; };
         onTimeRenewalRate: number;
         conversionFunnel: { leads: number; quotesIssued: number; policiesBound: number; };
+        expiringPolicies: { customerId: string; customerName: string; policyNumber: string; endDate: string; }[];
     } | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -206,7 +209,7 @@ const Dashboard: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
-                <div className="lg:col-span-2 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">{t('dashboard.policyDistribution')}</h2>
                     {isLoading ? (
                         <div className="space-y-4">
@@ -230,6 +233,9 @@ const Dashboard: React.FC = () => {
                         </ul>
                     )}
                 </div>
+                
+                <ExpiringPoliciesWidget policies={data?.expiringPolicies ?? []} isLoading={isLoading} />
+                
                 <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">{t('dashboard.testimonialsTitle')}</h2>
                     <TestimonialCarousel />

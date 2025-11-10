@@ -46,9 +46,9 @@ class ErrorBoundary extends React.Component<Props, State> {
       );
     }
 
-    // FIX: Destructured props to access children, which can resolve some obscure type inference issues.
-    const { children } = this.props;
-    return children;
+    // FIX: The `this` keyword refers to the component instance, so `this.props` is the correct way to access props.
+    // The previous destructuring was causing an obscure type error.
+    return this.props.children;
   }
 }
 

@@ -1,3 +1,4 @@
+
 import { Customer, Lead, User, PolicyType, UserSystemRole, Language, CampaignObjective, AuditLog, AnalyticsRecord, ExecutiveData, LeadStatus, NewsArticle, Testimonial, UserActivityEvent } from '../types';
 
 export const MOCK_USERS: User[] = [
@@ -90,6 +91,8 @@ const aDayThisMonth = new Date(thisYear, thisMonth, 15);
 const nextDayThisMonth = new Date(thisYear, thisMonth, 16);
 const aLaterDayThisMonth = new Date(thisYear, thisMonth, 25);
 const lastDayOfNextYear = new Date(thisYear + 1, thisMonth, 15);
+const fortyFiveDaysFromNow = new Date();
+fortyFiveDaysFromNow.setDate(today.getDate() + 45);
 
 export const MOCK_LEADS: Lead[] = [
     // Leads for this month
@@ -155,6 +158,8 @@ export const MOCK_CUSTOMERS: Customer[] = [
             { id: 'pol_3', type: PolicyType.HEALTH, policyNumber: 'HLT54321', premium: 4500, startDate: '2023-09-25', endDate: '2024-09-25', isActive: true, insurer: 'Stark Industries Health', coverages: [{ type: 'PPO Plan', limit: 'Gold Tier' }] },
             // Due to expire this month, NOT renewed
             { id: 'pol_4', type: PolicyType.LIFE, policyNumber: 'LIFE111', premium: 1500, startDate: '2020-10-10', endDate: new Date(thisYear, thisMonth, 28).toISOString().split('T')[0], isActive: true, insurer: 'MetLife', coverages: [] },
+             // Expires in 45 days, should not be in "expiring soon" list
+            { id: 'pol_5', type: PolicyType.AUTO, policyNumber: 'AUT-EXP45', premium: 950, startDate: '2023-12-01', endDate: fortyFiveDaysFromNow.toISOString().split('T')[0], isActive: true, insurer: 'Geico', coverages: [] }
         ],
         timeline: [
             { id: 'evt_3', date: '2023-09-25T10:00:00Z', type: 'email', content: 'Welcome email sent with policy documents.', author: 'John Agent' },

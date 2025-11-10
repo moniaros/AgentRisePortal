@@ -1,7 +1,15 @@
+
 import { MOCK_CUSTOMERS, MOCK_LEADS, MOCK_AUDIT_LOGS, MOCK_USERS, MOCK_ANALYTICS_DATA, MOCK_EXECUTIVE_DATA, MOCK_NEWS_ARTICLES, MOCK_TESTIMONIALS, MOCK_USER_ACTIVITY, MOCK_KPI_DATA, MOCK_CONVERSION_FUNNEL_DATA } from '../data/mockData';
 import { DetailedPolicy, AnalyticsData, User, AuditLog, ExecutiveData, NewsArticle, Testimonial, UserActivityEvent } from '../types';
 
 const SIMULATED_DELAY = 500;
+
+interface ExpiringPolicyInfo {
+    customerId: string;
+    customerName: string;
+    policyNumber: string;
+    endDate: string;
+}
 
 export const fetchDashboardData = async () => {
     return new Promise<{
@@ -14,6 +22,7 @@ export const fetchDashboardData = async () => {
         totalPremiumsWritten: { current: number; previous: number; };
         onTimeRenewalRate: number;
         conversionFunnel: { leads: number; quotesIssued: number; policiesBound: number; };
+        expiringPolicies: ExpiringPolicyInfo[];
     }>(resolve => {
         setTimeout(() => {
             // FIX: Explicitly type the accumulator for the reduce function to ensure correct type inference.
@@ -83,6 +92,38 @@ export const fetchDashboardData = async () => {
                 ? (alreadyRenewed / totalDueForRenewalThisMonth) * 100
                 : 100; // If nothing is due, the rate is 100%
             
+            // --- Expiring Policies Calculation ---
+            const expiringPolicies: ExpiringPolicyInfo[] = [];
+            const todayDate = new Date();
+            todayDate.setHours(0, 0, 0, 0);
+            const thirtyDaysFromNow = new Date();
+            thirtyDaysFromNow.setDate(todayDate.getDate() + 30);
+
+            MOCK_CUSTOMERS.forEach(customer => {
+                customer.policies.forEach(policy => {
+                    const endDate = new Date(policy.endDate);
+                    if (policy.isActive && endDate >= todayDate && endDate <= thirtyDaysFromNow) {
+                        const renewalExists = customer.policies.some(p => {
+                            if (p.type !== policy.type || p.id === policy.id) return false;
+                            const startDate = new Date(p.startDate);
+                            const expiringEndDate = new Date(policy.endDate);
+                            const oneDayAfter = new Date(expiringEndDate);
+                            oneDayAfter.setUTCDate(oneDayAfter.getUTCDate() + 1);
+                            return startDate.getTime() === oneDayAfter.getTime();
+                        });
+
+                        if (!renewalExists) {
+                            expiringPolicies.push({
+                                customerId: customer.id,
+                                customerName: `${customer.firstName} ${customer.lastName}`,
+                                policyNumber: policy.policyNumber,
+                                endDate: policy.endDate,
+                            });
+                        }
+                    }
+                });
+            });
+
             resolve({
                 newLeadsCount: MOCK_LEADS.filter(l => l.status === 'new').length,
                 monthlyRevenue: MOCK_CUSTOMERS.flatMap(c => c.policies).reduce((sum, p) => sum + p.premium, 0) / 12,
@@ -96,6 +137,7 @@ export const fetchDashboardData = async () => {
                 },
                 onTimeRenewalRate: Math.round(onTimeRenewalRate),
                 conversionFunnel: MOCK_CONVERSION_FUNNEL_DATA,
+                expiringPolicies: expiringPolicies.sort((a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime()),
             });
         }, SIMULATED_DELAY);
     });
