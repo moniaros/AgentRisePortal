@@ -4,10 +4,12 @@ import { AuthProvider } from './context/AuthContext';
 import { LanguageProvider } from './context/LanguageContext';
 import { NotificationProvider } from './context/NotificationContext';
 import GTMProvider from './components/GTMProvider';
-import ErrorBoundary from './components/ErrorBoundary';
 import RouteAnalyticsTracker from './components/RouteAnalyticsTracker';
+import ErrorBoundary from './components/ErrorBoundary';
+
 import Layout from './components/Layout';
 import Login from './pages/Login';
+import Logout from './pages/Logout';
 import Dashboard from './pages/Dashboard';
 import LeadGeneration from './pages/LeadGeneration';
 import MicroCRM from './pages/MicroCRM';
@@ -15,16 +17,16 @@ import CustomerProfile from './pages/CustomerMicrosite';
 import GapAnalysis from './pages/GapAnalysis';
 import Onboarding from './pages/Onboarding';
 import Billing from './pages/Billing';
-import MicrositeBuilder from './pages/MicrositeBuilder';
 import SocialComposer from './pages/SocialComposer';
 import AdCampaigns from './pages/AdCampaigns';
 import Analytics from './pages/Analytics';
-import UserManagement from './pages/UserManagement';
-import Settings from './pages/Settings';
 import Profile from './pages/Profile';
-import Logout from './pages/Logout';
+import Settings from './pages/Settings';
+import UserManagement from './pages/UserManagement';
 import LeadsDashboard from './pages/LeadsDashboard';
+import MicrositeBuilder from './pages/MicrositeBuilder';
 import LeadCapturePage from './pages/LeadCapturePage';
+import ExecutiveDashboard from './pages/ExecutiveDashboard';
 
 const App: React.FC = () => {
   return (
@@ -38,26 +40,23 @@ const App: React.FC = () => {
                 <Routes>
                   <Route path="/login" element={<Login />} />
                   <Route path="/logout" element={<Logout />} />
-                  <Route path="/lead-capture/:campaignId" element={<LeadCapturePage />} />
-                  
-                  {/* Protected Routes */}
-                  <Route path="/customer/:customerId" element={<Layout><CustomerProfile /></Layout>} />
+                  <Route path="/capture/:campaignId" element={<LeadCapturePage />} />
                   <Route path="/" element={<Layout><Dashboard /></Layout>} />
-                  <Route path="/leads-dashboard" element={<Layout><LeadsDashboard /></Layout>} />
                   <Route path="/lead-generation" element={<Layout><LeadGeneration /></Layout>} />
                   <Route path="/micro-crm" element={<Layout><MicroCRM /></Layout>} />
+                  <Route path="/customer/:customerId" element={<Layout><CustomerProfile /></Layout>} />
                   <Route path="/gap-analysis" element={<Layout><GapAnalysis /></Layout>} />
                   <Route path="/onboarding" element={<Layout><Onboarding /></Layout>} />
                   <Route path="/billing" element={<Layout><Billing /></Layout>} />
-                  <Route path="/microsite-builder" element={<Layout><MicrositeBuilder /></Layout>} />
                   <Route path="/social-composer" element={<Layout><SocialComposer /></Layout>} />
-                  <Route path="/campaigns" element={<Layout><AdCampaigns /></Layout>} />
+                  <Route path="/ad-campaigns" element={<Layout><AdCampaigns /></Layout>} />
                   <Route path="/analytics" element={<Layout><Analytics /></Layout>} />
-                  <Route path="/user-management" element={<Layout><UserManagement /></Layout>} />
-                  <Route path="/settings" element={<Layout><Settings /></Layout>} />
                   <Route path="/profile" element={<Layout><Profile /></Layout>} />
-
-                  {/* Fallback Route */}
+                  <Route path="/settings" element={<Layout><Settings /></Layout>} />
+                  <Route path="/user-management" element={<Layout><UserManagement /></Layout>} />
+                  <Route path="/leads-dashboard" element={<Layout><LeadsDashboard /></Layout>} />
+                  <Route path="/microsite-builder" element={<Layout><MicrositeBuilder /></Layout>} />
+                  <Route path="/executive-dashboard" element={<Layout><ExecutiveDashboard /></Layout>} />
                   <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
               </Router>

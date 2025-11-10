@@ -12,7 +12,8 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({ isOpen, onClose, onIn
   const { t } = useLocalization();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [role, setRole] = useState<UserRole>('agent');
+  // FIX: Explicitly type the state with UserRole enum to match the onInvite handler's expectation.
+  const [role, setRole] = useState<UserRole>(UserRole.AGENT);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

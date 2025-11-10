@@ -1,6 +1,3 @@
-import React from 'react';
-
-// GENERAL
 export enum Language {
     EN = 'en',
     EL = 'el',
@@ -10,39 +7,56 @@ export type TranslationTokens = {
     [key: string]: string | TranslationTokens;
 };
 
-// USER & AUTH
-export type UserRole = 'admin' | 'agent';
+export interface SocialPlatform {
+    key: string;
+    name: string;
+    icon: React.ReactElement;
+}
 
 export interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: UserRole;
-  agencyId: string;
+    id: string;
+    name: string;
+    email: string;
+    role: UserRole;
+    agencyId: string;
 }
 
-export interface AuditLog {
-  id: string;
-  timestamp: string;
-  actorName: string;
-  action: 'user_invited' | 'role_changed' | 'user_removed';
-  targetName: string;
-  details: string;
-  agencyId: string;
+export enum UserRole {
+    ADMIN = 'admin',
+    AGENT = 'agent',
 }
 
-// CRM
-export enum PolicyType {
-    AUTO = 'auto',
-    HOME = 'home',
-    LIFE = 'life',
-    HEALTH = 'health',
+export interface Lead {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone?: string;
+    source: string;
+    status: LeadStatus;
+    potentialValue: number;
+    createdAt: string;
+    customerId?: string;
+    campaignId?: string;
+    policyType: PolicyType;
+    agencyId: string;
 }
 
-export interface Coverage {
-    type: string;
-    limit: string;
-    deductible?: string;
+export type LeadStatus = 'new' | 'contacted' | 'qualified' | 'closed' | 'rejected';
+
+export interface Customer {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone?: string;
+    address?: string;
+    dateOfBirth?: string;
+    policies: Policy[];
+    timeline: TimelineEvent[];
+    attentionFlag?: string;
+    communicationPreferences: ('email' | 'sms')[];
+    agencyId: string;
 }
 
 export interface Policy {
@@ -57,23 +71,24 @@ export interface Policy {
     coverages: Coverage[];
 }
 
-export interface Attachment {
-    name: string;
-    url: string;
-    size: number;
+export enum PolicyType {
+    AUTO = 'auto',
+    HOME = 'home',
+    LIFE = 'life',
+    HEALTH = 'health',
+    BUSINESS = 'business',
 }
 
-export interface Annotation {
-    id: string;
-    date: string;
-    content: string;
-    author: string;
+export interface Coverage {
+    type: string;
+    limit: string;
+    deductible?: string;
 }
 
 export interface TimelineEvent {
     id: string;
     date: string;
-    type: 'call' | 'email' | 'note' | 'system' | 'policy_update' | 'meeting' | 'claim';
+    type: 'note' | 'call' | 'email' | 'meeting' | 'policy_update' | 'claim' | 'system';
     content: string;
     author: string;
     isFlagged?: boolean;
@@ -81,40 +96,21 @@ export interface TimelineEvent {
     annotations?: Annotation[];
 }
 
-export interface Customer {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone?: string;
-  address?: string;
-  dateOfBirth?: string;
-  agencyId: string;
-  attentionFlag?: string;
-  communicationPreferences?: ('email' | 'sms')[];
-  policies: Policy[];
-  timeline: TimelineEvent[];
-}
-
-// LEADS
-export type LeadStatus = 'new' | 'contacted' | 'qualified' | 'closed' | 'rejected';
-export interface Lead {
+export interface Annotation {
     id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone?: string;
-    source: string;
-    status: LeadStatus;
-    potentialValue: number;
-    createdAt: string;
-    policyType: PolicyType;
-    agencyId: string;
-    campaignId?: string;
-    customerId?: string;
+    date: string;
+    author: string;
+    content: string;
 }
 
-// GAP ANALYSIS
+export interface Attachment {
+    name: string;
+    url: string;
+    size: number;
+}
+
+
+// Gap Analysis Types
 export interface DetailedPolicy {
     policyNumber: string;
     insurer: string;
@@ -125,61 +121,98 @@ export interface DetailedPolicy {
     insuredItems: {
         id: string;
         description: string;
-        coverages: Coverage[];
+        coverages: {
+            type: string;
+            limit: string;
+            deductible?: string;
+        }[];
     }[];
 }
 
-export interface Gap {
-    area: string;
-    current: string;
-    recommended: string;
-    reason: string;
-}
-
-export interface Opportunity {
-    product: string;
-    recommendation: string;
-    benefit: string;
-}
-
 export interface GapAnalysisResult {
-    gaps: Gap[];
-    upsell_opportunities: Opportunity[];
-    cross_sell_opportunities: Opportunity[];
+    gaps: { area: string; current: string; recommended: string; reason: string }[];
+    upsell_opportunities: { product: string; recommendation: string; benefit: string }[];
+    cross_sell_opportunities: { product: string; recommendation: string; benefit: string }[];
 }
 
-
-// ONBOARDING
+// Onboarding
 export interface OnboardingProgress {
     profileCompleted: boolean;
     policyAnalyzed: boolean;
     campaignCreated: boolean;
 }
 
-// SOCIAL & CAMPAIGNS
-export interface SocialPlatform {
-    key: string;
+// Microsite Builder
+export type MicrositeBlockType = 'hero' | 'products' | 'testimonials' | 'faq' | 'contact';
+
+export interface BaseBlock {
+    id: string;
+    type: MicrositeBlockType;
+}
+
+export interface HeroBlock extends BaseBlock {
+    type: 'hero';
+    title: string;
+    subtitle: string;
+    ctaText: string;
+}
+
+export interface Product {
+    id: string;
     name: string;
-    icon: React.ReactElement;
+    description: string;
 }
 
-export enum CampaignObjective {
-    LEAD_GENERATION = 'lead_generation',
-    BRAND_AWARENESS = 'brand_awareness',
-    WEBSITE_TRAFFIC = 'website_traffic',
+export interface ProductsBlock extends BaseBlock {
+    type: 'products';
+    title: string;
+    products: Product[];
 }
 
-export interface LeadCaptureFormField {
-    name: string;
-    type: 'text' | 'email' | 'tel' | 'number';
-    required: boolean;
+export interface Testimonial {
+    id: string;
+    quote: string;
+    author: string;
 }
 
+export interface TestimonialsBlock extends BaseBlock {
+    type: 'testimonials';
+    title: string;
+    testimonials: Testimonial[];
+}
+
+export interface FaqItem {
+    id: string;
+    question: string;
+    answer: string;
+}
+
+export interface FaqBlock extends BaseBlock {
+    type: 'faq';
+    title: string;
+    items: FaqItem[];
+}
+
+export interface ContactBlock extends BaseBlock {
+    type: 'contact';
+    title: string;
+    subtitle: string;
+}
+
+export type MicrositeBlock = HeroBlock | ProductsBlock | TestimonialsBlock | FaqBlock | ContactBlock;
+
+export interface MicrositeSettings {
+    themeColor: string;
+    font: string;
+    companyName: string;
+}
+
+// Campaigns & Analytics
 export interface Campaign {
     id: string;
     name: string;
     objective: CampaignObjective;
-    network: string; // 'facebook' | 'instagram' | 'linkedin' | 'x'
+    network: 'facebook' | 'instagram' | 'linkedin' | 'x';
     language: Language;
     audience: {
         ageRange: [number, number];
@@ -191,19 +224,30 @@ export interface Campaign {
     creative: {
         headline: string;
         body: string;
-        image?: string;
+        image: string;
     };
     status: 'active' | 'draft' | 'completed';
-    agencyId: string;
     leadCaptureForm?: {
-      fields: LeadCaptureFormField[];
-    }
+        fields: LeadCaptureFormField[];
+    };
+    agencyId: string;
 }
 
-// ANALYTICS
+export interface LeadCaptureFormField {
+    name: string;
+    type: 'text' | 'email' | 'tel' | 'number';
+    required: boolean;
+}
+
+export enum CampaignObjective {
+    LEAD_GENERATION = 'LEAD_GENERATION',
+    BRAND_AWARENESS = 'BRAND_AWARENESS',
+    WEBSITE_TRAFFIC = 'WEBSITE_TRAFFIC',
+}
+
 export interface AnalyticsRecord {
+    date: string; // YYYY-MM-DD
     campaignId: string;
-    date: string;
     impressions: number;
     clicks: number;
     conversions: number;
@@ -211,66 +255,24 @@ export interface AnalyticsRecord {
 }
 export type AnalyticsData = AnalyticsRecord[];
 
-// MICROSITE BUILDER
-export interface Product {
+
+// User Management
+export interface AuditLog {
     id: string;
-    name: string;
-    description: string;
+    timestamp: string;
+    actorName: string;
+    action: 'user_invited' | 'user_removed' | 'role_changed';
+    targetName: string;
+    details: string;
+    agencyId: string;
 }
 
-export interface Testimonial {
-    id: string;
-    quote: string;
-    author: string;
-}
-
-export interface FaqItem {
-    id: string;
-    question: string;
-    answer: string;
-}
-
-export type HeroBlock = {
-    id: string;
-    type: 'hero';
-    title: string;
-    subtitle: string;
-    ctaText: string;
-};
-
-export type ProductsBlock = {
-    id: string;
-    type: 'products';
-    title: string;
-    products: Product[];
-};
-
-export type TestimonialsBlock = {
-    id: string;
-    type: 'testimonials';
-    title: string;
-    testimonials: Testimonial[];
-};
-
-export type FaqBlock = {
-    id: string;
-    type: 'faq';
-    title: string;
-    items: FaqItem[];
-};
-
-export type ContactBlock = {
-    id: string;
-    type: 'contact';
-    title: string;
-    subtitle: string;
-};
-
-export type MicrositeBlock = HeroBlock | ProductsBlock | TestimonialsBlock | FaqBlock | ContactBlock;
-
-export interface MicrositeSettings {
-    themeColor: string;
-    font: string;
-    companyName: string;
-    logoUrl?: string;
+// Executive Dashboard
+export interface ExecutiveData {
+    agencyGrowth: { month: string; premium: number; policies: number }[];
+    productMix: { name: PolicyType; value: number }[];
+    claimsTrend: { month: string; submitted: number; approved: number; paid: number }[];
+    leadFunnel: { status: LeadStatus; count: number }[];
+    campaignRoi: { id: string; name: string; spend: number; revenue: number; }[];
+    riskExposure: { area: string; exposure: number; mitigation: number }[];
 }
