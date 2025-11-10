@@ -1,4 +1,4 @@
-import { MOCK_CUSTOMERS, MOCK_LEADS, MOCK_AUDIT_LOGS, MOCK_USERS, MOCK_ANALYTICS_DATA, MOCK_EXECUTIVE_DATA, MOCK_NEWS_ARTICLES, MOCK_TESTIMONIALS, MOCK_USER_ACTIVITY, MOCK_KPI_DATA } from '../data/mockData';
+import { MOCK_CUSTOMERS, MOCK_LEADS, MOCK_AUDIT_LOGS, MOCK_USERS, MOCK_ANALYTICS_DATA, MOCK_EXECUTIVE_DATA, MOCK_NEWS_ARTICLES, MOCK_TESTIMONIALS, MOCK_USER_ACTIVITY, MOCK_KPI_DATA, MOCK_CONVERSION_FUNNEL_DATA } from '../data/mockData';
 import { DetailedPolicy, AnalyticsData, User, AuditLog, ExecutiveData, NewsArticle, Testimonial, UserActivityEvent } from '../types';
 
 const SIMULATED_DELAY = 500;
@@ -13,6 +13,7 @@ export const fetchDashboardData = async () => {
         dailyLeadTrend: { date: string; count: number; }[];
         totalPremiumsWritten: { current: number; previous: number; };
         onTimeRenewalRate: number;
+        conversionFunnel: { leads: number; quotesIssued: number; policiesBound: number; };
     }>(resolve => {
         setTimeout(() => {
             // FIX: Explicitly type the accumulator for the reduce function to ensure correct type inference.
@@ -94,6 +95,7 @@ export const fetchDashboardData = async () => {
                     previous: MOCK_KPI_DATA.totalPremiumsWritten.previous
                 },
                 onTimeRenewalRate: Math.round(onTimeRenewalRate),
+                conversionFunnel: MOCK_CONVERSION_FUNNEL_DATA,
             });
         }, SIMULATED_DELAY);
     });

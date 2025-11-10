@@ -168,6 +168,12 @@ export const MOCK_KPI_DATA = {
     totalPremiumsWritten: { current: 125430, previous: 110250 },
 };
 
+export const MOCK_CONVERSION_FUNNEL_DATA = {
+    leads: 120,
+    quotesIssued: 75,
+    policiesBound: 30,
+};
+
 export const MOCK_TESTIMONIALS: Testimonial[] = [
     {
         id: 'test_1',

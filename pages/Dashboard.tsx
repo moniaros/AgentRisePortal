@@ -9,6 +9,7 @@ import { useOnboardingStatus } from '../hooks/useOnboardingStatus';
 import TestimonialCarousel from '../components/testimonials/TestimonialCarousel';
 import SparklineKpiCard from '../components/dashboard/SparklineKpiCard';
 import GaugeKpiCard from '../components/dashboard/GaugeKpiCard';
+import ConversionFunnelChart from '../components/dashboard/ConversionFunnelChart';
 
 const Dashboard: React.FC = () => {
     const { t, language } = useLocalization();
@@ -24,6 +25,7 @@ const Dashboard: React.FC = () => {
         dailyLeadTrend: { date: string; count: number; }[];
         totalPremiumsWritten: { current: number; previous: number; };
         onTimeRenewalRate: number;
+        conversionFunnel: { leads: number; quotesIssued: number; policiesBound: number; };
     } | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -195,7 +197,15 @@ const Dashboard: React.FC = () => {
                 />
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-2">
+            <div className="mt-8">
+                {isLoading ? (
+                    <SkeletonLoader className="h-96 w-full" />
+                ) : data?.conversionFunnel ? (
+                    <ConversionFunnelChart data={data.conversionFunnel} />
+                ) : null}
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
                 <div className="lg:col-span-2 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
                     <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">{t('dashboard.policyDistribution')}</h2>
                     {isLoading ? (

@@ -53,7 +53,10 @@
     "testimonialsTitle": "Τι Λένε οι Πελάτες Μας",
     "totalPremiumsWritten": "Συνολικά Ασφαλιστικά Ασφάλιστρα",
     "yoy": "YoY Σύγκριση",
-    "onTimeRenewalRate": "Ποσοστό Ανανέωσης Πολιτικών"
+    "onTimeRenewalRate": "Ποσοστό Ανανέωσης Πολιτικών",
+    "leadToPolicyFunnel": "Funnel Μετατροπής Lead σε Συμβόλαιο",
+    "quotes": "Προσφορές",
+    "policies": "Συμβόλαια"
   },
   "leads": {
     "searchPlaceholder": "Αναζήτηση με όνομα ή email...",

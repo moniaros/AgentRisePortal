@@ -53,7 +53,10 @@
     "testimonialsTitle": "What Our Clients Say",
     "totalPremiumsWritten": "Total Premiums Written",
     "yoy": "YoY Comparison",
-    "onTimeRenewalRate": "On-Time Renewal Rate"
+    "onTimeRenewalRate": "On-Time Renewal Rate",
+    "leadToPolicyFunnel": "Lead to Policy Funnel",
+    "quotes": "Quotes",
+    "policies": "Policies"
   },
   "leads": {
     "searchPlaceholder": "Search by name or email...",
