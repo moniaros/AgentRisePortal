@@ -94,6 +94,14 @@ The application is structured around a central dashboard with specialized pages 
 -   **Onboarding (`/onboarding`)**: A welcome page for new users that guides them through initial setup steps with a checklist (e.g., complete profile, analyze first policy).
 -   **Sitemap (`/sitemap`)**: An auto-generated page that lists all main pages and published news articles, primarily for SEO and accessibility.
 
+## Automation Gap Analysis
+
+A detailed analysis of the platform's automation capabilities has been conducted. The platform has a robust data model for a rules engine, but the functional implementation is currently limited to a hardcoded service for renewal-related task creation. A generic "rules runner" to process the defined JSON rules is the primary missing component.
+
+For a complete breakdown of existing, partial, and missing features, as well as recommended development priorities, please see the full analysis document:
+
+**[Read the full Automation Gap Analysis](./automation-gap-analysis.md)**
+
 ## Rules Engine Data Model
 
 The platform includes a flexible, data-driven rules engine to automate common business processes. The engine's logic is defined entirely through JSON configurations, allowing for the creation and modification of rules without deploying new code.
