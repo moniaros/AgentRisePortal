@@ -118,7 +118,17 @@
     "limit": "Limit",
     "deductible": "Deductible",
     "showDetails": "Show Details",
-    "hideDetails": "Hide Details"
+    "hideDetails": "Hide Details",
+    "addTimelineEvent": "Add Event",
+    "addEventTitle": "Add Timeline Event",
+    "eventType": "Event Type",
+    "eventDetails": "Details",
+    "eventDetailsPlaceholder": "Log call notes, meeting summary, etc.",
+    "attachments": "Attachments",
+    "uploadAttachment": "Upload File (mock)",
+    "flagEvent": "Flag Event",
+    "unflagEvent": "Unflag Event",
+    "attachmentSize": "({size} KB)"
   },
   "gapAnalysis": {
     "description": "Upload a policy document to analyze coverage gaps against client needs.",

@@ -46,6 +46,12 @@ export interface Annotation {
     author: string;
 }
 
+export interface Attachment {
+    name: string;
+    url: string; // For MVP, this will be a placeholder
+    size: number; // in bytes
+}
+
 export interface TimelineEvent {
     id: string;
     date: string;
@@ -53,6 +59,8 @@ export interface TimelineEvent {
     content: string;
     author: string;
     annotations?: Annotation[];
+    attachments?: Attachment[];
+    isFlagged?: boolean;
 }
 
 export interface Customer {

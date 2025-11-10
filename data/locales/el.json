@@ -118,7 +118,17 @@
     "limit": "Όριο",
     "deductible": "Απαλλαγή",
     "showDetails": "Εμφάνιση Λεπτομερειών",
-    "hideDetails": "Απόκρυψη Λεπτομερειών"
+    "hideDetails": "Απόκρυψη Λεπτομερειών",
+    "addTimelineEvent": "Προσθήκη Γεγονότος",
+    "addEventTitle": "Προσθήκη Γεγονότος στο Ιστορικό",
+    "eventType": "Τύπος Γεγονότος",
+    "eventDetails": "Λεπτομέρειες",
+    "eventDetailsPlaceholder": "Καταγραφή σημειώσεων κλήσης, περίληψη συνάντησης κ.λπ.",
+    "attachments": "Συνημμένα",
+    "uploadAttachment": "Μεταφόρτωση Αρχείου (mock)",
+    "flagEvent": "Σήμανση Γεγονότος",
+    "unflagEvent": "Αφαίρεση Σήμανσης",
+    "attachmentSize": "({size} KB)"
   },
   "gapAnalysis": {
     "description": "Ανεβάστε ένα έγγραφο συμβολαίου για να αναλύσετε τα κενά κάλυψης σε σχέση με τις ανάγκες του πελάτη.",

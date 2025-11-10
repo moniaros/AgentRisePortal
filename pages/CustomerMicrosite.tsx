@@ -11,6 +11,7 @@ import AddressChangeModal from '../components/customer/AddressChangeModal';
 import RenewalModal from '../components/customer/RenewalModal';
 import { useAuth } from '../hooks/useAuth';
 import AttentionFlagModal from '../components/customer/AttentionFlagModal';
+import AddTimelineEventModal from '../components/customer/AddTimelineEventModal';
 
 const CustomerMicrosite: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -21,7 +22,8 @@ const CustomerMicrosite: React.FC = () => {
         updateCustomer, 
         addTimelineEvent, 
         addAnnotationToEvent, 
-        updateCustomerAttentionFlag 
+        updateCustomerAttentionFlag,
+        toggleTimelineEventFlag
     } = useCrmData();
     const { t } = useLocalization();
     const { currentUser } = useAuth();
@@ -29,6 +31,7 @@ const CustomerMicrosite: React.FC = () => {
     const [isAddressModalOpen, setAddressModalOpen] = useState(false);
     const [isRenewalModalOpen, setRenewalModalOpen] = useState(false);
     const [isAttentionModalOpen, setAttentionModalOpen] = useState(false);
+    const [isAddEventModalOpen, setAddEventModalOpen] = useState(false);
     const [selectedPolicy, setSelectedPolicy] = useState<Policy | null>(null);
     const [isAiLoading, setIsAiLoading] = useState(false);
 
@@ -87,6 +90,19 @@ const CustomerMicrosite: React.FC = () => {
                 content,
                 author: currentUser.name,
             });
+        }
+    };
+
+    const handleAddEvent = (eventData: Omit<TimelineEvent, 'id' | 'date' | 'author'>) => {
+        if (customer && currentUser) {
+            addTimelineEvent(customer.id, { ...eventData, author: currentUser.name });
+            setAddEventModalOpen(false);
+        }
+    };
+
+    const handleFlagEvent = (eventId: string) => {
+        if (customer) {
+            toggleTimelineEventFlag(customer.id, eventId);
         }
     };
 
@@ -150,14 +166,23 @@ const CustomerMicrosite: React.FC = () => {
 
             {/* Timeline */}
             <div>
-                 <h2 className="text-2xl font-semibold mb-4">{t('customer.timeline')}</h2>
-                 <CustomerTimeline timeline={customer.timeline} onAddAnnotation={handleAddAnnotation} />
+                <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-2xl font-semibold">{t('customer.timeline')}</h2>
+                    <button
+                        onClick={() => setAddEventModalOpen(true)}
+                        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+                    >
+                        {t('customer.addTimelineEvent')}
+                    </button>
+                </div>
+                 <CustomerTimeline timeline={customer.timeline} onAddAnnotation={handleAddAnnotation} onFlagEvent={handleFlagEvent} />
             </div>
 
             {/* Modals */}
             <AddressChangeModal isOpen={isAddressModalOpen} onClose={() => setAddressModalOpen(false)} currentAddress={customer.address} onSubmit={handleAddressSubmit} />
             {selectedPolicy && <RenewalModal isOpen={isRenewalModalOpen} onClose={() => {setRenewalModalOpen(false); setSelectedPolicy(null);}} policy={selectedPolicy} onSubmit={handleRenewalSubmit} />}
             <AttentionFlagModal isOpen={isAttentionModalOpen} onClose={() => setAttentionModalOpen(false)} onSubmit={handleAttentionSubmit} currentReason={customer.attentionFlag} />
+            <AddTimelineEventModal isOpen={isAddEventModalOpen} onClose={() => setAddEventModalOpen(false)} onSubmit={handleAddEvent} />
         </div>
     );
 };

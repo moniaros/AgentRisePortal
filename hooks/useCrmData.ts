@@ -116,6 +116,20 @@ export const useCrmData = () => {
         });
     }, [allCustomers, updateCustomer, addTimelineEvent, currentUser]);
 
+    const toggleTimelineEventFlag = useCallback((customerId: string, eventId: string) => {
+        const customer = allCustomers.find(c => c.id === customerId);
+        if (!customer) return;
+        
+        const updatedTimeline = customer.timeline.map(event => {
+            if (event.id === eventId) {
+                return { ...event, isFlagged: !event.isFlagged };
+            }
+            return event;
+        });
+
+        updateCustomer({ ...customer, timeline: updatedTimeline });
+    }, [allCustomers, updateCustomer]);
+
     return { 
         customers, 
         leads, 
@@ -127,6 +141,7 @@ export const useCrmData = () => {
         addLead, 
         addTimelineEvent,
         addAnnotationToEvent,
-        updateCustomerAttentionFlag
+        updateCustomerAttentionFlag,
+        toggleTimelineEventFlag,
     };
 };

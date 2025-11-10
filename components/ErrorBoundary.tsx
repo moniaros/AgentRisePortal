@@ -10,13 +10,15 @@ interface State {
 }
 
 class ErrorBoundary extends Component<Props, State> {
-  // FIX: Use modern class property syntax for state initialization.
-  // This is a more concise and common pattern in modern React and can help
-  // avoid complex `this` binding issues in the constructor, resolving the type errors.
-  public state: State = {
-    hasError: false,
-    error: undefined,
-  };
+  // FIX: Initialize state in the constructor for robust `this` context across different build configurations.
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      hasError: false,
+      error: undefined,
+    };
+    this.handleTryAgain = this.handleTryAgain.bind(this);
+  }
 
   public static getDerivedStateFromError(error: Error): State {
     return { hasError: true, error };
@@ -26,11 +28,10 @@ class ErrorBoundary extends Component<Props, State> {
     console.error('Uncaught error:', error, errorInfo);
   }
 
-  // FIX: Use an arrow function for the event handler to automatically bind `this`.
-  // This is the standard way to handle events in class components without manual binding in the constructor.
-  private handleTryAgain = () => {
+  // FIX: Define as a class method and bind `this` in the constructor to resolve context issues, ensuring `this.setState` is available.
+  private handleTryAgain() {
     this.setState({ hasError: false, error: undefined });
-  };
+  }
 
   public render() {
     if (this.state.hasError) {
@@ -58,6 +59,7 @@ class ErrorBoundary extends Component<Props, State> {
       );
     }
 
+    // FIX: `this.props` is now correctly typed and accessible because the component correctly inherits from React.Component.
     return this.props.children;
   }
 }

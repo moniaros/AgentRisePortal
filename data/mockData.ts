@@ -62,6 +62,10 @@ export const MOCK_CUSTOMERS: Customer[] = [
                 type: 'call', 
                 content: 'Discussed renewal for home policy.', 
                 author: 'Agent Smith',
+                isFlagged: true,
+                attachments: [
+                    { name: 'call_summary.pdf', url: '#', size: 128000 }
+                ],
                 annotations: [
                     { id: 'ann_1', date: '2024-03-10T10:05:00Z', content: 'Client seemed hesitant about the price increase.', author: 'Agent Smith' }
                 ]
