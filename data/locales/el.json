@@ -316,6 +316,44 @@
         "phone": "Τηλέφωνο"
     }
   },
+  "micrositeBuilder": {
+    "title": "Δημιουργός Microsite",
+    "controlsTitle": "Μπλοκ Περιεχομένου",
+    "previewTitle": "Ζωντανή Προεπισκόπηση",
+    "addBlock": "Προσθήκη Μπλοκ",
+    "selectBlock": "Επιλέξτε ένα μπλοκ...",
+    "saveSite": "Αποθήκευση Microsite",
+    "noBlocks": "Η σελίδα σας είναι κενή. Προσθέστε ένα μπλοκ για να ξεκινήσετε!",
+    "noBlocksPreview": "Η προεπισκόπηση της σελίδας σας θα εμφανιστεί εδώ.",
+    "blocks": {
+      "hero": "Κεντρικό Banner (Hero)",
+      "products": "Προϊόντα/Υπηρεσίες",
+      "testimonials": "Μαρτυρίες",
+      "faq": "Συχνές Ερωτήσεις (FAQ)",
+      "contact": "Φόρμα Επικοινωνίας"
+    },
+    "controls": {
+      "moveUp": "Πάνω",
+      "moveDown": "Κάτω",
+      "remove": "Αφαίρεση Μπλοκ",
+      "edit": "Επεξεργασία",
+      "collapse": "Σύμπτυξη"
+    },
+    "editor": {
+      "title": "Τίτλος",
+      "subtitle": "Υπότιτλος",
+      "cta": "Κείμενο Call-to-Action",
+      "productName": "Όνομα Προϊόντος",
+      "productDescription": "Περιγραφή",
+      "addProduct": "Προσθήκη Προϊόντος",
+      "testimonialQuote": "Απόσπασμα",
+      "testimonialAuthor": "Συγγραφέας",
+      "addTestimonial": "Προσθήκη Μαρτυρίας",
+      "faqQuestion": "Ερώτηση",
+      "faqAnswer": "Απάντηση",
+      "addFaq": "Προσθήκη Ερώτησης"
+    }
+  },
   "validation": {
     "required": "Το πεδίο {fieldName} είναι υποχρεωτικό.",
     "invalidEmail": "Παρακαλώ εισάγετε μια έγκυρη διεύθυνση email.",

@@ -317,6 +317,44 @@
         "phone": "Phone Number"
     }
   },
+  "micrositeBuilder": {
+    "title": "Microsite Builder",
+    "controlsTitle": "Content Blocks",
+    "previewTitle": "Live Preview",
+    "addBlock": "Add Block",
+    "selectBlock": "Select a block to add...",
+    "saveSite": "Save Microsite",
+    "noBlocks": "Your site is empty. Add a block to get started!",
+    "noBlocksPreview": "Your site preview will appear here.",
+    "blocks": {
+      "hero": "Hero Banner",
+      "products": "Products/Services",
+      "testimonials": "Testimonials",
+      "faq": "FAQ",
+      "contact": "Contact Form"
+    },
+    "controls": {
+      "moveUp": "Move Up",
+      "moveDown": "Move Down",
+      "remove": "Remove Block",
+      "edit": "Edit",
+      "collapse": "Collapse"
+    },
+    "editor": {
+      "title": "Title",
+      "subtitle": "Subtitle",
+      "cta": "Call to Action Text",
+      "productName": "Product Name",
+      "productDescription": "Description",
+      "addProduct": "Add Product",
+      "testimonialQuote": "Quote",
+      "testimonialAuthor": "Author",
+      "addTestimonial": "Add Testimonial",
+      "faqQuestion": "Question",
+      "faqAnswer": "Answer",
+      "addFaq": "Add FAQ Item"
+    }
+  },
   "validation": {
     "required": "{fieldName} is required.",
     "invalidEmail": "Please enter a valid email address.",

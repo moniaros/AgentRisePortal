@@ -1,3 +1,5 @@
+import React from 'react';
+
 // This file contains type definitions for the entire application.
 
 // From context/LanguageContext.tsx, data/mockData.ts, etc.
@@ -211,3 +213,62 @@ export interface OnboardingProgress {
     policyAnalyzed: boolean;
     campaignCreated: boolean;
 }
+
+// Microsite Builder Types
+export type BlockType = 'hero' | 'products' | 'testimonials' | 'faq' | 'contact';
+
+export interface BaseBlock {
+    id: string;
+    type: BlockType;
+}
+
+export interface HeroBlock extends BaseBlock {
+    type: 'hero';
+    title: string;
+    subtitle: string;
+    ctaText: string;
+}
+
+export interface Product {
+    id: string;
+    name: string;
+    description: string;
+}
+
+export interface ProductsBlock extends BaseBlock {
+    type: 'products';
+    title: string;
+    products: Product[];
+}
+
+export interface Testimonial {
+    id: string;
+    quote: string;
+    author: string;
+}
+
+export interface TestimonialsBlock extends BaseBlock {
+    type: 'testimonials';
+    title: string;
+    testimonials: Testimonial[];
+}
+
+export interface FaqItem {
+    id: string;
+    question: string;
+    answer: string;
+}
+
+export interface FaqBlock extends BaseBlock {
+    type: 'faq';
+    title: string;
+    items: FaqItem[];
+}
+
+export interface ContactBlock extends BaseBlock {
+    type: 'contact';
+    title: string;
+    subtitle: string;
+}
+
+export type MicrositeBlock = HeroBlock | ProductsBlock | TestimonialsBlock | FaqBlock | ContactBlock;
