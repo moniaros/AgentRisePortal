@@ -5,6 +5,7 @@ import { fetchDashboardData } from '../services/api';
 import ErrorMessage from '../components/ui/ErrorMessage';
 import SkeletonLoader from '../components/ui/SkeletonLoader';
 import { useOnboardingStatus } from '../hooks/useOnboardingStatus';
+import TestimonialCarousel from '../components/testimonials/TestimonialCarousel';
 
 const Dashboard: React.FC = () => {
     const { t } = useLocalization();
@@ -89,29 +90,35 @@ const Dashboard: React.FC = () => {
                 </div>
             </div>
 
-             <div className="mt-8 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">{t('dashboard.policyDistribution')}</h2>
-                {isLoading ? (
-                    <div className="space-y-4">
-                        <SkeletonLoader className="h-8 w-full" />
-                        <SkeletonLoader className="h-8 w-3/4" />
-                        <SkeletonLoader className="h-8 w-5/6" />
-                    </div>
-                ) : (
-                    <ul className="space-y-4">
-                        {data?.policyDistribution.map((policy) => (
-                            <li key={policy.name}>
-                                <div className="flex justify-between text-sm">
-                                    <span>{t(`policyTypes.${policy.name}`)}</span>
-                                    <span>{policy.value}</span>
-                                </div>
-                                <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 mt-1">
-                                    <div className="bg-blue-600 h-2.5 rounded-full" style={{ width: `${(policy.value / ((data?.policyDistribution ?? []).reduce((sum, item) => sum + item.value, 1) || 1)) * 100}%` }}></div>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-                )}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
+                <div className="lg:col-span-2 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">{t('dashboard.policyDistribution')}</h2>
+                    {isLoading ? (
+                        <div className="space-y-4">
+                            <SkeletonLoader className="h-8 w-full" />
+                            <SkeletonLoader className="h-8 w-3/4" />
+                            <SkeletonLoader className="h-8 w-5/6" />
+                        </div>
+                    ) : (
+                        <ul className="space-y-4">
+                            {data?.policyDistribution.map((policy) => (
+                                <li key={policy.name}>
+                                    <div className="flex justify-between text-sm">
+                                        <span>{t(`policyTypes.${policy.name}`)}</span>
+                                        <span>{policy.value}</span>
+                                    </div>
+                                    <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 mt-1">
+                                        <div className="bg-blue-600 h-2.5 rounded-full" style={{ width: `${(policy.value / ((data?.policyDistribution ?? []).reduce((sum, item) => sum + item.value, 1) || 1)) * 100}%` }}></div>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
+                <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">{t('dashboard.testimonialsTitle')}</h2>
+                    <TestimonialCarousel />
+                </div>
             </div>
         </div>
     );

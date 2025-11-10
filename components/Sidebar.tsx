@@ -21,6 +21,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
         { path: '/analytics', label: t('nav.analytics'), icon: 'analytics' },
         { path: '/microsite-builder', label: t('nav.micrositeBuilder'), icon: 'micrositeBuilder' },
         { path: '/news', label: t('nav.news'), icon: 'news' },
+        { path: '/testimonials', label: t('nav.testimonials'), icon: 'testimonials' },
     ];
 
     const managementLinks = [

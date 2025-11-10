@@ -9,7 +9,8 @@ interface State {
   error?: Error;
 }
 
-class ErrorBoundary extends Component<Props, State> {
+// FIX: Changed to React.Component to avoid potential naming conflicts that could prevent TypeScript from recognizing inherited properties like `props`.
+class ErrorBoundary extends React.Component<Props, State> {
   // Use a class property to initialize state, which is a common and modern pattern.
   // FIX: Removed 'public' modifier to align with common React class component style and avoid potential tooling issues.
   state: State = {

@@ -1,4 +1,3 @@
-
 {
   "common": {
     "loading": "Loading...",
@@ -18,7 +17,8 @@
     "billing": "Billing",
     "micrositeBuilder": "Microsite Builder",
     "executiveDashboard": "Executive Dashboard",
-    "news": "News & Updates"
+    "news": "News & Updates",
+    "testimonials": "Testimonials"
   },
   "header": {
     "search": "Search...",
@@ -40,7 +40,8 @@
       "description": "You're all set up. Complete our quick start guide to learn the key features of the platform.",
       "button": "Start Onboarding",
       "dismiss": "Dismiss"
-    }
+    },
+    "testimonialsTitle": "What Our Clients Say"
   },
   "leads": {
     "searchPlaceholder": "Search by name or email...",
@@ -434,6 +435,24 @@
     "shareOn": "Share on {platform}",
     "copyLink": "Copy Link",
     "linkCopied": "Link Copied!"
+  },
+  "testimonials": {
+    "title": "Testimonials",
+    "add": "Add Testimonial",
+    "noApproved": "No approved testimonials yet.",
+    "noPending": "No testimonials are pending moderation.",
+    "approved": "Approved",
+    "pending": "Pending Moderation",
+    "approve": "Approve",
+    "reject": "Reject",
+    "form": {
+      "title": "Add Your Testimonial",
+      "yourQuote": "Your Quote",
+      "yourQuotePlaceholder": "Share your experience with us...",
+      "rating": "Rating",
+      "submit": "Submit Testimonial",
+      "success": "Thank you! Your testimonial has been submitted for review."
+    }
   },
   "policyTypes": {
     "auto": "Auto Insurance",

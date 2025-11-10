@@ -185,6 +185,18 @@ export interface Campaign {
     };
 }
 
+// Testimonials
+export interface Testimonial {
+    id: string;
+    authorName: string;
+    authorPhotoUrl?: string;
+    quote: string;
+    rating: number; // 1 to 5
+    status: 'pending' | 'approved' | 'rejected';
+    agencyId: string;
+    createdAt: string;
+}
+
 // Analytics & Admin
 export interface AuditLog {
     id: string;

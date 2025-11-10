@@ -1,4 +1,4 @@
-import { Customer, Lead, User, PolicyType, UserRole, Language, CampaignObjective, AuditLog, AnalyticsRecord, ExecutiveData, LeadStatus, NewsArticle } from '../types';
+import { Customer, Lead, User, PolicyType, UserRole, Language, CampaignObjective, AuditLog, AnalyticsRecord, ExecutiveData, LeadStatus, NewsArticle, Testimonial } from '../types';
 
 export const MOCK_USERS: User[] = [
     { id: 'user_1', name: 'John Agent', email: 'john.agent@example.com', role: UserRole.AGENT, agencyId: 'agency_1' },
@@ -51,6 +51,67 @@ export const MOCK_CUSTOMERS: Customer[] = [
             { id: 'evt_3', date: '2023-09-25T10:00:00Z', type: 'email', content: 'Welcome email sent with policy documents.', author: 'John Agent' },
         ],
         agencyId: 'agency_1'
+    }
+];
+
+export const MOCK_TESTIMONIALS: Testimonial[] = [
+    {
+        id: 'test_1',
+        authorName: 'Michael Scott',
+        authorPhotoUrl: 'https://i.pravatar.cc/150?u=michael.scott@dundermifflin.com',
+        quote: 'Fantastic service! John Agent found me the perfect coverage for my car and home. The process was surprisingly easy and fast. Highly recommended!',
+        rating: 5,
+        status: 'approved',
+        agencyId: 'agency_1',
+        createdAt: '2024-08-01T10:00:00Z',
+    },
+    {
+        id: 'test_2',
+        authorName: 'Diana Prince',
+        authorPhotoUrl: 'https://i.pravatar.cc/150?u=diana.p@email.com',
+        quote: 'As a new client, I was impressed by the professionalism and attention to detail. Jane Admin helped me understand all the nuances of my health policy.',
+        rating: 5,
+        status: 'approved',
+        agencyId: 'agency_1',
+        createdAt: '2024-08-15T14:30:00Z',
+    },
+    {
+        id: 'test_3',
+        authorName: 'Alice Smith',
+        authorPhotoUrl: 'https://i.pravatar.cc/150?u=alice.s@email.com',
+        quote: 'Good experience overall. The onboarding was smooth.',
+        rating: 4,
+        status: 'approved',
+        agencyId: 'agency_1',
+        createdAt: '2024-09-01T11:00:00Z',
+    },
+    {
+        id: 'test_4',
+        authorName: 'Bob Johnson',
+        quote: 'The team was very helpful. They answered all my questions about home insurance and found me a great rate. I will be recommending them to my friends and family.',
+        rating: 5,
+        status: 'pending',
+        agencyId: 'agency_1',
+        createdAt: '2024-09-20T09:00:00Z',
+    },
+    {
+        id: 'test_5',
+        authorName: 'Charlie Brown',
+        authorPhotoUrl: 'https://i.pravatar.cc/150?u=charlie.b@email.com',
+        quote: 'The service is okay.',
+        rating: 3,
+        status: 'pending',
+        agencyId: 'agency_1',
+        createdAt: '2024-09-21T16:20:00Z',
+    },
+    {
+        id: 'test_6',
+        authorName: 'John Doe',
+        quote: 'Excellent service from Peter Broker. He really knows his stuff!',
+        rating: 5,
+        status: 'approved',
+        agencyId: 'agency_2',
+        createdAt: '2024-08-05T12:00:00Z',
     }
 ];
 
