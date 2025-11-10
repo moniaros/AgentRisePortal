@@ -11,22 +11,26 @@ interface State {
 
 class ErrorBoundary extends Component<Props, State> {
   // Use a class property to initialize state, which is a common and modern pattern.
-  public state: State = {
+  // FIX: Removed 'public' modifier to align with common React class component style and avoid potential tooling issues.
+  state: State = {
     hasError: false,
     error: undefined,
   };
 
-  public static getDerivedStateFromError(error: Error): State {
+  // FIX: Removed 'public' modifier. Static methods are public by default.
+  static getDerivedStateFromError(error: Error): State {
     // Update state so the next render will show the fallback UI.
     return { hasError: true, error };
   }
 
-  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+  // FIX: Removed 'public' modifier. Methods are public by default.
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // You can also log the error to an error reporting service
     console.error("Uncaught error:", error, errorInfo);
   }
 
-  public render() {
+  // FIX: Removed 'public' modifier. The render method is public by default.
+  render() {
     if (this.state.hasError) {
       // You can render any custom fallback UI
       return (

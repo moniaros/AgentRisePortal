@@ -1,4 +1,4 @@
-import { Customer, Lead, User, PolicyType, UserRole, Language, CampaignObjective, AuditLog, AnalyticsRecord, ExecutiveData, LeadStatus } from '../types';
+import { Customer, Lead, User, PolicyType, UserRole, Language, CampaignObjective, AuditLog, AnalyticsRecord, ExecutiveData, LeadStatus, NewsArticle } from '../types';
 
 export const MOCK_USERS: User[] = [
     { id: 'user_1', name: 'John Agent', email: 'john.agent@example.com', role: UserRole.AGENT, agencyId: 'agency_1' },
@@ -50,6 +50,63 @@ export const MOCK_CUSTOMERS: Customer[] = [
         timeline: [
             { id: 'evt_3', date: '2023-09-25T10:00:00Z', type: 'email', content: 'Welcome email sent with policy documents.', author: 'John Agent' },
         ],
+        agencyId: 'agency_1'
+    }
+];
+
+export const MOCK_NEWS_ARTICLES: NewsArticle[] = [
+    {
+        id: 'q3-2024-updates',
+        title: 'Platform Updates for Q3 2024',
+        summary: 'Discover the latest features and improvements we\'ve rolled out this quarter, including the new Executive Dashboard and enhanced AI capabilities.',
+        content: '<p>This quarter has been packed with updates to enhance your productivity and provide deeper insights into your agency\'s performance.</p><h3>Key Highlights:</h3><ul><li><strong>Executive Dashboard:</strong> A new high-level overview for agency owners to track growth, product mix, and campaign ROI.</li><li><strong>AI Gap Analysis v2:</strong> Our AI engine is now faster and more accurate, providing even better cross-sell and upsell recommendations.</li><li><strong>UI Enhancements:</strong> We\'ve refreshed several components for a cleaner and more intuitive user experience.</li></ul><p>We are committed to continuously improving AgentOS to meet your needs. Stay tuned for more exciting updates in Q4!</p>',
+        author: {
+            name: 'AgentOS Team',
+            avatarUrl: 'https://i.pravatar.cc/150?u=agentos'
+        },
+        publishedDate: '2024-09-15T10:00:00Z',
+        tags: ['product update', 'new features', 'ai'],
+        imageUrl: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=1932&auto=format&fit=crop',
+        seo: {
+            title: 'Q3 2024 Platform Updates | AgentOS',
+            description: 'Learn about the new features in AgentOS for Q3 2024, including the Executive Dashboard and AI improvements.'
+        },
+        agencyId: 'global'
+    },
+    {
+        id: 'cyber-insurance-trends',
+        title: 'The Rise of Cyber Insurance: Are Your Clients Covered?',
+        summary: 'Cyber threats are evolving. This article explores the growing importance of cyber insurance for small and medium-sized businesses and how you can start the conversation with your clients.',
+        content: '<p>In today\'s digital world, no business is safe from cyber threats. From data breaches to ransomware attacks, the financial and reputational damage can be devastating.</p><p>As their trusted advisor, it\'s crucial to educate your clients on the importance of cyber liability insurance. This isn\'t just for large corporations anymore; small businesses are often seen as easier targets.</p><h3>Conversation Starters:</h3><ul><li>"How do you currently protect sensitive customer data?"</li><li>"What would be the financial impact if your systems were down for a week?"</li><li>"Are you aware of the notification laws in your state in case of a data breach?"</li></ul><p>Positioning yourself as a knowledgeable resource on cyber risk can open up significant opportunities and provide immense value to your clients.</p>',
+        author: {
+            name: 'Jane Admin',
+            avatarUrl: 'https://i.pravatar.cc/150?u=moniaros@gmail.com'
+        },
+        publishedDate: '2024-09-10T14:30:00Z',
+        tags: ['industry trends', 'cyber insurance', 'sme'],
+        imageUrl: 'https://images.unsplash.com/photo-1555949963-ff98db7ffbae?q=80&w=1770&auto=format&fit=crop',
+        seo: {
+            title: 'The Importance of Cyber Insurance for SMEs',
+            description: 'Learn why cyber insurance is critical for small and medium-sized businesses and how to discuss it with your clients.'
+        },
+        agencyId: 'agency_1'
+    },
+    {
+        id: 'welcome-alpha-agency',
+        title: 'Welcome New Partner Agency!',
+        summary: 'A special welcome to our newest partner agency. We are excited to have you onboard and look forward to helping you grow your business.',
+        content: '<p>We are thrilled to welcome the entire team at your agency to the AgentOS platform! We are confident that our tools will empower your agents to be more efficient and successful.</p><p>Your dedicated account manager will be reaching out to schedule your team\'s onboarding session. Welcome aboard!</p>',
+        author: {
+            name: 'AgentOS Team',
+            avatarUrl: 'https://i.pravatar.cc/150?u=agentos'
+        },
+        publishedDate: '2024-09-01T09:00:00Z',
+        tags: ['announcement', 'new client'],
+        imageUrl: 'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1769&auto=format&fit=crop',
+        seo: {
+            title: 'Welcome New Partner!',
+            description: 'AgentOS welcomes a new partner agency to the platform.'
+        },
         agencyId: 'agency_1'
     }
 ];

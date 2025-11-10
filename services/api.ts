@@ -1,5 +1,5 @@
-import { MOCK_CUSTOMERS, MOCK_LEADS, MOCK_AUDIT_LOGS, MOCK_USERS, MOCK_ANALYTICS_DATA, MOCK_EXECUTIVE_DATA } from '../data/mockData';
-import { DetailedPolicy, AnalyticsData, User, AuditLog, ExecutiveData } from '../types';
+import { MOCK_CUSTOMERS, MOCK_LEADS, MOCK_AUDIT_LOGS, MOCK_USERS, MOCK_ANALYTICS_DATA, MOCK_EXECUTIVE_DATA, MOCK_NEWS_ARTICLES } from '../data/mockData';
+import { DetailedPolicy, AnalyticsData, User, AuditLog, ExecutiveData, NewsArticle } from '../types';
 
 const SIMULATED_DELAY = 500;
 
@@ -68,3 +68,7 @@ export const fetchAuditLogs = async (): Promise<AuditLog[]> => {
 export const fetchExecutiveData = async (): Promise<ExecutiveData> => {
     return new Promise(resolve => setTimeout(() => resolve(MOCK_EXECUTIVE_DATA), SIMULATED_DELAY));
 }
+
+export const fetchNewsArticles = async (): Promise<NewsArticle[]> => {
+    return new Promise(resolve => setTimeout(() => resolve(MOCK_NEWS_ARTICLES), SIMULATED_DELAY));
+};

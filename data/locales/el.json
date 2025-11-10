@@ -17,7 +17,8 @@
     "userManagement": "Διαχείριση Χρηστών",
     "billing": "Χρεώσεις",
     "micrositeBuilder": "Δόμηση Microsite",
-    "executiveDashboard": "Πίνακας Διοίκησης"
+    "executiveDashboard": "Πίνακας Διοίκησης",
+    "news": "Νέα & Ανακοινώσεις"
   },
   "header": {
     "search": "Αναζήτηση...",
@@ -421,6 +422,18 @@
     "leadFunnel": "Funnel Μετατροπής Lead",
     "campaignRoi": "ROI Καμπάνιας",
     "riskExposure": "Σύνοψη Έκθεσης σε Κίνδυνο"
+  },
+  "news": {
+    "title": "Νέα & Ανακοινώσεις",
+    "backToList": "Επιστροφή σε όλα τα άρθρα",
+    "noArticles": "Δεν βρέθηκαν άρθρα ειδήσεων για το πρακτορείο σας.",
+    "publishedOn": "Δημοσιεύτηκε στις {date}",
+    "by": "από",
+    "tags": "Ετικέτες",
+    "share": "Μοιραστείτε αυτό το άρθρο",
+    "shareOn": "Κοινοποίηση στο {platform}",
+    "copyLink": "Αντιγραφή Συνδέσμου",
+    "linkCopied": "Ο σύνδεσμος αντιγράφηκε!"
   },
   "policyTypes": {
     "auto": "Ασφάλεια Αυτοκινήτου",

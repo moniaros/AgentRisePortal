@@ -27,6 +27,8 @@ import LeadsDashboard from './pages/LeadsDashboard';
 import MicrositeBuilder from './pages/MicrositeBuilder';
 import LeadCapturePage from './pages/LeadCapturePage';
 import ExecutiveDashboard from './pages/ExecutiveDashboard';
+import NewsListing from './pages/NewsListing';
+import NewsArticleDetail from './pages/NewsArticleDetail';
 
 const App: React.FC = () => {
   return (
@@ -57,6 +59,8 @@ const App: React.FC = () => {
                   <Route path="/leads-dashboard" element={<Layout><LeadsDashboard /></Layout>} />
                   <Route path="/microsite-builder" element={<Layout><MicrositeBuilder /></Layout>} />
                   <Route path="/executive-dashboard" element={<Layout><ExecutiveDashboard /></Layout>} />
+                  <Route path="/news" element={<Layout><NewsListing /></Layout>} />
+                  <Route path="/news/:articleId" element={<Layout><NewsArticleDetail /></Layout>} />
                   <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
               </Router>

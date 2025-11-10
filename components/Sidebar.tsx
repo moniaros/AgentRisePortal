@@ -20,6 +20,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
         { path: '/ad-campaigns', label: t('nav.adCampaigns'), icon: 'campaigns' },
         { path: '/analytics', label: t('nav.analytics'), icon: 'analytics' },
         { path: '/microsite-builder', label: t('nav.micrositeBuilder'), icon: 'micrositeBuilder' },
+        { path: '/news', label: t('nav.news'), icon: 'news' },
     ];
 
     const managementLinks = [

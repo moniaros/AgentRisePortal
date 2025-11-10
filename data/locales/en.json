@@ -17,7 +17,8 @@
     "userManagement": "User Management",
     "billing": "Billing",
     "micrositeBuilder": "Microsite Builder",
-    "executiveDashboard": "Executive Dashboard"
+    "executiveDashboard": "Executive Dashboard",
+    "news": "News & Updates"
   },
   "header": {
     "search": "Search...",
@@ -421,6 +422,18 @@
     "leadFunnel": "Lead Conversion Funnel",
     "campaignRoi": "Campaign ROI",
     "riskExposure": "Risk Exposure Summary"
+  },
+  "news": {
+    "title": "News & Updates",
+    "backToList": "Back to all articles",
+    "noArticles": "No news articles found for your agency.",
+    "publishedOn": "Published on {date}",
+    "by": "by",
+    "tags": "Tags",
+    "share": "Share this article",
+    "shareOn": "Share on {platform}",
+    "copyLink": "Copy Link",
+    "linkCopied": "Link Copied!"
   },
   "policyTypes": {
     "auto": "Auto Insurance",

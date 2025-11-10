@@ -224,6 +224,26 @@ export interface OnboardingProgress {
     campaignCreated: boolean;
 }
 
+// News & Announcements
+export interface NewsArticle {
+    id: string; // slug
+    title: string;
+    summary: string;
+    content: string; // Can contain basic HTML
+    author: {
+        name: string;
+        avatarUrl?: string;
+    };
+    publishedDate: string;
+    tags: string[];
+    imageUrl: string;
+    seo: {
+        title: string;
+        description: string;
+    };
+    agencyId: 'global' | string; // 'global' for all agencies
+}
+
 // Microsite Builder
 export type BlockType = 'hero' | 'about' | 'services' | 'team' | 'testimonials' | 'faq' | 'contact' | 'news' | 'awards' | 'certificates' | 'policy_highlights' | 'location' | 'video' | 'downloads';
 

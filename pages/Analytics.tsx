@@ -82,7 +82,8 @@ const Analytics: React.FC = () => {
             totalConversions,
             ctr,
             spendByNetwork: Object.entries(spendByNetwork).map(([name, spend]) => ({ name, spend })),
-            performanceOverTime: Object.values(performanceOverTime).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()),
+            // FIX: Explicitly type the sort parameters `a` and `b` to resolve the `unknown` type error.
+            performanceOverTime: Object.values(performanceOverTime).sort((a: { date: string }, b: { date: string }) => new Date(a.date).getTime() - new Date(b.date).getTime()),
         };
     }, [filteredData, campaigns]);
     
