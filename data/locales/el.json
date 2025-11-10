@@ -104,6 +104,9 @@
     "attentionReasonPlaceholder": "π.χ. Πελάτης υψηλής αξίας, επίκειται ανανέωση...",
     "timeline": "Ιστορικό Πελάτη",
     "noTimeline": "Δεν έχουν καταγραφεί γεγονότα στο ιστορικό.",
+    "addAnnotation": "Προσθήκη Σημείωσης",
+    "annotationPlaceholder": "Προσθέστε μια σημείωση...",
+    "saveAnnotation": "Αποθήκευση",
     "changeAddressTitle": "Αλλαγή Διεύθυνσης Πελάτη",
     "renewPolicy": "Ανανέωση",
     "renewPolicyTitle": "Ανανέωση Συμβολαίου",
@@ -311,6 +314,15 @@
     "active": "Ενεργό",
     "inactive": "Ανενεργό",
     "expired": "Έληξε"
+  },
+  "timelineTypes": {
+    "note": "Σημείωση",
+    "call": "Κλήση",
+    "email": "Email",
+    "meeting": "Συνάντηση",
+    "policy_update": "Ενημέρωση Συμβολαίου",
+    "claim": "Απαίτηση",
+    "system": "Γεγονός Συστήματος"
   },
   "validation": {
       "required": "Το πεδίο '{fieldName}' είναι υποχρεωτικό.",

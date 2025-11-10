@@ -27,7 +27,16 @@ export const MOCK_CUSTOMERS: Customer[] = [
             { id: 'pol_2', type: PolicyType.HOME, policyNumber: 'HOM67890', premium: 800, startDate: '2023-06-15', endDate: '2024-06-15', isActive: true, insurer: 'Allstate' },
         ],
         timeline: [
-            { id: 'evt_1', date: '2024-03-10T10:00:00Z', type: 'call', content: 'Discussed renewal for home policy.', author: 'Agent Smith' },
+            { 
+                id: 'evt_1', 
+                date: '2024-03-10T10:00:00Z', 
+                type: 'call', 
+                content: 'Discussed renewal for home policy.', 
+                author: 'Agent Smith',
+                annotations: [
+                    { id: 'ann_1', date: '2024-03-10T10:05:00Z', content: 'Client seemed hesitant about the price increase.', author: 'Agent Smith' }
+                ]
+            },
             { id: 'evt_2', date: '2024-01-05T14:30:00Z', type: 'email', content: 'Sent updated auto policy documents.', author: 'Agent Smith' },
         ]
     },

@@ -14,7 +14,15 @@ import AttentionFlagModal from '../components/customer/AttentionFlagModal';
 
 const CustomerMicrosite: React.FC = () => {
     const { id } = useParams<{ id: string }>();
-    const { customers, isLoading, error, updateCustomer, addTimelineEvent } = useCrmData();
+    const { 
+        customers, 
+        isLoading, 
+        error, 
+        updateCustomer, 
+        addTimelineEvent, 
+        addAnnotationToEvent, 
+        updateCustomerAttentionFlag 
+    } = useCrmData();
     const { t } = useLocalization();
     const { currentUser } = useAuth();
 
@@ -68,16 +76,19 @@ const CustomerMicrosite: React.FC = () => {
 
     const handleAttentionSubmit = (reason: string) => {
         if (customer) {
-            updateCustomer({ ...customer, attentionFlag: reason });
-            addTimelineEvent(customer.id, {
-                type: 'system',
-                content: `Attention flag updated: ${reason}`,
-                author: currentUser?.name || 'System',
-            });
+            updateCustomerAttentionFlag(customer.id, reason);
         }
         setAttentionModalOpen(false);
     };
 
+    const handleAddAnnotation = (eventId: string, content: string) => {
+        if (customer && currentUser) {
+            addAnnotationToEvent(customer.id, eventId, {
+                content,
+                author: currentUser.name,
+            });
+        }
+    };
 
     if (isLoading) {
         return <SkeletonLoader className="h-screen w-full" />;
@@ -140,7 +151,7 @@ const CustomerMicrosite: React.FC = () => {
             {/* Timeline */}
             <div>
                  <h2 className="text-2xl font-semibold mb-4">{t('customer.timeline')}</h2>
-                 <CustomerTimeline timeline={customer.timeline} />
+                 <CustomerTimeline timeline={customer.timeline} onAddAnnotation={handleAddAnnotation} />
             </div>
 
             {/* Modals */}

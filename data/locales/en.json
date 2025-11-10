@@ -104,6 +104,9 @@
     "attentionReasonPlaceholder": "e.g., High-value client, renewal upcoming...",
     "timeline": "Customer Timeline",
     "noTimeline": "No timeline events recorded yet.",
+    "addAnnotation": "Add Annotation",
+    "annotationPlaceholder": "Add a note...",
+    "saveAnnotation": "Save Note",
     "changeAddressTitle": "Change Customer Address",
     "renewPolicy": "Renew Policy",
     "renewPolicyTitle": "Renew Policy",
@@ -311,6 +314,15 @@
     "active": "Active",
     "inactive": "Inactive",
     "expired": "Expired"
+  },
+  "timelineTypes": {
+    "note": "Note",
+    "call": "Call",
+    "email": "Email",
+    "meeting": "Meeting",
+    "policy_update": "Policy Update",
+    "claim": "Claim",
+    "system": "System Event"
   },
   "validation": {
       "required": "{fieldName} is required.",

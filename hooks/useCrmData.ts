@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { useOfflineSync } from './useOfflineSync';
-import { Customer, Lead, TimelineEvent } from '../types';
+import { Customer, Lead, TimelineEvent, Annotation } from '../types';
 import { useAuth } from './useAuth';
 import { MOCK_CUSTOMERS, MOCK_LEADS } from '../data/mockData';
 
@@ -35,14 +35,14 @@ export const useCrmData = () => {
             timeline: [{
                 id: `evt_${Date.now()}`,
                 date: new Date().toISOString(),
-                type: 'note',
+                type: 'system',
                 content: 'Customer profile created.',
-                author: 'System',
+                author: currentUser?.name || 'System',
             }],
             agencyId,
         };
         setAllCustomers([...allCustomers, newCustomer]);
-    }, [allCustomers, setAllCustomers, agencyId]);
+    }, [allCustomers, setAllCustomers, agencyId, currentUser]);
 
     const updateCustomer = useCallback((updatedCustomer: Customer) => {
         setAllCustomers(allCustomers.map(c => c.id === updatedCustomer.id ? updatedCustomer : c));
@@ -80,5 +80,53 @@ export const useCrmData = () => {
 
     }, [allCustomers, updateCustomer]);
 
-    return { customers, leads, isLoading, error, addCustomer, updateCustomer, deleteCustomer, addLead, addTimelineEvent };
+    const addAnnotationToEvent = useCallback((customerId: string, eventId: string, annotationData: Omit<Annotation, 'id' | 'date'>) => {
+        const customer = allCustomers.find(c => c.id === customerId);
+        if (!customer) return;
+
+        const newAnnotation: Annotation = {
+            ...annotationData,
+            id: `ann_${Date.now()}`,
+            date: new Date().toISOString(),
+        };
+        
+        const updatedTimeline = customer.timeline.map(event => {
+            if (event.id === eventId) {
+                return {
+                    ...event,
+                    annotations: [...(event.annotations || []), newAnnotation]
+                };
+            }
+            return event;
+        });
+        
+        updateCustomer({ ...customer, timeline: updatedTimeline });
+    }, [allCustomers, updateCustomer]);
+
+    const updateCustomerAttentionFlag = useCallback((customerId: string, reason: string | null) => {
+        const customer = allCustomers.find(c => c.id === customerId);
+        if (!customer) return;
+
+        updateCustomer({ ...customer, attentionFlag: reason || undefined });
+        
+        addTimelineEvent(customerId, {
+            type: 'system',
+            content: reason ? `Attention flag set: ${reason}` : 'Attention flag cleared.',
+            author: currentUser?.name || 'System',
+        });
+    }, [allCustomers, updateCustomer, addTimelineEvent, currentUser]);
+
+    return { 
+        customers, 
+        leads, 
+        isLoading, 
+        error, 
+        addCustomer, 
+        updateCustomer, 
+        deleteCustomer, 
+        addLead, 
+        addTimelineEvent,
+        addAnnotationToEvent,
+        updateCustomerAttentionFlag
+    };
 };

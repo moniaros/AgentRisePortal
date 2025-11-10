@@ -10,15 +10,15 @@ interface State {
 }
 
 class ErrorBoundary extends Component<Props, State> {
-  // FIX: Replaced state class property with initialization in the constructor.
-  // This addresses a likely tooling/environment incompatibility with the class field syntax,
-  // which was causing `this.props` and `this.setState` to be unrecognized on the component instance.
   constructor(props: Props) {
     super(props);
     this.state = {
       hasError: false,
       error: undefined,
     };
+    // FIX: Bind the method to ensure `this` is correct when called,
+    // avoiding class field syntax which seems to be incompatible with the project's tooling.
+    this.handleTryAgain = this.handleTryAgain.bind(this);
   }
 
   public static getDerivedStateFromError(error: Error): State {
@@ -29,9 +29,9 @@ class ErrorBoundary extends Component<Props, State> {
     console.error('Uncaught error:', error, errorInfo);
   }
 
-  private handleTryAgain = () => {
+  private handleTryAgain() {
     this.setState({ hasError: false, error: undefined });
-  };
+  }
 
   public render() {
     if (this.state.hasError) {

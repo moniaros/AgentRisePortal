@@ -32,12 +32,20 @@ export interface Policy {
   insurer: string;
 }
 
+export interface Annotation {
+    id: string;
+    date: string;
+    content: string;
+    author: string;
+}
+
 export interface TimelineEvent {
     id: string;
     date: string;
     type: 'note' | 'call' | 'email' | 'meeting' | 'policy_update' | 'claim' | 'system';
     content: string;
     author: string;
+    annotations?: Annotation[];
 }
 
 export interface Customer {
