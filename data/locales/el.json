@@ -33,6 +33,18 @@
     "settings": "Ρυθμίσεις",
     "logout": "Αποσύνδεση"
   },
+  "login": {
+    "title": "Καλώς ήρθατε στο AgentOS",
+    "subtitle": "Συνδεθείτε στην πύλη του πρακτορείου σας",
+    "emailLabel": "Διεύθυνση Email",
+    "emailPlaceholder": "you@example.com",
+    "passwordLabel": "Κωδικός Πρόσβασης",
+    "rememberMe": "Να με θυμάσαι",
+    "forgotPassword": "Ξεχάσατε τον κωδικό;",
+    "loginButton": "Είσοδος",
+    "authenticating": "Γίνεται ταυτοποίηση...",
+    "errorInvalidCredentials": "Λάθος email ή κωδικός. Παρακαλώ προσπαθήστε ξανά."
+  },
   "dashboard": {
     "title": "Επισκόπηση Πίνακα Ελέγχου",
     "newLeads": "Νέα Leads (30 ημέρες)",

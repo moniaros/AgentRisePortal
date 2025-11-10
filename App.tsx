@@ -8,6 +8,7 @@ import RouteAnalyticsTracker from './components/RouteAnalyticsTracker';
 import ErrorBoundary from './components/ErrorBoundary';
 
 // Lazy load pages for better performance
+const Login = React.lazy(() => import('./pages/Login'));
 const Dashboard = React.lazy(() => import('./pages/Dashboard'));
 const LeadGeneration = React.lazy(() => import('./pages/LeadGeneration'));
 const MicroCRM = React.lazy(() => import('./pages/MicroCRM'));
@@ -36,6 +37,11 @@ const App: React.FC = () => {
               <RouteAnalyticsTracker />
               <React.Suspense fallback={<div className="h-screen w-screen flex items-center justify-center">Loading...</div>}>
                 <Routes>
+                  {/* Public routes */}
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/capture/:campaignId" element={<LeadCapturePage />} />
+
+                  {/* Protected routes wrapped by Layout */}
                   <Route path="/" element={<Layout><Dashboard /></Layout>} />
                   <Route path="/dashboard" element={<Navigate to="/" />} />
                   <Route path="/leads-dashboard" element={<Layout><LeadsDashboard /></Layout>} />
@@ -52,11 +58,8 @@ const App: React.FC = () => {
                   <Route path="/user-management" element={<Layout><UserManagement /></Layout>} />
                   <Route path="/settings" element={<Layout><Settings /></Layout>} />
                   <Route path="/profile" element={<Layout><Profile /></Layout>} />
-                  <Route path="/logout" element={<Layout><Logout /></Layout>} />
+                  <Route path="/logout" element={<Logout />} />
                   
-                  {/* Standalone page without the main layout */}
-                  <Route path="/capture/:campaignId" element={<LeadCapturePage />} />
-
                   {/* Fallback route */}
                   <Route path="*" element={<Layout><div>404 - Not Found</div></Layout>} />
                 </Routes>

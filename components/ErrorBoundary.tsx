@@ -10,29 +10,23 @@ interface State {
 }
 
 class ErrorBoundary extends Component<Props, State> {
-  // Fix: Use a constructor to initialize state. This is a more robust way
-  // to ensure `this.state` and `this.props` are correctly set up.
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      hasError: false,
-      error: undefined,
-    };
-  }
+  // Use a class property to initialize state, which is a common and modern pattern.
+  public state: State = {
+    hasError: false,
+    error: undefined,
+  };
 
-  // Fix: Move all error state updates here. This is the recommended pattern and
-  // resolves the `setState` error that was in `componentDidCatch`.
-  static getDerivedStateFromError(error: Error): State {
+  public static getDerivedStateFromError(error: Error): State {
     // Update state so the next render will show the fallback UI.
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // You can also log the error to an error reporting service
     console.error("Uncaught error:", error, errorInfo);
   }
 
-  render() {
+  public render() {
     if (this.state.hasError) {
       // You can render any custom fallback UI
       return (
@@ -51,7 +45,6 @@ class ErrorBoundary extends Component<Props, State> {
       );
     }
 
-    // Fix: `this.props` is now correctly available because of the constructor.
     return this.props.children;
   }
 }

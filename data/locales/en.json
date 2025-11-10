@@ -33,6 +33,18 @@
     "settings": "Settings",
     "logout": "Logout"
   },
+  "login": {
+    "title": "Welcome to AgentOS",
+    "subtitle": "Sign in to your agency portal",
+    "emailLabel": "Email Address",
+    "emailPlaceholder": "you@example.com",
+    "passwordLabel": "Password",
+    "rememberMe": "Remember Me",
+    "forgotPassword": "Forgot Password?",
+    "loginButton": "Login",
+    "authenticating": "Authenticating...",
+    "errorInvalidCredentials": "Invalid email or password. Please try again."
+  },
   "dashboard": {
     "title": "Dashboard Overview",
     "newLeads": "New Leads (30 days)",
