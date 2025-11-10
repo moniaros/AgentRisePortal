@@ -79,12 +79,35 @@ export const MOCK_USERS: User[] = [
     },
 ];
 
+const today = new Date();
+const thisMonth = today.getMonth();
+const thisYear = today.getFullYear();
+const lastMonth = thisMonth === 0 ? 11 : thisMonth - 1;
+const lastMonthYear = thisMonth === 0 ? thisYear - 1 : thisYear;
+
 export const MOCK_LEADS: Lead[] = [
-    { id: 'lead_1', firstName: 'Alice', lastName: 'Smith', email: 'alice.s@email.com', source: 'Facebook Campaign', status: 'new', potentialValue: 500, createdAt: '2023-10-01T10:00:00Z', policyType: PolicyType.AUTO, agencyId: 'agency_1' },
-    { id: 'lead_2', firstName: 'Bob', lastName: 'Johnson', email: 'bob.j@email.com', source: 'Website Form', status: 'contacted', potentialValue: 1200, createdAt: '2023-10-02T11:30:00Z', policyType: PolicyType.HOME, agencyId: 'agency_1' },
-    { id: 'lead_3', firstName: 'Charlie', lastName: 'Brown', email: 'charlie.b@email.com', source: 'Referral', status: 'qualified', potentialValue: 800, createdAt: '2023-09-28T14:00:00Z', policyType: PolicyType.LIFE, agencyId: 'agency_1' },
-    { id: 'lead_4', firstName: 'Diana', lastName: 'Prince', email: 'diana.p@email.com', source: 'Instagram Ad', status: 'closed', potentialValue: 1500, createdAt: '2023-09-25T09:00:00Z', customerId: 'cust_2', policyType: PolicyType.HEALTH, agencyId: 'agency_1' },
-    { id: 'lead_5', firstName: 'Eve', lastName: 'Adams', email: 'eve.a@email.com', source: 'LinkedIn', status: 'rejected', potentialValue: 600, createdAt: '2023-09-30T16:00:00Z', policyType: PolicyType.AUTO, agencyId: 'agency_1' },
+    // Leads for this month
+    { id: 'lead_1', firstName: 'Alice', lastName: 'Smith', email: 'alice.s@email.com', source: 'Facebook Campaign', status: 'new', potentialValue: 500, createdAt: new Date(thisYear, thisMonth, 2).toISOString(), policyType: PolicyType.AUTO, agencyId: 'agency_1' },
+    { id: 'lead_2', firstName: 'Bob', lastName: 'Johnson', email: 'bob.j@email.com', source: 'Website Form', status: 'contacted', potentialValue: 1200, createdAt: new Date(thisYear, thisMonth, 5).toISOString(), policyType: PolicyType.HOME, agencyId: 'agency_1' },
+    { id: 'lead_3', firstName: 'Charlie', lastName: 'Brown', email: 'charlie.b@email.com', source: 'Referral', status: 'qualified', potentialValue: 800, createdAt: new Date(thisYear, thisMonth, 1).toISOString(), policyType: PolicyType.LIFE, agencyId: 'agency_1' },
+    { id: 'lead_6', firstName: 'Frank', lastName: 'Castle', email: 'frank.c@email.com', source: 'Facebook Campaign', status: 'new', potentialValue: 900, createdAt: new Date(thisYear, thisMonth, 8).toISOString(), policyType: PolicyType.LIFE, agencyId: 'agency_1' },
+    { id: 'lead_7', firstName: 'Grace', lastName: 'Hopper', email: 'grace.h@email.com', source: 'Website Form', status: 'new', potentialValue: 1100, createdAt: new Date(thisYear, thisMonth, 10).toISOString(), policyType: PolicyType.HEALTH, agencyId: 'agency_1' },
+    { id: 'lead_10', firstName: 'Jack', lastName: 'Ryan', email: 'jack.r@email.com', source: 'LinkedIn', status: 'new', potentialValue: 1500, createdAt: new Date(thisYear, thisMonth, 12).toISOString(), policyType: PolicyType.HEALTH, agencyId: 'agency_1' },
+    { id: 'lead_11', firstName: 'Kate', lastName: 'Austen', email: 'kate.a@email.com', source: 'Referral', status: 'contacted', potentialValue: 650, createdAt: new Date(thisYear, thisMonth, 15).toISOString(), policyType: PolicyType.AUTO, agencyId: 'agency_1' },
+
+    // Leads for last month
+    { id: 'lead_4', firstName: 'Diana', lastName: 'Prince', email: 'diana.p@email.com', source: 'Instagram Ad', status: 'closed', potentialValue: 1500, createdAt: new Date(lastMonthYear, lastMonth, 25).toISOString(), customerId: 'cust_2', policyType: PolicyType.HEALTH, agencyId: 'agency_1' },
+    { id: 'lead_5', firstName: 'Eve', lastName: 'Adams', email: 'eve.a@email.com', source: 'LinkedIn', status: 'rejected', potentialValue: 600, createdAt: new Date(lastMonthYear, lastMonth, 15).toISOString(), policyType: PolicyType.AUTO, agencyId: 'agency_1' },
+    { id: 'lead_8', firstName: 'Henry', lastName: 'Jones', email: 'henry.j@email.com', source: 'Referral', status: 'closed', potentialValue: 700, createdAt: new Date(lastMonthYear, lastMonth, 10).toISOString(), policyType: PolicyType.HOME, agencyId: 'agency_1' },
+    { id: 'lead_9', firstName: 'Ivy', lastName: 'Green', email: 'ivy.g@email.com', source: 'Instagram Ad', status: 'contacted', potentialValue: 300, createdAt: new Date(lastMonthYear, lastMonth, 20).toISOString(), policyType: PolicyType.AUTO, agencyId: 'agency_1' },
+
+    // Leads for 30-day trend
+    { id: 'lead_d1', firstName: 'Lead', lastName: 'Day-1', email: 'd1@email.com', source: 'Website Form', status: 'new', potentialValue: 500, createdAt: new Date(new Date().setDate(today.getDate() - 1)).toISOString(), policyType: PolicyType.AUTO, agencyId: 'agency_1' },
+    { id: 'lead_d3', firstName: 'Lead', lastName: 'Day-3', email: 'd3@email.com', source: 'Facebook Campaign', status: 'new', potentialValue: 500, createdAt: new Date(new Date().setDate(today.getDate() - 3)).toISOString(), policyType: PolicyType.AUTO, agencyId: 'agency_1' },
+    { id: 'lead_d4', firstName: 'Lead', lastName: 'Day-4', email: 'd4@email.com', source: 'Referral', status: 'new', potentialValue: 500, createdAt: new Date(new Date().setDate(today.getDate() - 4)).toISOString(), policyType: PolicyType.AUTO, agencyId: 'agency_1' },
+    { id: 'lead_d7', firstName: 'Lead', lastName: 'Day-7', email: 'd7@email.com', source: 'Website Form', status: 'new', potentialValue: 500, createdAt: new Date(new Date().setDate(today.getDate() - 7)).toISOString(), policyType: PolicyType.AUTO, agencyId: 'agency_1' },
+    { id: 'lead_d8', firstName: 'Lead', lastName: 'Day-8', email: 'd8@email.com', source: 'Website Form', status: 'new', potentialValue: 500, createdAt: new Date(new Date().setDate(today.getDate() - 8)).toISOString(), policyType: PolicyType.AUTO, agencyId: 'agency_1' },
+    { id: 'lead_d15', firstName: 'Lead', lastName: 'Day-15', email: 'd15@email.com', source: 'LinkedIn', status: 'new', potentialValue: 500, createdAt: new Date(new Date().setDate(today.getDate() - 15)).toISOString(), policyType: PolicyType.AUTO, agencyId: 'agency_1' },
 ];
 
 export const MOCK_CUSTOMERS: Customer[] = [

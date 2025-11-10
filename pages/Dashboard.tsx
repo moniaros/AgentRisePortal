@@ -7,6 +7,7 @@ import ErrorMessage from '../components/ui/ErrorMessage';
 import SkeletonLoader from '../components/ui/SkeletonLoader';
 import { useOnboardingStatus } from '../hooks/useOnboardingStatus';
 import TestimonialCarousel from '../components/testimonials/TestimonialCarousel';
+import SparklineKpiCard from '../components/dashboard/SparklineKpiCard';
 
 const Dashboard: React.FC = () => {
     const { t, language } = useLocalization();
@@ -18,6 +19,8 @@ const Dashboard: React.FC = () => {
         monthlyRevenue: number;
         policyDistribution: { name: string; value: number }[];
         totalPoliciesInForce: { current: number; previous: number; };
+        newLeadsThisMonth: { current: number; previous: number; };
+        dailyLeadTrend: { date: string; count: number; }[];
     } | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -148,8 +151,15 @@ const Dashboard: React.FC = () => {
 
             <WelcomeBanner />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {renderStatCard(t('dashboard.newLeads'), isLoading ? 0 : data?.newLeadsCount ?? 0, isLoading)}
+                <SparklineKpiCard
+                    title={t('dashboard.newLeadsThisMonth')}
+                    current={data?.newLeadsThisMonth.current ?? 0}
+                    previous={data?.newLeadsThisMonth.previous ?? 0}
+                    trendData={data?.dailyLeadTrend ?? []}
+                    isLoading={isLoading}
+                />
                 {renderStatCard(t('dashboard.monthlyRevenue'), isLoading ? '€0.00' : `€${(data?.monthlyRevenue ?? 0).toLocaleString('el-GR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, isLoading)}
                 <KpiCardWithChange 
                     title={t('dashboard.totalPoliciesInForce')}
