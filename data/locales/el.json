@@ -284,12 +284,32 @@
     "sendInvite": "Αποστολή Πρόσκλησης",
     "accessDenied": "Άρνηση Πρόσβασης",
     "accessDeniedMessage": "Δεν έχετε δικαίωμα προβολής αυτής της σελίδας.",
+    "filters": {
+      "searchByNameEmail": "Αναζήτηση με όνομα ή email...",
+      "filterByRole": "Φίλτρο ανά ρόλο",
+      "allRoles": "Όλοι οι Ρόλοι",
+      "searchLogs": "Αναζήτηση αρχείων...",
+      "filterByAction": "Φίλτρο ανά ενέργεια",
+      "allActions": "Όλες οι Ενέργειες"
+    },
+    "bulkActions": {
+      "title": "Μαζικές Ενέργειες",
+      "selected": "{count} επιλεγμένοι",
+      "deleteSelected": "Διαγραφή Επιλεγμένων",
+      "changeRoleTo": "Αλλαγή ρόλου σε...",
+      "confirmBulkDelete": "Είστε βέβαιοι ότι θέλετε να αφαιρέσετε {count} επιλεγμένους χρήστες; Αυτή η ενέργεια δεν αναιρείται."
+    },
     "log": {
       "actor": "Δράστης",
-      "action": "Ενέργεια",
+      "header_action": "Ενέργεια",
       "target": "Στόχος",
       "details": "Λεπτομέρειες",
-      "timestamp": "Χρονική Σήμανση"
+      "timestamp": "Χρονική Σήμανση",
+      "actions": {
+        "user_invited": "Πρόσκληση Χρήστη",
+        "user_removed": "Αφαίρεση Χρήστη",
+        "role_changed": "Αλλαγή Ρόλου"
+      }
     }
   },
   "common": {

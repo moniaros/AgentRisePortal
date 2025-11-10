@@ -9,11 +9,16 @@ const mockAgencies: Agency[] = [
 const mockUsers: User[] = [
     { id: 'user_1', name: 'Admin User', email: 'admin@alpha.com', role: 'admin', agencyId: 'agency_1' },
     { id: 'user_2', name: 'Agent Smith', email: 'agent.smith@alpha.com', role: 'agent', agencyId: 'agency_1' },
+    { id: 'user_4', name: 'Emily Jones', email: 'emily.jones@alpha.com', role: 'agent', agencyId: 'agency_1' },
+    { id: 'user_5', name: 'Michael Brown', email: 'michael.brown@alpha.com', role: 'agent', agencyId: 'agency_1' },
     { id: 'user_3', name: 'Beta Admin', email: 'admin@beta.com', role: 'admin', agencyId: 'agency_2' },
 ];
 
 const mockAuditLogs: AuditLog[] = [
     { id: 'log_1', timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), actorName: 'Admin User', action: 'user_invited', targetName: 'agent.smith@alpha.com', details: 'Invited with role: agent', agencyId: 'agency_1' },
+    { id: 'log_2', timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(), actorName: 'Admin User', action: 'user_invited', targetName: 'emily.jones@alpha.com', details: 'Invited with role: agent', agencyId: 'agency_1' },
+    { id: 'log_3', timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(), actorName: 'Admin User', action: 'role_changed', targetName: 'Agent Smith', details: 'Role changed from agent to admin', agencyId: 'agency_1' },
+     { id: 'log_4', timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(), actorName: 'Admin User', action: 'role_changed', targetName: 'Agent Smith', details: 'Role changed from admin to agent', agencyId: 'agency_1' },
 ];
 
 const mockCustomers: Customer[] = [

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useLocalization } from '../hooks/useLocalization';
 import { useAuth } from '../hooks/useAuth';
 import { useUserManagementData } from '../hooks/useUserManagementData';
@@ -8,12 +8,77 @@ import InviteUserModal from '../components/users/InviteUserModal';
 import SkeletonLoader from '../components/ui/SkeletonLoader';
 import ErrorMessage from '../components/ui/ErrorMessage';
 import { User, UserRole } from '../types';
+import UserFilters from '../components/users/UserFilters';
+import AuditLogFilters from '../components/users/AuditLogFilters';
+import BulkActionsToolbar from '../components/users/BulkActionsToolbar';
 
 const UserManagement: React.FC = () => {
     const { t } = useLocalization();
     const { currentUser } = useAuth();
     const { users, auditLogs, isLoading, error, addUser, removeUser, changeUserRole } = useUserManagementData();
+    
     const [isInviteModalOpen, setInviteModalOpen] = useState(false);
+    const [selectedUserIds, setSelectedUserIds] = useState<Set<string>>(new Set());
+    const [userFilters, setUserFilters] = useState({ search: '', role: 'all' as 'all' | UserRole });
+    const [auditFilters, setAuditFilters] = useState({ search: '', action: 'all' });
+
+    const filteredUsers = useMemo(() => {
+        return users.filter(user => {
+            const searchLower = userFilters.search.toLowerCase();
+            const nameMatch = user.name.toLowerCase().includes(searchLower);
+            const emailMatch = user.email.toLowerCase().includes(searchLower);
+            const roleMatch = userFilters.role === 'all' || user.role === userFilters.role;
+            return (nameMatch || emailMatch) && roleMatch;
+        });
+    }, [users, userFilters]);
+
+    const filteredAuditLogs = useMemo(() => {
+        return auditLogs.filter(log => {
+            const searchLower = auditFilters.search.toLowerCase();
+            const actorMatch = log.actorName.toLowerCase().includes(searchLower);
+            const targetMatch = log.targetName.toLowerCase().includes(searchLower);
+            const detailsMatch = log.details.toLowerCase().includes(searchLower);
+            const actionMatch = auditFilters.action === 'all' || log.action === auditFilters.action;
+            return (actorMatch || targetMatch || detailsMatch) && actionMatch;
+        });
+    }, [auditLogs, auditFilters]);
+
+    const handleSelectUser = (userId: string) => {
+        setSelectedUserIds(prev => {
+            const newSet = new Set(prev);
+            if (newSet.has(userId)) {
+                newSet.delete(userId);
+            } else {
+                newSet.add(userId);
+            }
+            return newSet;
+        });
+    };
+
+    const handleSelectAllUsers = () => {
+        if (selectedUserIds.size === filteredUsers.length) {
+            setSelectedUserIds(new Set());
+        } else {
+            setSelectedUserIds(new Set(filteredUsers.map(u => u.id)));
+        }
+    };
+    
+    const handleBulkDelete = () => {
+        const userCount = selectedUserIds.size;
+        if (userCount > 0 && window.confirm(t('userManagement.bulkActions.confirmBulkDelete').replace('{count}', String(userCount)))) {
+            selectedUserIds.forEach(id => {
+                if (id !== currentUser?.id) removeUser(id);
+            });
+            setSelectedUserIds(new Set());
+        }
+    };
+    
+    const handleBulkRoleChange = (newRole: UserRole) => {
+        selectedUserIds.forEach(id => {
+            if (id !== currentUser?.id) changeUserRole(id, newRole);
+        });
+        setSelectedUserIds(new Set());
+    };
 
     if (currentUser?.role !== 'admin') {
         return (
@@ -46,15 +111,33 @@ const UserManagement: React.FC = () => {
             <div className="space-y-8">
                 <div>
                     <h2 className="text-2xl font-semibold mb-4">{t('userManagement.users')}</h2>
-                    {isLoading ? <SkeletonLoader className="h-48 w-full" /> : (
-                        <UsersTable users={users} onRemove={removeUser} onChangeRole={changeUserRole} />
-                    )}
+                    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md space-y-4">
+                        <UserFilters filters={userFilters} onFilterChange={setUserFilters} />
+                        <BulkActionsToolbar 
+                            selectedIds={selectedUserIds}
+                            onBulkDelete={handleBulkDelete}
+                            onBulkRoleChange={handleBulkRoleChange}
+                        />
+                        {isLoading ? <SkeletonLoader className="h-48 w-full" /> : (
+                            <UsersTable 
+                                users={filteredUsers} 
+                                selectedUserIds={selectedUserIds}
+                                onSelectUser={handleSelectUser}
+                                onSelectAllUsers={handleSelectAllUsers}
+                                onRemove={removeUser} 
+                                onChangeRole={changeUserRole} 
+                            />
+                        )}
+                    </div>
                 </div>
                 <div>
                     <h2 className="text-2xl font-semibold mb-4">{t('userManagement.auditLog')}</h2>
-                    {isLoading ? <SkeletonLoader className="h-48 w-full" /> : (
-                        <AuditLogsTable logs={auditLogs} />
-                    )}
+                     <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md space-y-4">
+                        <AuditLogFilters filters={auditFilters} onFilterChange={setAuditFilters} />
+                        {isLoading ? <SkeletonLoader className="h-48 w-full" /> : (
+                            <AuditLogsTable logs={filteredAuditLogs} />
+                        )}
+                     </div>
                 </div>
             </div>
             

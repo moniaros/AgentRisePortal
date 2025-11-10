@@ -284,12 +284,32 @@
     "sendInvite": "Send Invite",
     "accessDenied": "Access Denied",
     "accessDeniedMessage": "You do not have permission to view this page.",
+    "filters": {
+      "searchByNameEmail": "Search by name or email...",
+      "filterByRole": "Filter by role",
+      "allRoles": "All Roles",
+      "searchLogs": "Search logs...",
+      "filterByAction": "Filter by action",
+      "allActions": "All Actions"
+    },
+    "bulkActions": {
+      "title": "Bulk Actions",
+      "selected": "{count} selected",
+      "deleteSelected": "Delete Selected",
+      "changeRoleTo": "Change role to...",
+      "confirmBulkDelete": "Are you sure you want to remove {count} selected users? This action cannot be undone."
+    },
     "log": {
       "actor": "Actor",
-      "action": "Action",
+      "header_action": "Action",
       "target": "Target",
       "details": "Details",
-      "timestamp": "Timestamp"
+      "timestamp": "Timestamp",
+      "actions": {
+        "user_invited": "User Invited",
+        "user_removed": "User Removed",
+        "role_changed": "Role Changed"
+      }
     }
   },
   "common": {

@@ -5,11 +5,14 @@ import { useAuth } from '../../hooks/useAuth';
 
 interface UsersTableProps {
   users: User[];
+  selectedUserIds: Set<string>;
+  onSelectUser: (userId: string) => void;
+  onSelectAllUsers: () => void;
   onRemove: (userId: string) => void;
   onChangeRole: (userId: string, newRole: UserRole) => void;
 }
 
-const UsersTable: React.FC<UsersTableProps> = ({ users, onRemove, onChangeRole }) => {
+const UsersTable: React.FC<UsersTableProps> = ({ users, selectedUserIds, onSelectUser, onSelectAllUsers, onRemove, onChangeRole }) => {
   const { t } = useLocalization();
   const { currentUser } = useAuth();
   
@@ -23,11 +26,23 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, onRemove, onChangeRole }
     }
   };
 
+  const isAllSelected = users.length > 0 && selectedUserIds.size === users.length;
+  const isIndeterminate = selectedUserIds.size > 0 && selectedUserIds.size < users.length;
+
   return (
-    <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-x-auto">
+    <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
         <thead className="bg-gray-50 dark:bg-gray-700">
           <tr>
+            <th scope="col" className="p-4">
+              <input 
+                type="checkbox" 
+                className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                checked={isAllSelected}
+                ref={el => el && (el.indeterminate = isIndeterminate)}
+                onChange={onSelectAllUsers}
+              />
+            </th>
             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('crm.name')}</th>
             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('userManagement.role')}</th>
             <th scope="col" className="relative px-6 py-3"><span className="sr-only">Actions</span></th>
@@ -35,7 +50,15 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, onRemove, onChangeRole }
         </thead>
         <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
           {users.map(user => (
-            <tr key={user.id}>
+            <tr key={user.id} className={selectedUserIds.has(user.id) ? 'bg-blue-50 dark:bg-blue-900/20' : ''}>
+              <td className="p-4">
+                <input 
+                    type="checkbox" 
+                    className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    checked={selectedUserIds.has(user.id)}
+                    onChange={() => onSelectUser(user.id)}
+                />
+              </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm font-medium text-gray-900 dark:text-white">{user.name}</div>
                 <div className="text-sm text-gray-500 dark:text-gray-400">{user.email}</div>
