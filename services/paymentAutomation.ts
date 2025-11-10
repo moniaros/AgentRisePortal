@@ -1,3 +1,4 @@
+
 import { Customer, User, AutomatedTask, ReminderLogEntry, RuleDefinition, Language, EmailTemplate, SmsTemplate, TriggerEventType } from '../types';
 
 const dayDifference = (date1: Date, date2: Date): number => {
@@ -10,7 +11,8 @@ const dayDifference = (date1: Date, date2: Date): number => {
 const renderTemplate = (template: string, data: Record<string, string>): string => {
     let rendered = template;
     for (const key in data) {
-        const regex = new RegExp(`\\{\\{${key.replace('.', '\\.')}\\}\\}`, 'g');
+        // FIX: Regex was incorrectly looking for {{...}} instead of {...}.
+        const regex = new RegExp(`\\{${key.replace('.', '\\.')}\\}`, 'g');
         rendered = rendered.replace(regex, data[key]);
     }
     return rendered;
@@ -94,18 +96,19 @@ export const runPaymentChecks = async (
 
                             switch (action.actionType) {
                                 case 'CREATE_TASK':
-                                    // FIX: The property 'templateId' does not exist on 'action'. It exists on 'action.parameters'. Using 'action.template' as suggested by the error message.
-                                    const taskTemplateKey = action.template === 'payment-overdue-task' ? 'dashboard.paymentTasks.overdue' : 'dashboard.paymentTasks.due';
-                                    const message = renderTemplate(translations[taskTemplateKey] || '', templateData);
-                                    newTasks.push({
-                                        id: `task_payment_${policy.id}_${rule.id}`,
-                                        type: 'PAYMENT_DUE',
-                                        policyId: policy.id,
-                                        customerId: customer.id,
-                                        agentId: customer.assignedAgentId,
-                                        message,
-                                        createdAt: today.toISOString(),
-                                    });
+                                    // FIX: Logic was incorrect. Now uses the template string from the rule directly, aligning with renewalAutomation service.
+                                    if (action.template) {
+                                        const message = renderTemplate(action.template, templateData);
+                                        newTasks.push({
+                                            id: `task_payment_${policy.id}_${rule.id}`,
+                                            type: 'PAYMENT_DUE',
+                                            policyId: policy.id,
+                                            customerId: customer.id,
+                                            agentId: customer.assignedAgentId,
+                                            message,
+                                            createdAt: today.toISOString(),
+                                        });
+                                    }
                                     break;
                                 
                                 case 'SEND_EMAIL':

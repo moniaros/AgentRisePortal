@@ -18,12 +18,10 @@ const dayDifference = (date1: Date, date2: Date): number => {
 const renderTemplate = (template: string, data: Record<string, string>): string => {
     let rendered = template;
     for (const key in data) {
-        // Updated to handle dot notation in template, e.g., {customer.firstName}
-        const regex = new RegExp(`\\{\\{${key.replace('.', '\\.')}\\}\\}`, 'g');
+        // FIX: Regex was incorrectly looking for {{...}} instead of {...}.
+        const regex = new RegExp(`\\{${key.replace('.', '\\.')}\\}`, 'g');
         rendered = rendered.replace(regex, data[key]);
     }
-    // A second pass for legacy simple keys
-    rendered = rendered.replace(/\{\{(\w+)\}\}/g, (_, key) => data[key] || `{{${key}}}`);
     return rendered;
 };
 

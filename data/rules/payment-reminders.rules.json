@@ -1,3 +1,4 @@
+
 [
   {
     "id": "PR-001",
@@ -18,7 +19,7 @@
       {
         "actionType": "CREATE_TASK",
         "target": "AGENT",
-        "templateId": "payment-due-30-day-task"
+        "template": "Payment for policy {policyNumber} for {customerName} is due on {paymentDueDate}. Please follow up."
       }
     ],
     "priority": 100,
@@ -72,7 +73,7 @@
        {
         "actionType": "CREATE_TASK",
         "target": "AGENT",
-        "templateId": "payment-due-today-task"
+        "template": "Payment for policy {policyNumber} for {customerName} is due on {paymentDueDate}. Please follow up."
       }
     ],
     "priority": 110,
@@ -98,7 +99,7 @@
       {
         "actionType": "CREATE_TASK",
         "target": "AGENT",
-        "templateId": "payment-overdue-task"
+        "template": "URGENT: Payment for policy {policyNumber} for {customerName} was due on {paymentDueDate} and is now overdue."
       },
       {
         "actionType": "SEND_EMAIL",
