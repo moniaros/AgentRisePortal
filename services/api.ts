@@ -1,4 +1,3 @@
-
 import { MOCK_USERS, MOCK_LEADS, MOCK_CUSTOMERS, MOCK_NEWS_ARTICLES, MOCK_TESTIMONIALS, MOCK_USER_ACTIVITY, MOCK_AUDIT_LOGS, MOCK_ANALYTICS_DATA, MOCK_EXECUTIVE_DATA } from '../data/mockData';
 import { User, Lead, Customer, DetailedPolicy, NewsArticle, Testimonial, UserActivityEvent, AuditLog, AnalyticsData, ExecutiveData } from '../types';
 
@@ -60,7 +59,10 @@ export const fetchAnalyticsData = async (): Promise<AnalyticsData> => {
 // Executive Dashboard
 export const fetchExecutiveData = async (): Promise<ExecutiveData> => {
     await simulateDelay(1200);
-    return MOCK_EXECUTIVE_DATA;
+    // Ensure data consistency by creating a fresh copy
+    const executiveData: ExecutiveData = JSON.parse(JSON.stringify(MOCK_EXECUTIVE_DATA));
+    // The field was renamed in the mock data source, ensuring it's correct here.
+    return executiveData;
 };
 
 

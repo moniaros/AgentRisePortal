@@ -64,7 +64,11 @@
     "expiresToday": "Expires Today",
     "expiresIn": "Expires in {days} days",
     "noPoliciesExpireSoon": "No policies are expiring in the next 30 days.",
-    "automatedTasks": "Automated Tasks & Reminders"
+    "automatedTasks": "Automated Tasks & Reminders",
+    "paymentTasks": {
+      "due": "Payment for policy {policyNumber} for {customerName} is due on {paymentDueDate}. Please follow up.",
+      "overdue": "URGENT: Payment for policy {policyNumber} for {customerName} was due on {paymentDueDate} and is now overdue."
+    }
   },
   "crm": {
     "name": "Name",

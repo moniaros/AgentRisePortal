@@ -1,10 +1,9 @@
-
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { useLocalization } from '../../hooks/useLocalization';
 
 interface AgencyGrowthChartProps {
-    data: { month: string; premium: number; policies: number }[];
+    data: { month: string; premiumAmount: number; policies: number }[];
 }
 
 const AgencyGrowthChart: React.FC<AgencyGrowthChartProps> = ({ data }) => {
@@ -21,7 +20,7 @@ const AgencyGrowthChart: React.FC<AgencyGrowthChartProps> = ({ data }) => {
                     <YAxis yAxisId="right" orientation="right" stroke="#10b981" tick={{ fontSize: 12 }} />
                     <Tooltip />
                     <Legend wrapperStyle={{fontSize: "12px"}} />
-                    <Bar yAxisId="left" dataKey="premium" name={t('executive.premiumVolume')} fill="#3b82f6" />
+                    <Bar yAxisId="left" dataKey="premiumAmount" name={t('executive.premiumVolume')} fill="#3b82f6" />
                     <Bar yAxisId="right" dataKey="policies" name={t('executive.policiesSold')} fill="#10b981" />
                 </BarChart>
             </ResponsiveContainer>

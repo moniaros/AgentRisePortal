@@ -100,8 +100,10 @@ export interface Policy {
     type: PolicyType;
     startDate: string;
     endDate: string;
-    premium: number;
+    premiumAmount: number;
     isActive: boolean;
+    paymentDueDate?: string;
+    paymentStatus?: 'pending' | 'paid' | 'overdue';
 }
 
 export interface Lead {
@@ -125,7 +127,8 @@ export interface Lead {
 export interface SocialPlatform {
     key: 'facebook' | 'linkedin' | 'x';
     name: string;
-    icon: JSX.Element;
+    // FIX: Changed JSX.Element to React.ReactElement to fix namespace issue in .ts file.
+    icon: React.ReactElement;
 }
 
 export interface TranslationTokens {
@@ -305,7 +308,7 @@ export interface MicrositeConfig {
 
 // Executive Dashboard
 export interface ExecutiveData {
-    agencyGrowth: { month: string; premium: number; policies: number }[];
+    agencyGrowth: { month: string; premiumAmount: number; policies: number }[];
     productMix: { name: PolicyType; value: number }[];
     claimsTrend: { month: string; submitted: number; approved: number; paid: number }[];
     leadFunnel: { status: LeadStatus; count: number }[];
@@ -369,19 +372,29 @@ export interface ReminderLogEntry {
     sentAt: string;
 }
 
+export type TriggerEventType = 
+    | 'POLICY_EXPIRING_SOON'
+    | 'PAYMENT_DUE_IN_30_DAYS'
+    | 'PAYMENT_DUE_IN_7_DAYS'
+    | 'PAYMENT_DUE_TODAY'
+    | 'PAYMENT_OVERDUE_3_DAYS'
+    | 'NEW_LEAD_CREATED'
+    | 'POLICY_CREATED';
+
 export interface RuleDefinition {
     id: string;
     name: string;
     isEnabled: boolean;
     trigger: {
-        eventType: 'POLICY_EXPIRING_SOON';
+        eventType: TriggerEventType;
         parameters?: {
-            daysBefore: number;
+            daysBefore?: number;
+            daysAfter?: number;
         };
     };
     conditions: {
         field: string;
-        operator: 'EQUALS' | 'GREATER_THAN' | 'LESS_THAN';
+        operator: 'EQUALS' | 'NOT_EQUALS' | 'GREATER_THAN' | 'LESS_THAN';
         value: any;
     }[];
     actions: {

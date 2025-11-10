@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { useForm, FieldError } from 'react-hook-form';
 import { useLocalization } from '../../hooks/useLocalization';

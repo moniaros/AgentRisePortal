@@ -64,7 +64,11 @@
     "expiresToday": "Λήγει Σήμερα",
     "expiresIn": "Λήγει σε {days} ημέρες",
     "noPoliciesExpireSoon": "Κανένα συμβόλαιο δεν λήγει τις επόμενες 30 ημέρες.",
-    "automatedTasks": "Αυτοματοποιημένες Εργασίες & Υπενθυμίσεις"
+    "automatedTasks": "Αυτοματοποιημένες Εργασίες & Υπενθυμίσεις",
+    "paymentTasks": {
+      "due": "Η πληρωμή για το συμβόλαιο {policyNumber} του/της {customerName} λήγει στις {paymentDueDate}. Παρακαλώ επικοινωνήστε.",
+      "overdue": "ΕΠΕΙΓΟΝ: Η πληρωμή για το συμβόλαιο {policyNumber} του/της {customerName} έληξε στις {paymentDueDate} και είναι εκπρόθεσμη."
+    }
   },
   "crm": {
     "name": "Όνομα",

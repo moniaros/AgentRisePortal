@@ -1,4 +1,3 @@
-
 import React, { useMemo, useState, useEffect } from 'react';
 import { useLocalization } from '../hooks/useLocalization';
 import { useCrmData } from '../hooks/useCrmData';
@@ -9,8 +8,9 @@ import ConversionFunnelChart from '../components/dashboard/ConversionFunnelChart
 import ExpiringPoliciesWidget from '../components/dashboard/ExpiringPoliciesWidget';
 import TestimonialCarousel from '../components/testimonials/TestimonialCarousel';
 import AutomatedTasksWidget from '../components/dashboard/AutomatedTasksWidget';
-import { AutomatedTask } from '../types';
+import { AutomatedTask, ReminderLogEntry } from '../types';
 import { runRenewalChecks } from '../services/renewalAutomation';
+import { runPaymentChecks } from '../services/paymentAutomation';
 import { MOCK_USERS } from '../data/mockData';
 
 const Dashboard: React.FC = () => {
@@ -18,23 +18,34 @@ const Dashboard: React.FC = () => {
     const { currentUser } = useAuth();
     const { customers, leads, isLoading } = useCrmData();
     
-    // State for automated tasks
+    // State for automated tasks and logs
     const [tasks, setTasks] = useState<AutomatedTask[]>([]);
+    const [renewalLog, setRenewalLog] = useState<ReminderLogEntry[]>([]);
+    const [paymentLog, setPaymentLog] = useState<ReminderLogEntry[]>([]);
     const [isTaskLoading, setIsTaskLoading] = useState(true);
 
     // Effect to run automation checks on component mount (simulating a daily cron job)
     useEffect(() => {
-        const checkRenewals = async () => {
+        const runAllChecks = async () => {
             if (!isLoading && customers.length > 0) {
                 setIsTaskLoading(true);
-                // In a real app, the log would be persisted
-                const { newTasks } = await runRenewalChecks(customers, MOCK_USERS, [], t(''));
-                setTasks(newTasks);
+
+                // Run renewal checks
+                const { newTasks: renewalTasks, updatedLog: newRenewalLog } = await runRenewalChecks(customers, MOCK_USERS, renewalLog, t(''));
+                
+                // Run payment checks
+                const { newTasks: paymentTasks, updatedLog: newPaymentLog } = await runPaymentChecks(customers, MOCK_USERS, paymentLog, t(''));
+
+                setTasks([...renewalTasks, ...paymentTasks]);
+                setRenewalLog(newRenewalLog);
+                setPaymentLog(newPaymentLog);
+
                 setIsTaskLoading(false);
             }
         };
-        checkRenewals();
-    }, [isLoading, customers, t]);
+        runAllChecks();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isLoading, customers]); // Run only when initial data is loaded
     
     const dashboardData = useMemo(() => {
         if (isLoading) return null;

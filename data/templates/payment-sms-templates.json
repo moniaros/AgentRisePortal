@@ -1,1 +1,10 @@
-full contents of data/templates/payment-sms-templates.json
+{
+    "templates": [
+        {
+            "id": "payment-overdue-sms",
+            "name": "Overdue Payment SMS Alert",
+            "en": "URGENT: Your payment for policy {{policyNumber}} is overdue. Please contact {{agentName}} at {{agentPhone}} to avoid coverage interruption.",
+            "el": "ΕΠΕΙΓΟΝ: Η πληρωμή για το συμβόλαιο {{policyNumber}} είναι εκπρόθεσμη. Παρακαλώ επικοινωνήστε με τον/την {{agentName}} στο {{agentPhone}} για αποφυγή διακοπής της κάλυψης."
+        }
+    ]
+}

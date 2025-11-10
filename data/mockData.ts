@@ -1,5 +1,5 @@
 // FIX: Add AnalyticsData to the import list from ../types
-import { User, Customer, Lead, Policy, PolicyType, UserSystemRole, LicenseStatus, Language, CampaignObjective, TimelineEvent, NewsArticle, Testimonial, UserActivityEvent, AuditLog, AnalyticsRecord, AnalyticsData, ExecutiveData } from '../types';
+import { User, Customer, Lead, Policy, PolicyType, UserSystemRole, LicenseStatus, Language, CampaignObjective, TimelineEvent, NewsArticle, Testimonial, UserActivityEvent, AuditLog, AnalyticsRecord, AnalyticsData, ExecutiveData, ReminderLogEntry } from '../types';
 
 export const MOCK_USERS: User[] = [
     {
@@ -7,7 +7,7 @@ export const MOCK_USERS: User[] = [
         agencyId: 'agency_1',
         party: {
             partyName: { firstName: 'John', lastName: 'Doe' },
-            contactInfo: { email: 'john.doe@agency1.com', workPhone: '555-0101' },
+            contactInfo: { email: 'moniaros@gmail.com', workPhone: '555-0101', mobilePhone: '555-0199' },
             profilePhotoUrl: 'https://i.pravatar.cc/150?u=a042581f4e29026704d',
             signature: 'https://via.placeholder.com/200x80.png?text=John+Doe+Signature',
         },
@@ -26,7 +26,7 @@ export const MOCK_USERS: User[] = [
         agencyId: 'agency_1',
         party: {
             partyName: { firstName: 'Jane', lastName: 'Smith' },
-            contactInfo: { email: 'jane.smith@agency1.com' },
+            contactInfo: { email: 'jane.smith@agency1.com', workPhone: '555-0102' },
         },
         partyRole: {
             roleType: UserSystemRole.AGENT,
@@ -56,15 +56,24 @@ const mockTimeline: TimelineEvent[] = [
     { id: 't3', date: '2024-01-20T09:15:00Z', type: 'call', content: 'Discussed potential home insurance.', author: 'Jane Smith', annotations: [{id: 'a1', date: '2024-01-20T09:20:00Z', author: 'Jane Smith', content: 'Client is interested in flood coverage.'}] },
 ];
 
+// Helper to get a date string X days from now
+const getDateFromNow = (days: number): string => {
+    const date = new Date();
+    date.setDate(date.getDate() + days);
+    return date.toISOString().split('T')[0];
+};
+
+
 const mockPolicies: Policy[] = [
-    { id: 'p1', policyNumber: 'A-123', type: PolicyType.AUTO, startDate: '2023-11-01', endDate: '2024-10-31', premium: 1200, isActive: true },
-    { id: 'p2', policyNumber: 'H-456', type: PolicyType.HOME, startDate: '2022-05-20', endDate: '2023-05-19', premium: 800, isActive: false },
+    { id: 'p1', policyNumber: 'A-123', type: PolicyType.AUTO, startDate: '2023-11-01', endDate: getDateFromNow(60), premiumAmount: 1200, isActive: true, paymentDueDate: getDateFromNow(7), paymentStatus: 'pending' },
+    { id: 'p2', policyNumber: 'H-456', type: PolicyType.HOME, startDate: '2022-05-20', endDate: '2023-05-19', premiumAmount: 800, isActive: false },
 ];
 
 export const MOCK_CUSTOMERS: Customer[] = [
     { id: 'cust_1', firstName: 'Alice', lastName: 'Williams', email: 'alice.w@example.com', phone: '555-0102', address: '123 Oak St, Anytown', policies: mockPolicies, timeline: mockTimeline, agencyId: 'agency_1', assignedAgentId: 'user_1' },
-    { id: 'cust_2', firstName: 'Bob', lastName: 'Brown', email: 'bob.b@example.com', phone: '555-0103', address: '456 Pine St, Anytown', policies: [{ id: 'p3', policyNumber: 'L-789', type: PolicyType.LIFE, startDate: '2023-01-15', endDate: '2033-01-14', premium: 2400, isActive: true }], timeline: [], agencyId: 'agency_1', assignedAgentId: 'user_2' },
-    { id: 'cust_3', firstName: 'Charlie', lastName: 'Davis', email: 'charlie.d@example.com', phone: '555-0104', address: '789 Maple St, Anytown', policies: [], timeline: [], agencyId: 'agency_2', assignedAgentId: 'user_3' },
+    { id: 'cust_2', firstName: 'Bob', lastName: 'Brown', email: 'bob.b@example.com', phone: '555-0103', address: '456 Pine St, Anytown', policies: [{ id: 'p3', policyNumber: 'L-789', type: PolicyType.LIFE, startDate: '2023-01-15', endDate: '2033-01-14', premiumAmount: 2400, isActive: true, paymentDueDate: getDateFromNow(-3), paymentStatus: 'overdue' }], timeline: [], agencyId: 'agency_1', assignedAgentId: 'user_2' },
+    { id: 'cust_3', firstName: 'Charlie', lastName: 'Davis', email: 'charlie.d@example.com', phone: '555-0104', address: '789 Maple St, Anytown', policies: [{id: 'p4', policyNumber: 'B-101', type: PolicyType.BUSINESS, startDate: '2024-01-01', endDate: getDateFromNow(15), premiumAmount: 5000, isActive: true, paymentDueDate: getDateFromNow(30), paymentStatus: 'pending'}], timeline: [], agencyId: 'agency_1', assignedAgentId: 'user_1' },
+    { id: 'cust_4', firstName: 'Diana', lastName: 'Prince', email: 'diana.p@example.com', phone: '555-0105', address: '1 Paradise Island', policies: [{id: 'p5', policyNumber: 'H-202', type: PolicyType.HOME, startDate: '2024-02-01', endDate: getDateFromNow(7), premiumAmount: 1800, isActive: true, paymentDueDate: getDateFromNow(0), paymentStatus: 'pending'}], timeline: [], agencyId: 'agency_1', assignedAgentId: 'user_2'},
 ];
 
 export const MOCK_LEADS: Lead[] = [
@@ -109,12 +118,12 @@ export const MOCK_ANALYTICS_DATA: AnalyticsData = [
 // Mock data for Executive Dashboard
 export const MOCK_EXECUTIVE_DATA: ExecutiveData = {
     agencyGrowth: [
-        { month: 'Jan', premium: 50000, policies: 100 },
-        { month: 'Feb', premium: 55000, policies: 110 },
-        { month: 'Mar', premium: 62000, policies: 125 },
-        { month: 'Apr', premium: 60000, policies: 122 },
-        { month: 'May', premium: 68000, policies: 135 },
-        { month: 'Jun', premium: 75000, policies: 150 },
+        { month: 'Jan', premiumAmount: 50000, policies: 100 },
+        { month: 'Feb', premiumAmount: 55000, policies: 110 },
+        { month: 'Mar', premiumAmount: 62000, policies: 125 },
+        { month: 'Apr', premiumAmount: 60000, policies: 122 },
+        { month: 'May', premiumAmount: 68000, policies: 135 },
+        { month: 'Jun', premiumAmount: 75000, policies: 150 },
     ],
     productMix: [
         { name: PolicyType.AUTO, value: 45 },
@@ -146,3 +155,6 @@ export const MOCK_EXECUTIVE_DATA: ExecutiveData = {
         { area: 'Liability', exposure: 80000, mitigation: 70000 },
     ]
 };
+
+export let MOCK_REMINDER_LOG: ReminderLogEntry[] = [];
+export let MOCK_PAYMENT_REMINDER_LOG: ReminderLogEntry[] = [];

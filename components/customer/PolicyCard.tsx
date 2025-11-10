@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Policy } from '../../types';
 import { useLocalization } from '../../hooks/useLocalization';
@@ -52,7 +51,7 @@ const PolicyCard: React.FC<PolicyCardProps> = ({ policy, onRenew, onAiReview, is
       <div className="mt-4 pt-4 border-t dark:border-gray-700 grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
         <div>
           <label className="block text-xs text-gray-500">{t('crm.form.premium')}</label>
-          <p className="font-semibold">€{policy.premium.toFixed(2)}</p>
+          <p className="font-semibold">€{policy.premiumAmount.toFixed(2)}</p>
         </div>
         <div>
           <label className="block text-xs text-gray-500">{t('crm.form.startDate')}</label>
