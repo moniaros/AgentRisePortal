@@ -3,7 +3,7 @@ import { Customer, Lead, PolicyType, DetailedPolicy, AnalyticsData, User, AuditL
 export const MOCK_USERS: User[] = [
     { id: 'user_1', name: 'Admin User', email: 'admin@alpha.com', role: 'admin', agencyId: 'agency_1' },
     { id: 'user_2', name: 'Agent Smith', email: 'agent.smith@alpha.com', role: 'agent', agencyId: 'agency_1' },
-    { id: 'user_3', name: 'Jane Doe', email: 'jane.doe@beta.com', role: 'admin', agencyId: 'agency_2' },
+    { id: 'user_3', name: 'Jane Doe', email: 'moniaros@gmail.com', role: 'admin', agencyId: 'agency_2' },
 ];
 
 export const MOCK_AUDIT_LOGS: AuditLog[] = [
