@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Condition",
+  "description": "Defines a single condition that must be met for a rule to be executed.",
+  "type": "object",
+  "properties": {
+    "field": {
+      "type": "string",
+      "description": "Dot-notation path to the field in the data object (e.g., 'policy.type')."
+    },
+    "operator": {
+      "type": "string",
+      "enum": ["EQUALS", "NOT_EQUALS", "GREATER_THAN", "LESS_THAN", "CONTAINS", "IN", "IS_EMPTY"]
+    },
+    "value": {
+      "description": "The value to compare against. Type depends on the operator."
+    }
+  },
+  "required": ["field", "operator", "value"]
+}

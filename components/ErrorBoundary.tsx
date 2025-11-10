@@ -1,4 +1,4 @@
-import React, { ErrorInfo, ReactNode } from 'react';
+import React, { Component, ErrorInfo, ReactNode } from 'react';
 
 interface Props {
   children: ReactNode;
@@ -9,45 +9,36 @@ interface State {
   error?: Error;
 }
 
-// FIX: Correctly implemented as a class component to function as an Error Boundary.
-class ErrorBoundary extends React.Component<Props, State> {
-  // FIX: Initialized state using a class property. This is a modern and concise syntax that avoids potential issues with 'this' in a constructor.
-  state: State = {
+class ErrorBoundary extends Component<Props, State> {
+  // FIX: Reverted to class property initializer for state to simplify the component and potentially resolve typing conflicts that led to the 'props' property not being found.
+  public state: State = {
     hasError: false,
-    error: undefined,
   };
 
-  static getDerivedStateFromError(error: Error): State {
-    // Update state so the next render will show the fallback UI.
+  public static getDerivedStateFromError(error: Error): State {
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    // You can also log the error to an error reporting service
+  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error("Uncaught error:", error, errorInfo);
+    // You can also log the error to an error reporting service
   }
 
-  render() {
+  public render() {
     if (this.state.hasError) {
-      // You can render any custom fallback UI
       return (
-        <div className="flex flex-col items-center justify-center h-screen bg-red-50 text-red-700">
-          <h1 className="text-4xl font-bold">Oops! Something went wrong.</h1>
-          <p className="mt-4 text-lg">We're sorry for the inconvenience. Please try refreshing the page.</p>
-          {this.state.error && (
-            <details className="mt-6 p-4 bg-red-100 rounded-md w-full max-w-2xl text-left">
-              <summary>Error Details</summary>
-              <pre className="mt-2 text-sm whitespace-pre-wrap">
-                {this.state.error.toString()}
-              </pre>
-            </details>
+        <div className="flex flex-col items-center justify-center h-screen bg-red-100 text-red-700">
+          <h1 className="text-2xl font-bold mb-4">Oops! Something went wrong.</h1>
+          <p>We're sorry for the inconvenience. Please try refreshing the page.</p>
+          {process.env.NODE_ENV === 'development' && this.state.error && (
+            <pre className="mt-4 p-4 bg-red-200 text-left text-sm whitespace-pre-wrap">
+              {this.state.error.stack}
+            </pre>
           )}
         </div>
       );
     }
 
-    // FIX: The `this` keyword refers to the component instance, so `this.props` is the correct way to access props.
-    // The previous destructuring was causing an obscure type error.
     return this.props.children;
   }
 }

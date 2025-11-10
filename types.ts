@@ -493,3 +493,66 @@ export interface MicrositeConfig {
         x: string;
     };
 }
+
+// Rules Engine
+export enum RuleCategory {
+    RENEWAL_REMINDER = 'RENEWAL_REMINDER',
+    PAYMENT_REMINDER = 'PAYMENT_REMINDER',
+    LEAD_ASSIGNMENT = 'LEAD_ASSIGNMENT',
+    TASK_CREATION = 'TASK_CREATION',
+}
+
+export enum TriggerEventType {
+    POLICY_EXPIRING_SOON = 'POLICY_EXPIRING_SOON',
+    NEW_LEAD_CREATED = 'NEW_LEAD_CREATED',
+    PAYMENT_DUE = 'PAYMENT_DUE',
+    POLICY_CREATED = 'POLICY_CREATED',
+}
+
+export enum ConditionOperator {
+    EQUALS = 'EQUALS',
+    NOT_EQUALS = 'NOT_EQUALS',
+    GREATER_THAN = 'GREATER_THAN',
+    LESS_THAN = 'LESS_THAN',
+    CONTAINS = 'CONTAINS',
+    IN = 'IN',
+    IS_EMPTY = 'IS_EMPTY',
+}
+
+export enum ActionType {
+    SEND_EMAIL = 'SEND_EMAIL',
+    SEND_SMS = 'SEND_SMS',
+    CREATE_TASK = 'CREATE_TASK',
+    ASSIGN_LEAD = 'ASSIGN_LEAD',
+}
+
+export interface Trigger {
+    eventType: TriggerEventType;
+    parameters?: Record<string, any>;
+}
+
+export interface Condition {
+    field: string; // e.g., 'policy.type', 'lead.potentialValue'
+    operator: ConditionOperator;
+    value: any; // e.g., 'auto', 1000
+}
+
+export interface Action {
+    actionType: ActionType;
+    target: 'AGENT' | 'CUSTOMER' | 'SYSTEM';
+    template?: string; // e.g., 'Your policy {policy.policyNumber} is expiring soon.'
+    parameters?: Record<string, any>; // e.g., { assignToAgentId: 'user_123' }
+}
+
+export interface RuleDefinition {
+    id: string;
+    name: string;
+    description: string;
+    category: RuleCategory;
+    trigger: Trigger;
+    conditions: Condition[];
+    actions: Action[];
+    priority: number;
+    isEnabled: boolean;
+    agencyId: 'global' | string;
+}

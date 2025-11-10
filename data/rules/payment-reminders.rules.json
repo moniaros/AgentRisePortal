@@ -1,0 +1,25 @@
+[
+  {
+    "id": "PR-001",
+    "name": "5-Day Overdue Payment Reminder Email",
+    "description": "Sends an email to the customer when their policy payment is 5 days overdue.",
+    "category": "PAYMENT_REMINDER",
+    "trigger": {
+      "eventType": "PAYMENT_DUE",
+      "parameters": {
+        "daysOverdue": 5
+      }
+    },
+    "conditions": [],
+    "actions": [
+      {
+        "actionType": "SEND_EMAIL",
+        "target": "CUSTOMER",
+        "template": "Subject: Friendly Reminder: Your payment for policy {policy.policyNumber} is overdue.\n\nDear {customer.firstName},\nThis is a reminder that your payment of €{policy.premium} for your insurance policy is now 5 days overdue. Please make a payment as soon as possible to ensure your coverage continues uninterrupted."
+      }
+    ],
+    "priority": 100,
+    "isEnabled": true,
+    "agencyId": "global"
+  }
+]

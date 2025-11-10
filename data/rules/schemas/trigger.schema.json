@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Trigger",
+  "description": "Defines the event that initiates a rule evaluation.",
+  "type": "object",
+  "properties": {
+    "eventType": {
+      "type": "string",
+      "enum": ["POLICY_EXPIRING_SOON", "NEW_LEAD_CREATED", "PAYMENT_DUE", "POLICY_CREATED"]
+    },
+    "parameters": {
+      "type": "object",
+      "description": "Key-value pairs for trigger-specific settings, e.g., { 'daysBefore': 30 }.",
+      "additionalProperties": true
+    }
+  },
+  "required": ["eventType"]
+}

@@ -1,0 +1,36 @@
+[
+  {
+    "id": "RR-001",
+    "name": "30-Day Auto Policy Renewal Reminder",
+    "description": "Creates a task for the assigned agent 30 days before an 'auto' policy expires.",
+    "category": "RENEWAL_REMINDER",
+    "trigger": {
+      "eventType": "POLICY_EXPIRING_SOON",
+      "parameters": {
+        "daysBefore": 30
+      }
+    },
+    "conditions": [
+      {
+        "field": "policy.type",
+        "operator": "EQUALS",
+        "value": "auto"
+      },
+      {
+        "field": "policy.isActive",
+        "operator": "EQUALS",
+        "value": true
+      }
+    ],
+    "actions": [
+      {
+        "actionType": "CREATE_TASK",
+        "target": "AGENT",
+        "template": "Follow up with {customer.firstName} {customer.lastName} to discuss renewal for auto policy {policy.policyNumber}, expiring on {policy.endDate}."
+      }
+    ],
+    "priority": 100,
+    "isEnabled": true,
+    "agencyId": "global"
+  }
+]

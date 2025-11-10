@@ -15,12 +15,12 @@ const RiskExposureChart: React.FC<RiskExposureChartProps> = ({ data }) => {
             <ResponsiveContainer width="100%" height="90%">
                 <BarChart data={data} layout="vertical">
                     <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.2} />
-                    <XAxis type="number" tickFormatter={(value) => `€${value / 1000000}M`} />
+                    <XAxis type="number" tick={{ fontSize: 12 }} />
                     <YAxis dataKey="area" type="category" width={120} tick={{ fontSize: 12 }} />
-                    <Tooltip formatter={(value) => `€${(value as number).toLocaleString()}`} />
-                    <Legend />
-                    <Bar dataKey="exposure" name="Total Exposure" stackId="a" fill="#ef4444" />
-                    <Bar dataKey="mitigation" name="Mitigated" stackId="a" fill="#22c55e" />
+                    <Tooltip />
+                    <Legend wrapperStyle={{fontSize: "12px"}} />
+                    <Bar dataKey="exposure" name={t('executive.totalExposure')} stackId="a" fill="#ef4444" />
+                    <Bar dataKey="mitigation" name={t('executive.mitigatedRisk')} stackId="a" fill="#10b981" />
                 </BarChart>
             </ResponsiveContainer>
         </div>

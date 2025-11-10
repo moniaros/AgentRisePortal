@@ -1,86 +1,47 @@
 import React from 'react';
-import { ResponsiveContainer, FunnelChart, Funnel, Tooltip, LabelList, Cell } from 'recharts';
+import { ResponsiveContainer, FunnelChart, Funnel, Tooltip, LabelList } from 'recharts';
 import { useLocalization } from '../../hooks/useLocalization';
+import SkeletonLoader from '../ui/SkeletonLoader';
 
 interface ConversionFunnelChartProps {
-    data: {
+    data?: {
         leads: number;
         quotesIssued: number;
         policiesBound: number;
     };
+    isLoading: boolean;
 }
 
-const ConversionFunnelChart: React.FC<ConversionFunnelChartProps> = ({ data }) => {
+const ConversionFunnelChart: React.FC<ConversionFunnelChartProps> = ({ data, isLoading }) => {
     const { t } = useLocalization();
 
-    const chartData = [
-        {
-            value: data.leads,
-            name: t('dashboard.newLeads'),
-            fill: '#3b82f6',
-        },
-        {
-            value: data.quotesIssued,
-            name: t('dashboard.quotes'),
-            fill: '#8b5cf6',
-        },
-        {
-            value: data.policiesBound,
-            name: t('dashboard.policies'),
-            fill: '#10b981',
-        },
+    if (isLoading) {
+        return (
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md h-full">
+                <SkeletonLoader className="h-full w-full" />
+            </div>
+        );
+    }
+    
+    const funnelData = [
+        { name: t('dashboard.funnel.leads'), value: data?.leads ?? 0, fill: '#3b82f6' },
+        { name: t('dashboard.funnel.quotes'), value: data?.quotesIssued ?? 0, fill: '#60a5fa' },
+        { name: t('dashboard.funnel.policies'), value: data?.policiesBound ?? 0, fill: '#93c5fd' },
     ];
 
-    const CustomTooltip = ({ active, payload }: any) => {
-        if (active && payload && payload.length) {
-            const current = payload[0];
-            const currentIndex = chartData.findIndex(d => d.name === current.payload.name);
-            const previousValue = currentIndex > 0 ? chartData[currentIndex - 1].value : chartData[0].value;
-            const conversionRate = previousValue > 0 ? ((current.value / previousValue) * 100).toFixed(1) : 100;
-
-            return (
-                <div className="bg-gray-800 bg-opacity-80 p-3 rounded-md border border-gray-600 text-white text-sm">
-                    <p className="font-bold">{`${current.name}: ${current.value}`}</p>
-                    {currentIndex > 0 && <p>{`Conversion: ${conversionRate}%`}</p>}
-                </div>
-            );
-        }
-        return null;
-    };
 
     return (
-        <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md h-96">
-            <h3 className="text-lg font-semibold mb-4 text-center">{t('dashboard.leadToPolicyFunnel')}</h3>
-            <ResponsiveContainer width="100%" height="85%">
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md h-full">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">{t('dashboard.salesFunnel')}</h2>
+            <ResponsiveContainer width="100%" height={250}>
                 <FunnelChart>
-                    <Tooltip content={<CustomTooltip />} />
+                    <Tooltip />
                     <Funnel
                         dataKey="value"
-                        data={chartData}
+                        data={funnelData}
                         isAnimationActive
-                        lastShapeType="rectangle"
                     >
-                        {chartData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.fill} />
-                        ))}
-                         <LabelList
-                            position="inside"
-                            fill="#fff"
-                            stroke="none"
-                            dataKey="value"
-                            formatter={(value: number, entry: any) => {
-                                const currentIndex = chartData.findIndex(d => d.name === entry.name);
-                                const previousValue = currentIndex > 0 ? chartData[currentIndex - 1].value : chartData[0].value;
-                                const conversionRate = previousValue > 0 ? ((value / previousValue) * 100) : 100;
-                                
-                                let text = `${entry.name}: ${value}`;
-                                if (currentIndex > 0) {
-                                    text += ` (${conversionRate.toFixed(0)}%)`;
-                                }
-                                return text;
-                            }}
-                            className="font-bold text-base drop-shadow-md"
-                        />
+                         <LabelList position="right" fill="#000" stroke="none" dataKey="name" />
                     </Funnel>
                 </FunnelChart>
             </ResponsiveContainer>
