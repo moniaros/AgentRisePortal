@@ -1,6 +1,5 @@
 import { Language } from '../types';
 
-// FIX: Add a global declaration for dataLayer to extend the Window interface.
 declare global {
   interface Window {
     dataLayer: any[];

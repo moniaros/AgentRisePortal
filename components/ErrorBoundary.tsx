@@ -10,29 +10,37 @@ interface State {
 }
 
 class ErrorBoundary extends Component<Props, State> {
-  // FIX: Initialize state using a class property. This is a modern and concise approach
-  // that ensures the state is properly typed and initialized, resolving errors where `this.state`
-  // and `this.props` were not being found on the component instance.
-  state: State = {
-    hasError: false,
-  };
+  // FIX: Replaced state class property with initialization in the constructor.
+  // This addresses a likely tooling/environment incompatibility with the class field syntax,
+  // which was causing `this.props` and `this.setState` to be unrecognized on the component instance.
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      hasError: false,
+      error: undefined,
+    };
+  }
 
-  static getDerivedStateFromError(error: Error): State {
+  public static getDerivedStateFromError(error: Error): State {
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('Uncaught error:', error, errorInfo);
   }
 
-  render() {
+  private handleTryAgain = () => {
+    this.setState({ hasError: false, error: undefined });
+  };
+
+  public render() {
     if (this.state.hasError) {
       return (
         <div className="flex flex-col items-center justify-center h-screen bg-red-50 text-red-700 p-4">
           <h1 className="text-3xl font-bold mb-4">Oops! Something went wrong.</h1>
           <p className="mb-4">We've logged the error and our team will look into it.</p>
           <button
-            onClick={() => this.setState({ hasError: false, error: undefined })}
+            onClick={this.handleTryAgain}
             className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
           >
             Try again

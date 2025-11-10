@@ -1,101 +1,43 @@
-import type { ReactElement } from 'react';
+import React from 'react';
 
-// Language and Localization
 export enum Language {
-  EN = 'en',
-  EL = 'el',
+    EN = 'en',
+    EL = 'el',
 }
 
-export interface TranslationTokens {
-  [key: string]: string | TranslationTokens;
+export type TranslationTokens = { [key: string]: string | TranslationTokens };
+
+export interface SocialPlatform {
+    key: string;
+    name: string;
+    icon: React.ReactElement;
 }
 
-// User and Auth
-export type UserRole = 'admin' | 'agent';
-
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: UserRole;
-  agencyId: string; // Links user to an agency
-}
-
-// CRM
 export enum PolicyType {
-  AUTO = 'auto',
-  HOME = 'home',
-  LIFE = 'life',
-  HEALTH = 'health',
-  UMBRELLA = 'umbrella',
+    AUTO = 'auto',
+    HOME = 'home',
+    LIFE = 'life',
+    HEALTH = 'health',
+    OTHER = 'other',
 }
 
 export interface Policy {
   id: string;
   type: PolicyType;
   policyNumber: string;
-  insurer: string;
   premium: number;
-  startDate: string; // YYYY-MM-DD
-  endDate: string; // YYYY-MM-DD
+  startDate: string;
+  endDate: string;
   isActive: boolean;
-}
-
-// Detailed Policy for Gap Analysis
-export interface CoverageDetail {
-  type: string;
-  limit: string;
-  deductible?: string;
-}
-
-export interface InsuredItem {
-  id: string;
-  description: string; // e.g., '2022 Toyota Camry', 'Primary Residence'
-  coverages: CoverageDetail[];
-}
-
-export interface DetailedPolicy {
-  policyNumber: string;
-  policyholder: {
-    name: string;
-    address: string;
-  };
-  type: PolicyType;
   insurer: string;
-  period: {
-    startDate: string;
-    endDate: string;
-  };
-  insuredItems: InsuredItem[];
 }
-
-// Gap Analysis AI Result
-export interface Gap {
-  area: string;
-  current: string;
-  recommended: string;
-  reason: string;
-}
-export interface Opportunity {
-  product: string;
-  recommendation: string;
-  benefit: string;
-}
-
-export interface GapAnalysisResult {
-  gaps: Gap[];
-  upsell_opportunities: Opportunity[];
-  cross_sell_opportunities: Opportunity[];
-}
-
 
 export interface TimelineEvent {
-  id: string;
-  date: string; // ISO 8601
-  type: 'call' | 'email' | 'meeting' | 'note' | 'policy_update' | 'policy_renewal' | 'premium_reminder' | 'address_change' | 'ai_review';
-  title: string;
-  content: string;
-  author: string; // 'Agent', 'System', etc.
+    id: string;
+    date: string;
+    type: 'note' | 'call' | 'email' | 'meeting' | 'policy_update' | 'claim' | 'system';
+    content: string;
+    author: string;
 }
 
 export interface Customer {
@@ -105,13 +47,13 @@ export interface Customer {
   email: string;
   phone: string;
   address: string;
-  dateOfBirth: string; // YYYY-MM-DD
+  dateOfBirth: string;
   policies: Policy[];
   timeline: TimelineEvent[];
   agencyId: string;
+  attentionFlag?: string;
 }
 
-// Leads
 export type LeadStatus = 'new' | 'contacted' | 'qualified' | 'closed' | 'rejected';
 
 export interface Lead {
@@ -119,77 +61,113 @@ export interface Lead {
   firstName: string;
   lastName: string;
   email: string;
-  phone: string;
-  source: string; // e.g., 'Facebook', 'Website', 'Referral'
+  phone?: string;
+  source: string;
+  campaignId?: string;
+  customerId?: string;
   status: LeadStatus;
   policyType: PolicyType;
   potentialValue: number;
-  createdAt: string; // ISO 8601
-  customerId?: string; // ID of the created customer profile
+  createdAt: string;
   agencyId: string;
-  campaignId?: string;
 }
 
-// Social & Marketing
-export interface SocialPlatform {
-  key: string;
-  name: string;
-  icon: ReactElement;
+export interface DetailedPolicy {
+  policyNumber: string;
+  insurer: string;
+  policyholder: {
+    name: string;
+    address: string;
+  };
+  insuredItems: {
+    id: string;
+    description: string;
+    coverages: {
+      type: string;
+      limit: string;
+      deductible?: string;
+    }[];
+  }[];
+}
+
+export interface GapAnalysisResult {
+    gaps: {
+        area: string;
+        current: string;
+        recommended: string;
+        reason: string;
+    }[];
+    upsell_opportunities: {
+        product: string;
+        recommendation: string;
+        benefit: string;
+    }[];
+    cross_sell_opportunities: {
+        product: string;
+        recommendation: string;
+        benefit: string;
+    }[];
 }
 
 export enum CampaignObjective {
-  LEAD_GENERATION = 'lead_generation',
-  BRAND_AWARENESS = 'brand_awareness',
-  SALES = 'sales',
+    LEAD_GENERATION = 'lead_generation',
+    BRAND_AWARENESS = 'brand_awareness',
+    WEBSITE_TRAFFIC = 'website_traffic',
 }
 
 export interface LeadCaptureFormField {
-  name: string;
-  type: 'text' | 'email' | 'tel' | 'number';
-  required: boolean;
+    name: string;
+    type: 'text' | 'email' | 'tel' | 'number';
+    required: boolean;
 }
 
 export interface Campaign {
-  id: string;
-  name: string;
-  objective: CampaignObjective;
-  network: 'facebook' | 'instagram' | 'linkedin' | 'x';
-  language: Language;
-  audience: {
-    ageRange: [number, number];
-    interests: string[];
-  };
-  budget: number;
-  startDate: string; // YYYY-MM-DD
-  endDate: string; // YYYY-MM-DD
-  creative: {
-    headline: string;
-    body: string;
-    image: string; // URL
-  };
-  status: 'active' | 'draft' | 'completed';
-  leadCaptureForm?: {
-    fields: LeadCaptureFormField[];
-  };
-  agencyId: string;
+    id: string;
+    name: string;
+    objective: CampaignObjective;
+    network: 'facebook' | 'instagram' | 'linkedin' | 'x';
+    language: Language;
+    audience: {
+        ageRange: [number, number];
+        interests: string[];
+    };
+    budget: number;
+    startDate: string;
+    endDate: string;
+    creative: {
+        headline: string;
+        body: string;
+        image: string;
+    };
+    status: 'draft' | 'active' | 'completed' | 'paused';
+    leadCaptureForm?: {
+        fields: LeadCaptureFormField[];
+    };
+    agencyId: string;
 }
 
-// Analytics
-export type AnalyticsDataRecord = {
-    date: string; // YYYY-MM-DD
+export type AnalyticsData = {
     campaignId: string;
+    date: string; // YYYY-MM-DD
     impressions: number;
     clicks: number;
     conversions: number;
     spend: number;
-};
+}[];
 
-export type AnalyticsData = AnalyticsDataRecord[];
+export type UserRole = 'admin' | 'agent';
 
-// User Management
+export interface User {
+    id: string;
+    name: string;
+    email: string;
+    role: UserRole;
+    agencyId: string;
+}
+
 export interface AuditLog {
     id: string;
-    timestamp: string; // ISO 8601
+    timestamp: string;
     actorName: string;
     action: 'user_invited' | 'user_removed' | 'role_changed';
     targetName: string;

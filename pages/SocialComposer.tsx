@@ -123,7 +123,6 @@ const SocialComposer: React.FC = () => {
                 // SUCCESS
                 let link: string | undefined;
                 if (attachLeadForm) {
-                    // FIX: Add agencyId to satisfy the Campaign type.
                     if (!currentUser) {
                         setError({ type: 'AUTH_ERROR', platformName: 'Application' });
                         setIsLoading(false);

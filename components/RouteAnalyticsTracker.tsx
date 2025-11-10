@@ -1,4 +1,3 @@
-// FIX: Add import for React to resolve 'React.FC' type.
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { trackPageView } from '../services/analytics';

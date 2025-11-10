@@ -9,7 +9,6 @@ interface GapAnalysisResultsProps {
 const GapAnalysisResults: React.FC<GapAnalysisResultsProps> = ({ result }) => {
     const { t } = useLocalization();
 
-    // FIX: Change component signature to React.FC to correctly handle React's special `key` prop.
     const GapCard: React.FC<{ gap: GapAnalysisResult['gaps'][0] }> = ({ gap }) => (
         <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-red-200 dark:border-red-800">
             <h4 className="font-bold text-red-800 dark:text-red-300">{gap.area}</h4>
@@ -28,7 +27,6 @@ const GapAnalysisResults: React.FC<GapAnalysisResultsProps> = ({ result }) => {
         </div>
     );
 
-    // FIX: Change component signature to React.FC to correctly handle React's special `key` prop.
     const OpportunityCard: React.FC<{ opp: GapAnalysisResult['upsell_opportunities'][0], color: 'blue' | 'purple' }> = ({ opp, color }) => {
         const colorClasses = {
             blue: {

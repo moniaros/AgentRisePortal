@@ -28,7 +28,6 @@ const Analytics: React.FC = () => {
     const filteredData = useMemo(() => {
         if (!analyticsData || !campaigns) return [];
         
-        // FIX: Explicitly type campaignMap to ensure correct type inference for campaign objects.
         const campaignMap: Map<string, Campaign> = new Map(campaigns.map(c => [c.id, c]));
         const endDate = new Date();
         const startDate = new Date();
@@ -50,7 +49,6 @@ const Analytics: React.FC = () => {
     }, [analyticsData, campaigns, filters]);
 
     const aggregatedData = useMemo(() => {
-        // FIX: Explicitly type campaignMap to ensure correct type inference for campaign objects.
         const campaignMap: Map<string, Campaign> = new Map(campaigns.map(c => [c.id, c]));
 
         const totalSpend = filteredData.reduce((sum, d) => sum + d.spend, 0);
@@ -65,8 +63,6 @@ const Analytics: React.FC = () => {
             return acc;
         }, {});
         
-        // FIX: Use a generic on reduce to ensure the accumulator's type is inferred correctly.
-        // This prevents Object.values from returning unknown[] and fixes downstream errors.
         const performanceOverTime = filteredData.reduce<Record<string, { date: string; impressions: number; clicks: number; conversions: number; }>>((acc, d) => {
             if (!acc[d.date]) {
                 acc[d.date] = { date: d.date, impressions: 0, clicks: 0, conversions: 0 };
@@ -84,7 +80,6 @@ const Analytics: React.FC = () => {
             totalConversions,
             ctr,
             spendByNetwork: Object.entries(spendByNetwork).map(([name, value]) => ({ name, spend: value })),
-            // FIX: Explicitly type the arguments of the sort function. Object.values() can return `unknown[]`, so this allows accessing properties safely.
             performanceOverTime: Object.values(performanceOverTime).sort((a: { date: string },b: { date: string }) => new Date(a.date).getTime() - new Date(b.date).getTime()),
         };
     }, [filteredData, campaigns]);

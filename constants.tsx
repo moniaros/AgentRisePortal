@@ -9,7 +9,6 @@ const PlaceholderIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-// FIX: Update the type of ICONS to allow passing SVG props like className.
 export const ICONS: { [key: string]: React.ReactElement<React.SVGProps<SVGSVGElement>> } = {
   dashboard: <PlaceholderIcon />,
   leadGen: <PlaceholderIcon />,
