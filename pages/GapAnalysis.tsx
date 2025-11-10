@@ -1,10 +1,14 @@
+
 import React, { useState } from 'react';
 import { useLocalization } from '../hooks/useLocalization';
+// FIX: Import types from the correct path
 import { DetailedPolicy, GapAnalysisResult } from '../types';
 import FileUploader from '../components/gap-analysis/FileUploader';
 import PolicyParser from '../components/gap-analysis/PolicyParser';
 import PolicyReviewForm from '../components/gap-analysis/PolicyReviewForm';
+// FIX: Import from @google/genai
 import { GoogleGenAI, Type } from '@google/genai';
+// FIX: Import from services/api
 import { fetchParsedPolicy } from '../services/api';
 import GapAnalysisResults from '../components/gap-analysis/GapAnalysisResults';
 import { useOnboardingStatus } from '../hooks/useOnboardingStatus';
@@ -51,7 +55,7 @@ const GapAnalysis: React.FC = () => {
         setError(null);
 
         try {
-            // FIX: Use correct Gemini API initialization
+            // FIX: Use correct Gemini API initialization and call structure
             const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             const prompt = `
               Perform a gap analysis for an insurance policy.

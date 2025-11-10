@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { useLocalization } from '../../hooks/useLocalization';
@@ -20,8 +21,8 @@ const AgencyGrowthChart: React.FC<AgencyGrowthChartProps> = ({ data }) => {
                     <YAxis yAxisId="right" orientation="right" stroke="#10b981" tick={{ fontSize: 12 }} />
                     <Tooltip />
                     <Legend wrapperStyle={{fontSize: "12px"}} />
-                    <Bar yAxisId="left" dataKey="premium" name={t('executive.premiumWritten')} fill="#3b82f6" />
-                    <Bar yAxisId="right" dataKey="policies" name={t('executive.policiesBound')} fill="#10b981" />
+                    <Bar yAxisId="left" dataKey="premium" name={t('executive.premiumVolume')} fill="#3b82f6" />
+                    <Bar yAxisId="right" dataKey="policies" name={t('executive.policiesSold')} fill="#10b981" />
                 </BarChart>
             </ResponsiveContainer>
         </div>

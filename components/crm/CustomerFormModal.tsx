@@ -1,142 +1,71 @@
+
 import React, { useEffect } from 'react';
-import { useForm, useFieldArray, Controller, FieldError } from 'react-hook-form';
+import { useForm, FieldError } from 'react-hook-form';
 import { useLocalization } from '../../hooks/useLocalization';
-import { Customer, Policy, PolicyType } from '../../types';
+import { Customer } from '../../types';
 
 interface CustomerFormModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (customer: Customer) => void;
+  onSubmit: (data: Customer) => void;
   customer: Customer | null;
   mode: 'add' | 'edit';
 }
 
-// FIX: Added missing 'assignedAgentId' to satisfy the Customer type.
-const emptyCustomer: Omit<Customer, 'id' | 'timeline'> = {
-  firstName: '', lastName: '', email: '', phone: '', address: '', dateOfBirth: '', policies: [], agencyId: '', communicationPreferences: [], assignedAgentId: ''
-};
-
 const CustomerFormModal: React.FC<CustomerFormModalProps> = ({ isOpen, onClose, onSubmit, customer, mode }) => {
   const { t } = useLocalization();
   
-  const { register, handleSubmit, control, formState: { errors }, reset } = useForm<Customer>({
-    defaultValues: customer || emptyCustomer
-  });
-
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "policies",
-    // FIX: Specify a keyName to avoid conflict between useFieldArray's 'id' and our data's 'id'.
-    keyName: "fieldId",
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<Customer>({
+      defaultValues: mode === 'add' ? { firstName: '', lastName: '', email: '' } : customer || {}
   });
 
   useEffect(() => {
     if (isOpen) {
-      reset(customer || emptyCustomer);
+        reset(mode === 'add' ? { firstName: '', lastName: '', email: '' } : customer || {});
     }
-  }, [customer, isOpen, reset]);
-
-  const handleFormSubmit = (data: Customer) => {
-    onSubmit(data);
-  };
-  
-  const addPolicy = () => {
-      append({
-          id: `pol_${Date.now()}`,
-          type: PolicyType.AUTO,
-          policyNumber: '',
-          premium: 0,
-          startDate: '',
-          endDate: '',
-          isActive: true,
-          insurer: '',
-          coverages: [],
-      });
-  }
+  }, [customer, isOpen, mode, reset]);
 
   if (!isOpen) return null;
-
-  // FIX: Broaden the error type to 'any' to handle complex error objects from react-hook-form for nested fields.
-  const renderError = (error: any) => error?.message ? <span className="text-red-500 text-xs mt-1">{error.message as string}</span> : null;
+  
+  const renderError = (error?: FieldError) => error && <span className="text-red-500 text-xs mt-1">{error.message}</span>;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <form onSubmit={handleSubmit(handleFormSubmit)}>
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-lg">
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="p-6 border-b dark:border-gray-700">
-            <h2 className="text-xl font-bold">{t(mode === 'add' ? 'crm.addCustomer' : 'crm.editCustomer') as string}</h2>
+            <h2 className="text-xl font-bold">{mode === 'add' ? t('crm.addCustomer') : t('crm.editCustomer')}</h2>
           </div>
-          
-          <div className="p-6 space-y-4">
+          <div className="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                {/* Fix: Use replacement syntax for translations */}
-                <input type="text" {...register("firstName", { required: t('validation.required', {fieldName: t('crm.form.firstName')}) as string })} placeholder={t('crm.form.firstName') as string} className={`w-full p-2 border rounded dark:bg-gray-700 ${errors.firstName ? 'border-red-500' : 'dark:border-gray-600'}`} />
+                <label className="block text-sm font-medium">{t('crm.form.firstName')}</label>
+                <input type="text" {...register("firstName", { required: (t('validation.required', {fieldName: t('crm.form.firstName')}) as string) })} className={`w-full p-2 border rounded dark:bg-gray-700 ${errors.firstName ? 'border-red-500' : 'dark:border-gray-600'}`} />
                 {renderError(errors.firstName)}
               </div>
               <div>
-                {/* Fix: Use replacement syntax for translations */}
-                <input type="text" {...register("lastName", { required: t('validation.required', {fieldName: t('crm.form.lastName')}) as string })} placeholder={t('crm.form.lastName') as string} className={`w-full p-2 border rounded dark:bg-gray-700 ${errors.lastName ? 'border-red-500' : 'dark:border-gray-600'}`} />
+                <label className="block text-sm font-medium">{t('crm.form.lastName')}</label>
+                <input type="text" {...register("lastName", { required: (t('validation.required', {fieldName: t('crm.form.lastName')}) as string) })} className={`w-full p-2 border rounded dark:bg-gray-700 ${errors.lastName ? 'border-red-500' : 'dark:border-gray-600'}`} />
                 {renderError(errors.lastName)}
               </div>
             </div>
             <div>
-              {/* Fix: Use replacement syntax for translations */}
-              <input type="email" {...register("email", { required: t('validation.required', {fieldName: t('crm.form.email')}) as string, pattern: { value: /^\S+@\S+$/i, message: t('validation.invalidEmail') as string } })} placeholder={t('crm.form.email') as string} className={`w-full p-2 border rounded dark:bg-gray-700 ${errors.email ? 'border-red-500' : 'dark:border-gray-600'}`} />
+              <label className="block text-sm font-medium">{t('crm.form.email')}</label>
+              <input type="email" {...register("email", { required: (t('validation.required', {fieldName: t('crm.form.email')}) as string), pattern: { value: /^\S+@\S+$/i, message: t('validation.invalidEmail') as string } })} className={`w-full p-2 border rounded dark:bg-gray-700 ${errors.email ? 'border-red-500' : 'dark:border-gray-600'}`} />
               {renderError(errors.email)}
             </div>
-            <input type="tel" {...register("phone")} placeholder={t('crm.form.phone') as string} className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
-            <input type="text" {...register("address")} placeholder={t('crm.form.address') as string} className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
-            <input type="date" {...register("dateOfBirth")} placeholder={t('crm.form.dob') as string} className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
-
-            <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('crm.form.communicationPreferences') as string}</label>
-                <div className="mt-2 flex gap-4">
-                    <label className="flex items-center">
-                        <input type="checkbox" {...register("communicationPreferences")} value="email" className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
-                        <span className="ml-2 text-sm">{t('timelineTypes.email') as string}</span>
-                    </label>
-                    <label className="flex items-center">
-                        <input type="checkbox" {...register("communicationPreferences")} value="sms" className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
-                        <span className="ml-2 text-sm">{t('customer.sms') as string}</span>
-                    </label>
-                </div>
+             <div>
+                <label className="block text-sm font-medium">{t('crm.form.phone')}</label>
+                <input type="tel" {...register("phone")} className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
             </div>
-
-            <div className="pt-4">
-                <h3 className="text-lg font-semibold mb-2">{t('crm.form.policies') as string}</h3>
-                <div className="space-y-4">
-                    {fields.map((field, index) => (
-                        <div key={field.fieldId} className="p-3 border rounded-md dark:border-gray-600 space-y-2 relative">
-                             <button type="button" onClick={() => remove(index)} className="absolute top-2 right-2 text-red-500 hover:text-red-700 font-bold text-lg">&times;</button>
-                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                                <div>
-                                    <input {...register(`policies.${index}.policyNumber`, { required: t('validation.policyNumberRequired') as string })} placeholder={t('crm.form.policyNumber') as string} className={`w-full p-2 border rounded dark:bg-gray-700 ${errors.policies?.[index]?.policyNumber ? 'border-red-500' : 'dark:border-gray-600'}`} />
-                                    {renderError(errors.policies?.[index]?.policyNumber)}
-                                </div>
-                                <select {...register(`policies.${index}.type`)} defaultValue={(field as Policy).type} className="p-2 border rounded dark:bg-gray-700 dark:border-gray-600">
-                                    {Object.values(PolicyType).map((pt: string) => <option key={pt} value={pt}>{t(`policyTypes.${pt}`) as string}</option>)}
-                                </select>
-                                <input {...register(`policies.${index}.insurer`)} placeholder={t('crm.form.insurer') as string} className="p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
-                                <input type="number" {...register(`policies.${index}.premium`, { valueAsNumber: true })} placeholder={t('crm.form.premium') as string} className="p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
-                                <input type="date" {...register(`policies.${index}.startDate`)} className="p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
-                                <input type="date" {...register(`policies.${index}.endDate`)} className="p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
-                                <select {...register(`policies.${index}.isActive`, {setValueAs: v => v === 'true'})} defaultValue={String((field as Policy).isActive)} className="p-2 border rounded dark:bg-gray-700 dark:border-gray-600">
-                                    <option value="true">{t('statusLabels.active') as string}</option>
-                                    <option value="false">{t('statusLabels.inactive') as string}</option>
-                                </select>
-                             </div>
-                        </div>
-                    ))}
-                </div>
-                {fields.length === 0 && <p className="text-sm text-gray-500">{t('crm.form.noPolicies') as string}</p>}
-                <button type="button" onClick={addPolicy} className="mt-2 px-3 py-1 text-sm bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500">+ {t('crm.form.addPolicy') as string}</button>
+             <div>
+                <label className="block text-sm font-medium">{t('crm.form.address')}</label>
+                <input type="text" {...register("address")} className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
             </div>
           </div>
-
           <div className="p-4 bg-gray-50 dark:bg-gray-900 flex justify-end gap-2 border-t dark:border-gray-700">
-            <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-200 dark:bg-gray-600 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500">{t('crm.cancel') as string}</button>
-            <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">{t('crm.save') as string}</button>
+            <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-200 dark:bg-gray-600 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500">{t('crm.cancel')}</button>
+            <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">{t('crm.save')}</button>
           </div>
         </form>
       </div>

@@ -1,6 +1,9 @@
+
 import { useMemo, useCallback } from 'react';
 import { useOfflineSync } from './useOfflineSync';
+// FIX: Import from services/api
 import { fetchTestimonials } from '../services/api';
+// FIX: Import from types
 import { Testimonial } from '../types';
 import { useAuth } from './useAuth';
 

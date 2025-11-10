@@ -1,5 +1,8 @@
+
 import { useOfflineSync } from './useOfflineSync';
+// FIX: Import from services/api
 import { fetchExecutiveData } from '../services/api';
+// FIX: Import from types
 import { ExecutiveData } from '../types';
 
 const initialData: ExecutiveData = {

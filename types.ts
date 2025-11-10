@@ -1,36 +1,10 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
+
+// ===== ENUMS =====
 
 export enum Language {
-  EN = 'en',
-  EL = 'el',
-}
-
-export type TranslationTokens = {
-  [key: string]: string | TranslationTokens;
-};
-
-// ACORD-like data structures
-export interface PartyName {
-  firstName: string;
-  lastName: string;
-}
-
-export interface ContactInfo {
-  email: string;
-  workPhone?: string;
-  mobilePhone?: string;
-}
-
-export interface AddressInfo {
-    fullAddress: string;
-}
-
-export interface Party {
-  partyName: PartyName;
-  contactInfo: ContactInfo;
-  addressInfo?: AddressInfo;
-  profilePhotoUrl?: string;
-  signature?: string; // base64 data URL
+    EN = 'en',
+    EL = 'el',
 }
 
 export enum UserSystemRole {
@@ -38,10 +12,62 @@ export enum UserSystemRole {
     AGENT = 'agent',
 }
 
+export enum PolicyType {
+    AUTO = 'auto',
+    HOME = 'home',
+    LIFE = 'life',
+    HEALTH = 'health',
+    BUSINESS = 'business',
+}
+
 export enum LicenseStatus {
     VALID = 'valid',
     EXPIRED = 'expired',
     PENDING_REVIEW = 'pending_review',
+}
+
+export enum CampaignObjective {
+    LEAD_GENERATION = 'LEAD_GENERATION',
+    BRAND_AWARENESS = 'BRAND_AWARENESS',
+    SALES = 'SALES',
+}
+
+export type LeadStatus = 'new' | 'contacted' | 'qualified' | 'closed' | 'rejected';
+export type UserActivityType = 'login' | 'action' | 'notification';
+
+// ===== CORE DATA MODELS =====
+
+export interface User {
+    id: string;
+    agencyId: string;
+    party: Party;
+    partyRole: PartyRole;
+}
+
+export interface Party {
+    partyName: {
+        firstName: string;
+        lastName: string;
+    };
+    contactInfo: {
+        email: string;
+        workPhone?: string;
+        mobilePhone?: string;
+    };
+    addressInfo?: {
+        fullAddress?: string;
+    };
+    profilePhotoUrl?: string;
+    signature?: string; // Base64 string
+}
+
+export interface PartyRole {
+    roleType: UserSystemRole;
+    roleTitle: string;
+    jobTitle?: string;
+    department?: string;
+    permissionsScope: string;
+    licenses?: AcordLicense[];
 }
 
 export interface AcordLicense {
@@ -52,235 +78,133 @@ export interface AcordLicense {
     status: LicenseStatus;
 }
 
-export interface PartyRole {
-    roleType: UserSystemRole;
-    roleTitle: string;
-    jobTitle?: string;
-    department?: string;
-    permissionsScope: 'agency' | 'global';
-    licenses?: AcordLicense[];
-}
-
-export interface User {
-  id: string;
-  party: Party;
-  partyRole: PartyRole;
-  agencyId: string;
-}
-
-// CRM types
-export enum PolicyType {
-  AUTO = 'auto',
-  HOME = 'home',
-  LIFE = 'life',
-  HEALTH = 'health',
-  BUSINESS = 'business'
-}
-
-export interface Coverage {
-  type: string;
-  limit: string;
-  deductible?: string;
+export interface Customer {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone?: string;
+    address?: string;
+    dateOfBirth?: string;
+    policies: Policy[];
+    timeline: TimelineEvent[];
+    attentionFlag?: string;
+    agencyId: string;
+    assignedAgentId: string;
+    communicationPreferences?: ('email' | 'sms')[];
 }
 
 export interface Policy {
-  id: string;
-  type: PolicyType;
-  policyNumber: string;
-  premium: number;
-  startDate: string;
-  endDate: string;
-  isActive: boolean;
-  insurer: string;
-  coverages: Coverage[];
+    id: string;
+    policyNumber: string;
+    type: PolicyType;
+    startDate: string;
+    endDate: string;
+    premium: number;
+    isActive: boolean;
 }
-
-export interface Annotation {
-  id: string;
-  date: string;
-  author: string;
-  content: string;
-}
-
-export interface Attachment {
-    name: string;
-    size: number; // in bytes
-    url: string;
-}
-
-export interface TimelineEvent {
-  id: string;
-  date: string;
-  type: 'note' | 'call' | 'email' | 'meeting' | 'policy_update' | 'claim' | 'system';
-  content: string;
-  author: string;
-  annotations?: Annotation[];
-  attachments?: Attachment[];
-  isFlagged?: boolean;
-}
-
-export interface Customer {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone?: string;
-  address?: string;
-  dateOfBirth?: string;
-  policies: Policy[];
-  timeline: TimelineEvent[];
-  agencyId: string;
-  assignedAgentId: string;
-  communicationPreferences: ('email' | 'sms')[];
-  attentionFlag?: string;
-}
-
-export type LeadStatus = 'new' | 'contacted' | 'qualified' | 'closed' | 'rejected';
 
 export interface Lead {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone?: string;
-  source: string; // e.g., 'Website', 'Facebook Ad'
-  status: LeadStatus;
-  potentialValue: number;
-  createdAt: string;
-  policyType: PolicyType;
-  agencyId: string;
-  campaignId?: string;
-  customerId?: string; // Link to a created customer profile
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone?: string;
+    source: string;
+    status: LeadStatus;
+    potentialValue: number;
+    createdAt: string;
+    agencyId: string;
+    campaignId: string;
+    policyType: PolicyType;
+    customerId?: string;
 }
 
-// Gap Analysis types
+// ===== UI & CONTEXT =====
+
+export interface SocialPlatform {
+    key: 'facebook' | 'linkedin' | 'x';
+    name: string;
+    icon: JSX.Element;
+}
+
+export interface TranslationTokens {
+  [key: string]: any;
+}
+
+// ===== FEATURES =====
+
+// Gap Analysis
 export interface DetailedPolicy {
-    policyholder: { name: string; address: string; };
     policyNumber: string;
     insurer: string;
+    policyholder: {
+        name: string;
+        address: string;
+    };
     insuredItems: {
         id: string;
         description: string;
-        coverages: { type: string; limit: string; deductible?: string; }[];
+        coverages: {
+            type: string;
+            limit: string;
+            deductible?: string;
+        }[];
     }[];
 }
 
 export interface GapAnalysisResult {
-    gaps: { area: string; current: string; recommended: string; reason: string; }[];
-    upsell_opportunities: { product: string; recommendation: string; benefit: string; }[];
-    cross_sell_opportunities: { product: string; recommendation: string; benefit: string; }[];
+    gaps: {
+        area: string;
+        current: string;
+        recommended: string;
+        reason: string;
+    }[];
+    upsell_opportunities: {
+        product: string;
+        recommendation: string;
+        benefit: string;
+    }[];
+    cross_sell_opportunities: {
+        product: string;
+        recommendation: string;
+        benefit: string;
+    }[];
 }
 
-// Onboarding types
+// Timeline
+export interface Annotation {
+    id: string;
+    date: string;
+    author: string;
+    content: string;
+}
+
+export interface Attachment {
+    name: string;
+    url: string;
+    size: number; // in bytes
+}
+
+export interface TimelineEvent {
+    id: string;
+    date: string;
+    type: 'note' | 'call' | 'email' | 'meeting' | 'policy_update' | 'claim' | 'system';
+    content: string;
+    author: string;
+    isFlagged?: boolean;
+    annotations?: Annotation[];
+    attachments?: Attachment[];
+}
+
+// Onboarding
 export interface OnboardingProgress {
     profileCompleted: boolean;
     policyAnalyzed: boolean;
     campaignCreated: boolean;
 }
 
-// Automation and Dashboard types
-export interface AutomatedTask {
-    id: string;
-    type: 'RENEWAL_REMINDER';
-    policyId: string;
-    customerId: string;
-    agentId: string;
-    message: string;
-    createdAt: string;
-}
-
-export interface ReminderLogEntry {
-    logKey: string; // e.g., ruleId_policyId
-    policyId: string;
-    ruleId: string;
-    sentAt: string;
-}
-
-export interface AutomationStats {
-    totalActiveRules: number;
-    rulesExecutedToday: number;
-    successRate: number;
-}
-
-export interface RuleExecutionLog {
-    id: string;
-    ruleName: string;
-    category: string;
-    executionTime: string;
-    status: 'Success' | 'Failed';
-    affectedEntity: string;
-}
-
-export interface EmailTemplate {
-    id: string;
-    name: string;
-    en: { subject: string; body: string; };
-    el: { subject: string; body: string; };
-}
-
-export interface SmsTemplate {
-    id: string;
-    name: string;
-    en: string;
-    el: string;
-}
-
-// Rules Engine Types
-export type RuleCategory = 'RENEWAL_REMINDER' | 'PAYMENT_REMINDER' | 'LEAD_ASSIGNMENT' | 'TASK_CREATION';
-export type TriggerEventType = 'POLICY_EXPIRING_SOON' | 'NEW_LEAD_CREATED' | 'PAYMENT_DUE' | 'POLICY_CREATED';
-export type ConditionOperator = 'EQUALS' | 'NOT_EQUALS' | 'GREATER_THAN' | 'LESS_THAN' | 'CONTAINS' | 'IN' | 'IS_EMPTY';
-export type ActionType = 'SEND_EMAIL' | 'SEND_SMS' | 'CREATE_TASK' | 'ASSIGN_LEAD';
-
-export interface Trigger {
-    eventType: TriggerEventType;
-    parameters?: Record<string, any>;
-}
-
-export interface Condition {
-    field: string;
-    operator: ConditionOperator;
-    value: any;
-}
-
-export interface Action {
-    actionType: ActionType;
-    target: 'AGENT' | 'CUSTOMER' | 'SYSTEM';
-    template?: string;
-    parameters?: Record<string, any>;
-}
-
-export interface RuleDefinition {
-    id: string;
-    name: string;
-    description: string;
-    category: RuleCategory;
-    trigger: Trigger;
-    conditions: Condition[];
-    actions: Action[];
-    priority: number;
-    isEnabled: boolean;
-    agencyId: string;
-}
-
-// Social Composer & Ads types
-export interface SocialPlatform {
-    key: string;
-    name: string;
-    icon: ReactNode;
-}
-
-export enum CampaignObjective {
-    LEAD_GENERATION = 'LEAD_GENERATION',
-    BRAND_AWARENESS = 'BRAND_AWARENESS',
-    WEBSITE_TRAFFIC = 'WEBSITE_TRAFFIC'
-}
-
-export interface LeadCaptureFormField {
-    name: string;
-    type: 'text' | 'email' | 'tel' | 'number';
-    required: boolean;
-}
-
+// Campaigns
 export interface Campaign {
     id: string;
     name: string;
@@ -300,13 +224,20 @@ export interface Campaign {
         image: string;
     };
     status: 'active' | 'draft' | 'completed';
+    agencyId: string;
     leadCaptureForm?: {
         fields: LeadCaptureFormField[];
-    };
-    agencyId: string;
+    }
 }
 
-// Analytics types
+export interface LeadCaptureFormField {
+    name: string;
+    type: 'text' | 'email' | 'tel' | 'number';
+    required: boolean;
+}
+
+
+// Analytics
 export interface AnalyticsRecord {
     date: string; // YYYY-MM-DD
     campaignId: string;
@@ -317,7 +248,7 @@ export interface AnalyticsRecord {
 }
 export type AnalyticsData = AnalyticsRecord[];
 
-// User Management types
+// User Management
 export interface AuditLog {
     id: string;
     timestamp: string;
@@ -328,66 +259,13 @@ export interface AuditLog {
     agencyId: string;
 }
 
-// Executive Dashboard types
-export interface ExecutiveData {
-    agencyGrowth: { month: string; premium: number; policies: number; }[];
-    productMix: { name: PolicyType; value: number; }[];
-    claimsTrend: { month: string; submitted: number; approved: number; paid: number; }[];
-    leadFunnel: { status: LeadStatus; count: number; }[];
-    campaignRoi: { id: string; name: string; spend: number; revenue: number; }[];
-    riskExposure: { area: string; exposure: number; mitigation: number; }[];
-}
-
-// News types
-export interface NewsArticle {
-    id: string;
-    title: string;
-    summary: string;
-    content: string; // HTML content
-    imageUrl: string;
-    publishedDate: string;
-    author: {
-        name: string;
-        avatarUrl?: string;
-    };
-    tags: string[];
-    agencyId: 'global' | string;
-    seo: {
-        title: string;
-        description: string;
-    }
-}
-
-// Testimonials
-export interface Testimonial {
-    id: string;
-    authorName: string;
-    authorPhotoUrl?: string;
-    quote: string;
-    rating: number; // 1-5
-    status: 'pending' | 'approved' | 'rejected';
-    createdAt: string;
-    agencyId: string;
-}
-
-// User Activity
-export type UserActivityType = 'login' | 'action' | 'notification';
-
-export interface UserActivityEvent {
-    id: string;
-    timestamp: string;
-    type: UserActivityType;
-    description: string;
-}
-
-// Microsite Builder types
+// Microsite Builder
 export type BlockType = 'hero' | 'about' | 'services' | 'team' | 'testimonials' | 'faq' | 'contact' | 'news' | 'awards' | 'certificates' | 'policy_highlights' | 'location' | 'video' | 'downloads';
 
-export interface BaseBlock {
+interface BaseBlock {
     id: string;
     type: BlockType;
 }
-
 export interface HeroBlock extends BaseBlock {
     type: 'hero';
     title: string;
@@ -395,92 +273,22 @@ export interface HeroBlock extends BaseBlock {
     ctaText: string;
     imageUrl: string;
 }
-
-export interface AboutBlock extends BaseBlock {
-    type: 'about';
-    title: string;
-    content: string;
-    imageUrl: string;
-}
-
-export interface ServicesBlock extends BaseBlock {
-    type: 'services';
-    title: string;
-    services: { id: string; name: string; description: string; icon: string; }[];
-}
-
-export interface TeamBlock extends BaseBlock {
-    type: 'team';
-    title: string;
-    members: { id: string; name: string; role: string; imageUrl: string; }[];
-}
-
-export interface TestimonialsBlock extends BaseBlock {
-    type: 'testimonials';
-    title: string;
-    testimonials: { id: string; quote: string; author: string; }[];
-}
-
-export interface FaqBlock extends BaseBlock {
-    type: 'faq';
-    title: string;
-    items: { id: string; question: string; answer: string; }[];
-}
-
-export interface ContactBlock extends BaseBlock {
-    type: 'contact';
-    title: string;
-    subtitle: string;
-}
-
-export interface NewsBlock extends BaseBlock {
-    type: 'news';
-    title: string;
-    items: { id: string, title: string; summary: string, date: string }[];
-}
-
-export interface AwardsBlock extends BaseBlock {
-    type: 'awards';
-    title: string;
-    awards: { id: string, title: string; issuer: string; year: string }[];
-}
-
-export interface CertificatesBlock extends BaseBlock {
-    type: 'certificates';
-    title: string;
-    certificates: { id: string, name: string; imageUrl: string }[];
-}
-
-export interface PolicyHighlightsBlock extends BaseBlock {
-    type: 'policy_highlights';
-    title: string;
-    highlights: { id: string, title: string; description: string }[];
-}
-
-export interface LocationBlock extends BaseBlock {
-    type: 'location';
-    title: string;
-    address: string;
-    googleMapsUrl: string;
-}
-
-export interface VideoBlock extends BaseBlock {
-    type: 'video';
-    title: string;
-    youtubeVideoId: string;
-}
-
-export interface DownloadsBlock extends BaseBlock {
-    type: 'downloads';
-    title: string;
-    files: { id: string, title: string; fileUrl: string }[];
-}
+export interface AboutBlock extends BaseBlock { type: 'about', title: string; content: string; imageUrl: string }
+export interface ServicesBlock extends BaseBlock { type: 'services', title: string; services: { id: string; name: string; description: string; icon: string }[] }
+export interface TeamBlock extends BaseBlock { type: 'team', title: string; members: { id: string; name: string; role: string; imageUrl: string }[] }
+export interface TestimonialsBlock extends BaseBlock { type: 'testimonials', title: string; testimonials: { id: string; quote: string; author: string }[] }
+export interface FaqBlock extends BaseBlock { type: 'faq', title: string; items: { id: string; question: string; answer: string }[] }
+export interface ContactBlock extends BaseBlock { type: 'contact', title: string; subtitle: string; }
+export interface NewsBlock extends BaseBlock { type: 'news', title: string; items: { id: string; title: string; summary: string; date: string }[] }
+export interface AwardsBlock extends BaseBlock { type: 'awards', title: string; awards: { id: string; title: string; issuer: string; year: string }[] }
+export interface CertificatesBlock extends BaseBlock { type: 'certificates', title: string; certificates: { id: string; name: string; imageUrl: string }[] }
+export interface PolicyHighlightsBlock extends BaseBlock { type: 'policy_highlights', title: string; highlights: { id: string; title: string; description: string }[] }
+export interface LocationBlock extends BaseBlock { type: 'location', title: string; address: string; googleMapsUrl: string }
+export interface VideoBlock extends BaseBlock { type: 'video', title: string; youtubeVideoId: string }
+export interface DownloadsBlock extends BaseBlock { type: 'downloads', title: string; files: { id: string; title: string; fileUrl: string }[] }
 
 
-export type MicrositeBlock =
-    | HeroBlock | AboutBlock | ServicesBlock | TeamBlock | TestimonialsBlock | FaqBlock | ContactBlock
-    | NewsBlock | AwardsBlock | CertificatesBlock | PolicyHighlightsBlock | LocationBlock | VideoBlock | DownloadsBlock;
-
+export type MicrositeBlock = HeroBlock | AboutBlock | ServicesBlock | TeamBlock | TestimonialsBlock | FaqBlock | ContactBlock | NewsBlock | AwardsBlock | CertificatesBlock | PolicyHighlightsBlock | LocationBlock | VideoBlock | DownloadsBlock;
 
 export interface MicrositeConfig {
     siteTitle: string;
@@ -493,4 +301,106 @@ export interface MicrositeConfig {
         linkedin: string;
         x: string;
     };
+}
+
+// Executive Dashboard
+export interface ExecutiveData {
+    agencyGrowth: { month: string; premium: number; policies: number }[];
+    productMix: { name: PolicyType; value: number }[];
+    claimsTrend: { month: string; submitted: number; approved: number; paid: number }[];
+    leadFunnel: { status: LeadStatus; count: number }[];
+    campaignRoi: { id: string; name: string; spend: number; revenue: number }[];
+    riskExposure: { area: string; exposure: number; mitigation: number }[];
+}
+
+// News & Testimonials
+export interface NewsArticle {
+    id: string;
+    title: string;
+    summary: string;
+    content: string; // HTML content
+    imageUrl: string;
+    publishedDate: string;
+    author: {
+        name: string;
+        avatarUrl?: string;
+    };
+    tags: string[];
+    agencyId: string; // 'global' or specific agency ID
+    seo: {
+        title: string;
+        description: string;
+    };
+}
+
+export interface Testimonial {
+    id: string;
+    authorName: string;
+    authorPhotoUrl?: string;
+    quote: string;
+    rating: number; // 1-5
+    status: 'pending' | 'approved' | 'rejected';
+    agencyId: string;
+    createdAt: string;
+}
+
+export interface UserActivityEvent {
+    id: string;
+    timestamp: string;
+    type: UserActivityType;
+    description: string;
+}
+
+// Automation
+export interface AutomatedTask {
+    id: string;
+    type: 'RENEWAL_REMINDER' | 'PAYMENT_DUE';
+    policyId: string;
+    customerId: string;
+    agentId: string;
+    message: string;
+    createdAt: string;
+}
+
+export interface ReminderLogEntry {
+    logKey: string; // e.g., `${rule.id}_${policy.id}`
+    policyId: string;
+    ruleId: string;
+    sentAt: string;
+}
+
+export interface RuleDefinition {
+    id: string;
+    name: string;
+    isEnabled: boolean;
+    trigger: {
+        eventType: 'POLICY_EXPIRING_SOON';
+        parameters?: {
+            daysBefore: number;
+        };
+    };
+    conditions: {
+        field: string;
+        operator: 'EQUALS' | 'GREATER_THAN' | 'LESS_THAN';
+        value: any;
+    }[];
+    actions: {
+        actionType: 'CREATE_TASK' | 'SEND_EMAIL' | 'SEND_SMS';
+        template?: string;
+        parameters?: {
+            templateId?: string;
+        };
+    }[];
+}
+
+export interface EmailTemplate {
+    id: string;
+    [Language.EN]: { subject: string; body: string };
+    [Language.EL]: { subject: string; body: string };
+}
+
+export interface SmsTemplate {
+    id: string;
+    [Language.EN]: string;
+    [Language.EL]: string;
 }

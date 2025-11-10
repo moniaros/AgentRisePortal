@@ -1,4 +1,6 @@
+
 import React from 'react';
+// FIX: Import from types
 import { MicrositeConfig } from '../../types';
 import { SOCIAL_PLATFORMS } from '../../constants';
 import { useLocalization } from '../../hooks/useLocalization';

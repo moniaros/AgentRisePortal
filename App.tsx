@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
@@ -10,6 +11,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import Layout from './components/Layout';
 import Login from './pages/Login';
 import Logout from './pages/Logout';
+// FIX: Import the Dashboard component to resolve module error.
 import Dashboard from './pages/Dashboard';
 import LeadGeneration from './pages/LeadGeneration';
 import MicroCRM from './pages/MicroCRM';

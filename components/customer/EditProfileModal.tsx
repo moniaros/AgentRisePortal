@@ -1,6 +1,8 @@
+
 import React, { useEffect } from 'react';
 import { useForm, FieldError } from 'react-hook-form';
 import { useLocalization } from '../../hooks/useLocalization';
+// FIX: Import types from correct path
 import { Customer } from '../../types';
 
 interface EditProfileModalProps {

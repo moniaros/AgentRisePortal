@@ -1,8 +1,10 @@
+
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { useLocalization } from '../hooks/useLocalization';
 import { useAuth } from '../hooks/useAuth';
+// FIX: Import types from correct path
 import { Language } from '../types';
 
 type FormData = {
@@ -74,9 +76,9 @@ const Login: React.FC = () => {
                                 id="email"
                                 type="email"
                                 {...register('email', {
-                                    // Fix: Use replacement syntax for translations
-                                    required: t('validation.required', {fieldName: t('login.emailLabel')}),
-                                    pattern: { value: /^\S+@\S+$/i, message: t('validation.invalidEmail') }
+                                    // Fix: Use replacement syntax for translations and cast to string
+                                    required: t('validation.required', {fieldName: t('login.emailLabel')}) as string,
+                                    pattern: { value: /^\S+@\S+$/i, message: t('validation.invalidEmail') as string }
                                 })}
                                 className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 dark:bg-gray-700 focus:outline-none sm:text-sm ${errors.email ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500'}`}
                                 placeholder={t('login.emailPlaceholder')}
@@ -91,8 +93,8 @@ const Login: React.FC = () => {
                             <input
                                 id="password"
                                 type="password"
-                                // Fix: Use replacement syntax for translations
-                                {...register('password', { required: t('validation.required', {fieldName: t('login.passwordLabel')}) })}
+                                // Fix: Use replacement syntax for translations and cast to string
+                                {...register('password', { required: t('validation.required', {fieldName: t('login.passwordLabel')}) as string })}
                                 className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 dark:bg-gray-700 focus:outline-none sm:text-sm ${errors.password ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500'}`}
                             />
                              {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password.message as string}</p>}

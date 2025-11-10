@@ -1,7 +1,10 @@
+
 import { useCallback, useMemo } from 'react';
 import { useOfflineSync } from './useOfflineSync';
+// FIX: Import types from correct path
 import { Customer, Lead, TimelineEvent, Annotation } from '../types';
 import { useAuth } from './useAuth';
+// FIX: Import mock data from correct path
 import { MOCK_CUSTOMERS, MOCK_LEADS } from '../data/mockData';
 
 // In a real app, these would be API calls
@@ -27,11 +30,13 @@ export const useCrmData = () => {
     const isLoading = customersLoading || leadsLoading;
     const error = customersError || leadsError;
     
-    const addCustomer = useCallback((customerData: Omit<Customer, 'id' | 'timeline' | 'agencyId'>) => {
-        if (!agencyId) return;
+    const addCustomer = useCallback((customerData: Omit<Customer, 'id' | 'timeline' | 'agencyId' | 'policies' | 'assignedAgentId'>) => {
+        if (!agencyId || !currentUser) return;
         const newCustomer: Customer = {
             ...customerData,
             id: `cust_${Date.now()}`,
+            policies: [],
+            assignedAgentId: currentUser.id,
             timeline: [{
                 id: `evt_${Date.now()}`,
                 date: new Date().toISOString(),

@@ -1,3 +1,5 @@
+
+// FIX: Import from correct path
 import { Customer, Policy, User, AutomatedTask, ReminderLogEntry, RuleDefinition, Language, EmailTemplate, SmsTemplate } from '../types';
 
 /**
@@ -100,7 +102,7 @@ export const runRenewalChecks = async (
                     const alreadySent = reminderLog.some(entry => entry.logKey === logKey);
                     const agent = userMap.get(customer.assignedAgentId);
 
-                    if (!alreadySent && evaluateConditions(rule.conditions, { customer, policy, agent })) {
+                    if (!alreadySent && agent && evaluateConditions(rule.conditions, { customer, policy, agent })) {
                         rule.actions.forEach(action => {
                             const templateData = {
                                 policyholderName: `${customer.firstName} ${customer.lastName}`,
@@ -134,7 +136,7 @@ export const runRenewalChecks = async (
                                     const emailTemplate = emailTemplates.find(t => t.id === action.parameters?.templateId);
                                     if (emailTemplate) {
                                         const langContent = emailTemplate[language as keyof typeof emailTemplate];
-                                        if (typeof langContent === 'object' && langContent !== null) {
+                                        if (typeof langContent === 'object' && langContent !== null && 'subject' in langContent) {
                                             const subject = renderTemplate(langContent.subject, templateData);
                                             const body = renderTemplate(langContent.body, templateData);
                                             console.log(`[AUTOMATION] Mock Send Email:\n  - To: ${customer.email}\n  - Subject: ${subject}\n  - Body:\n${body}\n`);
@@ -145,7 +147,7 @@ export const runRenewalChecks = async (
                                 case 'SEND_SMS':
                                     const smsTemplate = smsTemplates.find(t => t.id === action.parameters?.templateId);
                                     if (smsTemplate && customer.phone) {
-                                        const message = renderTemplate(smsTemplate[language as keyof typeof smsTemplate], templateData);
+                                        const message = renderTemplate(smsTemplate[language as keyof typeof smsTemplate] as string, templateData);
                                         console.log(`[AUTOMATION] Mock Send SMS:\n  - To: ${customer.phone}\n  - Message: ${message}\n`);
                                     }
                                     break;

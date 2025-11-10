@@ -1,10 +1,13 @@
+
 import React, { useState, useMemo } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import { useCrmData } from '../hooks/useCrmData';
 import { useLocalization } from '../hooks/useLocalization';
+// FIX: Import types from the correct path
 import { Policy, TimelineEvent } from '../types';
 import ErrorMessage from '../components/ui/ErrorMessage';
 import SkeletonLoader from '../components/ui/SkeletonLoader';
+// FIX: Import component from the correct path
 import PolicyCard from '../components/customer/PolicyCard';
 import CustomerTimeline from '../components/customer/CustomerTimeline';
 import AddressChangeModal from '../components/customer/AddressChangeModal';
@@ -13,6 +16,7 @@ import AttentionFlagModal from '../components/customer/AttentionFlagModal';
 import AddTimelineEventModal from '../components/customer/AddTimelineEventModal';
 import EditProfileModal from '../components/customer/EditProfileModal';
 import PolicyRecommendationModal from '../components/customer/PolicyRecommendationModal';
+// FIX: Import from @google/genai
 import { GoogleGenAI } from '@google/genai';
 import { useAuth } from '../hooks/useAuth';
 
