@@ -1,34 +1,5 @@
-
 import { Customer, User, AutomatedTask, ReminderLogEntry, RuleDefinition, Language, EmailTemplate, SmsTemplate, TriggerEventType } from '../types';
-
-const dayDifference = (date1: Date, date2: Date): number => {
-    const msPerDay = 1000 * 60 * 60 * 24;
-    const utc1 = Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate());
-    const utc2 = Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate());
-    return Math.floor((utc2 - utc1) / msPerDay);
-};
-
-const renderTemplate = (template: string, data: Record<string, string>): string => {
-    let rendered = template;
-    for (const key in data) {
-        // FIX: Regex was incorrectly looking for {{...}} instead of {...}.
-        const regex = new RegExp(`\\{${key.replace('.', '\\.')}\\}`, 'g');
-        rendered = rendered.replace(regex, data[key]);
-    }
-    return rendered;
-};
-
-const evaluateConditions = (conditions: RuleDefinition['conditions'], context: any): boolean => {
-    if (!conditions || conditions.length === 0) return true;
-    return conditions.every(condition => {
-        const value = condition.field.split('.').reduce((o, i) => (o ? o[i] : undefined), context);
-        switch (condition.operator) {
-            case 'EQUALS': return value === condition.value;
-            case 'NOT_EQUALS': return value !== condition.value;
-            default: return false;
-        }
-    });
-};
+import { dayDifference, renderTemplate, evaluateConditions } from './automation.utils';
 
 const getTriggerTypeForDays = (days: number): TriggerEventType | null => {
     if (days === 30) return 'PAYMENT_DUE_IN_30_DAYS';
@@ -82,21 +53,23 @@ export const runPaymentChecks = async (
                     const logKey = `${rule.id}_${policy.id}`;
                     const alreadySent = reminderLog.some(entry => entry.logKey === logKey);
                     const agent = userMap.get(customer.assignedAgentId);
+                    const context = { customer, policy, agent };
 
-                    if (!alreadySent && agent && evaluateConditions(rule.conditions, { customer, policy, agent })) {
+                    if (!alreadySent && agent && evaluateConditions(rule.conditions, context)) {
                         rule.actions.forEach(action => {
                              const templateData = {
-                                'customerName': `${customer.firstName} ${customer.lastName}`,
-                                'policyNumber': policy.policyNumber,
-                                'paymentDueDate': dueDate.toLocaleDateString(language),
-                                'premiumAmount': policy.premiumAmount.toFixed(2),
-                                'agentName': `${agent.party.partyName.firstName} ${agent.party.partyName.lastName}`,
-                                'agentPhone': agent.party.contactInfo.workPhone || '',
+                                policyholderName: `${customer.firstName} ${customer.lastName}`,
+                                customerName: `${customer.firstName} ${customer.lastName}`, // Alias for consistency
+                                policyNumber: policy.policyNumber,
+                                paymentDueDate: dueDate.toLocaleDateString(language),
+                                premiumAmount: policy.premiumAmount.toFixed(2),
+                                agentName: agent ? `${agent.party.partyName.firstName} ${agent.party.partyName.lastName}` : 'Your Agent',
+                                agentPhone: agent?.party.contactInfo.workPhone || '',
+                                ...context
                             };
 
                             switch (action.actionType) {
                                 case 'CREATE_TASK':
-                                    // FIX: Logic was incorrect. Now uses the template string from the rule directly, aligning with renewalAutomation service.
                                     if (action.template) {
                                         const message = renderTemplate(action.template, templateData);
                                         newTasks.push({

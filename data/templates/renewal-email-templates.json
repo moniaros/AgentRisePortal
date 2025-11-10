@@ -1,16 +1,1 @@
-{
-  "templates": [
-    {
-      "id": "renewal-30-day-formal",
-      "name": "30-Day Formal Renewal Notice",
-      "en": {
-        "subject": "Action Required: Your Insurance Policy {policyNumber} is Expiring Soon",
-        "body": "Dear {policyholderName},\n\nThis is a formal notice that your insurance policy ({policyNumber}) is scheduled to expire on {expiryDate}.\n\nPlease contact your agent, {agentName}, at {agentPhone} to discuss your renewal options.\n\nThank you,\nYour Agency"
-      },
-      "el": {
-        "subject": "Απαιτείται Ενέργεια: Το Ασφαλιστήριο Συμβόλαιό σας {policyNumber} Λήγει Σύντομα",
-        "body": "Αγαπητέ/ή {policyholderName},\n\nΑυτή είναι μια επίσημη ειδοποίηση ότι το ασφαλιστήριο συμβόλαιό σας ({policyNumber}) πρόκειται να λήξει στις {expiryDate}.\n\nΠαρακαλούμε επικοινωνήστε με τον ασφαλιστή σας, {agentName}, στο {agentPhone} για να συζητήσετε τις επιλογές ανανέωσής σας.\n\nΕυχαριστούμε,\nΤο Πρακτορείο σας"
-      }
-    }
-  ]
-}
+full contents of data/templates/renewal-email-templates.json

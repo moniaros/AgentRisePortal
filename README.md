@@ -1,151 +1,102 @@
-# AgentOS - Ασφαλιστική Πύλη (Insurance Portal)
+# AgentRise Insurance Portal (Aσφαλιστική Πύλη)
 
-AgentOS is a modern, comprehensive lead generation and management platform designed for insurance professionals. It provides a bilingual interface (Greek/English), offline capabilities, and a suite of tools including a micro-CRM, AI-powered gap analysis, and a social media composer to streamline agent workflows and boost sales.
-
-This project is bootstrapped with React, TypeScript, and Tailwind CSS, running in a web-based environment.
+AgentRise is a comprehensive, bilingual (Greek/English) lead generation and management platform designed specifically for insurance professionals. It features a micro-CRM, AI-powered tools for gap analysis, social media content generation, and a flexible automation engine to streamline daily tasks.
 
 ## Implemented Features
 
 ### Core Platform
-- **Bilingual Interface**: Seamlessly switch between English (EN) and Greek (EL) with full localization support.
-- **Offline First**: Core data like customer and lead information is cached locally, allowing the application to function without an internet connection.
-- **Role-Based Access Control (RBAC)**: Differentiates between 'Admin' and 'Agent' roles, restricting access to management features.
-- **Responsive Design**: The UI is optimized for both desktop and mobile devices.
+- **Bilingual Interface**: Seamlessly switch between Greek (ΕΛ) and English (EN).
+- **Offline First**: Core data is cached in `localStorage` for offline access.
+- **Role-Based Access Control (RBAC)**: Differentiates between 'Admin' and 'Agent' roles, restricting access to management sections.
+- **Responsive Design**: UI adapts for desktop, tablet, and mobile devices.
 
-### Main Tools
-- **Dashboard**: A central hub providing at-a-glance KPIs for new leads, policies sold, and conversion rates. It also features a sales funnel visualization, a list of expiring policies, and a feed of automated tasks and reminders.
-- **Leads Dashboard**: A focused dashboard for analyzing lead sources and the status of leads in the conversion funnel.
-- **Micro-CRM**: A lightweight Customer Relationship Management tool to manage customer profiles, policies, and interaction timelines.
-- **AI Gap Analysis**: An intelligent tool that parses a client's existing policy documents, and when combined with user-described needs, uses the Gemini API to identify coverage gaps, upsell, and cross-sell opportunities.
-- **Social Composer**: A tool for crafting and scheduling social media posts. It includes an AI Content Helper (powered by Gemini API) to generate post ideas and templates for common insurance topics.
-- **Campaign Management**: Create and manage marketing campaigns that can be linked to leads.
-- **Analytics**: View performance metrics for marketing campaigns, including spend, impressions, CTR, and conversions, with filterable charts.
-- **Microsite Builder**: A drag-and-drop interface to build a simple, public-facing webpage for the agent or agency, including sections for services, team, testimonials, and contact information.
+### Agent Tools
+- **Dashboard**: A central hub displaying key performance indicators (KPIs) like new leads, policies sold, and conversion rates. It also includes widgets for expiring policies and automated agent tasks.
+- **Micro-CRM**: A lightweight Customer Relationship Management tool to manage customers and their associated policies and interaction timelines.
+- **Lead Generation Dashboard**: An overview of lead-related KPIs, sources, and conversion funnels.
+- **AI Gap Analysis**: Upload a client's existing policy document (PDF, PNG, JPG) and describe their needs. The system uses the Gemini API to analyze the document, identify coverage gaps, and suggest upsell/cross-sell opportunities.
+- **AI Social Composer**: Generate social media posts using AI. Provides templates and a preview for composing posts for platforms like Facebook, LinkedIn, and X.
 
 ### Management Tools
-- **User Management**: (Admin only) Invite, remove, and change the roles of users within the agency. Includes a detailed audit log for all management actions.
-- **Executive Dashboard**: (Admin only) A high-level overview of agency performance, including monthly growth in premium volume, product mix, claims trends, and campaign ROI.
-- **Automation Rules**: (Admin only) An overview page to monitor the status of the automation engine, showing total rules, recent executions, and success rates.
+- **User Management**: Admins can invite, remove, and change the roles of users within their agency. Includes an audit log to track these actions.
+- **Executive Dashboard**: A high-level overview for administrators, showing agency growth, product mix, claims trends, and campaign ROI.
+- **Automation Rules**: An overview page for managing the rules engine, displaying stats and recent rule executions. (Admin only)
 
-### Content & Engagement
-- **News & Updates**: A section for viewing global or agency-specific news articles, with SEO-friendly detail pages.
-- **Testimonials**: A system for clients to submit testimonials, which can then be moderated by an admin and displayed publicly or on the agent's microsite.
+### Content & Marketing
+- **News & Updates**: A section for viewing global or agency-specific news articles.
+- **Testimonials**: A system for clients to submit testimonials, which admins can then approve or reject for public display.
+- **Microsite Builder**: A tool to create a simple, public-facing webpage for the agent or agency by adding and arranging content blocks.
 
-### Localization & Internationalization
-- **Bilingual Text**: All UI text, labels, and messages are translated using a JSON-based i18n system (`/data/locales/`). The primary language is Greek (EL), with English (EN) as a fallback.
-- **Dynamic Date/Time Formatting**: Dates and times across the application (e.g., in tables, charts, timelines) are formatted according to the user's selected language (`el-GR` or `en-US`).
-- **Locale-Aware Number & Currency Formatting**: All numerical and currency values (e.g., on KPI cards, in analytics charts) are formatted using the appropriate locale, ensuring correct decimal and thousands separators.
+### Localization
+- **Bilingual Text**: All UI elements, including labels, buttons, and navigation, are translated using JSON files for Greek and English.
+- **Dynamic Date/Time**: Dates and times are formatted according to the user's selected language (`el-GR` or `en-US`).
+- **Locale-Aware Number & Currency Formatting**: All numeric and currency values are displayed using the correct separators and symbols for the selected locale.
 
----
-
-## Automation Systems
-
-### Rules Engine Data Model
-
-The platform includes a flexible, JSON-based rules engine designed to automate various business logic without requiring code changes. The core components of this model are:
-
--   **`RuleDefinition`**: The main object that encapsulates a single rule, including its trigger, conditions, and actions.
--   **`Trigger`**: The event that initiates a rule check (e.g., `POLICY_EXPIRING_SOON`, `NEW_LEAD_CREATED`).
--   **`Condition`**: A specific check that must pass for the rule to execute (e.g., `policy.type` EQUALS `auto`).
--   **`Action`**: The operation to perform if all conditions are met (e.g., `CREATE_TASK`, `SEND_EMAIL`).
-
-**Example Rule Definition (`renewal-reminders.rules.json`):**
-```json
-{
-  "id": "RR-001",
-  "name": "30-Day Auto Policy Renewal Reminder",
-  "trigger": {
-    "eventType": "POLICY_EXPIRING_SOON",
-    "parameters": { "daysBefore": 30 }
-  },
-  "conditions": [
-    { "field": "policy.type", "operator": "EQUALS", "value": "auto" }
-  ],
-  "actions": [
-    { "actionType": "CREATE_TASK", "target": "AGENT", "template": "Follow up with {customer.name}..." },
-    { "actionType": "SEND_EMAIL", "target": "CUSTOMER", "parameters": { "templateId": "renewal-30-day" } }
-  ],
-  "isEnabled": true
-}
-```
-
-### Renewal Reminder Automation
-
-This system automatically generates tasks and notifications for policies that are nearing their expiration date.
-
--   **Engine**: A service (`renewalAutomation.ts`) simulates a daily check of all active policies.
--   **Triggers**: The service checks for policies expiring in 90, 60, 30, 15, and 7 days.
--   **Actions**:
-    -   **Task Creation**: Creates an actionable task for the assigned agent, which appears on their main dashboard.
-    -   **Multi-Channel Notifications**: Can send mock emails and SMS messages directly to the customer based on rule configurations.
--   **Configuration**: All logic is driven by the `data/rules/renewal-reminders.rules.json` file.
--   **Templates**: Communications use bilingual (EN/EL) templates stored in `data/templates/`. Available variables include: `{policyholderName}`, `{policyNumber}`, `{expiryDate}`, `{agentName}`, `{agentPhone}`.
--   **Duplicate Prevention**: A mock log (`MOCK_REMINDER_LOG`) is maintained to ensure that the same reminder for a specific policy is not sent more than once.
-
-### Payment Reminder Automation
-
-This system automates the process of reminding customers about upcoming or overdue premium payments.
-
--   **Engine**: A service (`paymentAutomation.ts`) simulates a daily check of all policies with pending payments.
--   **Trigger Events**: The rules engine is triggered based on the payment due date: `PAYMENT_DUE_IN_30_DAYS`, `PAYMENT_DUE_IN_7_DAYS`, `PAYMENT_DUE_TODAY`, and `PAYMENT_OVERDUE_3_DAYS`.
--   **Data Fields**: The system relies on the following ACORD-aligned fields in a policy record: `premiumAmount`, `paymentDueDate`, and `paymentStatus` (`pending`, `paid`, `overdue`).
--   **Actions**:
-    -   `CREATE_TASK`: Generates a follow-up task for the assigned agent.
-    -   `SEND_EMAIL`: Sends a reminder email to the policyholder.
-    -   `SEND_SMS`: Sends a text message reminder, typically for urgent overdue notices.
--   **Configuration**: All logic is driven by the `data/rules/payment-reminders.rules.json` file, which is highly configurable.
-
----
-
-### Automation Gap Analysis
-
-For a detailed analysis of the current state of the automation system, what is partially implemented, and what is missing, please see the [Automation Gap Analysis](./automation-gap-analysis.md) document.
-
----
-
-### Data Display Audit & Fixes
-*Date: 2024-08-01*
-
-A full codebase audit was performed to ensure all dummy data is loading and displaying correctly.
-
--   **Summary of Issues Found**:
-    -   The primary issue identified was a syntax mismatch in the automation system's templating engine. Email and SMS templates in `data/templates/` were using double-brace `{{variable}}` syntax, while the rendering functions in `renewalAutomation.ts` and `paymentAutomation.ts` were only configured to parse single-brace `{variable}` syntax.
--   **Root Cause**: This inconsistency caused all mock email and SMS notifications to fail during template rendering, meaning dynamic data (like customer names and policy numbers) was not being correctly inserted into the console-logged messages. Agent task messages, which already used single braces, were unaffected.
--   **Fixes Applied**:
-    -   All template files (`renewal-email-templates.json`, `renewal-sms-templates.json`, `payment-email-templates.json`, `payment-sms-templates.json`) were updated to use the single-brace `{variable}` syntax for all placeholders.
-    -   This change aligns all templates with the existing parsers, resolving the data display failure for mock email/SMS communications without requiring changes to the rendering logic.
--   **Verification**: All other data pathways were verified to be working as expected, with mock data from `data/mockData.ts` correctly populating all UI components, charts, and tables across the application.
+### Automation Systems
+- **Flexible Rules Engine Data Model**: The platform includes a comprehensive, JSON-based data model for creating flexible business rules. This model consists of `RuleDefinition`, `Trigger`, `Condition`, and `Action` components, allowing for the definition of complex automation logic in a structured and readable format.
+- **Renewal Reminder Automation**: A rule-based system that simulates a daily check for policies nearing expiration. It triggers at configurable intervals (e.g., 90, 60, 30 days) and can execute multiple actions based on bilingual JSON templates, such as creating a task for an agent or sending mock email/SMS reminders to the customer. Duplicate reminders are prevented by maintaining a reminder log.
+- **Payment Reminder Automation**: A rule-based system that simulates a daily check for policy payment due dates. It triggers on events like `PAYMENT_DUE_IN_30_DAYS` or `PAYMENT_OVERDUE_3_DAYS`. It uses bilingual JSON templates to execute multi-channel actions, including creating agent tasks and sending mock email and SMS notifications.
 
 ---
 
 ## Application Structure & Pages
 
 ### Main Navigation
--   **/ (Dashboard)**: The landing page with key performance indicators (KPIs) and an activity feed.
--   **/leads-dashboard**: A specialized dashboard focusing on lead sources and conversion funnel metrics.
--   **/lead-generation**: A tool for viewing and filtering all incoming leads.
--   **/micro-crm**: A list of all customers and recent leads, with functionality to add, edit, and view customer profiles.
--   **/customer/:id**: Detailed view of a single customer, including their policies, interaction timeline, and notes.
--   **/gap-analysis**: An AI-powered tool to analyze a client's existing policies for coverage gaps.
--   **/social-composer**: A workspace to create and schedule social media posts with AI assistance.
--   **/ad-campaigns**: A dashboard to create and monitor digital advertising campaigns.
--   **/analytics**: A page for viewing detailed analytics on campaign performance.
--   **/microsite-builder**: A visual editor to create a personalized public-facing website.
--   **/news**: A listing of industry or agency news articles.
--   **/news/:id**: The detail page for a single news article.
--   **/testimonials**: A page to view approved client testimonials and (for admins) moderate pending ones.
+- **Dashboard (`/`)**: The main landing page with KPIs and widgets.
+- **Leads Dashboard (`/leads-dashboard`)**: Analytics focused on lead sources and status.
+- **Lead Generation (`/lead-generation`)**: Table view for filtering and managing all leads.
+- **Micro-CRM (`/micro-crm`)**: Manage customer profiles and recent leads.
+- **Customer Profile (`/customer/:customerId`)**: Detailed view of a single customer, including their policies and timeline.
+- **Gap Analysis (`/gap-analysis`)**: AI tool for analyzing policy documents.
+- **Social Composer (`/social-composer`)**: Create and schedule social media posts.
+- **Ad Campaigns (`/ad-campaigns`)**: (Placeholder) Manage digital ad campaigns.
+- **Analytics (`/analytics`)**: View performance metrics for marketing campaigns.
+- **Microsite Builder (`/microsite-builder`)**: Build and preview a personal agency website.
+- **News (`/news`)**: A listing of all news articles.
+- **News Article (`/news/:articleId`)**: Detailed view of a single news article.
+- **Testimonials (`/testimonials`)**: View and manage client testimonials.
 
-### Management Tools
--   **/executive-dashboard**: (Admin only) A high-level dashboard showing key agency growth metrics like premium volume, product mix, and claims trends.
--   **/user-management**: (Admin only) A section to invite, remove, and manage user roles within the agency. Includes an audit log of all administrative actions.
--   **/billing**: (Admin only) A placeholder page for future payment and subscription management integration.
--   **/settings/automation-rules**: (Admin only) An overview page to monitor and manage the business automation rules engine. It displays summary statistics, rule categories, and a log of recent rule executions.
+### Management Tools (Admin Only)
+- **User Management (`/user-management`)**: Manage agency users and view audit logs.
+- **Billing (`/billing`)**: (Placeholder) Manage agency billing and subscriptions.
+- **Executive Dashboard (`/executive-dashboard`)**: High-level analytics for agency performance.
+- **Automation Rules (`/settings/automation-rules`)**: An overview page to monitor the status and recent executions of all automation rules. (Admin only)
 
 ### Other Pages
--   **/profile**: The logged-in user's profile page, showing personal details, licenses, and recent activity.
--   **/settings**: A page for configuring application settings, such as connecting social media accounts and entering a Google Tag Manager ID.
--   **/sitemap**: An auto-generated sitemap for SEO and easy navigation.
--   **/login**: The application's login page.
--   **/logout**: Clears the user session and redirects to the login page.
--   **/capture/:campaignId**: A public-facing lead capture form linked to a specific ad campaign.
--   **/onboarding**: A welcome page for new users that guides them through initial setup tasks.
+- **Login (`/login`)**: Authentication page.
+- **Profile (`/profile`)**: View and edit your user profile.
+- **Settings (`/settings`)**: Manage social media connections and other app settings.
+- **Onboarding (`/onboarding`)**: A welcome page for new users with a checklist of key tasks.
+- **Lead Capture Page (`/capture/:campaignId`)**: A public-facing landing page for capturing leads from a specific campaign.
+
+---
+
+## Automation Gap Analysis
+
+A detailed analysis of the platform's automation capabilities has been conducted. The report outlines what is currently working, what is partially implemented, and what is completely missing based on the desired feature set. It also provides recommended priorities for future development.
+
+**[Read the full Automation Gap Analysis](./automation-gap-analysis.md)**
+
+---
+
+## Testing & Documentation
+
+The project includes infrastructure and documentation to ensure the reliability and maintainability of its core systems, particularly the rules engine.
+
+-   **Test Suite**: A placeholder test suite has been created to demonstrate unit and integration testing coverage for the automation services. It outlines tests for utility functions and end-to-end rule execution flows.
+    -   [View Test File (`services/__tests__/automation.test.ts`)](./services/__tests__/automation.test.ts)
+-   **Developer Guide**: This document provides a technical overview of the rules engine architecture and instructions on how to extend it with new triggers and actions.
+    -   [Read the Developer Guide](./docs/rules-engine-developer-guide.md)
+-   **User Guide**: A non-technical, bilingual guide for administrators on how to use the automation rules feature, including best practices and examples.
+    -   [Read the User Guide](./docs/automation-rules-user-guide.md)
+
+---
+## Data Display Audit & Fixes
+*Date: 2024-07-25*
+
+A comprehensive audit of the codebase was performed to ensure all dummy data from mock files is correctly loaded and displayed in the UI.
+
+### Summary of Issues Resolved:
+- **Root Cause**: The primary issue identified was a mismatch in the placeholder variable syntax within the automation system's templates. Agent task templates used single-brace syntax (e.g., `{variable}`), while email and SMS templates used double-brace syntax (e.g., `{{variable}}`).
+- **Impact**: The `renderTemplate` utility function was only designed to handle single-brace syntax. As a result, all mock email and SMS notifications generated by the renewal and payment automation systems failed to correctly substitute dynamic data (like customer names, policy numbers, etc.), which was visible in the console logs.
+- **Fix Applied**: All email and SMS templates in the `data/templates/` directory were updated to use the consistent, single-brace syntax (`{variable}`). This aligns all templates with the existing renderer logic, ensuring all data placeholders are now correctly populated across all automated communication channels.
