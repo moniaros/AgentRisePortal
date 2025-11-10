@@ -34,7 +34,8 @@
     "testimonials": "Μαρτυρίες",
     "userManagement": "Διαχείριση Χρηστών",
     "billing": "Χρεώσεις",
-    "executiveDashboard": "Πίνακας Διοίκησης"
+    "executiveDashboard": "Πίνακας Διοίκησης",
+    "automationRules": "Κανόνες Αυτοματισμού"
   },
   "login": {
     "title": "Καλώς Ορίσατε",

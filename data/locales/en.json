@@ -34,7 +34,8 @@
     "testimonials": "Testimonials",
     "userManagement": "User Management",
     "billing": "Billing",
-    "executiveDashboard": "Executive Dashboard"
+    "executiveDashboard": "Executive Dashboard",
+    "automationRules": "Automation Rules"
   },
   "login": {
     "title": "Welcome Back",

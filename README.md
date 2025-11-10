@@ -80,9 +80,10 @@ The application is structured around a central dashboard with specialized pages 
 
 ### Management Tools
 
--   **User Management (`/user-management`)**: An administrative page for managing team access. Admins can invite new users, change user roles (Agent/Admin), remove users, and review a detailed audit log of all administrative actions.
--   **Billing (`/billing`)**: A placeholder page for future integration with a payment processor like Stripe. This section is intended for managing subscriptions or processing premium payments.
--   **Executive Dashboard (`/executive-dashboard`)**: A strategic overview designed for agency owners and managers. It visualizes high-level business metrics, including agency growth (premium vs. policy count), product mix, claims trends, campaign ROI, and risk exposure.
+-   **User Management (`/user-management`)**: _(Admin Access Only)_ An administrative page for managing team access. Admins can invite new users, change user roles (Agent/Admin), remove users, and review a detailed audit log of all administrative actions.
+-   **Billing (`/billing`)**: _(Admin Access Only)_ A placeholder page for future integration with a payment processor like Stripe. This section is intended for managing subscriptions or processing premium payments.
+-   **Executive Dashboard (`/executive-dashboard`)**: _(Admin Access Only)_ A strategic overview designed for agency owners and managers. It visualizes high-level business metrics, including agency growth (premium vs. policy count), product mix, claims trends, campaign ROI, and risk exposure.
+-   **Automation Rules (`/settings/automation-rules`)**: _(Admin Access Only)_ A placeholder page for the future UI where admins can create, edit, and manage the business logic rules that drive platform automations (e.g., lead assignment, payment reminders).
 
 ### Utility & Other Pages
 

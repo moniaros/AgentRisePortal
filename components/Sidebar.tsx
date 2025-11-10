@@ -2,6 +2,8 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useLocalization } from '../hooks/useLocalization';
 import { ICONS } from '../constants';
+import { useAuth } from '../hooks/useAuth';
+import { UserSystemRole } from '../types';
 
 interface SidebarProps {
     isOpen: boolean;
@@ -9,6 +11,7 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
     const { t } = useLocalization();
+    const { currentUser } = useAuth();
 
     const navLinks = [
         { path: '/', label: t('nav.dashboard'), icon: 'dashboard' },
@@ -25,9 +28,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
     ];
 
     const managementLinks = [
-        { path: '/user-management', label: t('nav.userManagement'), icon: 'settings' },
-        { path: '/billing', label: t('nav.billing'), icon: 'billing' },
-        { path: '/executive-dashboard', label: t('nav.executiveDashboard'), icon: 'dashboard' },
+        { path: '/user-management', label: t('nav.userManagement'), icon: 'settings', adminOnly: true },
+        { path: '/billing', label: t('nav.billing'), icon: 'billing', adminOnly: true },
+        { path: '/executive-dashboard', label: t('nav.executiveDashboard'), icon: 'dashboard', adminOnly: true },
+        { path: '/settings/automation-rules', label: t('nav.automationRules'), icon: 'automation', adminOnly: true }
     ];
 
     const NavItem: React.FC<{ path: string, label: any, icon: string }> = ({ path, label, icon }) => (
@@ -58,7 +62,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                 </ul>
                 <h2 className="px-2 mt-6 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Management</h2>
                  <ul>
-                    {managementLinks.map(link => <li key={link.path}><NavItem {...link} /></li>)}
+                    {managementLinks.map(link => (
+                        (!link.adminOnly || currentUser?.partyRole.roleType === UserSystemRole.ADMIN) &&
+                        <li key={link.path}><NavItem {...link} /></li>
+                    ))}
                 </ul>
             </nav>
             <div className="p-4 border-t dark:border-gray-700">
