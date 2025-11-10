@@ -352,7 +352,9 @@
       "addTestimonial": "Add Testimonial",
       "faqQuestion": "Question",
       "faqAnswer": "Answer",
-      "addFaq": "Add FAQ Item"
+      "addFaq": "Add FAQ Item",
+      "generateWithAi": "Generate with AI",
+      "generating": "Generating..."
     }
   },
   "validation": {

@@ -351,7 +351,9 @@
       "addTestimonial": "Προσθήκη Μαρτυρίας",
       "faqQuestion": "Ερώτηση",
       "faqAnswer": "Απάντηση",
-      "addFaq": "Προσθήκη Ερώτησης"
+      "addFaq": "Προσθήκη Ερώτησης",
+      "generateWithAi": "Δημιουργία με AI",
+      "generating": "Δημιουργία..."
     }
   },
   "validation": {
