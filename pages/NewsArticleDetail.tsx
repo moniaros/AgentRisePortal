@@ -19,15 +19,35 @@ const NewsArticleDetail: React.FC = () => {
     useEffect(() => {
         if (article) {
             document.title = article.seo.title;
-            const metaDescription = document.querySelector('meta[name="description"]');
-            if (metaDescription) {
-                metaDescription.setAttribute('content', article.seo.description);
-            } else {
-                const newMeta = document.createElement('meta');
-                newMeta.name = 'description';
-                newMeta.content = article.seo.description;
-                document.head.appendChild(newMeta);
+
+            // Update meta description
+            let metaDescription = document.querySelector('meta[name="description"]');
+            if (!metaDescription) {
+                metaDescription = document.createElement('meta');
+                metaDescription.setAttribute('name', 'description');
+                document.head.appendChild(metaDescription);
             }
+            metaDescription.setAttribute('content', article.seo.description);
+
+            // Update canonical URL
+            let canonicalLink = document.querySelector('link[rel="canonical"]');
+            if (!canonicalLink) {
+                canonicalLink = document.createElement('link');
+                canonicalLink.setAttribute('rel', 'canonical');
+                document.head.appendChild(canonicalLink);
+            }
+            canonicalLink.setAttribute('href', window.location.href);
+
+            // Cleanup on unmount
+            return () => {
+                document.title = 'Aσφαλιστική Πύλη | Insurance Portal';
+                if (metaDescription) {
+                    metaDescription.setAttribute('content', 'A comprehensive lead generation and management platform for insurance professionals.');
+                }
+                if (canonicalLink) {
+                    canonicalLink.remove();
+                }
+            };
         }
     }, [article]);
 

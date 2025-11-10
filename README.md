@@ -165,6 +165,19 @@ The platform is currently a high-fidelity MVP with a simulated backend. The foll
     }
     ```
 
+#### 7. SEO & Analytics Integration
+-   **Description:** The platform incorporates SEO best practices and comprehensive analytics tracking to monitor traffic and user engagement.
+-   **SEO Features:**
+    -   **Dynamic Meta Tags:** Pages like News Articles dynamically update `document.title` and `meta description` tags for better search engine results.
+    -   **Canonical URLs:** Individual article pages include a `rel="canonical"` link tag to prevent duplicate content issues.
+    -   **Sitemap Generation Concept:** A dedicated `/sitemap` page programmatically lists all public routes, demonstrating the logic required for a server-side process to generate a `sitemap.xml` file for search engine crawlers.
+-   **Analytics (via Google Tag Manager):**
+    -   **GTM Integration:** A `GTMProvider` dynamically injects the Google Tag Manager script based on a configurable container ID.
+    -   **Automated Page View Tracking:** A `RouteAnalyticsTracker` component automatically sends `page_view` events to the `dataLayer` on every route change.
+    -   **Custom Event Tracking:** Key user interactions, such as submitting a testimonial or completing an AI gap analysis, are tracked with custom events pushed to the `dataLayer`, allowing for detailed conversion monitoring in Google Analytics.
+-   **Components:** `GTMProvider.tsx`, `RouteAnalyticsTracker.tsx`, `Sitemap.tsx`.
+-   **Services:** `services/analytics.ts`.
+
 ---
 
 ## Product Roadmap: Path to an Enterprise-Level Platform

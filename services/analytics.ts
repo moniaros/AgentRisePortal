@@ -48,6 +48,29 @@ const pushToDataLayer = (eventData: Record<string, any>, language: Language): vo
 };
 
 /**
+ * Tracks a generic user event.
+ * @param eventName - The GTM event name (e.g., 'engagement').
+ * @param eventCategory - The category for the event (e.g., 'AI Tools').
+ * @param eventAction - The specific action taken (e.g., 'gap_analysis_success').
+ * @param eventLabel - An optional label for context.
+ * @param language - The current application language.
+ */
+export const trackEvent = (
+    eventName: string,
+    eventCategory: string,
+    eventAction: string,
+    eventLabel: string | undefined,
+    language: Language
+): void => {
+    pushToDataLayer({
+        event: eventName,
+        event_category: eventCategory,
+        event_action: eventAction,
+        event_label: eventLabel,
+    }, language);
+};
+
+/**
  * Tracks a page view event.
  * @param path - The path of the page being viewed (e.g., '/dashboard').
  * @param language - The current application language.

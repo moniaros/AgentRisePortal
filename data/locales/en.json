@@ -154,12 +154,7 @@
     "insuredItems": "Insured Items & Coverages",
     "userNeedsTitle": "Client's Needs & Context",
     "userNeedsPlaceholder": "Describe the client's situation, concerns, or what they want to protect (e.g., 'Client just bought a more expensive car and is worried about theft', 'Wants to make sure their new home office equipment is covered').",
-    "analyzeGaps": "Analyze for Gaps",
-    "current": "Current",
-    "recommended": "Recommended",
-    "coverageGaps": "Coverage Gaps",
-    "upsellOpportunities": "Upsell Opportunities",
-    "crossSellOpportunities": "Cross-Sell Opportunities"
+    "analyzeGaps": "Analyze for Gaps"
   },
   "socialComposer": {
     "placeholder": "What's on your mind?",
@@ -453,6 +448,12 @@
       "submit": "Submit Testimonial",
       "success": "Thank you! Your testimonial has been submitted for review."
     }
+  },
+  "sitemap": {
+    "title": "Sitemap",
+    "intro": "This page lists all accessible pages on the site, helping search engines and users navigate. In a production environment, this data would be used to generate a sitemap.xml file.",
+    "pages": "Main Pages",
+    "newsArticles": "News Articles"
   },
   "policyTypes": {
     "auto": "Auto Insurance",

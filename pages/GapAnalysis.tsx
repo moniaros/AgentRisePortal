@@ -8,9 +8,10 @@ import { GoogleGenAI, Type } from '@google/genai';
 import { fetchParsedPolicy } from '../services/api';
 import GapAnalysisResults from '../components/gap-analysis/GapAnalysisResults';
 import { useOnboardingStatus } from '../hooks/useOnboardingStatus';
+import { trackEvent } from '../services/analytics';
 
 const GapAnalysis: React.FC = () => {
-    const { t } = useLocalization();
+    const { t, language } = useLocalization();
     const { markTaskCompleted } = useOnboardingStatus();
     const [file, setFile] = useState<File | null>(null);
     const [parsedPolicy, setParsedPolicy] = useState<DetailedPolicy | null>(null);
@@ -115,6 +116,13 @@ const GapAnalysis: React.FC = () => {
             const jsonStr = response.text;
             const result = JSON.parse(jsonStr) as GapAnalysisResult;
             setAnalysisResult(result);
+            trackEvent(
+                'engagement',
+                'AI Tools',
+                'gap_analysis_success',
+                file?.name,
+                language
+            );
             markTaskCompleted('policyAnalyzed'); // Mark task as complete on successful analysis
 
         } catch (err) {

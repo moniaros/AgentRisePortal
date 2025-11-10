@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNewsData } from '../hooks/useNewsData';
 import { useLocalization } from '../hooks/useLocalization';
 import ArticleCard from '../components/news/ArticleCard';
@@ -8,6 +8,26 @@ import ErrorMessage from '../components/ui/ErrorMessage';
 const NewsListing: React.FC = () => {
     const { t } = useLocalization();
     const { articles, isLoading, error } = useNewsData();
+
+    useEffect(() => {
+        const title = t('news.title');
+        document.title = `${title} | AgentOS`;
+    
+        let metaDescription = document.querySelector('meta[name="description"]');
+        if (!metaDescription) {
+            metaDescription = document.createElement('meta');
+            metaDescription.setAttribute('name', 'description');
+            document.head.appendChild(metaDescription);
+        }
+        metaDescription.setAttribute('content', `Stay updated with the latest news and announcements from your insurance agency. ${title}`);
+    
+        return () => {
+            document.title = 'Aσφαλιστική Πύλη | Insurance Portal';
+            if (metaDescription) {
+                metaDescription.setAttribute('content', 'A comprehensive lead generation and management platform for insurance professionals.');
+            }
+        };
+    }, [t]);
 
     if (error) {
         return <ErrorMessage message={error.message} />;

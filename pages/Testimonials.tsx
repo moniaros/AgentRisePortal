@@ -9,9 +9,10 @@ import TestimonialCard from '../components/testimonials/TestimonialCard';
 import ModerationCard from '../components/testimonials/ModerationCard';
 import AddTestimonialModal from '../components/testimonials/AddTestimonialModal';
 import { useNotification } from '../hooks/useNotification';
+import { trackEvent } from '../services/analytics';
 
 const Testimonials: React.FC = () => {
-    const { t } = useLocalization();
+    const { t, language } = useLocalization();
     const { testimonials, isLoading, error, addTestimonial, updateTestimonialStatus } = useTestimonialsData();
     const { currentUser } = useAuth();
     const { addNotification } = useNotification();
@@ -26,6 +27,13 @@ const Testimonials: React.FC = () => {
         addTestimonial(quote, rating);
         setIsModalOpen(false);
         addNotification(t('testimonials.form.success'), 'success');
+        trackEvent(
+            'engagement',
+            'Testimonials',
+            'testimonial_submitted',
+            `rating: ${rating}`,
+            language
+        );
     };
 
     if (error) {
