@@ -77,7 +77,8 @@ const GapAnalysis: React.FC = () => {
                                         current: { type: Type.STRING },
                                         recommended: { type: Type.STRING },
                                         reason: { type: Type.STRING },
-                                    }
+                                    },
+                                    required: ["area", "current", "recommended", "reason"]
                                 }
                             },
                             upsell_opportunities: {
@@ -88,7 +89,8 @@ const GapAnalysis: React.FC = () => {
                                         product: { type: Type.STRING },
                                         recommendation: { type: Type.STRING },
                                         benefit: { type: Type.STRING },
-                                    }
+                                    },
+                                    required: ["product", "recommendation", "benefit"]
                                 }
                             },
                             cross_sell_opportunities: {
@@ -99,10 +101,12 @@ const GapAnalysis: React.FC = () => {
                                         product: { type: Type.STRING },
                                         recommendation: { type: Type.STRING },
                                         benefit: { type: Type.STRING },
-                                    }
+                                    },
+                                    required: ["product", "recommendation", "benefit"]
                                 }
                             }
-                        }
+                        },
+                        required: ["gaps", "upsell_opportunities", "cross_sell_opportunities"]
                     }
                 }
             });

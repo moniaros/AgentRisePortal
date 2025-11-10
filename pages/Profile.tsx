@@ -31,7 +31,7 @@ const Profile: React.FC = () => {
                         {...register("name", { required: "Name is required" })}
                         className="mt-1 w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
                     />
-                     {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
+                     {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message as string}</p>}
                 </div>
                  <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('crm.form.email') as string}</label>
@@ -40,7 +40,7 @@ const Profile: React.FC = () => {
                         {...register("email", { required: "Email is required" })}
                         className="mt-1 w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
                     />
-                    {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
+                    {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message as string}</p>}
                 </div>
                 <div>
                     <button type="submit" disabled={!isDirty} className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-gray-400">

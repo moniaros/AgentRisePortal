@@ -36,7 +36,7 @@ const CustomerProfile: React.FC = () => {
     const [isAiLoading, setIsAiLoading] = useState(false);
 
     if (isLoading) return <SkeletonLoader className="h-screen w-full" />;
-    if (error) return <ErrorMessage message={error.message} />;
+    if (error) return <ErrorMessage message={error.message as string} />;
     if (!customer) return <Navigate to="/micro-crm" replace />;
 
     const handleAddressSubmit = (newAddress: string) => {
@@ -72,6 +72,7 @@ const CustomerProfile: React.FC = () => {
         setAiRecommendation(null);
         
         try {
+            // FIX: Updated Gemini API call to align with current SDK guidelines.
             const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             const prompt = `
               Review the following insurance policy for a client and provide recommendations.
@@ -165,7 +166,7 @@ const CustomerProfile: React.FC = () => {
             </div>
             
             {/* Modals */}
-            <AddressChangeModal isOpen={isAddressModalOpen} onClose={() => setAddressModalOpen(false)} currentAddress={customer.address} onSubmit={handleAddressSubmit} />
+            <AddressChangeModal isOpen={isAddressModalOpen} onClose={() => setAddressModalOpen(false)} currentAddress={customer.address || ''} onSubmit={handleAddressSubmit} />
             {selectedPolicy && <RenewalModal isOpen={isRenewalModalOpen} onClose={() => setRenewalModalOpen(false)} policy={selectedPolicy} onSubmit={handleRenewalSubmit} />}
             <AttentionFlagModal isOpen={isAttentionModalOpen} onClose={() => setAttentionModalOpen(false)} currentReason={customer.attentionFlag} onSubmit={(reason) => { updateCustomerAttentionFlag(customer.id, reason); setAttentionModalOpen(false); }} />
             <AddTimelineEventModal isOpen={isTimelineModalOpen} onClose={() => setTimelineModalOpen(false)} onSubmit={handleAddTimelineEvent} />

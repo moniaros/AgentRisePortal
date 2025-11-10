@@ -58,14 +58,14 @@ const Analytics: React.FC = () => {
         const ctr = totalImpressions > 0 ? (totalClicks / totalImpressions) * 100 : 0;
 
         // FIX: Explicitly type the accumulator to prevent type errors.
-        const spendByNetwork = filteredData.reduce((acc: Record<string, number>, d) => {
+        const spendByNetwork = filteredData.reduce<Record<string, number>>((acc, d) => {
             const network = campaignMap.get(d.campaignId)?.network || 'unknown';
             acc[network] = (acc[network] || 0) + d.spend;
             return acc;
         }, {});
         
         // FIX: Explicitly type the accumulator to prevent type errors.
-        const performanceOverTime = filteredData.reduce((acc: Record<string, { date: string; impressions: number; clicks: number; conversions: number; }>, d) => {
+        const performanceOverTime = filteredData.reduce<Record<string, { date: string; impressions: number; clicks: number; conversions: number; }>>((acc, d) => {
             if (!acc[d.date]) {
                 acc[d.date] = { date: d.date, impressions: 0, clicks: 0, conversions: 0 };
             }

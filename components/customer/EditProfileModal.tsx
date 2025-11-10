@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, FieldError } from 'react-hook-form';
 import { useLocalization } from '../../hooks/useLocalization';
 import { Customer } from '../../types';
 
@@ -26,7 +26,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onClose, on
   if (!isOpen) return null;
 
   // FIX: Cast error message to string to satisfy function signature.
-  const renderError = (message: string | undefined) => message ? <span className="text-red-500 text-xs mt-1">{message}</span> : null;
+  const renderError = (error: FieldError | undefined) => error?.message ? <span className="text-red-500 text-xs mt-1">{error.message}</span> : null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center p-4">
@@ -40,18 +40,18 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onClose, on
               <div>
                 <label className="block text-sm font-medium">{t('crm.form.firstName') as string}</label>
                 <input type="text" {...register("firstName", { required: (t('validation.required') as string).replace('{fieldName}', t('crm.form.firstName') as string) })} className={`w-full p-2 border rounded dark:bg-gray-700 ${errors.firstName ? 'border-red-500' : 'dark:border-gray-600'}`} />
-                {renderError(errors.firstName?.message)}
+                {renderError(errors.firstName)}
               </div>
               <div>
                 <label className="block text-sm font-medium">{t('crm.form.lastName') as string}</label>
                 <input type="text" {...register("lastName", { required: (t('validation.required') as string).replace('{fieldName}', t('crm.form.lastName') as string) })} className={`w-full p-2 border rounded dark:bg-gray-700 ${errors.lastName ? 'border-red-500' : 'dark:border-gray-600'}`} />
-                {renderError(errors.lastName?.message)}
+                {renderError(errors.lastName)}
               </div>
             </div>
             <div>
               <label className="block text-sm font-medium">{t('crm.form.email') as string}</label>
               <input type="email" {...register("email", { required: (t('validation.required') as string).replace('{fieldName}', t('crm.form.email') as string), pattern: { value: /^\S+@\S+$/i, message: t('validation.invalidEmail') as string } })} className={`w-full p-2 border rounded dark:bg-gray-700 ${errors.email ? 'border-red-500' : 'dark:border-gray-600'}`} />
-              {renderError(errors.email?.message)}
+              {renderError(errors.email)}
             </div>
             <div>
                 <label className="block text-sm font-medium">{t('crm.form.phone') as string}</label>

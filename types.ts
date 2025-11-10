@@ -1,30 +1,28 @@
+// This file contains type definitions for the entire application.
 
+// From context/LanguageContext.tsx, data/mockData.ts, etc.
 export enum Language {
-  EN = 'en',
-  EL = 'el',
+    EN = 'en',
+    EL = 'el',
 }
 
+// From context/LanguageContext.tsx
+// A generic type for translation token objects.
+export type TranslationTokens = { [key: string]: any };
+
+// From constants.tsx
+export interface SocialPlatform {
+    key: string;
+    name: string;
+    icon: React.ReactElement;
+}
+
+// From data/mockData.ts and various pages
 export enum PolicyType {
-  AUTO = 'auto',
-  HOME = 'home',
-  LIFE = 'life',
-  HEALTH = 'health',
-}
-
-export enum CampaignObjective {
-    LEAD_GENERATION = 'LEAD_GENERATION',
-    BRAND_AWARENESS = 'BRAND_AWARENESS',
-    WEBSITE_TRAFFIC = 'WEBSITE_TRAFFIC',
-}
-
-export type UserRole = 'admin' | 'agent';
-
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: UserRole;
-  agencyId: string;
+    AUTO = 'auto',
+    HOME = 'home',
+    LIFE = 'life',
+    HEALTH = 'health',
 }
 
 export interface Coverage {
@@ -34,15 +32,15 @@ export interface Coverage {
 }
 
 export interface Policy {
-  id: string;
-  type: PolicyType;
-  policyNumber: string;
-  premium: number;
-  startDate: string;
-  endDate: string;
-  isActive: boolean;
-  insurer: string;
-  coverages: Coverage[];
+    id: string;
+    type: PolicyType;
+    policyNumber: string;
+    premium: number;
+    startDate: string;
+    endDate: string;
+    isActive: boolean;
+    insurer: string;
+    coverages: Coverage[];
 }
 
 export interface Attachment {
@@ -59,53 +57,56 @@ export interface Annotation {
 }
 
 export interface TimelineEvent {
-  id: string;
-  date: string;
-  type: 'note' | 'call' | 'email' | 'meeting' | 'policy_update' | 'claim' | 'system';
-  content: string;
-  author: string;
-  isFlagged?: boolean;
-  attachments?: Attachment[];
-  annotations?: Annotation[];
+    id: string;
+    date: string;
+    type: 'call' | 'email' | 'note' | 'meeting' | 'policy_update' | 'claim' | 'system';
+    content: string;
+    author: string;
+    isFlagged?: boolean;
+    attachments?: Attachment[];
+    annotations?: Annotation[];
 }
 
 export interface Customer {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  address: string;
-  dateOfBirth: string;
-  agencyId: string;
-  attentionFlag?: string;
-  communicationPreferences: ('email' | 'sms')[];
-  policies: Policy[];
-  timeline: TimelineEvent[];
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone?: string;
+    address?: string;
+    dateOfBirth?: string;
+    agencyId: string;
+    attentionFlag?: string;
+    communicationPreferences?: ('email' | 'sms')[];
+    policies: Policy[];
+    timeline: TimelineEvent[];
 }
 
 export type LeadStatus = 'new' | 'contacted' | 'qualified' | 'closed' | 'rejected';
 
 export interface Lead {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone?: string;
-  source: string;
-  status: LeadStatus;
-  potentialValue: number;
-  createdAt: string;
-  policyType: PolicyType;
-  agencyId: string;
-  campaignId?: string;
-  customerId?: string;
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone?: string;
+    source: string;
+    status: LeadStatus;
+    potentialValue: number;
+    createdAt: string;
+    policyType: PolicyType;
+    agencyId: string;
+    campaignId?: string;
+    customerId?: string;
 }
 
 export interface DetailedPolicy {
     policyNumber: string;
     insurer: string;
-    policyholder: { name: string; address: string };
+    policyholder: {
+        name: string;
+        address: string;
+    };
     insuredItems: {
         id: string;
         description: string;
@@ -113,45 +114,26 @@ export interface DetailedPolicy {
     }[];
 }
 
-export interface GapAnalysisResult {
-    gaps: {
-        area: string;
-        current: string;
-        recommended: string;
-        reason: string;
-    }[];
-    upsell_opportunities: {
-        product: string;
-        recommendation: string;
-        benefit: string;
-    }[];
-    cross_sell_opportunities: {
-        product: string;
-        recommendation: string;
-        benefit: string;
-    }[];
-}
-
-export interface TranslationTokens {
-  [key: string]: string | TranslationTokens;
-}
-
-export interface SocialPlatform {
-  key: string;
-  name: string;
-  icon: React.ReactElement;
-}
-
-export interface AnalyticsDataRecord {
+// From pages/Analytics.tsx (from MOCK_ANALYTICS_DATA in data/mockData.ts)
+export type AnalyticsData = {
     campaignId: string;
-    date: string; // YYYY-MM-DD
+    date: string;
     impressions: number;
     clicks: number;
     conversions: number;
     spend: number;
-}
+}[];
 
-export type AnalyticsData = AnalyticsDataRecord[];
+// From data/mockData.ts, pages/UserManagement.tsx
+export type UserRole = 'admin' | 'agent';
+
+export interface User {
+    id: string;
+    name: string;
+    email: string;
+    role: UserRole;
+    agencyId: string;
+}
 
 export interface AuditLog {
     id: string;
@@ -163,12 +145,21 @@ export interface AuditLog {
     agencyId: string;
 }
 
+// From data/mockData.ts, hooks/useCampaigns.ts
+export enum CampaignObjective {
+    LEAD_GENERATION = 'LEAD_GENERATION',
+    BRAND_AWARENESS = 'BRAND_AWARENESS',
+    WEBSITE_TRAFFIC = 'WEBSITE_TRAFFIC',
+}
+
+// From components/campaigns/steps/Step5_LeadCapture.tsx
 export interface LeadCaptureFormField {
     name: string;
     type: 'text' | 'email' | 'tel' | 'number';
     required: boolean;
 }
 
+// From hooks/useCampaigns.ts and related components
 export interface Campaign {
     id: string;
     name: string;
@@ -188,12 +179,33 @@ export interface Campaign {
         image: string;
     };
     status: 'active' | 'draft' | 'completed';
+    agencyId: string;
     leadCaptureForm?: {
         fields: LeadCaptureFormField[];
     };
-    agencyId: string;
 }
 
+// From pages/GapAnalysis.tsx
+export interface GapAnalysisResult {
+    gaps: {
+        area: string;
+        current: string;
+        recommended: string;
+        reason: string;
+    }[];
+    upsell_opportunities: {
+        product: string;
+        recommendation: string;
+        benefit: string;
+    }[];
+    cross_sell_opportunities: {
+        product: string;
+        recommendation: string;
+        benefit: string;
+    }[];
+}
+
+// From hooks/useOnboardingStatus.ts
 export interface OnboardingProgress {
     profileCompleted: boolean;
     policyAnalyzed: boolean;

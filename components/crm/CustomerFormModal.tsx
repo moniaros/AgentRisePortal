@@ -56,7 +56,7 @@ const CustomerFormModal: React.FC<CustomerFormModalProps> = ({ isOpen, onClose, 
   if (!isOpen) return null;
 
   // FIX: Cast error message to string to satisfy the function signature.
-  const renderError = (message: string | undefined) => message ? <span className="text-red-500 text-xs mt-1">{message}</span> : null;
+  const renderError = (error: FieldError | undefined) => error?.message ? <span className="text-red-500 text-xs mt-1">{error.message}</span> : null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center p-4">
@@ -71,18 +71,18 @@ const CustomerFormModal: React.FC<CustomerFormModalProps> = ({ isOpen, onClose, 
               <div>
                 {/* Fix: Use replacement syntax for translations */}
                 <input type="text" {...register("firstName", { required: t('validation.required', {fieldName: t('crm.form.firstName')}) as string })} placeholder={t('crm.form.firstName') as string} className={`w-full p-2 border rounded dark:bg-gray-700 ${errors.firstName ? 'border-red-500' : 'dark:border-gray-600'}`} />
-                {renderError(errors.firstName?.message)}
+                {renderError(errors.firstName)}
               </div>
               <div>
                 {/* Fix: Use replacement syntax for translations */}
                 <input type="text" {...register("lastName", { required: t('validation.required', {fieldName: t('crm.form.lastName')}) as string })} placeholder={t('crm.form.lastName') as string} className={`w-full p-2 border rounded dark:bg-gray-700 ${errors.lastName ? 'border-red-500' : 'dark:border-gray-600'}`} />
-                {renderError(errors.lastName?.message)}
+                {renderError(errors.lastName)}
               </div>
             </div>
             <div>
               {/* Fix: Use replacement syntax for translations */}
               <input type="email" {...register("email", { required: t('validation.required', {fieldName: t('crm.form.email')}) as string, pattern: { value: /^\S+@\S+$/i, message: t('validation.invalidEmail') as string } })} placeholder={t('crm.form.email') as string} className={`w-full p-2 border rounded dark:bg-gray-700 ${errors.email ? 'border-red-500' : 'dark:border-gray-600'}`} />
-              {renderError(errors.email?.message)}
+              {renderError(errors.email)}
             </div>
             <input type="tel" {...register("phone")} placeholder={t('crm.form.phone') as string} className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
             <input type="text" {...register("address")} placeholder={t('crm.form.address') as string} className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
@@ -111,16 +111,16 @@ const CustomerFormModal: React.FC<CustomerFormModalProps> = ({ isOpen, onClose, 
                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                 <div>
                                     <input {...register(`policies.${index}.policyNumber`, { required: t('validation.policyNumberRequired') as string })} placeholder={t('crm.form.policyNumber') as string} className={`w-full p-2 border rounded dark:bg-gray-700 ${errors.policies?.[index]?.policyNumber ? 'border-red-500' : 'dark:border-gray-600'}`} />
-                                    {renderError(errors.policies?.[index]?.policyNumber?.message)}
+                                    {renderError(errors.policies?.[index]?.policyNumber)}
                                 </div>
-                                <select {...register(`policies.${index}.type`)} defaultValue={field.type} className="p-2 border rounded dark:bg-gray-700 dark:border-gray-600">
+                                <select {...register(`policies.${index}.type`)} defaultValue={(field as Policy).type} className="p-2 border rounded dark:bg-gray-700 dark:border-gray-600">
                                     {Object.values(PolicyType).map((pt: string) => <option key={pt} value={pt}>{t(`policyTypes.${pt}`) as string}</option>)}
                                 </select>
                                 <input {...register(`policies.${index}.insurer`)} placeholder={t('crm.form.insurer') as string} className="p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
                                 <input type="number" {...register(`policies.${index}.premium`, { valueAsNumber: true })} placeholder={t('crm.form.premium') as string} className="p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
                                 <input type="date" {...register(`policies.${index}.startDate`)} className="p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
                                 <input type="date" {...register(`policies.${index}.endDate`)} className="p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
-                                <select {...register(`policies.${index}.isActive`, {setValueAs: v => v === 'true'})} defaultValue={String(field.isActive)} className="p-2 border rounded dark:bg-gray-700 dark:border-gray-600">
+                                <select {...register(`policies.${index}.isActive`, {setValueAs: v => v === 'true'})} defaultValue={String((field as Policy).isActive)} className="p-2 border rounded dark:bg-gray-700 dark:border-gray-600">
                                     <option value="true">{t('statusLabels.active') as string}</option>
                                     <option value="false">{t('statusLabels.inactive') as string}</option>
                                 </select>
