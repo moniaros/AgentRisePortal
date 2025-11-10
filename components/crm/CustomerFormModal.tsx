@@ -47,6 +47,7 @@ const CustomerFormModal: React.FC<CustomerFormModalProps> = ({ isOpen, onClose, 
           endDate: '',
           isActive: true,
           insurer: '',
+          coverages: [],
       });
   }
 

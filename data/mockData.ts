@@ -23,8 +23,37 @@ export const MOCK_CUSTOMERS: Customer[] = [
         agencyId: 'agency_1',
         attentionFlag: 'High value client, review policies annually.',
         policies: [
-            { id: 'pol_1', type: PolicyType.AUTO, policyNumber: 'AUT12345', premium: 1200, startDate: '2024-01-01', endDate: '2025-01-01', isActive: true, insurer: 'Geico' },
-            { id: 'pol_2', type: PolicyType.HOME, policyNumber: 'HOM67890', premium: 800, startDate: '2023-06-15', endDate: '2024-06-15', isActive: true, insurer: 'Allstate' },
+            { 
+                id: 'pol_1', 
+                type: PolicyType.AUTO, 
+                policyNumber: 'AUT12345', 
+                premium: 1200, 
+                startDate: '2024-01-01', 
+                endDate: '2025-01-01', 
+                isActive: true, 
+                insurer: 'Geico',
+                coverages: [
+                    { type: 'Bodily Injury Liability', limit: '€100,000 / €300,000' },
+                    { type: 'Property Damage Liability', limit: '€50,000' },
+                    { type: 'Collision', limit: 'ACV', deductible: '€500' },
+                    { type: 'Comprehensive', limit: 'ACV', deductible: '€500' }
+                ]
+            },
+            { 
+                id: 'pol_2', 
+                type: PolicyType.HOME, 
+                policyNumber: 'HOM67890', 
+                premium: 800, 
+                startDate: '2023-06-15', 
+                endDate: '2024-06-15', 
+                isActive: true, 
+                insurer: 'Allstate',
+                coverages: [
+                    { type: 'Dwelling', limit: '€250,000' },
+                    { type: 'Personal Property', limit: '€100,000' },
+                    { type: 'Liability', limit: '€300,000', deductible: '€1,000' }
+                ]
+            },
         ],
         timeline: [
             { 
@@ -50,7 +79,21 @@ export const MOCK_CUSTOMERS: Customer[] = [
         dateOfBirth: '1990-11-20',
         agencyId: 'agency_1',
         policies: [
-            { id: 'pol_3', type: PolicyType.HEALTH, policyNumber: 'HEA11223', premium: 3000, startDate: '2024-02-01', endDate: '2025-02-01', isActive: true, insurer: 'Blue Cross' },
+            { 
+                id: 'pol_3', 
+                type: PolicyType.HEALTH, 
+                policyNumber: 'HEA11223', 
+                premium: 3000, 
+                startDate: '2024-02-01', 
+                endDate: '2025-02-01', 
+                isActive: true, 
+                insurer: 'Blue Cross',
+                coverages: [
+                    { type: 'Hospitalization', limit: '€500,000/year' },
+                    { type: 'Outpatient Services', limit: '€5,000/year', deductible: '€50/visit' },
+                    { type: 'Prescription Drugs', limit: '€2,000/year' }
+                ]
+            },
         ],
         timeline: [
             { id: 'evt_3', date: '2024-02-01T09:00:00Z', type: 'note', content: 'Onboarded for new health policy.', author: 'Agent Smith' },

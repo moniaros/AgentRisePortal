@@ -21,6 +21,12 @@ export enum PolicyType {
     OTHER = 'other',
 }
 
+export interface Coverage {
+    type: string;
+    limit: string;
+    deductible?: string;
+}
+
 export interface Policy {
   id: string;
   type: PolicyType;
@@ -30,6 +36,7 @@ export interface Policy {
   endDate: string;
   isActive: boolean;
   insurer: string;
+  coverages: Coverage[];
 }
 
 export interface Annotation {
