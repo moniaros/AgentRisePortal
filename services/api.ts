@@ -11,6 +11,7 @@ export const fetchDashboardData = async () => {
         totalPoliciesInForce: { current: number; previous: number; };
         newLeadsThisMonth: { current: number; previous: number; };
         dailyLeadTrend: { date: string; count: number; }[];
+        totalPremiumsWritten: { current: number; previous: number; };
     }>(resolve => {
         setTimeout(() => {
             // FIX: Explicitly type the accumulator for the reduce function to ensure correct type inference.
@@ -52,6 +53,10 @@ export const fetchDashboardData = async () => {
                 totalPoliciesInForce: MOCK_KPI_DATA.totalPoliciesInForce,
                 newLeadsThisMonth: { current: newLeadsThisMonthCount, previous: newLeadsLastMonthCount },
                 dailyLeadTrend: dailyLeadTrend,
+                totalPremiumsWritten: {
+                    current: MOCK_KPI_DATA.totalPremiumsWritten.current,
+                    previous: MOCK_KPI_DATA.totalPremiumsWritten.previous
+                },
             });
         }, SIMULATED_DELAY);
     });

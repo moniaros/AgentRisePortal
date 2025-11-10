@@ -50,7 +50,9 @@
       "button": "Έναρξη Οδηγού",
       "dismiss": "Παράβλεψη"
     },
-    "testimonialsTitle": "Τι Λένε οι Πελάτες Μας"
+    "testimonialsTitle": "Τι Λένε οι Πελάτες Μας",
+    "totalPremiumsWritten": "Συνολικά Ασφαλιστικά Ασφάλιστρα",
+    "yoy": "YoY Σύγκριση"
   },
   "leads": {
     "searchPlaceholder": "Αναζήτηση με όνομα ή email...",

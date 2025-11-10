@@ -50,7 +50,9 @@
       "button": "Start Onboarding",
       "dismiss": "Dismiss"
     },
-    "testimonialsTitle": "What Our Clients Say"
+    "testimonialsTitle": "What Our Clients Say",
+    "totalPremiumsWritten": "Total Premiums Written",
+    "yoy": "YoY Comparison"
   },
   "leads": {
     "searchPlaceholder": "Search by name or email...",

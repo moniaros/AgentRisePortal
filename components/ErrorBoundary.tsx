@@ -11,12 +11,14 @@ interface State {
 
 // FIX: Reverted to using React.Component to fix issue with props not being recognized.
 class ErrorBoundary extends React.Component<Props, State> {
-  // Use a class property to initialize state, which is a common and modern pattern.
-  // FIX: Removed 'public' modifier to align with common React class component style and avoid potential tooling issues.
-  state: State = {
-    hasError: false,
-    error: undefined,
-  };
+  // FIX: Using a constructor to initialize state. This can resolve issues in some build configurations where class properties are not handled correctly, which may cause `this.props` to be undefined.
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      hasError: false,
+      error: undefined,
+    };
+  }
 
   // FIX: Removed 'public' modifier. Static methods are public by default.
   static getDerivedStateFromError(error: Error): State {
