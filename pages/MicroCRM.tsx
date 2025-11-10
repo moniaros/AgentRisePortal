@@ -8,6 +8,9 @@ import { Customer } from '../types';
 import ErrorMessage from '../components/ui/ErrorMessage';
 import SkeletonLoader from '../components/ui/SkeletonLoader';
 import { trackCrmAction } from '../services/analytics';
+import Pagination from '../components/ui/Pagination';
+
+const ITEMS_PER_PAGE = 5;
 
 const MicroCRM: React.FC = () => {
     const { t, language } = useLocalization();
@@ -16,6 +19,7 @@ const MicroCRM: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null);
     const [modalMode, setModalMode] = useState<'add' | 'edit'>('add');
+    const [currentPage, setCurrentPage] = useState(1);
 
     const handleOpenAddModal = () => {
         setEditingCustomer(null);
@@ -52,6 +56,13 @@ const MicroCRM: React.FC = () => {
         }
     };
     
+    // Pagination logic
+    const totalPages = Math.ceil(customers.length / ITEMS_PER_PAGE);
+    const paginatedCustomers = customers.slice(
+        (currentPage - 1) * ITEMS_PER_PAGE,
+        currentPage * ITEMS_PER_PAGE
+    );
+
     return (
         <div>
             <div className="flex justify-between items-center mb-6">
@@ -72,11 +83,18 @@ const MicroCRM: React.FC = () => {
                     {isLoading ? (
                         <SkeletonLoader className="h-48 w-full" />
                     ) : (
-                        <CustomersTable 
-                            customers={customers} 
-                            onEdit={handleOpenEditModal} 
-                            onDelete={handleDeleteCustomer}
-                        />
+                        <>
+                            <CustomersTable 
+                                customers={paginatedCustomers} 
+                                onEdit={handleOpenEditModal} 
+                                onDelete={handleDeleteCustomer}
+                            />
+                             <Pagination 
+                                currentPage={currentPage}
+                                totalPages={totalPages}
+                                onPageChange={setCurrentPage}
+                            />
+                        </>
                     )}
                 </div>
                 <div>

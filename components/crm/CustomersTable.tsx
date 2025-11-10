@@ -1,6 +1,7 @@
 import React from 'react';
 import { Customer } from '../../types';
 import { useLocalization } from '../../hooks/useLocalization';
+import { useNavigate } from 'react-router-dom';
 
 interface CustomersTableProps {
   customers: Customer[];
@@ -10,6 +11,7 @@ interface CustomersTableProps {
 
 const CustomersTable: React.FC<CustomersTableProps> = ({ customers, onEdit, onDelete }) => {
   const { t } = useLocalization();
+  const navigate = useNavigate();
 
   return (
     <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-x-auto">
@@ -32,6 +34,7 @@ const CustomersTable: React.FC<CustomersTableProps> = ({ customers, onEdit, onDe
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{customer.phone}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{customer.policies.length}</td>
               <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-4">
+                <button onClick={() => navigate(`/customer/${customer.id}`)} className="text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-200">{t('crm.viewProfile')}</button>
                 <button onClick={() => onEdit(customer)} className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-200">{t('crm.edit')}</button>
                 <button onClick={() => onDelete(customer.id)} className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-200">{t('crm.delete')}</button>
               </td>

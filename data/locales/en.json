@@ -1,4 +1,3 @@
-
 {
   "common": {
     "loading": "Loading...",
@@ -334,5 +333,15 @@
         "sourceTitle": "Leads by Source",
         "funnelTitle": "Lead Status Funnel"
     }
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "pageOf": "Page {currentPage} of {totalPages}"
+  },
+  "validation": {
+    "required": "{fieldName} is required.",
+    "invalidEmail": "Please enter a valid email address.",
+    "policyNumberRequired": "Policy number is required."
   }
 }

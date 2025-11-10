@@ -10,22 +10,22 @@ interface State {
 }
 
 class ErrorBoundary extends Component<Props, State> {
-  // FIX: Removed 'public' modifier which can sometimes confuse TS type inference on React components.
-  state: State = {
-    hasError: false,
-  };
+  // FIX: Replaced class field state initialization with a constructor. This ensures the component's `this` context is correctly set up, resolving errors where `this.props` and `this.setState` were not found. This is a safer pattern for React class components, especially with modern TypeScript compilers.
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      hasError: false,
+    };
+  }
 
-  // FIX: Removed 'public' modifier.
   static getDerivedStateFromError(error: Error): State {
     return { hasError: true, error };
   }
 
-  // FIX: Removed 'public' modifier.
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('Uncaught error:', error, errorInfo);
   }
 
-  // FIX: Removed 'public' modifier.
   render() {
     if (this.state.hasError) {
       return (

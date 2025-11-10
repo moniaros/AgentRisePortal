@@ -1,4 +1,3 @@
-
 {
   "common": {
     "loading": "Φόρτωση...",
@@ -334,5 +333,15 @@
         "sourceTitle": "Leads ανά Πηγή",
         "funnelTitle": "Funnel Κατάστασης Lead"
     }
+  },
+  "pagination": {
+    "previous": "Προηγούμενη",
+    "next": "Επόμενη",
+    "pageOf": "Σελίδα {currentPage} από {totalPages}"
+  },
+  "validation": {
+    "required": "Το πεδίο {fieldName} είναι υποχρεωτικό.",
+    "invalidEmail": "Παρακαλώ εισάγετε μια έγκυρη διεύθυνση email.",
+    "policyNumberRequired": "Ο αριθμός συμβολαίου είναι υποχρεωτικός."
   }
 }
