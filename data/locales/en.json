@@ -1,15 +1,15 @@
 {
   "common": {
-    "loading": "Loading...",
     "edit": "Edit",
-    "close": "Close"
+    "close": "Close",
+    "loading": "Loading..."
   },
   "nav": {
     "dashboard": "Dashboard",
     "leadsDashboard": "Leads Dashboard",
     "leadGen": "Leads List",
     "crm": "Micro-CRM",
-    "gapAnalysis": "Gap Analysis",
+    "gapAnalysis": "AI Gap Analysis",
     "socialComposer": "Social Composer",
     "adCampaigns": "Ad Campaigns",
     "analytics": "Analytics",
@@ -24,15 +24,16 @@
     "offline": "Offline",
     "profile": "Profile",
     "settings": "Settings",
-    "logout": "Logout"
+    "logout": "Logout",
+    "socials": "Socials"
   },
   "login": {
     "title": "Welcome Back",
-    "subtitle": "Sign in to access your agent portal.",
+    "subtitle": "Sign in to access the Insurance Agent Portal",
     "emailLabel": "Email Address",
     "emailPlaceholder": "you@example.com",
     "passwordLabel": "Password",
-    "rememberMe": "Remember Me",
+    "rememberMe": "Remember me",
     "forgotPassword": "Forgot your password?",
     "loginButton": "Sign In",
     "authenticating": "Authenticating...",
@@ -46,9 +47,32 @@
     "policyDistribution": "Policy Distribution",
     "welcomeBanner": {
       "title": "Welcome to AgentOS!",
-      "description": "Let's get you started. Follow our quick start guide to set up your account and discover key features.",
+      "description": "Your new command center for managing leads, customers, and policies. Complete the quick-start guide to get familiar with the tools.",
       "button": "Start Onboarding",
       "dismiss": "Dismiss"
+    }
+  },
+  "leads": {
+    "searchPlaceholder": "Search leads by name or email...",
+    "allStatuses": "All Statuses",
+    "allSources": "All Sources",
+    "noLeadsFound": "No leads match your current filters.",
+    "viewDetails": "View Details",
+    "leadDetails": "Lead Details",
+    "source": "Source",
+    "policyInterest": "Policy Interest",
+    "createdDate": "Created Date"
+  },
+  "leadsDashboard": {
+    "kpis": {
+      "totalLeads": "Total Leads",
+      "newLeads": "New Leads",
+      "conversionRate": "Conversion Rate",
+      "closedDeals": "Closed Deals"
+    },
+    "charts": {
+      "sourceTitle": "Leads by Source",
+      "funnelTitle": "Lead Status Funnel"
     }
   },
   "crm": {
@@ -58,13 +82,13 @@
     "campaign": "Campaign",
     "addCustomer": "Add Customer",
     "editCustomer": "Edit Customer",
-    "searchCustomers": "Search customers...",
     "customers": "Customers",
+    "searchCustomers": "Search customers...",
     "recentLeads": "Recent Leads",
-    "confirmDelete": "Are you sure you want to delete this customer?",
     "viewProfile": "View Profile",
     "edit": "Edit",
     "delete": "Delete",
+    "confirmDelete": "Are you sure you want to delete this customer?",
     "cancel": "Cancel",
     "save": "Save",
     "form": {
@@ -81,108 +105,86 @@
       "premium": "Premium",
       "startDate": "Start Date",
       "endDate": "End Date",
-      "noPolicies": "No policies added for this customer yet.",
+      "noPolicies": "No policies added.",
       "addPolicy": "Add Policy"
     }
   },
   "customer": {
-    "sms": "SMS",
     "editProfile": "Edit Profile",
     "timeline": "Timeline",
     "addEvent": "Add Event",
+    "addEventTitle": "Add Timeline Event",
+    "eventType": "Event Type",
+    "eventDetails": "Details",
+    "eventDetailsPlaceholder": "Log notes from a call, meeting, etc.",
+    "attachments": "Attachments",
+    "uploadAttachment": "Attach files (mock upload)",
+    "attachmentSize": "({size} KB)",
+    "annotationPlaceholder": "Add an annotation...",
+    "saveAnnotation": "Save Note",
+    "flagEvent": "Flag Event",
+    "unflagEvent": "Unflag Event",
+    "noTimeline": "No timeline events recorded.",
     "changeAddressTitle": "Change Customer Address",
+    "renewPolicy": "Renew Policy",
+    "aiReview": "AI Review",
+    "aiReviewTitle": "AI Policy Review",
+    "forPolicy": "For policy:",
+    "aiAnalyzing": "Analyzing with AI...",
+    "aiNoResponse": "No response from AI. Please try again later.",
+    "renewalNeeded": "Renewal Needed",
     "renewalModalTitle": "Renew Policy",
-    "forPolicy": "For Policy",
     "newEndDate": "New End Date",
     "confirmRenewal": "Confirm Renewal",
     "attentionFlagTitle": "Set Attention Flag",
     "attentionReason": "Reason for Flag",
-    "attentionReasonPlaceholder": "e.g., High value client, needs quarterly review.",
-    "addEventTitle": "Add Timeline Event",
-    "eventType": "Event Type",
-    "eventDetails": "Details",
-    "eventDetailsPlaceholder": "Log a call, meeting notes, etc.",
-    "attachments": "Attachments",
-    "attachmentSize": "({size} KB)",
-    "uploadAttachment": "Upload a mock file.",
-    "annotationPlaceholder": "Add an annotation...",
-    "saveAnnotation": "Save Note",
-    "unflagEvent": "Unflag",
-    "flagEvent": "Flag Event",
-    "noTimeline": "No timeline events recorded for this customer yet.",
-    "renewalNeeded": "Renewal Needed",
-    "aiReview": "AI Review",
-    "hideDetails": "Hide Details",
+    "attentionReasonPlaceholder": "e.g., High-value client, follow-up required.",
+    "sms": "SMS",
     "showDetails": "Show Details",
+    "hideDetails": "Hide Details",
     "coverages": "Coverages",
     "limit": "Limit",
-    "deductible": "Deductible",
-    "aiAnalyzing": "Analyzing with AI...",
-    "aiNoResponse": "No recommendation was returned from the AI.",
-    "aiReviewTitle": "AI Policy Review"
-  },
-  "leads": {
-    "searchPlaceholder": "Search by name or email...",
-    "allStatuses": "All Statuses",
-    "allSources": "All Sources",
-    "source": "Source",
-    "createdDate": "Created Date",
-    "viewDetails": "View Details",
-    "noLeadsFound": "No leads found matching your criteria.",
-    "leadDetails": "Lead Details",
-    "policyInterest": "Policy Interest"
-  },
-  "leadsDashboard": {
-    "kpis": {
-      "totalLeads": "Total Leads",
-      "newLeads": "New Leads",
-      "conversionRate": "Conversion Rate",
-      "closedDeals": "Closed Deals"
-    },
-    "charts": {
-      "sourceTitle": "Leads by Source",
-      "funnelTitle": "Lead Status Funnel"
-    }
+    "deductible": "Deductible"
   },
   "gapAnalysis": {
-    "description": "Upload a client's policy document (PDF, JPG) to start the analysis.",
-    "fetchingPolicy": "Fetching policy details...",
-    "analyzing": "Analyzing with AI...",
+    "description": "Upload a client's existing policy document to analyze for coverage gaps using AI.",
     "dragDrop": "Drag & drop your file here, or",
     "browse": "browse",
-    "fileTypes": "PDF, PNG, JPG up to 10MB",
-    "userNeedsTitle": "Describe Client Needs",
-    "userNeedsPlaceholder": "e.g., Client just had a baby and is worried about life coverage. They also bought a new, more expensive car and want to ensure it's fully protected.",
-    "analyzeGaps": "Analyze Gaps with AI",
-    "resultsTitle": "Gap Analysis Results",
+    "fileTypes": "PNG, JPG, or PDF",
+    "fetchingPolicy": "Extracting Policy Data...",
     "extractedInfo": "Extracted Policy Information",
     "policyHolder": "Policyholder",
-    "insuredItems": "Insured Items",
+    "insuredItems": "Insured Items & Coverages",
+    "userNeedsTitle": "Describe Client Needs",
+    "userNeedsPlaceholder": "e.g., 'Client just bought a new, more expensive car and is worried about theft. They also have a teenage driver starting soon.'",
+    "analyzeGaps": "Analyze Gaps with AI",
+    "analyzing": "Analyzing...",
+    "resultsTitle": "Gap Analysis Results",
+    "coverageGaps": "Coverage Gaps",
     "current": "Current",
     "recommended": "Recommended",
-    "coverageGaps": "Coverage Gaps",
     "upsellOpportunities": "Upsell Opportunities",
     "crossSellOpportunities": "Cross-Sell Opportunities"
   },
   "socialComposer": {
     "aiHelper": {
       "title": "AI Content Helper",
-      "placeholder": "Enter a topic, e.g., 'the importance of home insurance'",
+      "placeholder": "Enter a topic, e.g., 'the importance of life insurance'",
       "button": "Generate"
     },
-    "placeholder": "What's on your mind, agent?",
+    "placeholder": "What's on your mind?",
     "schedule": "Schedule Post",
-    "platforms": "Publish to",
+    "platforms": "Platforms",
     "preview": "Preview",
     "templatesTitle": "Use a Template",
     "templates": [
       {
-        "title": "Home Insurance Reminder",
-        "content": "Is your home properly protected? 🏠 Don't wait for a disaster to strike. Let's review your home insurance policy to ensure you have the coverage you need. #HomeInsurance #ProtectYourHome #InsuranceAgent"
+        "title": "Home Insurance Tip",
+        "content": "Did you know regular home maintenance can lower your insurance premiums? 🏡 Keep your roof in good shape and check for leaks! #InsuranceTips #Homeowner"
       },
       {
-        "title": "Auto Insurance Quote",
-        "content": "Looking for better car insurance rates? 🚗 I can help you compare quotes and find the best coverage for your budget. Send me a message for a free, no-obligation quote! #AutoInsurance #CarInsurance #FreeQuote"
+        "title": "Auto Safety Reminder",
+        "content": "Safe driving pays off! A clean driving record can lead to significant discounts on your auto insurance. Drive safe! 🚗 #AutoInsurance #SafeDriver"
       }
     ]
   },
@@ -191,12 +193,6 @@
   },
   "analytics": {
     "title": "Campaign Analytics",
-    "kpis": {
-      "totalSpend": "Total Spend",
-      "totalImpressions": "Total Impressions",
-      "ctr": "Click-Through Rate (CTR)",
-      "totalConversions": "Total Conversions"
-    },
     "noData": "No data available for the selected filters.",
     "filters": {
       "campaign": "Campaign",
@@ -210,26 +206,82 @@
       "language": "Language",
       "allLanguages": "All Languages"
     },
+    "kpis": {
+      "totalSpend": "Total Spend",
+      "totalImpressions": "Total Impressions",
+      "ctr": "Click-Through Rate (CTR)",
+      "totalConversions": "Total Conversions"
+    },
     "charts": {
       "performanceTitle": "Performance Over Time",
+      "spendTitle": "Spend by Network",
       "impressions": "Impressions",
       "clicks": "Clicks",
-      "conversions": "Conversions",
-      "spendTitle": "Spend by Network"
+      "conversions": "Conversions"
+    }
+  },
+  "settings": {
+    "socialConnections": {
+      "title": "Social Connections",
+      "description": "Connect your social media accounts to enable post scheduling and lead capture.",
+      "connect": "Connect",
+      "disconnect": "Disconnect",
+      "modalTitle": "Allow AgentOS to connect to {platform}",
+      "permissionsTitle": "AgentOS will be able to:",
+      "cancel": "Cancel",
+      "allow": "Allow & Connect",
+      "platforms": {
+        "facebook": {
+          "scopes": [
+            "Read your profile and posts",
+            "Publish new posts on your behalf",
+            "Access comments and messages on your page"
+          ]
+        },
+        "instagram": {
+          "scopes": [
+            "Read your profile and posts",
+            "Publish new posts and stories",
+            "Access insights for your content"
+          ]
+        },
+        "linkedin": {
+          "scopes": [
+            "Read your profile and company page posts",
+            "Publish new posts to your profile or page"
+          ]
+        },
+        "x": {
+          "scopes": [
+            "Read your profile and Tweets",
+            "Post new Tweets on your behalf"
+          ]
+        }
+      }
+    },
+    "gtm": {
+      "title": "Google Tag Manager",
+      "description": "Enter your GTM Container ID to enable advanced analytics tracking."
     }
   },
   "userManagement": {
     "inviteUser": "Invite User",
+    "inviteModalTitle": "Invite New User",
+    "sendInvite": "Send Invite",
     "users": "Users",
     "auditLogs": "Audit Logs",
-    "confirmRemove": "Are you sure you want to remove {userName}?",
-    "cannotRemoveSelf": "You cannot remove your own account.",
     "role": "Role",
     "agent": "Agent",
     "admin": "Admin",
     "removeUser": "Remove",
-    "inviteModalTitle": "Invite a New User",
-    "sendInvite": "Send Invite",
+    "confirmRemove": "Are you sure you want to remove {userName}?",
+    "cannotRemoveSelf": "You cannot remove yourself.",
+    "filters": {
+      "searchByNameEmail": "Search by name or email...",
+      "allRoles": "All Roles",
+      "searchLogs": "Search by actor or target...",
+      "allActions": "All Actions"
+    },
     "log": {
       "timestamp": "Timestamp",
       "actor": "Actor",
@@ -242,140 +294,90 @@
         "role_changed": "Role Changed"
       }
     },
-    "filters": {
-      "searchByNameEmail": "Search by name or email...",
-      "allRoles": "All Roles",
-      "searchLogs": "Search logs by actor or target...",
-      "allActions": "All Actions"
-    },
     "bulkActions": {
       "selected": "{count} selected",
       "changeRoleTo": "Change role to...",
-      "deleteSelected": "Delete Selected"
+      "deleteSelected": "Delete"
     }
-  },
-  "settings": {
-    "socialConnections": {
-      "title": "Social Connections",
-      "description": "Connect your social media accounts to enable post scheduling and lead generation.",
-      "connect": "Connect",
-      "disconnect": "Disconnect",
-      "modalTitle": "Allow AgentOS to connect to {platform}?",
-      "permissionsTitle": "This will allow AgentOS to:",
-      "cancel": "Cancel",
-      "allow": "Allow",
-      "platforms": {
-        "facebook": {
-          "scopes": [
-            "View your profile and posts",
-            "Publish posts on your behalf",
-            "Access leads from your ad campaigns"
-          ]
-        },
-        "instagram": {
-          "scopes": [
-            "View your profile",
-            "Publish posts and stories",
-            "Access your business account insights"
-          ]
-        },
-        "linkedin": {
-          "scopes": [
-            "View your profile and connections",
-            "Publish posts to your feed",
-            "Create and manage ad campaigns"
-          ]
-        },
-        "x": {
-          "scopes": [
-            "View your profile and tweets",
-            "Post tweets for you"
-          ]
-        }
-      }
-    },
-    "gtm": {
-      "title": "Google Tag Manager",
-      "description": "Enter your GTM Container ID to enable advanced analytics tracking. (e.g., GTM-XXXXXXX)"
-    }
-  },
-  "onboarding": {
-    "title": "Welcome, {name}!",
-    "subtitle": "We're excited to have you on board. Here are some of the key features to get you started.",
-    "features": {
-      "crm": {
-        "title": "Micro-CRM",
-        "description": "Manage all your customer relationships, policies, and interactions in one place."
-      },
-      "gapAnalysis": {
-        "title": "AI Gap Analysis",
-        "description": "Upload policy documents and let our AI find upsell and cross-sell opportunities for you."
-      },
-      "social": {
-        "title": "Social Marketing",
-        "description": "Create social media posts, generate content with AI, and capture leads directly."
-      }
-    },
-    "checklist": {
-      "title": "Your Quick Start Checklist",
-      "profile": "Complete your agent profile",
-      "policy": "Analyze your first policy",
-      "campaign": "Create a social media post",
-      "allDone": "All done! You're ready to supercharge your agency.",
-      "getStarted": "Go to Dashboard"
-    }
-  },
-  "leadCapture": {
-    "invalidCampaign": "Campaign Not Found",
-    "thankYouTitle": "Thank You!",
-    "thankYouMessage": "Your information has been submitted. An agent will be in touch with you shortly.",
-    "title": "Get Your Free Insurance Quote",
-    "subtitle": "Fill out the form below and one of our expert agents will contact you to discuss your needs.",
-    "form": {
-      "name": "Full Name",
-      "email": "Email",
-      "phone": "Phone Number"
-    },
-    "submitButton": "Get My Quote"
   },
   "micrositeBuilder": {
-    "title": "Microsite Builder",
+    "save": "Save Microsite",
     "structure": "Site Structure",
     "siteSettings": "Site Settings",
-    "editor": {
-      "title": "Title",
-      "subtitle": "Subtitle",
-      "cta": "Call to Action Text",
-      "productName": "Product Name",
-      "productDescription": "Description",
-      "addProduct": "Add Product",
-      "testimonialQuote": "Quote",
-      "testimonialAuthor": "Author",
-      "addTestimonial": "Add Testimonial",
-      "faqQuestion": "Question",
-      "faqAnswer": "Answer",
-      "addFaq": "Add FAQ Item",
-      "generateWithAi": "Generate with AI"
-    },
+    "addBlock": "Add a new block...",
     "settings": {
-      "companyName": "Company / Agent Name",
-      "themeColor": "Theme Color"
+      "siteTitle": "Site Title",
+      "themeColor": "Theme Color",
+      "contactEmail": "Contact Email",
+      "contactPhone": "Contact Phone",
+      "address": "Address",
+      "facebookUrl": "Facebook URL",
+      "linkedinUrl": "LinkedIn URL",
+      "xUrl": "X (Twitter) URL"
+    },
+    "footer": {
+      "contactUs": "Contact Us",
+      "followUs": "Follow Us",
+      "copyright": "All Rights Reserved."
     }
   },
   "executive": {
-    "agencyGrowth": "Agency Growth (Premium & Policies)",
+    "agencyGrowth": "Agency Growth (Revenue & Policies)",
     "productMix": "Product Mix",
     "claimsTrend": "Claims Trend",
     "leadFunnel": "Lead Conversion Funnel",
     "campaignRoi": "Campaign ROI",
     "riskExposure": "Risk Exposure Summary"
   },
+  "onboarding": {
+    "title": "Welcome, {name}!",
+    "subtitle": "Let's get you set up. Here are the core features of your new workspace.",
+    "features": {
+      "crm": {
+        "title": "Unified CRM",
+        "description": "Manage all your customers and leads in one place, from first contact to active policy."
+      },
+      "gapAnalysis": {
+        "title": "AI Gap Analysis",
+        "description": "Upload policy documents and let AI find up-sell and cross-sell opportunities for you."
+      },
+      "social": {
+        "title": "Social Marketing",
+        "description": "Create and schedule social media posts to generate new leads automatically."
+      }
+    },
+    "checklist": {
+      "title": "Quick Start Checklist",
+      "profile": "Complete your agent profile",
+      "policy": "Analyze your first policy",
+      "campaign": "Create a social media post",
+      "allDone": "All done! You're ready to go.",
+      "getStarted": "Go to Dashboard"
+    }
+  },
+  "leadCapture": {
+    "title": "Get a Free Insurance Quote",
+    "subtitle": "Fill out the form below and one of our expert agents will be in touch shortly.",
+    "invalidCampaign": "This campaign is no longer active.",
+    "thankYouTitle": "Thank You!",
+    "thankYouMessage": "Your request has been submitted. We will contact you soon.",
+    "submitButton": "Submit Request",
+    "form": {
+      "name": "Full Name",
+      "email": "Email Address",
+      "phone": "Phone Number"
+    }
+  },
+  "validation": {
+    "required": "{fieldName} is required.",
+    "invalidEmail": "Please enter a valid email address.",
+    "policyNumberRequired": "Policy number is required."
+  },
   "policyTypes": {
-    "auto": "Auto",
-    "home": "Home",
-    "life": "Life",
-    "health": "Health",
-    "business": "Business"
+    "auto": "Auto Insurance",
+    "home": "Home Insurance",
+    "life": "Life Insurance",
+    "health": "Health Insurance"
   },
   "statusLabels": {
     "new": "New",
@@ -400,10 +402,5 @@
     "previous": "Previous",
     "next": "Next",
     "pageOf": "Page {currentPage} of {totalPages}"
-  },
-  "validation": {
-    "required": "{fieldName} is required.",
-    "invalidEmail": "Please enter a valid email address.",
-    "policyNumberRequired": "Policy number is required."
   }
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { MicrositeBlock, MicrositeSettings } from '../../types';
+import { MicrositeBlock, MicrositeConfig } from '../../types';
 import HeroBlockPreview from './blocks/HeroBlockPreview';
 import ProductsBlockPreview from './blocks/ProductsBlockPreview';
 import TestimonialsBlockPreview from './blocks/TestimonialsBlockPreview';
@@ -10,10 +10,10 @@ import MicrositeFooter from './MicrositeFooter';
 
 interface SitePreviewProps {
     blocks: MicrositeBlock[];
-    settings: MicrositeSettings;
+    config: MicrositeConfig;
 }
 
-const SitePreview: React.FC<SitePreviewProps> = ({ blocks, settings }) => {
+const SitePreview: React.FC<SitePreviewProps> = ({ blocks, config }) => {
     const renderBlock = (block: MicrositeBlock) => {
         switch (block.type) {
             case 'hero': return <HeroBlockPreview {...block} />;
@@ -26,16 +26,16 @@ const SitePreview: React.FC<SitePreviewProps> = ({ blocks, settings }) => {
     };
 
     return (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg">
-           <MicrositeHeader settings={settings} />
-            <main className="p-4">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full">
+           <MicrositeHeader config={config} blocks={blocks} />
+            <main>
                 {blocks.map(block => (
-                    <div key={block.id}>
+                    <section key={block.id} id={block.id}>
                         {renderBlock(block)}
-                    </div>
+                    </section>
                 ))}
             </main>
-            <MicrositeFooter settings={settings} />
+            <MicrositeFooter config={config} />
         </div>
     );
 };

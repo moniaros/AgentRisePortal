@@ -10,10 +10,11 @@ export const fetchDashboardData = async () => {
         policyDistribution: { name: string; value: number }[];
     }>(resolve => {
         setTimeout(() => {
-            const policyDist = MOCK_CUSTOMERS.flatMap(c => c.policies).reduce((acc, policy) => {
+            // FIX: Explicitly type the accumulator for the reduce function to ensure correct type inference.
+            const policyDist = MOCK_CUSTOMERS.flatMap(c => c.policies).reduce<Record<string, number>>((acc, policy) => {
                 acc[policy.type] = (acc[policy.type] || 0) + 1;
                 return acc;
-            }, {} as Record<string, number>);
+            }, {});
             
             resolve({
                 newLeadsCount: MOCK_LEADS.filter(l => l.status === 'new').length,

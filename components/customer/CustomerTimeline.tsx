@@ -111,7 +111,7 @@ const CustomerTimeline: React.FC<CustomerTimelineProps> = ({ timeline, onAddAnno
         const sortedTimeline = [...timeline].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
         
         // FIX: Add explicit type for the accumulator in the reduce function to prevent type errors.
-        const groups = sortedTimeline.reduce((acc: Record<string, { title: string, events: TimelineEvent[] }>, event) => {
+        const groups = sortedTimeline.reduce<Record<string, { title: string, events: TimelineEvent[] }>>((acc, event) => {
             const date = new Date(event.date);
             const groupKey = `${date.getFullYear()}-${date.getMonth()}`;
             if (!acc[groupKey]) {

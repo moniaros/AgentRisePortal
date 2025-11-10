@@ -1,202 +1,135 @@
-import React, { useState } from 'react';
-import { MicrositeBlock, Product, Testimonial, FaqItem } from '../../types';
-import { useLocalization } from '../../hooks/useLocalization';
-import { GoogleGenAI } from '@google/genai';
-import { ICONS } from '../../constants';
+import React from 'react';
+import { MicrositeBlock, HeroBlock, ProductsBlock, ProductItem, TestimonialsBlock, TestimonialItem, FaqBlock, FaqItem, ContactBlock } from '../../types';
 
 interface BlockEditorProps {
     block: MicrositeBlock;
     onUpdate: (updatedBlock: MicrositeBlock) => void;
 }
 
-const generateId = (prefix: string) => `${prefix}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-
-const LabeledInput: React.FC<{ label: string; name: string; value: string; onUpdate: (name: string, value: string) => void; onAiGenerate?: () => void; isAiLoading?: boolean; type?: 'input' | 'textarea' }> = ({ label, name, value, onUpdate, onAiGenerate, isAiLoading, type = 'input' }) => {
-    const { t } = useLocalization();
-    const Component = type === 'input' ? 'input' : 'textarea';
-    
-    return (
-        <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{label}</label>
-            <div className="relative mt-1">
-                 <Component
-                    name={name}
-                    value={value}
-                    onChange={(e) => onUpdate(name, e.target.value)}
-                    className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 pr-10"
-                    rows={type === 'textarea' ? 3 : undefined}
-                />
-                {onAiGenerate && (
-                    <button
-                        type="button"
-                        onClick={onAiGenerate}
-                        disabled={isAiLoading}
-                        className="absolute inset-y-0 right-0 flex items-center pr-3 text-purple-500 hover:text-purple-700 disabled:opacity-50"
-                        title={t('micrositeBuilder.editor.generateWithAi') as string}
-                    >
-                        {isAiLoading ? (
-                            <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-purple-500"></div>
-                        ) : (
-                           React.cloneElement(ICONS.magic, { className: "h-5 w-5" })
-                        )}
-                    </button>
-                )}
-            </div>
-        </div>
-    );
-};
-
+const generateId = () => `item_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
 const BlockEditor: React.FC<BlockEditorProps> = ({ block, onUpdate }) => {
-    const { t } = useLocalization();
-    const [isAiLoading, setIsAiLoading] = useState<string | null>(null);
 
-    const handleAiGenerate = async (field: string, context?: any) => {
-        if (!process.env.API_KEY) {
-            alert("API Key not configured.");
-            return;
-        }
-        setIsAiLoading(field);
-        try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-            let prompt = '';
-
-            switch (block.type) {
-                case 'hero':
-                    if (field === 'title') prompt = `Generate a short, compelling hero banner title for an insurance agent's website. Max 5 words. Examples: "Your Trusted Insurance Partner", "Protecting Your Tomorrow, Today".`;
-                    if (field === 'subtitle') prompt = `Generate a supportive subtitle for a hero banner with the title "${block.title}". Explain the agent's value proposition. Max 15 words.`;
-                    break;
-                case 'products':
-                     if (field.startsWith('description-')) prompt = `Write a clear, one-sentence description for an insurance product named "${context.productName}". Focus on the main benefit for the customer.`;
-                    break;
-                case 'testimonials':
-                    if (field === 'quote') prompt = `Write a short, positive testimonial quote for a fictional insurance agent that sounds authentic. Focus on great customer service or peace of mind.`;
-                    break;
-                case 'faq':
-                    if (field.startsWith('answer-')) prompt = `Provide a clear and simple answer to the frequently asked question: "${context.question}". The tone should be helpful and professional for an insurance agency website.`;
-                    break;
-            }
-            
-            if (!prompt) return;
-
-            const response = await ai.models.generateContent({model: 'gemini-2.5-flash', contents: prompt});
-            const generatedText = response.text.trim().replace(/^"|"$/g, ''); // Remove quotes
-
-            if (field.includes('-')) {
-                const [fieldName, indexStr] = field.split('-');
-                const index = parseInt(indexStr, 10);
-                const arrayName = fieldName === 'answer' ? 'items' : block.type;
-                const array = (block as any)[arrayName];
-                const newArray = array.map((item: any, i: number) => i === index ? { ...item, [fieldName]: generatedText } : item);
-                onUpdate({ ...block, [arrayName]: newArray } as MicrositeBlock);
-            } else {
-                onUpdate({ ...block, [field]: generatedText } as MicrositeBlock);
-            }
-
-        } catch (error) {
-            console.error("AI Generation Error:", error);
-            alert("Failed to generate content with AI.");
-        } finally {
-            setIsAiLoading(null);
-        }
+    const handleCommonChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        onUpdate({ ...block, [e.target.name]: e.target.value });
     };
     
-    const handleChange = (name: string, value: string) => {
-        onUpdate({ ...block, [name]: value });
+    const LabeledInput: React.FC<{ label: string; name: string; value: string; onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; }> = ({ label, name, value, onChange }) => (
+        <div>
+            <label className="block text-sm font-medium">{label}</label>
+            <input
+                type="text"
+                name={name}
+                value={value}
+                onChange={onChange}
+                className="mt-1 w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
+            />
+        </div>
+    );
+
+    const renderHeroEditor = (b: HeroBlock) => (
+        <div className="space-y-4">
+            <LabeledInput label="Title" name="title" value={b.title} onChange={handleCommonChange} />
+            <LabeledInput label="Subtitle" name="subtitle" value={b.subtitle} onChange={(e) => onUpdate({ ...b, subtitle: e.target.value })} />
+            <LabeledInput label="CTA Button Text" name="ctaText" value={b.ctaText} onChange={(e) => onUpdate({ ...b, ctaText: e.target.value })} />
+        </div>
+    );
+
+    const renderProductsEditor = (b: ProductsBlock) => {
+        const handleProductChange = (index: number, field: keyof ProductItem, value: string) => {
+            const newProducts = [...b.products];
+            newProducts[index] = { ...newProducts[index], [field]: value };
+            onUpdate({ ...b, products: newProducts });
+        };
+        const addProduct = () => {
+            onUpdate({ ...b, products: [...b.products, { id: generateId(), name: '', description: '' }] });
+        };
+        const removeProduct = (index: number) => {
+            onUpdate({ ...b, products: b.products.filter((_, i) => i !== index) });
+        };
+        return (
+            <div className="space-y-4">
+                <LabeledInput label="Title" name="title" value={b.title} onChange={handleCommonChange} />
+                {b.products.map((p, i) => (
+                    <div key={p.id} className="p-2 border rounded space-y-2">
+                        <input value={p.name} onChange={(e) => handleProductChange(i, 'name', e.target.value)} placeholder="Product Name" className="w-full p-1 border rounded dark:bg-gray-600"/>
+                        <textarea value={p.description} onChange={(e) => handleProductChange(i, 'description', e.target.value)} placeholder="Description" className="w-full p-1 border rounded dark:bg-gray-600"/>
+                        <button onClick={() => removeProduct(i)} className="text-xs text-red-500">Remove</button>
+                    </div>
+                ))}
+                <button onClick={addProduct} className="text-sm text-blue-500">+ Add Product</button>
+            </div>
+        );
+    };
+    
+    const renderTestimonialsEditor = (b: TestimonialsBlock) => {
+        const handleItemChange = (index: number, field: keyof TestimonialItem, value: string) => {
+            const newItems = [...b.testimonials];
+            newItems[index] = { ...newItems[index], [field]: value };
+            onUpdate({ ...b, testimonials: newItems });
+        };
+        const addItem = () => {
+            onUpdate({ ...b, testimonials: [...b.testimonials, { id: generateId(), quote: '', author: '' }] });
+        };
+        const removeItem = (index: number) => {
+            onUpdate({ ...b, testimonials: b.testimonials.filter((_, i) => i !== index) });
+        };
+        return (
+             <div className="space-y-4">
+                <LabeledInput label="Title" name="title" value={b.title} onChange={handleCommonChange} />
+                {b.testimonials.map((item, i) => (
+                    <div key={item.id} className="p-2 border rounded space-y-2">
+                        <textarea value={item.quote} onChange={(e) => handleItemChange(i, 'quote', e.target.value)} placeholder="Quote" className="w-full p-1 border rounded dark:bg-gray-600"/>
+                        <input value={item.author} onChange={(e) => handleItemChange(i, 'author', e.target.value)} placeholder="Author" className="w-full p-1 border rounded dark:bg-gray-600"/>
+                        <button onClick={() => removeItem(i)} className="text-xs text-red-500">Remove</button>
+                    </div>
+                ))}
+                <button onClick={addItem} className="text-sm text-blue-500">+ Add Testimonial</button>
+            </div>
+        );
+    };
+    
+    const renderFaqEditor = (b: FaqBlock) => {
+        const handleItemChange = (index: number, field: keyof FaqItem, value: string) => {
+            const newItems = [...b.items];
+            newItems[index] = { ...newItems[index], [field]: value };
+            onUpdate({ ...b, items: newItems });
+        };
+        const addItem = () => {
+            onUpdate({ ...b, items: [...b.items, { id: generateId(), question: '', answer: '' }] });
+        };
+        const removeItem = (index: number) => {
+            onUpdate({ ...b, items: b.items.filter((_, i) => i !== index) });
+        };
+        return (
+             <div className="space-y-4">
+                <LabeledInput label="Title" name="title" value={b.title} onChange={handleCommonChange} />
+                {b.items.map((item, i) => (
+                    <div key={item.id} className="p-2 border rounded space-y-2">
+                        <input value={item.question} onChange={(e) => handleItemChange(i, 'question', e.target.value)} placeholder="Question" className="w-full p-1 border rounded dark:bg-gray-600"/>
+                        <textarea value={item.answer} onChange={(e) => handleItemChange(i, 'answer', e.target.value)} placeholder="Answer" className="w-full p-1 border rounded dark:bg-gray-600"/>
+                        <button onClick={() => removeItem(i)} className="text-xs text-red-500">Remove</button>
+                    </div>
+                ))}
+                <button onClick={addItem} className="text-sm text-blue-500">+ Add FAQ Item</button>
+            </div>
+        );
     };
 
-    const handleNestedChange = <T,>(
-        arrayName: string,
-        index: number,
-        name: string,
-        value: string
-    ) => {
-        const array = (block as any)[arrayName] as T[];
-        const newArray = array.map((item, i) => i === index ? { ...item, [name]: value } : item);
-        onUpdate({ ...block, [arrayName]: newArray } as MicrositeBlock);
-    };
-    
-    const addNestedItem = (arrayName: 'products' | 'testimonials' | 'items') => {
-        let newItem: Product | Testimonial | FaqItem;
-        switch (arrayName) {
-            case 'products':
-                newItem = { id: generateId('prod'), name: '', description: '' };
-                break;
-            case 'testimonials':
-                newItem = { id: generateId('test'), quote: '', author: '' };
-                break;
-            case 'items':
-                newItem = { id: generateId('faq'), question: '', answer: '' };
-                break;
-        }
-        onUpdate({ ...block, [arrayName]: [...(block as any)[arrayName], newItem] } as MicrositeBlock);
-    };
-    
-    const removeNestedItem = (arrayName: string, index: number) => {
-        const array = (block as any)[arrayName];
-        onUpdate({ ...block, [arrayName]: array.filter((_: any, i: number) => i !== index) } as MicrositeBlock);
-    };
+    const renderContactEditor = (b: ContactBlock) => (
+        <div className="space-y-4">
+            <LabeledInput label="Title" name="title" value={b.title} onChange={handleCommonChange} />
+            <LabeledInput label="Subtitle" name="subtitle" value={b.subtitle} onChange={(e) => onUpdate({ ...b, subtitle: e.target.value })} />
+        </div>
+    );
 
     switch (block.type) {
-        case 'hero':
-            return (
-                <div className="space-y-3">
-                    <LabeledInput label={t('micrositeBuilder.editor.title')} name="title" value={block.title} onUpdate={handleChange} onAiGenerate={() => handleAiGenerate('title')} isAiLoading={isAiLoading === 'title'} />
-                    <LabeledInput label={t('micrositeBuilder.editor.subtitle')} name="subtitle" value={block.subtitle} onUpdate={handleChange} onAiGenerate={() => handleAiGenerate('subtitle')} isAiLoading={isAiLoading === 'subtitle'} />
-                    <LabeledInput label={t('micrositeBuilder.editor.cta')} name="ctaText" value={block.ctaText} onUpdate={handleChange} />
-                </div>
-            );
-        case 'products':
-            return (
-                <div className="space-y-4">
-                    <LabeledInput label={t('micrositeBuilder.editor.title')} name="title" value={block.title} onUpdate={handleChange} />
-                    {block.products.map((product, index) => (
-                        <div key={product.id} className="p-3 border rounded-md dark:border-gray-600 space-y-2 relative">
-                            <button onClick={() => removeNestedItem('products', index)} className="absolute top-2 right-2 text-red-500 font-bold">&times;</button>
-                            <LabeledInput label={t('micrositeBuilder.editor.productName')} name="name" value={product.name} onUpdate={(name, value) => handleNestedChange('products', index, name, value)} />
-                            <LabeledInput label={t('micrositeBuilder.editor.productDescription')} name="description" value={product.description} onUpdate={(name, value) => handleNestedChange('products', index, name, value)} type="textarea" onAiGenerate={() => handleAiGenerate(`description-${index}`, { productName: product.name })} isAiLoading={isAiLoading === `description-${index}`} />
-                        </div>
-                    ))}
-                    <button onClick={() => addNestedItem('products')} className="text-sm text-blue-500">+ {t('micrositeBuilder.editor.addProduct')}</button>
-                </div>
-            );
-        case 'testimonials':
-            return (
-                 <div className="space-y-4">
-                    <LabeledInput label={t('micrositeBuilder.editor.title')} name="title" value={block.title} onUpdate={handleChange} />
-                    {block.testimonials.map((testimonial, index) => (
-                        <div key={testimonial.id} className="p-3 border rounded-md dark:border-gray-600 space-y-2 relative">
-                             <button onClick={() => removeNestedItem('testimonials', index)} className="absolute top-2 right-2 text-red-500 font-bold">&times;</button>
-                            <LabeledInput label={t('micrositeBuilder.editor.testimonialQuote')} name="quote" value={testimonial.quote} onUpdate={(name, value) => handleNestedChange('testimonials', index, name, value)} type="textarea" onAiGenerate={() => handleAiGenerate('quote')} isAiLoading={isAiLoading === 'quote'} />
-                            <LabeledInput label={t('micrositeBuilder.editor.testimonialAuthor')} name="author" value={testimonial.author} onUpdate={(name, value) => handleNestedChange('testimonials', index, name, value)} />
-                        </div>
-                    ))}
-                    <button onClick={() => addNestedItem('testimonials')} className="text-sm text-blue-500">+ {t('micrositeBuilder.editor.addTestimonial')}</button>
-                </div>
-            );
-         case 'faq':
-            return (
-                 <div className="space-y-4">
-                    <LabeledInput label={t('micrositeBuilder.editor.title')} name="title" value={block.title} onUpdate={handleChange} />
-                    {block.items.map((item, index) => (
-                        <div key={item.id} className="p-3 border rounded-md dark:border-gray-600 space-y-2 relative">
-                            <button onClick={() => removeNestedItem('items', index)} className="absolute top-2 right-2 text-red-500 font-bold">&times;</button>
-                            <LabeledInput label={t('micrositeBuilder.editor.faqQuestion')} name="question" value={item.question} onUpdate={(name, value) => handleNestedChange('items', index, name, value)} />
-                            <LabeledInput label={t('micrositeBuilder.editor.faqAnswer')} name="answer" value={item.answer} onUpdate={(name, value) => handleNestedChange('items', index, name, value)} type="textarea" onAiGenerate={() => handleAiGenerate(`answer-${index}`, { question: item.question })} isAiLoading={isAiLoading === `answer-${index}`} />
-                        </div>
-                    ))}
-                    <button onClick={() => addNestedItem('items')} className="text-sm text-blue-500">+ {t('micrositeBuilder.editor.addFaq')}</button>
-                </div>
-            );
-        case 'contact':
-            return (
-                <div className="space-y-3">
-                    <LabeledInput label={t('micrositeBuilder.editor.title')} name="title" value={block.title} onUpdate={handleChange} />
-                    <LabeledInput label={t('micrositeBuilder.editor.subtitle')} name="subtitle" value={block.subtitle} onUpdate={handleChange} />
-                </div>
-            );
-        default:
-            return null;
+        case 'hero': return renderHeroEditor(block);
+        case 'products': return renderProductsEditor(block);
+        case 'testimonials': return renderTestimonialsEditor(block);
+        case 'faq': return renderFaqEditor(block);
+        case 'contact': return renderContactEditor(block);
+        default: return <p>Unknown block type.</p>;
     }
 };
 
