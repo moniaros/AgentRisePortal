@@ -53,12 +53,13 @@ export const useCrmData = () => {
         setAllCustomers(allCustomers.filter(c => c.id !== customerId));
     }, [allCustomers, setAllCustomers]);
 
-    const addLead = useCallback((leadData: Omit<Lead, 'id' | 'createdAt'>) => {
+    const addLead = useCallback((leadData: Omit<Lead, 'id' | 'createdAt' | 'agencyId'>) => {
         if (!agencyId) return;
         const newLead: Lead = {
             ...leadData,
             id: `lead_${Date.now()}`,
             createdAt: new Date().toISOString(),
+            agencyId: agencyId,
         };
         setAllLeads([...allLeads, newLead]);
     }, [allLeads, setAllLeads, agencyId]);

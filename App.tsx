@@ -31,6 +31,7 @@ import NewsListing from './pages/NewsListing';
 import NewsArticleDetail from './pages/NewsArticleDetail';
 import Testimonials from './pages/Testimonials';
 import Sitemap from './pages/Sitemap';
+// FIX: Import the AutomationRules component to resolve module error.
 import AutomationRules from './pages/AutomationRules';
 
 const App: React.FC = () => {

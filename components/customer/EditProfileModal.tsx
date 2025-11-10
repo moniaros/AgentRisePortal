@@ -39,18 +39,18 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onClose, on
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium">{t('crm.form.firstName') as string}</label>
-                <input type="text" {...register("firstName", { required: (t('validation.required') as string).replace('{fieldName}', t('crm.form.firstName') as string) })} className={`w-full p-2 border rounded dark:bg-gray-700 ${errors.firstName ? 'border-red-500' : 'dark:border-gray-600'}`} />
+                <input type="text" {...register("firstName", { required: (t('validation.required', {fieldName: t('crm.form.firstName')}) as string) })} className={`w-full p-2 border rounded dark:bg-gray-700 ${errors.firstName ? 'border-red-500' : 'dark:border-gray-600'}`} />
                 {renderError(errors.firstName)}
               </div>
               <div>
                 <label className="block text-sm font-medium">{t('crm.form.lastName') as string}</label>
-                <input type="text" {...register("lastName", { required: (t('validation.required') as string).replace('{fieldName}', t('crm.form.lastName') as string) })} className={`w-full p-2 border rounded dark:bg-gray-700 ${errors.lastName ? 'border-red-500' : 'dark:border-gray-600'}`} />
+                <input type="text" {...register("lastName", { required: (t('validation.required', {fieldName: t('crm.form.lastName')}) as string) })} className={`w-full p-2 border rounded dark:bg-gray-700 ${errors.lastName ? 'border-red-500' : 'dark:border-gray-600'}`} />
                 {renderError(errors.lastName)}
               </div>
             </div>
             <div>
               <label className="block text-sm font-medium">{t('crm.form.email') as string}</label>
-              <input type="email" {...register("email", { required: (t('validation.required') as string).replace('{fieldName}', t('crm.form.email') as string), pattern: { value: /^\S+@\S+$/i, message: t('validation.invalidEmail') as string } })} className={`w-full p-2 border rounded dark:bg-gray-700 ${errors.email ? 'border-red-500' : 'dark:border-gray-600'}`} />
+              <input type="email" {...register("email", { required: (t('validation.required', {fieldName: t('crm.form.email')}) as string), pattern: { value: /^\S+@\S+$/i, message: t('validation.invalidEmail') as string } })} className={`w-full p-2 border rounded dark:bg-gray-700 ${errors.email ? 'border-red-500' : 'dark:border-gray-600'}`} />
               {renderError(errors.email)}
             </div>
             <div>
