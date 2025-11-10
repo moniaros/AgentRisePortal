@@ -1,0 +1,10 @@
+{
+  "templates": [
+    {
+      "id": "renewal-15-day-sms",
+      "name": "15-Day SMS Reminder",
+      "en": "Hi {{policyholderName}}, your policy {{policyNumber}} expires on {{expiryDate}}. Please contact {{agentName}} at {{agentPhone}} to renew. Thanks!",
+      "el": "Γεια σας {{policyholderName}}, το συμβόλαιό σας {{policyNumber}} λήγει στις {{expiryDate}}. Επικοινωνήστε με τον/την {{agentName}} στο {{agentPhone}} για ανανέωση. Ευχαριστούμε!"
+    }
+  ]
+}

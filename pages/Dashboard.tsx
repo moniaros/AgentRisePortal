@@ -34,7 +34,7 @@ const Dashboard: React.FC = () => {
 
                 // Run the renewal automation rules engine
                 // In a real app, this would be a backend process, but we simulate it on load here.
-                const { newTasks, updatedLog } = runRenewalChecks(MOCK_CUSTOMERS, MOCK_USERS, MOCK_REMINDER_LOG, translations);
+                const { newTasks, updatedLog } = await runRenewalChecks(MOCK_CUSTOMERS, MOCK_USERS, MOCK_REMINDER_LOG, translations);
                 setAutomatedTasks(newTasks);
                 // In a real app, we'd persist the updatedLog. Here we just update the in-memory mock.
                 MOCK_REMINDER_LOG.length = 0;

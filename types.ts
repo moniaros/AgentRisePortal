@@ -1,6 +1,4 @@
-// types.ts
-// FIX: Import ReactNode to be used for component types.
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
 export enum Language {
   EN = 'en',
@@ -192,17 +190,82 @@ export interface AutomatedTask {
 }
 
 export interface ReminderLogEntry {
-    logKey: string; // e.g., policyId_30_days
+    logKey: string; // e.g., ruleId_policyId
     policyId: string;
-    reminderInterval: number;
+    ruleId: string;
     sentAt: string;
+}
+
+export interface AutomationStats {
+    totalActiveRules: number;
+    rulesExecutedToday: number;
+    successRate: number;
+}
+
+export interface RuleExecutionLog {
+    id: string;
+    ruleName: string;
+    category: string;
+    executionTime: string;
+    status: 'Success' | 'Failed';
+    affectedEntity: string;
+}
+
+export interface EmailTemplate {
+    id: string;
+    name: string;
+    en: { subject: string; body: string; };
+    el: { subject: string; body: string; };
+}
+
+export interface SmsTemplate {
+    id: string;
+    name: string;
+    en: string;
+    el: string;
+}
+
+// Rules Engine Types
+export type RuleCategory = 'RENEWAL_REMINDER' | 'PAYMENT_REMINDER' | 'LEAD_ASSIGNMENT' | 'TASK_CREATION';
+export type TriggerEventType = 'POLICY_EXPIRING_SOON' | 'NEW_LEAD_CREATED' | 'PAYMENT_DUE' | 'POLICY_CREATED';
+export type ConditionOperator = 'EQUALS' | 'NOT_EQUALS' | 'GREATER_THAN' | 'LESS_THAN' | 'CONTAINS' | 'IN' | 'IS_EMPTY';
+export type ActionType = 'SEND_EMAIL' | 'SEND_SMS' | 'CREATE_TASK' | 'ASSIGN_LEAD';
+
+export interface Trigger {
+    eventType: TriggerEventType;
+    parameters?: Record<string, any>;
+}
+
+export interface Condition {
+    field: string;
+    operator: ConditionOperator;
+    value: any;
+}
+
+export interface Action {
+    actionType: ActionType;
+    target: 'AGENT' | 'CUSTOMER' | 'SYSTEM';
+    template?: string;
+    parameters?: Record<string, any>;
+}
+
+export interface RuleDefinition {
+    id: string;
+    name: string;
+    description: string;
+    category: RuleCategory;
+    trigger: Trigger;
+    conditions: Condition[];
+    actions: Action[];
+    priority: number;
+    isEnabled: boolean;
+    agencyId: string;
 }
 
 // Social Composer & Ads types
 export interface SocialPlatform {
     key: string;
     name: string;
-    // FIX: Changed type from JSX.Element to ReactNode to avoid namespace error.
     icon: ReactNode;
 }
 
