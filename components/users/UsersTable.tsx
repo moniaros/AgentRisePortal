@@ -40,7 +40,7 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, selectedUserIds, onSelec
                 className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                 checked={isAllSelected}
                 // Fix: Ensure the ref callback doesn't return a value to match the expected `void` return type.
-                ref={el => { if (el) el.indeterminate = isIndeterminate }}
+                ref={el => { if (el) el.indeterminate = isIndeterminate; }}
                 onChange={onSelectAllUsers}
               />
             </th>

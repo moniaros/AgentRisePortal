@@ -45,7 +45,7 @@ const MicrositeFooter: React.FC<MicrositeFooterProps> = ({ config }) => {
                 </div>
             </div>
              <div className="border-t dark:border-gray-700 py-4 text-center text-xs">
-                &copy; {new Date().getFullYear()} {config.siteTitle}. {t('micrositeBuilder.footer.copyright')}
+                &copy; {new Date().getFullYear()} {config.siteTitle}. {t('micrositeBuilder.footer.copyright') as string}
             </div>
         </footer>
     );
