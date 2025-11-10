@@ -28,7 +28,8 @@ const Analytics: React.FC = () => {
     const filteredData = useMemo(() => {
         if (!analyticsData || !campaigns) return [];
         
-        const campaignMap = new Map(campaigns.map(c => [c.id, c]));
+        // FIX: Explicitly type campaignMap to ensure correct type inference for campaign objects.
+        const campaignMap: Map<string, Campaign> = new Map(campaigns.map(c => [c.id, c]));
         const endDate = new Date();
         const startDate = new Date();
         startDate.setDate(endDate.getDate() - filters.period);
@@ -49,7 +50,8 @@ const Analytics: React.FC = () => {
     }, [analyticsData, campaigns, filters]);
 
     const aggregatedData = useMemo(() => {
-        const campaignMap = new Map(campaigns.map(c => [c.id, c]));
+        // FIX: Explicitly type campaignMap to ensure correct type inference for campaign objects.
+        const campaignMap: Map<string, Campaign> = new Map(campaigns.map(c => [c.id, c]));
 
         const totalSpend = filteredData.reduce((sum, d) => sum + d.spend, 0);
         const totalImpressions = filteredData.reduce((sum, d) => sum + d.impressions, 0);
@@ -57,13 +59,15 @@ const Analytics: React.FC = () => {
         const totalConversions = filteredData.reduce((sum, d) => sum + d.conversions, 0);
         const ctr = totalImpressions > 0 ? (totalClicks / totalImpressions) * 100 : 0;
 
-        const spendByNetwork = filteredData.reduce((acc, d) => {
+        const spendByNetwork = filteredData.reduce<Record<string, number>>((acc, d) => {
             const network = campaignMap.get(d.campaignId)?.network || 'unknown';
             acc[network] = (acc[network] || 0) + d.spend;
             return acc;
-        }, {} as { [key: string]: number });
+        }, {});
         
-        const performanceOverTime = filteredData.reduce((acc, d) => {
+        // FIX: Use a generic on reduce to ensure the accumulator's type is inferred correctly.
+        // This prevents Object.values from returning unknown[] and fixes downstream errors.
+        const performanceOverTime = filteredData.reduce<Record<string, { date: string; impressions: number; clicks: number; conversions: number; }>>((acc, d) => {
             if (!acc[d.date]) {
                 acc[d.date] = { date: d.date, impressions: 0, clicks: 0, conversions: 0 };
             }
@@ -71,7 +75,7 @@ const Analytics: React.FC = () => {
             acc[d.date].clicks += d.clicks;
             acc[d.date].conversions += d.conversions;
             return acc;
-        }, {} as { [key: string]: { date: string; impressions: number; clicks: number; conversions: number; } });
+        }, {});
 
         return {
             totalSpend,
@@ -80,7 +84,8 @@ const Analytics: React.FC = () => {
             totalConversions,
             ctr,
             spendByNetwork: Object.entries(spendByNetwork).map(([name, value]) => ({ name, spend: value })),
-            performanceOverTime: Object.values(performanceOverTime).sort((a,b) => new Date(a.date).getTime() - new Date(b.date).getTime()),
+            // FIX: Explicitly type the arguments of the sort function. Object.values() can return `unknown[]`, so this allows accessing properties safely.
+            performanceOverTime: Object.values(performanceOverTime).sort((a: { date: string },b: { date: string }) => new Date(a.date).getTime() - new Date(b.date).getTime()),
         };
     }, [filteredData, campaigns]);
     

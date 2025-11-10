@@ -1,3 +1,4 @@
+
 {
   "nav": {
     "dashboard": "Dashboard",
@@ -136,6 +137,26 @@
     "errorContentRequired": "Post content cannot be empty.",
     "errorCharLimit": "Character limit exceeded.",
     "errorFutureDate": "Scheduled date must be in the future.",
+    "selectPlatform": "Post to Platform",
+    "notConnected": "Not Connected",
+    "connectAccount": "Connect Account",
+    "posting": "Posting...",
+    "scheduling": "Scheduling...",
+    "retry": "Retry",
+    "reauthenticate": "Re-authenticate",
+    "errors": {
+      "title": "Could Not Complete Action",
+      "POST_FAILED_message": "We couldn't publish your post to {platform}.",
+      "POST_FAILED_guidance": "Please check your internet connection and try again. If the problem persists, the service may be temporarily unavailable.",
+      "AUTH_ERROR_message": "Your connection to {platform} has expired or is invalid.",
+      "AUTH_ERROR_guidance": "Please re-authenticate your account in the settings to continue posting.",
+      "RATE_LIMIT_message": "You are posting too frequently to {platform}.",
+      "RATE_LIMIT_guidance": "Please wait a few minutes before trying to post again. Social networks limit the number of posts in a short period.",
+      "UNSUPPORTED_FEATURE_message": "Scheduling posts is not supported for {platform}.",
+      "UNSUPPORTED_FEATURE_guidance": "You can post this immediately, or choose a different platform that supports scheduling.",
+      "NOT_CONNECTED_message": "The selected account for {platform} is not connected.",
+      "NOT_CONNECTED_guidance": "Please connect your account in the settings before posting."
+    },
     "templates": [
       {
         "title": "New Driver Discount",

@@ -9,9 +9,8 @@ interface State {
 }
 
 class ErrorBoundary extends Component<Props, State> {
-  // FIX: Refactored to use a constructor for state and method binding.
-  // This is a more robust pattern that avoids potential 'this' context issues
-  // with certain build tool configurations.
+  // FIX: Refactored to use a standard constructor for state initialization and method binding.
+  // This is a more robust pattern, ensuring compatibility even if class properties are not configured in the build setup.
   constructor(props: Props) {
     super(props);
     this.state = { hasError: false };
