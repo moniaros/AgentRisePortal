@@ -18,8 +18,15 @@ export enum UserRole {
 
 export interface User {
     id: string;
-    name: string;
+    name: string; // Corresponds to PartyName in ACORD
+    jobTitle?: string;
     email: string;
+    contact?: {
+        workPhone?: string;
+        mobilePhone?: string;
+    };
+    officeLocation?: string;
+    department?: string;
     role: UserRole;
     agencyId: string;
 }

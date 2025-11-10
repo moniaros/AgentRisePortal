@@ -455,6 +455,17 @@
     "pages": "Κύριες Σελίδες",
     "newsArticles": "Άρθρα Νέων"
   },
+  "profile": {
+    "title": "Προφίλ Χρήστη",
+    "jobTitle": "Τίτλος Εργασίας",
+    "department": "Τμήμα",
+    "officeLocation": "Τοποθεσία Γραφείου",
+    "workPhone": "Τηλέφωνο Εργασίας",
+    "mobilePhone": "Κινητό Τηλέφωνο",
+    "personalInfo": "Προσωπικές Πληροφορίες",
+    "contactDetails": "Στοιχεία Επικοινωνίας",
+    "updateSuccess": "Το προφίλ ενημερώθηκε με επιτυχία!"
+  },
   "policyTypes": {
     "auto": "Ασφάλεια Αυτοκινήτου",
     "home": "Ασφάλεια Κατοικίας",

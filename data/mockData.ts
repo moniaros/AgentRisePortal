@@ -1,9 +1,46 @@
 import { Customer, Lead, User, PolicyType, UserRole, Language, CampaignObjective, AuditLog, AnalyticsRecord, ExecutiveData, LeadStatus, NewsArticle, Testimonial } from '../types';
 
 export const MOCK_USERS: User[] = [
-    { id: 'user_1', name: 'John Agent', email: 'john.agent@example.com', role: UserRole.AGENT, agencyId: 'agency_1' },
-    { id: 'user_2', name: 'Jane Admin', email: 'moniaros@gmail.com', role: UserRole.ADMIN, agencyId: 'agency_1' },
-    { id: 'user_3', name: 'Peter Broker', email: 'peter.broker@example.com', role: UserRole.AGENT, agencyId: 'agency_2' },
+    { 
+        id: 'user_1', 
+        name: 'John Agent', 
+        email: 'john.agent@example.com', 
+        role: UserRole.AGENT, 
+        agencyId: 'agency_1',
+        jobTitle: 'Senior Agent',
+        department: 'Sales',
+        officeLocation: 'Scranton Branch',
+        contact: {
+            workPhone: '555-0100-101',
+            mobilePhone: '555-0199-101'
+        }
+    },
+    { 
+        id: 'user_2', 
+        name: 'Jane Admin', 
+        email: 'moniaros@gmail.com', 
+        role: UserRole.ADMIN, 
+        agencyId: 'agency_1',
+        jobTitle: 'Office Manager',
+        department: 'Administration',
+        officeLocation: 'Scranton Branch',
+        contact: {
+            workPhone: '555-0100-102'
+        }
+    },
+    { 
+        id: 'user_3', 
+        name: 'Peter Broker', 
+        email: 'peter.broker@example.com', 
+        role: UserRole.AGENT, 
+        agencyId: 'agency_2',
+        jobTitle: 'Broker',
+        department: 'Commercial Lines',
+        officeLocation: 'Stamford Branch',
+        contact: {
+            workPhone: '555-0200-201'
+        }
+    },
 ];
 
 export const MOCK_LEADS: Lead[] = [

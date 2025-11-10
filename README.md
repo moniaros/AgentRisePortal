@@ -64,8 +64,15 @@ The platform is currently a high-fidelity MVP with a simulated backend. The foll
     ```typescript
     interface User {
         id: string;
-        name: string;
+        name: string; // Corresponds to PartyName in ACORD
+        jobTitle?: string;
         email: string;
+        contact?: {
+            workPhone?: string;
+            mobilePhone?: string;
+        };
+        officeLocation?: string;
+        department?: string;
         role: 'admin' | 'agent';
         agencyId: string;
     }

@@ -455,6 +455,17 @@
     "pages": "Main Pages",
     "newsArticles": "News Articles"
   },
+  "profile": {
+    "title": "User Profile",
+    "jobTitle": "Job Title",
+    "department": "Department",
+    "officeLocation": "Office Location",
+    "workPhone": "Work Phone",
+    "mobilePhone": "Mobile Phone",
+    "personalInfo": "Personal Information",
+    "contactDetails": "Contact Details",
+    "updateSuccess": "Profile updated successfully!"
+  },
   "policyTypes": {
     "auto": "Auto Insurance",
     "home": "Home Insurance",
