@@ -3,8 +3,11 @@ import { useAuth } from '../hooks/useAuth';
 import { useLocalization } from '../hooks/useLocalization';
 import { useOnboardingStatus } from '../hooks/useOnboardingStatus';
 import { useForm, UseFormSetValue } from 'react-hook-form';
-import { User, License, LicenseStatus } from '../types';
+import { User, License, LicenseStatus, UserActivityType } from '../types';
 import { useNotification } from '../hooks/useNotification';
+import { useUserActivity } from '../hooks/useUserActivity';
+import SkeletonLoader from '../components/ui/SkeletonLoader';
+import ErrorMessage from '../components/ui/ErrorMessage';
 
 // Helper component for Image Upload controls
 interface ImageUploadControlProps {
@@ -76,6 +79,8 @@ const Profile: React.FC = () => {
         defaultValues: currentUser || {}
     });
     
+    const { activity, isLoading: isActivityLoading, error: activityError } = useUserActivity(currentUser?.id);
+    
     const onSubmit = (data: User) => {
         // In a real app, you would call an API to update the user profile
         console.log("Profile updated:", data);
@@ -113,6 +118,15 @@ const Profile: React.FC = () => {
                 {t(`licenseStatus.${status}`)}
             </span>
         );
+    };
+    
+    const getActivityIcon = (type: UserActivityType) => {
+        switch (type) {
+            case 'login': return '🔑';
+            case 'action': return '⚙️';
+            case 'notification': return '🔔';
+            default: return '📌';
+        }
     };
 
     return (
@@ -235,6 +249,33 @@ const Profile: React.FC = () => {
                          </div>
                     </fieldset>
                 )}
+
+                <fieldset>
+                    <legend className="text-lg font-semibold border-b dark:border-gray-600 pb-2 mb-4 w-full">{t('profile.recentActivity')}</legend>
+                    {isActivityLoading ? (
+                        <div className="space-y-4">
+                            {[...Array(3)].map((_, i) => <SkeletonLoader key={i} className="h-12 w-full" />)}
+                        </div>
+                    ) : activityError ? (
+                        <ErrorMessage message={activityError.message} />
+                    ) : (
+                        <ul className="space-y-4 max-h-80 overflow-y-auto pr-2">
+                            {activity.length > 0 ? activity.map(event => (
+                                <li key={event.id} className="flex gap-4 items-center">
+                                    <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-gray-100 dark:bg-gray-700 rounded-full text-xl">
+                                        {getActivityIcon(event.type)}
+                                    </div>
+                                    <div className="flex-grow">
+                                        <p className="text-sm font-medium text-gray-900 dark:text-gray-200">{event.description}</p>
+                                        <p className="text-xs text-gray-500 dark:text-gray-400">{new Date(event.timestamp).toLocaleString()}</p>
+                                    </div>
+                                </li>
+                            )) : (
+                                <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-4">{t('profile.noActivity')}</p>
+                            )}
+                        </ul>
+                    )}
+                </fieldset>
                 
                 <div className="pt-4 border-t dark:border-gray-700">
                     <button type="submit" disabled={!isDirty} className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed">

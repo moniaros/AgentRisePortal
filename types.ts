@@ -49,6 +49,23 @@ export interface User {
     licenses?: License[];
 }
 
+// User Activity
+export type UserActivityType = 'login' | 'action' | 'notification';
+
+export interface UserActivityEvent {
+    id: string;
+    userId: string;
+    timestamp: string;
+    type: UserActivityType;
+    description: string;
+    details?: {
+        ipAddress?: string;
+        targetId?: string; // e.g., leadId, policyId
+    };
+    agencyId: string;
+}
+
+
 // CRM - Leads & Customers
 export type LeadStatus = 'new' | 'contacted' | 'qualified' | 'closed' | 'rejected';
 

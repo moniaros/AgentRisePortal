@@ -476,7 +476,14 @@
     "profilePhoto": "Φωτογραφία Προφίλ",
     "digitalSignature": "Ψηφιακή Υπογραφή",
     "signatureDescription": "Αυτή η υπογραφή μπορεί να χρησιμοποιηθεί σε υποσέλιδα email και υδατογραφήματα εγγράφων.",
-    "change": "Αλλαγή"
+    "change": "Αλλαγή",
+    "recentActivity": "Πρόσφατη Δραστηριότητα",
+    "noActivity": "Δεν βρέθηκε πρόσφατη δραστηριότητα."
+  },
+  "activityTypes": {
+    "login": "Σύνδεση",
+    "action": "Ενέργεια Χρήστη",
+    "notification": "Ειδοποίηση Συστήματος"
   },
   "licenseStatus": {
     "valid": "Σε ισχύ",

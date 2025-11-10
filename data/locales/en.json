@@ -476,7 +476,14 @@
     "profilePhoto": "Profile Photo",
     "digitalSignature": "Digital Signature",
     "signatureDescription": "This signature can be used in email footers and document watermarks.",
-    "change": "Change"
+    "change": "Change",
+    "recentActivity": "Recent Activity",
+    "noActivity": "No recent activity found."
+  },
+  "activityTypes": {
+    "login": "Login",
+    "action": "User Action",
+    "notification": "System Notification"
   },
   "licenseStatus": {
     "valid": "Valid",

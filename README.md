@@ -58,7 +58,7 @@ This section provides a clear overview of the project's current status for produ
 The platform is currently a high-fidelity MVP with a simulated backend. The following features are implemented and functional from a UI and front-end logic perspective.
 
 #### 1. Multi-Tenant Architecture & RBAC
--   **Description:** The application is structured to support multiple insurance agencies on a single instance. Data is segregated based on the logged-in user's agency. Role-Based Access Control (RBAC) is implemented, with a UI for administrators to manage users. The user model includes detailed identity, contact, role, and licensing information aligned with ACORD standards, including profile photo and digital signature uploads.
+-   **Description:** The application is structured to support multiple insurance agencies on a single instance. Data is segregated based on the logged-in user's agency. Role-Based Access Control (RBAC) is implemented, with a UI for administrators to manage users. The user profile includes a read-only audit trail showing recent logins, key actions, and system notifications.
 -   **Components:** `UserManagement.tsx`, `UsersTable.tsx`, `InviteUserModal.tsx`, `AuditLogsTable.tsx`, `Profile.tsx`.
 -   **Data Structures:**
     ```typescript
@@ -90,9 +90,13 @@ The platform is currently a high-fidelity MVP with a simulated backend. The foll
             status: 'valid' | 'expired' | 'pending_review';
         }[];
     }
-    interface Agency {
+    interface UserActivityEvent {
         id: string;
-        name: string;
+        userId: string;
+        timestamp: string;
+        type: 'login' | 'action' | 'notification';
+        description: string;
+        agencyId: string;
     }
     interface AuditLog {
         id: string;

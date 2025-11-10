@@ -1,4 +1,4 @@
-import { Customer, Lead, User, PolicyType, UserRole, Language, CampaignObjective, AuditLog, AnalyticsRecord, ExecutiveData, LeadStatus, NewsArticle, Testimonial } from '../types';
+import { Customer, Lead, User, PolicyType, UserRole, Language, CampaignObjective, AuditLog, AnalyticsRecord, ExecutiveData, LeadStatus, NewsArticle, Testimonial, UserActivityEvent } from '../types';
 
 export const MOCK_USERS: User[] = [
     { 
@@ -174,6 +174,15 @@ export const MOCK_TESTIMONIALS: Testimonial[] = [
         agencyId: 'agency_2',
         createdAt: '2024-08-05T12:00:00Z',
     }
+];
+
+export const MOCK_USER_ACTIVITY: UserActivityEvent[] = [
+    { id: 'act_1', userId: 'user_1', timestamp: new Date().toISOString(), type: 'login', description: 'Logged in successfully.', details: { ipAddress: '192.168.1.1' }, agencyId: 'agency_1' },
+    { id: 'act_2', userId: 'user_1', timestamp: new Date(Date.now() - 3600000).toISOString(), type: 'action', description: 'Updated customer profile for Michael Scott.', details: { targetId: 'cust_1' }, agencyId: 'agency_1' },
+    { id: 'act_3', userId: 'user_1', timestamp: new Date(Date.now() - 86400000).toISOString(), type: 'notification', description: 'Policy AUT12345 is due for renewal in 30 days.', details: { targetId: 'pol_1' }, agencyId: 'agency_1' },
+    { id: 'act_4', userId: 'user_1', timestamp: new Date(Date.now() - 172800000).toISOString(), type: 'login', description: 'Logged in successfully.', details: { ipAddress: '192.168.1.5' }, agencyId: 'agency_1' },
+    { id: 'act_5', userId: 'user_2', timestamp: new Date().toISOString(), type: 'login', description: 'Logged in successfully.', details: { ipAddress: '10.0.0.5' }, agencyId: 'agency_1' },
+    { id: 'act_6', userId: 'user_2', timestamp: new Date(Date.now() - 24 * 3600000).toISOString(), type: 'action', description: 'Invited new user peter.pan@example.com.', agencyId: 'agency_1' },
 ];
 
 export const MOCK_NEWS_ARTICLES: NewsArticle[] = [

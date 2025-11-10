@@ -1,5 +1,5 @@
-import { MOCK_CUSTOMERS, MOCK_LEADS, MOCK_AUDIT_LOGS, MOCK_USERS, MOCK_ANALYTICS_DATA, MOCK_EXECUTIVE_DATA, MOCK_NEWS_ARTICLES, MOCK_TESTIMONIALS } from '../data/mockData';
-import { DetailedPolicy, AnalyticsData, User, AuditLog, ExecutiveData, NewsArticle, Testimonial } from '../types';
+import { MOCK_CUSTOMERS, MOCK_LEADS, MOCK_AUDIT_LOGS, MOCK_USERS, MOCK_ANALYTICS_DATA, MOCK_EXECUTIVE_DATA, MOCK_NEWS_ARTICLES, MOCK_TESTIMONIALS, MOCK_USER_ACTIVITY } from '../data/mockData';
+import { DetailedPolicy, AnalyticsData, User, AuditLog, ExecutiveData, NewsArticle, Testimonial, UserActivityEvent } from '../types';
 
 const SIMULATED_DELAY = 500;
 
@@ -63,6 +63,15 @@ export const fetchUsers = async (): Promise<User[]> => {
 
 export const fetchAuditLogs = async (): Promise<AuditLog[]> => {
     return new Promise(resolve => setTimeout(() => resolve(MOCK_AUDIT_LOGS), SIMULATED_DELAY));
+};
+
+export const fetchUserActivity = async (userId: string): Promise<UserActivityEvent[]> => {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            const userActivity = MOCK_USER_ACTIVITY.filter(event => event.userId === userId);
+            resolve(userActivity);
+        }, SIMULATED_DELAY);
+    });
 };
 
 export const fetchExecutiveData = async (): Promise<ExecutiveData> => {
