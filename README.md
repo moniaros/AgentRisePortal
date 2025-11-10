@@ -79,7 +79,7 @@ This system automatically generates tasks and notifications for policies that ar
     -   **Task Creation**: Creates an actionable task for the assigned agent, which appears on their main dashboard.
     -   **Multi-Channel Notifications**: Can send mock emails and SMS messages directly to the customer based on rule configurations.
 -   **Configuration**: All logic is driven by the `data/rules/renewal-reminders.rules.json` file.
--   **Templates**: Communications use bilingual (EN/EL) templates stored in `data/templates/`. Available variables include: `{{policyholderName}}`, `{{policyNumber}}`, `{{expiryDate}}`, `{{agentName}}`, `{{agentPhone}}`.
+-   **Templates**: Communications use bilingual (EN/EL) templates stored in `data/templates/`. Available variables include: `{policyholderName}`, `{policyNumber}`, `{expiryDate}`, `{agentName}`, `{agentPhone}`.
 -   **Duplicate Prevention**: A mock log (`MOCK_REMINDER_LOG`) is maintained to ensure that the same reminder for a specific policy is not sent more than once.
 
 ### Payment Reminder Automation
@@ -100,6 +100,21 @@ This system automates the process of reminding customers about upcoming or overd
 ### Automation Gap Analysis
 
 For a detailed analysis of the current state of the automation system, what is partially implemented, and what is missing, please see the [Automation Gap Analysis](./automation-gap-analysis.md) document.
+
+---
+
+### Data Display Audit & Fixes
+*Date: 2024-08-01*
+
+A full codebase audit was performed to ensure all dummy data is loading and displaying correctly.
+
+-   **Summary of Issues Found**:
+    -   The primary issue identified was a syntax mismatch in the automation system's templating engine. Email and SMS templates in `data/templates/` were using double-brace `{{variable}}` syntax, while the rendering functions in `renewalAutomation.ts` and `paymentAutomation.ts` were only configured to parse single-brace `{variable}` syntax.
+-   **Root Cause**: This inconsistency caused all mock email and SMS notifications to fail during template rendering, meaning dynamic data (like customer names and policy numbers) was not being correctly inserted into the console-logged messages. Agent task messages, which already used single braces, were unaffected.
+-   **Fixes Applied**:
+    -   All template files (`renewal-email-templates.json`, `renewal-sms-templates.json`, `payment-email-templates.json`, `payment-sms-templates.json`) were updated to use the single-brace `{variable}` syntax for all placeholders.
+    -   This change aligns all templates with the existing parsers, resolving the data display failure for mock email/SMS communications without requiring changes to the rendering logic.
+-   **Verification**: All other data pathways were verified to be working as expected, with mock data from `data/mockData.ts` correctly populating all UI components, charts, and tables across the application.
 
 ---
 
