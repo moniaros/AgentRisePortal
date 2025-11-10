@@ -40,6 +40,8 @@
     "newLeads": "New Leads",
     "monthlyRevenue": "Est. Monthly Revenue",
     "activePolicies": "Active Policies",
+    "totalPoliciesInForce": "Total Policies in Force",
+    "vsLastMonth": "vs last month",
     "policyDistribution": "Policy Distribution",
     "welcomeBanner": {
       "title": "Welcome to AgentOS!",

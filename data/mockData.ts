@@ -127,6 +127,10 @@ export const MOCK_CUSTOMERS: Customer[] = [
     }
 ];
 
+export const MOCK_KPI_DATA = {
+    totalPoliciesInForce: { current: 152, previous: 145 },
+};
+
 export const MOCK_TESTIMONIALS: Testimonial[] = [
     {
         id: 'test_1',

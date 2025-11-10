@@ -40,6 +40,8 @@
     "newLeads": "Νέα Leads",
     "monthlyRevenue": "Εκτ. Μηνιαία Έσοδα",
     "activePolicies": "Ενεργά Συμβόλαια",
+    "totalPoliciesInForce": "Συνολικές Πολιτικές σε Ισχύ",
+    "vsLastMonth": "από τον προηγ. μήνα",
     "policyDistribution": "Κατανομή Συμβολαίων",
     "welcomeBanner": {
       "title": "Καλώς ήρθατε στο AgentOS!",

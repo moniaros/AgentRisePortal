@@ -17,6 +17,7 @@ const Dashboard: React.FC = () => {
         newLeadsCount: number;
         monthlyRevenue: number;
         policyDistribution: { name: string; value: number }[];
+        totalPoliciesInForce: { current: number; previous: number; };
     } | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -83,7 +84,7 @@ const Dashboard: React.FC = () => {
     const renderStatCard = (title: string, value: string | number, isLoadingFlag: boolean) => (
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
             {isLoadingFlag ? (
-                <SkeletonLoader className="h-16 w-3/4" />
+                <SkeletonLoader className="h-24 w-full" />
             ) : (
                 <>
                     <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">{title}</h3>
@@ -92,6 +93,34 @@ const Dashboard: React.FC = () => {
             )}
         </div>
     );
+    
+    const KpiCardWithChange: React.FC<{ title: string; current: number; previous: number; isLoadingFlag: boolean }> = ({ title, current, previous, isLoadingFlag }) => {
+        if (isLoadingFlag) {
+            return (
+                <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                    <SkeletonLoader className="h-24 w-full" />
+                </div>
+            );
+        }
+
+        const change = previous > 0 ? ((current - previous) / previous) * 100 : current > 0 ? 100 : 0;
+        const isPositive = change >= 0;
+
+        const UpArrow = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" /></svg>;
+        const DownArrow = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>;
+
+        return (
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">{title}</h3>
+                <p className="mt-1 text-3xl font-semibold text-gray-900 dark:text-white">{current.toLocaleString()}</p>
+                <div className={`flex items-center text-sm mt-2 font-semibold ${isPositive ? 'text-green-500' : 'text-red-500'}`}>
+                    {isPositive ? <UpArrow /> : <DownArrow />}
+                    <span className="ml-1">{Math.abs(change).toFixed(1)}%</span>
+                    <span className="ml-2 text-gray-500 dark:text-gray-400 font-normal">{t('dashboard.vsLastMonth')}</span>
+                </div>
+            </div>
+        );
+    };
 
     if (error) {
         return <ErrorMessage message={error} />;
@@ -121,17 +150,13 @@ const Dashboard: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {renderStatCard(t('dashboard.newLeads'), isLoading ? 0 : data?.newLeadsCount ?? 0, isLoading)}
-                {renderStatCard(t('dashboard.monthlyRevenue'), isLoading ? '€0.00' : `€${(data?.monthlyRevenue ?? 0).toLocaleString()}`, isLoading)}
-                <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md md:col-span-2 lg:col-span-1">
-                     <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('dashboard.activePolicies')}</h3>
-                    {isLoading ? (
-                         <SkeletonLoader className="h-16 w-full mt-2" />
-                    ) : (
-                        <p className="mt-1 text-3xl font-semibold text-gray-900 dark:text-white">
-                            {(data?.policyDistribution ?? []).reduce((sum, item) => sum + item.value, 0)}
-                        </p>
-                    )}
-                </div>
+                {renderStatCard(t('dashboard.monthlyRevenue'), isLoading ? '€0.00' : `€${(data?.monthlyRevenue ?? 0).toLocaleString('el-GR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, isLoading)}
+                <KpiCardWithChange 
+                    title={t('dashboard.totalPoliciesInForce')}
+                    current={data?.totalPoliciesInForce.current ?? 0}
+                    previous={data?.totalPoliciesInForce.previous ?? 0}
+                    isLoadingFlag={isLoading}
+                />
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-2">

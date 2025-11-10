@@ -1,4 +1,4 @@
-import { MOCK_CUSTOMERS, MOCK_LEADS, MOCK_AUDIT_LOGS, MOCK_USERS, MOCK_ANALYTICS_DATA, MOCK_EXECUTIVE_DATA, MOCK_NEWS_ARTICLES, MOCK_TESTIMONIALS, MOCK_USER_ACTIVITY } from '../data/mockData';
+import { MOCK_CUSTOMERS, MOCK_LEADS, MOCK_AUDIT_LOGS, MOCK_USERS, MOCK_ANALYTICS_DATA, MOCK_EXECUTIVE_DATA, MOCK_NEWS_ARTICLES, MOCK_TESTIMONIALS, MOCK_USER_ACTIVITY, MOCK_KPI_DATA } from '../data/mockData';
 import { DetailedPolicy, AnalyticsData, User, AuditLog, ExecutiveData, NewsArticle, Testimonial, UserActivityEvent } from '../types';
 
 const SIMULATED_DELAY = 500;
@@ -8,6 +8,7 @@ export const fetchDashboardData = async () => {
         newLeadsCount: number;
         monthlyRevenue: number;
         policyDistribution: { name: string; value: number }[];
+        totalPoliciesInForce: { current: number; previous: number; };
     }>(resolve => {
         setTimeout(() => {
             // FIX: Explicitly type the accumulator for the reduce function to ensure correct type inference.
@@ -20,6 +21,7 @@ export const fetchDashboardData = async () => {
                 newLeadsCount: MOCK_LEADS.filter(l => l.status === 'new').length,
                 monthlyRevenue: MOCK_CUSTOMERS.flatMap(c => c.policies).reduce((sum, p) => sum + p.premium, 0) / 12,
                 policyDistribution: Object.entries(policyDist).map(([name, value]) => ({ name, value })),
+                totalPoliciesInForce: MOCK_KPI_DATA.totalPoliciesInForce,
             });
         }, SIMULATED_DELAY);
     });
