@@ -1,4 +1,3 @@
-// FIX: Import ReactElement to resolve 'Cannot find namespace React' error.
 import type { ReactElement } from 'react';
 
 // Language and Localization
@@ -28,6 +27,7 @@ export enum PolicyType {
   HOME = 'home',
   LIFE = 'life',
   HEALTH = 'health',
+  UMBRELLA = 'umbrella',
 }
 
 export interface Policy {
@@ -40,6 +40,54 @@ export interface Policy {
   endDate: string; // YYYY-MM-DD
   isActive: boolean;
 }
+
+// Detailed Policy for Gap Analysis
+export interface CoverageDetail {
+  type: string;
+  limit: string;
+  deductible?: string;
+}
+
+export interface InsuredItem {
+  id: string;
+  description: string; // e.g., '2022 Toyota Camry', 'Primary Residence'
+  coverages: CoverageDetail[];
+}
+
+export interface DetailedPolicy {
+  policyNumber: string;
+  policyholder: {
+    name: string;
+    address: string;
+  };
+  type: PolicyType;
+  insurer: string;
+  period: {
+    startDate: string;
+    endDate: string;
+  };
+  insuredItems: InsuredItem[];
+}
+
+// Gap Analysis AI Result
+export interface Gap {
+  area: string;
+  current: string;
+  recommended: string;
+  reason: string;
+}
+export interface Opportunity {
+  product: string;
+  recommendation: string;
+  benefit: string;
+}
+
+export interface GapAnalysisResult {
+  gaps: Gap[];
+  upsell_opportunities: Opportunity[];
+  cross_sell_opportunities: Opportunity[];
+}
+
 
 export interface TimelineEvent {
   id: string;

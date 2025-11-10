@@ -1,4 +1,4 @@
-import { AnalyticsData, AuditLog, Customer, Lead, PolicyType, User, UserRole } from '../types';
+import { AnalyticsData, AuditLog, Customer, DetailedPolicy, Lead, PolicyType, User, UserRole } from '../types';
 
 const MOCK_DELAY = 500;
 
@@ -84,6 +84,17 @@ export const fetchLeads = async (): Promise<Lead[]> => {
 export const fetchCustomers = async (): Promise<Customer[]> => {
     return new Promise(resolve => {
         setTimeout(() => resolve(MOCK_CUSTOMERS), MOCK_DELAY);
+    });
+};
+
+export const fetchParsedPolicy = async (): Promise<DetailedPolicy> => {
+    const response = await fetch('/data/parsedPolicy.json');
+    if (!response.ok) {
+        throw new Error('Failed to fetch parsed policy data.');
+    }
+    const data = await response.json();
+    return new Promise(resolve => {
+        setTimeout(() => resolve(data), MOCK_DELAY);
     });
 };
 

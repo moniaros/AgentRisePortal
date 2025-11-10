@@ -1,0 +1,44 @@
+{
+    "policyNumber": "AUT-GHI-78910",
+    "policyholder": {
+      "name": "Jane Smith",
+      "address": "456 Oak Ave, Otherville, USA"
+    },
+    "type": "auto",
+    "insurer": "Reliable Auto Insurance",
+    "period": {
+      "startDate": "2024-03-01",
+      "endDate": "2025-02-28"
+    },
+    "insuredItems": [
+      {
+        "id": "vehicle1",
+        "description": "2021 Honda CR-V",
+        "coverages": [
+          {
+            "type": "Bodily Injury Liability",
+            "limit": "€100,000 / €300,000"
+          },
+          {
+            "type": "Property Damage Liability",
+            "limit": "€50,000"
+          },
+          {
+            "type": "Collision",
+            "limit": "Actual Cash Value",
+            "deductible": "€500"
+          },
+          {
+            "type": "Comprehensive",
+            "limit": "Actual Cash Value",
+            "deductible": "€500"
+          },
+          {
+            "type": "Uninsured Motorist",
+            "limit": "€25,000 / €50,000"
+          }
+        ]
+      }
+    ]
+  }
+  
