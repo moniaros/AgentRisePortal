@@ -1,4 +1,3 @@
-
 {
   "nav": {
     "dashboard": "Dashboard",
@@ -323,6 +322,12 @@
       "warningNoAccounts": "No Google Business Profile accounts found for this user.",
       "warningNoLocations": "No business locations found in your primary Google Business Profile account.",
       "successConnected": "Connected to {businessName}!"
+    },
+    "appearance": {
+      "title": "Appearance",
+      "description": "Choose how the application looks on your device.",
+      "darkMode": "Dark Mode",
+      "lightMode": "Light Mode"
     }
   },
   "userManagement": {

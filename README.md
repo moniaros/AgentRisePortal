@@ -8,9 +8,17 @@ The settings page provides a centralized location for configuring essential API 
 
 ### UI and Functionality
 
-The page is divided into two main sections: Setup and Integrations.
+The page is divided into three main sections: Appearance, Setup, and Integrations.
 
-#### 1. Setup Form
+#### 1. Appearance Settings
+
+This section allows users to customize the visual theme of the application.
+
+-   **Theme Toggle:** A toggle switch lets the user choose between "Light Mode" and "Dark Mode".
+-   **Default Behavior:** By default, the application loads in Dark Mode for new users or on first visit.
+-   **Persistence:** The user's selected theme preference is saved in the browser's `localStorage` under the key `theme`. This ensures their choice is remembered across sessions. The theme is applied instantly without a page reload.
+
+#### 2. Setup Form
 
 This section contains a form for inputting and saving crucial API credentials.
 
@@ -18,7 +26,7 @@ This section contains a form for inputting and saving crucial API credentials.
 -   **Gemini API Key:** A password input field for the user's Gemini API key. The input is masked for security during entry.
 -   **Save Settings Button:** When clicked, this button persists both the Client ID and the API Key into the browser's `localStorage`. A success notification appears to confirm the action.
 
-#### 2. Integrations
+#### 3. Integrations
 
 This section manages connections to external services.
 
@@ -41,6 +49,7 @@ This section manages connections to external services.
 -   `gemini_api_key`: Stores the Gemini API Key as a plain text string. **Note:** While the input field is masked, the key is stored in plain text in `localStorage`.
 -   `gbp_location_title`: Stores the title (business name) of the connected Google Business Profile location.
 -   `gbp_location_name`: Stores the full resource name (e.g., `accounts/{accountId}/locations/{locationId}`) of the connected location.
+-   `theme`: Stores the user's selected theme, either `'light'` or `'dark'`.
 
 ## Dashboard Page
 

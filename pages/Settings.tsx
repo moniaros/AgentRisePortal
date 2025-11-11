@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocalization } from '../hooks/useLocalization';
 import { useNotification } from '../hooks/useNotification';
+import { useTheme } from '../hooks/useTheme';
+import ToggleSwitch from '../components/ui/ToggleSwitch';
 
 const Settings: React.FC = () => {
     const { t } = useLocalization();
@@ -10,6 +12,7 @@ const Settings: React.FC = () => {
     const [clientId, setClientId] = useState('');
     const [apiKey, setApiKey] = useState('');
     const [connectionStatus, setConnectionStatus] = useState(t('settings.integrations.statusNotConnected'));
+    const { theme, toggleTheme } = useTheme();
 
     useEffect(() => {
         const savedClientId = localStorage.getItem('google_client_id');
@@ -141,6 +144,22 @@ const Settings: React.FC = () => {
     return (
         <div className="max-w-4xl mx-auto space-y-8">
             <h1 className="text-3xl font-bold text-gray-800 dark:text-white">{t('nav.appSettings')}</h1>
+
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 className="text-xl font-semibold mb-4">{t('settings.appearance.title')}</h2>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{t('settings.appearance.description')}</p>
+                <div className="flex items-center justify-between">
+                    <span className="font-medium text-gray-700 dark:text-gray-300">
+                        {theme === 'dark' ? t('settings.appearance.darkMode') : t('settings.appearance.lightMode')}
+                    </span>
+                    <ToggleSwitch
+                        id="theme-toggle"
+                        checked={theme === 'dark'}
+                        onChange={toggleTheme}
+                        aria-label="Toggle dark mode"
+                    />
+                </div>
+            </div>
 
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
                 <h2 className="text-xl font-semibold mb-4">{t('settings.setup.title')}</h2>
