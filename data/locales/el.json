@@ -499,7 +499,9 @@
       "avgCpa": "Μέσο CPA",
       "avgCpaSubtitle": "€{spend} δαπάνη για {count} συμβόλαια",
       "micrositeFunnelRate": "Ποσοστό Μετατροπής Funnel",
-      "micrositeFunnelRateSubtitle": "{leads} leads από {pageviews} προβολές"
+      "micrositeFunnelRateSubtitle": "{leads} leads από {pageviews} προβολές",
+      "avgReplyTime": "Μέσος Χρόνος Απάντησης",
+      "avgReplyTimeSubtitle": "Μέσος όρος ωρών για πρώτη απάντηση"
     }
   },
   "news": {

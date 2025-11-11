@@ -32,6 +32,24 @@ const ExecutiveDashboard: React.FC = () => {
     const isLoading = isExecutiveLoading || isAnalyticsLoading || isCampaignsLoading || isKpiLoading || areLeadsLoading || arePerfLoading || areFunnelRunsLoading;
     const error = executiveError || analyticsError || campaignsError || kpiError || leadsError || perfError || funnelRunsError;
 
+    const filteredSnapshots = useMemo(() => {
+        if (!allKpiSnapshots) return [];
+        const endDate = new Date();
+        const startDate = new Date();
+        startDate.setDate(endDate.getDate() - period);
+        return allKpiSnapshots.filter(s => {
+            const snapshotDate = new Date(s.date);
+            return snapshotDate >= startDate && snapshotDate <= endDate;
+        });
+    }, [allKpiSnapshots, period]);
+
+    const averageReplyTime = useMemo(() => {
+        const relevantSnapshots = filteredSnapshots.filter(s => s.avgTimeToFirstReplyH !== undefined);
+        if (relevantSnapshots.length === 0) return 0;
+        const totalHours = relevantSnapshots.reduce((sum, s) => sum + s.avgTimeToFirstReplyH!, 0);
+        return totalHours / relevantSnapshots.length;
+    }, [filteredSnapshots]);
+
     const micrositeFunnelRate = useMemo(() => {
         if (!allFunnelRuns) return { rate: '0.0', leads: 0, pageviews: 0 };
         
@@ -53,45 +71,28 @@ const ExecutiveDashboard: React.FC = () => {
     }, [allFunnelRuns, period]);
 
     const totalGwpWon = useMemo(() => {
-        if (!allKpiSnapshots) return 0;
-
-        const endDate = new Date();
-        const startDate = new Date();
-        startDate.setDate(endDate.getDate() - period);
-
-        return allKpiSnapshots
-            .filter(snapshot => {
-                const snapshotDate = new Date(snapshot.date);
-                return (
-                    snapshot.source === 'Platform Marketing Leads' &&
-                    snapshotDate >= startDate &&
-                    snapshotDate <= endDate
-                );
-            })
+        return filteredSnapshots
+            .filter(snapshot => snapshot.source === 'Platform Marketing Leads')
             .reduce((sum, snapshot) => sum + snapshot.won.gwp, 0);
-
-    }, [allKpiSnapshots, period]);
+    }, [filteredSnapshots]);
 
     const leadToWonRate = useMemo(() => {
-        if (!allKpiSnapshots || !allLeads) return { rate: '0.0', wonCount: 0, leadCount: 0 };
+        if (!allLeads) return { rate: '0.0', wonCount: 0, leadCount: 0 };
 
         const endDate = new Date();
         const startDate = new Date();
         startDate.setDate(endDate.getDate() - period);
 
-        const wonCount = allKpiSnapshots
-            .filter(s => new Date(s.date) >= startDate && new Date(s.date) <= endDate)
-            .reduce((sum, s) => sum + s.won.count, 0);
-
+        const wonCount = filteredSnapshots.reduce((sum, s) => sum + s.won.count, 0);
         const leadCount = allLeads.filter(l => new Date(l.createdAt) >= startDate && new Date(l.createdAt) <= endDate).length;
         
         const rate = leadCount > 0 ? ((wonCount / leadCount) * 100).toFixed(1) : '0.0';
 
         return { rate, wonCount, leadCount };
-    }, [allKpiSnapshots, allLeads, period]);
+    }, [filteredSnapshots, allLeads, period]);
     
     const averageCpa = useMemo(() => {
-        if (!allKpiSnapshots || !allPerformanceSamples) return { cpa: 0, spend: 0, won: 0 };
+        if (!allPerformanceSamples) return { cpa: 0, spend: 0, won: 0 };
 
         const endDate = new Date();
         const startDate = new Date();
@@ -104,17 +105,12 @@ const ExecutiveDashboard: React.FC = () => {
             })
             .reduce((sum, s) => sum + s.spend, 0);
 
-        const totalWonCount = allKpiSnapshots
-            .filter(s => {
-                const snapshotDate = new Date(s.date);
-                return snapshotDate >= startDate && snapshotDate <= endDate;
-            })
-            .reduce((sum, s) => sum + s.won.count, 0);
+        const totalWonCount = filteredSnapshots.reduce((sum, s) => sum + s.won.count, 0);
 
         const cpa = totalWonCount > 0 ? totalSpend / totalWonCount : 0;
 
         return { cpa, spend: totalSpend, won: totalWonCount };
-    }, [allKpiSnapshots, allPerformanceSamples, period]);
+    }, [filteredSnapshots, allPerformanceSamples, period]);
 
 
     const campaignKpis = useMemo(() => {
@@ -151,15 +147,16 @@ const ExecutiveDashboard: React.FC = () => {
             </div>
 
             {isLoading ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-8 gap-6">
-                    {[...Array(8)].map((_, i) => <SkeletonLoader key={i} className="h-24 w-full" />)}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-9 gap-6">
+                    {[...Array(9)].map((_, i) => <SkeletonLoader key={i} className="h-24 w-full" />)}
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-8 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-9 gap-6">
                     <KpiCard title={t('executive.kpis.totalGwpWon')} value={`€${totalGwpWon.toLocaleString('el-GR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} subtitle={t('executive.kpis.totalGwpWonSubtitle')} variant="success" />
                     <KpiCard title={t('executive.kpis.leadToWonRate')} value={`${leadToWonRate.rate}%`} subtitle={t('executive.kpis.leadToWonRateSubtitle', { wonCount: leadToWonRate.wonCount, leadCount: leadToWonRate.leadCount })} />
                     <KpiCard title={t('executive.kpis.avgCpa')} value={`€${averageCpa.cpa.toLocaleString('el-GR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} subtitle={t('executive.kpis.avgCpaSubtitle', { spend: averageCpa.spend.toLocaleString('el-GR'), count: averageCpa.won })} />
                     <KpiCard title={t('executive.kpis.micrositeFunnelRate')} value={`${micrositeFunnelRate.rate}%`} subtitle={t('executive.kpis.micrositeFunnelRateSubtitle', { leads: micrositeFunnelRate.leads, pageviews: micrositeFunnelRate.pageviews })} variant="info" />
+                    <KpiCard title={t('executive.kpis.avgReplyTime')} value={`${averageReplyTime.toFixed(1)} hrs`} subtitle={t('executive.kpis.avgReplyTimeSubtitle')} variant="info" />
                     <KpiCard title={t('campaignAnalytics.kpis.totalSpend')} value={`€${campaignKpis.totalSpend.toLocaleString('el-GR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} />
                     <KpiCard title={t('campaignAnalytics.kpis.totalImpressions')} value={campaignKpis.totalImpressions.toLocaleString('el-GR')} />
                     <KpiCard title={t('campaignAnalytics.kpis.ctr')} value={`${campaignKpis.ctr.toFixed(2)}%`} />

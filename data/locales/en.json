@@ -499,7 +499,9 @@
       "avgCpa": "Average CPA",
       "avgCpaSubtitle": "€{spend} spend for {count} deals",
       "micrositeFunnelRate": "Microsite Funnel Rate",
-      "micrositeFunnelRateSubtitle": "{leads} leads from {pageviews} views"
+      "micrositeFunnelRateSubtitle": "{leads} leads from {pageviews} views",
+      "avgReplyTime": "Avg. Time to First Reply",
+      "avgReplyTimeSubtitle": "Average hours to first response"
     }
   },
   "news": {

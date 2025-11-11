@@ -122,6 +122,9 @@ The agent dashboard features several Key Performance Indicator (KPI) cards for a
 -   **Microsite Funnel Conversion Rate**:
     -   **Purpose**: (Executive Dashboard) To measure the effectiveness of the public-facing microsite in converting visitors into leads.
     -   **Data Source**: Calculates `(Total FunnelRun.leads / Total FunnelRun.pageviews) * 100` for the selected time period.
+-   **Average Time to First Reply**:
+    -   **Purpose**: (Executive Dashboard) To measure the team's responsiveness to new inquiries.
+    -   **Data Source**: Averages the `avgTimeToFirstReplyH` property from `KPISnapshot` records over the selected period.
 
 ### Onboarding Checklist
 

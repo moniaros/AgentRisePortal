@@ -226,6 +226,7 @@ export interface KPISnapshot {
         gwp: number; // Gross Written Premium
         count: number;
     };
+    avgTimeToFirstReplyH?: number; // Average time to first reply in hours
 }
 
 export interface FunnelRun {
