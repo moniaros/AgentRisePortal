@@ -8,6 +8,7 @@ import { GbpLocationSummary, GbpReview } from '../types';
 import BusinessHeader from '../components/dashboard/BusinessHeader';
 import ReviewFeed from '../components/dashboard/ReviewFeed';
 import { useInquiriesData } from '../hooks/useInquiriesData';
+import { useOpportunitiesData } from '../hooks/useOpportunitiesData';
 import KpiCard from '../components/analytics/KpiCard';
 
 const Dashboard: React.FC = () => {
@@ -20,6 +21,7 @@ const Dashboard: React.FC = () => {
     const [gbpError, setGbpError] = useState<string | null>(null);
 
     const { inquiries, isLoading: isInquiriesLoading, error: inquiriesError } = useInquiriesData();
+    const { opportunities, isLoading: isOppsLoading, error: oppsError } = useOpportunitiesData();
 
     const newInquiriesToday = useMemo(() => {
         if (!inquiries) return 0;
@@ -31,6 +33,17 @@ const Dashboard: React.FC = () => {
             return inquiryDate >= today;
         }).length;
     }, [inquiries]);
+    
+    const overdueFollowUps = useMemo(() => {
+        if (!opportunities) return 0;
+        const now = new Date();
+        return opportunities.filter(opp => {
+            const followUpDate = new Date(opp.nextFollowUpDate);
+            const isPast = followUpDate < now;
+            const isOpen = opp.stage !== 'won' && opp.stage !== 'lost';
+            return isPast && isOpen;
+        }).length;
+    }, [opportunities]);
 
     useEffect(() => {
         const locationName = localStorage.getItem('gbp_location_name');
@@ -58,15 +71,16 @@ const Dashboard: React.FC = () => {
         loadData();
     }, [navigate, t]);
 
-    const isLoading = isGbpLoading || isInquiriesLoading;
-    const error = gbpError || inquiriesError?.message;
+    const isLoading = isGbpLoading || isInquiriesLoading || isOppsLoading;
+    const error = gbpError || inquiriesError?.message || oppsError?.message;
 
     if (isLoading) {
         return (
             <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <SkeletonLoader className="h-24 w-full" />
-                    <SkeletonLoader className="h-24 w-full md:col-span-1 lg:col-span-3" />
+                    <SkeletonLoader className="h-24 w-full" />
+                    <SkeletonLoader className="h-24 w-full md:col-span-2 lg:col-span-2" />
                 </div>
                 <SkeletonLoader className="h-28 w-full" />
                 <div className="flex justify-between items-center">
@@ -93,7 +107,13 @@ const Dashboard: React.FC = () => {
                     value={newInquiriesToday}
                     subtitle={t('dashboard.kpis.newInquiriesSubtitle')}
                 />
-                <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg shadow-md md:col-span-1 lg:col-span-3 flex items-center justify-center">
+                <KpiCard 
+                    title={t('dashboard.kpis.overdueFollowUps')} 
+                    value={overdueFollowUps}
+                    subtitle={t('dashboard.kpis.overdueFollowUpsSubtitle')}
+                    variant="danger"
+                />
+                <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg shadow-md md:col-span-2 lg:col-span-2 flex items-center justify-center">
                     <p className="text-sm text-gray-500">Other KPI cards coming soon...</p>
                 </div>
             </div>

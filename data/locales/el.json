@@ -83,7 +83,9 @@
   "dashboard": {
     "kpis": {
       "newInquiriesToday": "Νέα Αιτήματα Σήμερα",
-      "newInquiriesSubtitle": "Συναλλαγές που απαιτούν άμεση παρακολούθηση."
+      "newInquiriesSubtitle": "Συναλλαγές που απαιτούν άμεση παρακολούθηση.",
+      "overdueFollowUps": "Εκπρόθεσμες Ενέργειες",
+      "overdueFollowUpsSubtitle": "Ανοιχτές ευκαιρίες που απαιτούν άμεση δράση."
     },
     "basedOn": "Βάσει",
     "reviews": "αξιολογήσεων",

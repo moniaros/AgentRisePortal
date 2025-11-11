@@ -1,4 +1,3 @@
-// FIX: Import React to use React.ReactElement type.
 import React from 'react';
 
 // Language and Translation
@@ -157,6 +156,19 @@ export interface TransactionInquiry {
     createdAt: string;
     details: string;
 }
+
+export type OpportunityStage = 'prospecting' | 'qualifying' | 'proposal' | 'negotiation' | 'won' | 'lost';
+
+export interface Opportunity__EXT {
+    id: string;
+    agencyId: string;
+    name: string;
+    value: number;
+    stage: OpportunityStage;
+    nextFollowUpDate: string;
+    customerId: string;
+}
+
 
 // Gap Analysis and Policy Parsing
 export interface DetailedPolicy {
@@ -406,7 +418,6 @@ export interface AutomationAnalytics {
     messagesSentByChannel: { channel: TemplateChannel, count: number }[];
 }
 
-// FIX: Add AutomationChannelSettings and related types that were missing.
 export interface EmailChannelSettings {
     isEnabled: boolean;
     host?: string;

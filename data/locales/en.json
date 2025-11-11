@@ -83,7 +83,9 @@
   "dashboard": {
     "kpis": {
       "newInquiriesToday": "New Inquiries Today",
-      "newInquiriesSubtitle": "Transactions requiring immediate follow-up."
+      "newInquiriesSubtitle": "Transactions requiring immediate follow-up.",
+      "overdueFollowUps": "Overdue Follow-ups",
+      "overdueFollowUpsSubtitle": "Open opportunities that require immediate action."
     },
     "basedOn": "Based on",
     "reviews": "reviews",
