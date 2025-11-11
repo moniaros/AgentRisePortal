@@ -1,4 +1,3 @@
-
 import React from "react";
 
 export enum Language {
@@ -232,6 +231,43 @@ export interface DetailedPolicy {
         coverages: Coverage[];
     }[];
 }
+
+// ACORD-aligned policy structure for storage
+export interface InsuredPartyACORD {
+    name: string;
+    address: string;
+}
+
+export interface CoverageDetailACORD {
+    type: string;
+    limit: string;
+    deductible?: string;
+    premium?: number;
+}
+
+export interface InsuredVehicleACORD {
+    vin: string;
+    make: string;
+    model: string;
+    year: number;
+}
+
+export interface PolicyACORD {
+    id: string; // Unique ID, can be policyNumber
+    policyNumber: string;
+    insurer: {
+        name: string;
+    };
+    policyholder: InsuredPartyACORD;
+    beneficiaries?: InsuredPartyACORD[];
+    effectiveDate: string; // ISO 8601
+    expirationDate: string; // ISO 8601
+    coverages: CoverageDetailACORD[];
+    totalPremium: number;
+    vehicle?: InsuredVehicleACORD;
+    lastUpdated: string; // ISO 8601 timestamp for versioning
+}
+
 
 export interface GbpLocationSummary {
     title: string;

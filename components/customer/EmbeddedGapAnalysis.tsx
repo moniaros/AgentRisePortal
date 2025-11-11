@@ -6,8 +6,10 @@ import { GoogleGenAI, Type } from '@google/genai';
 import { fetchParsedPolicy } from '../../services/api';
 import { useCrmData } from '../../hooks/useCrmData';
 import { useAuth } from '../../hooks/useAuth';
-// FIX: Added missing import for ErrorMessage component.
 import ErrorMessage from '../ui/ErrorMessage';
+import { mapToPolicyACORD } from '../../services/acordMapper';
+import { savePolicyForCustomer } from '../../services/policyStorage';
+import { useNotification } from '../../hooks/useNotification';
 
 interface EmbeddedGapAnalysisProps {
     customer: Customer;
@@ -17,6 +19,7 @@ const EmbeddedGapAnalysis: React.FC<EmbeddedGapAnalysisProps> = ({ customer }) =
     const { t } = useLocalization();
     const { addTimelineEvent } = useCrmData();
     const { currentUser } = useAuth();
+    const { addNotification } = useNotification();
 
     const [file, setFile] = useState<File | null>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -40,6 +43,11 @@ const EmbeddedGapAnalysis: React.FC<EmbeddedGapAnalysisProps> = ({ customer }) =
             setLoadingStep(t('gapAnalysis.fetchingPolicy'));
             const policyData = await fetchParsedPolicy();
             
+            // Map and save the parsed policy to localStorage
+            const acordPolicy = mapToPolicyACORD(policyData);
+            savePolicyForCustomer(customer.id, acordPolicy);
+            addNotification('Policy data saved to local storage.', 'info');
+
             // 2. Analyze for gaps
             setLoadingStep(t('gapAnalysis.analyzing'));
             const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
@@ -54,7 +62,6 @@ const EmbeddedGapAnalysis: React.FC<EmbeddedGapAnalysisProps> = ({ customer }) =
                 contents: prompt,
                 config: {
                     responseMimeType: 'application/json',
-                    // FIX: Corrected schema definition to use Type enum and added required fields for consistency.
                     responseSchema: {
                         type: Type.OBJECT,
                         properties: {
@@ -123,7 +130,7 @@ const EmbeddedGapAnalysis: React.FC<EmbeddedGapAnalysisProps> = ({ customer }) =
 
     return (
         <div className="border dark:border-gray-700 rounded-lg p-4">
-            {!file && !isLoading && <FileUploader onFileUpload={handleFileUpload} isLoading={false} />}
+            {!file && !isLoading && <FileUploader onFileUpload={handleFileUpload} error={null} />}
             
             {isLoading && (
                  <div className="text-center p-4">

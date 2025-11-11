@@ -116,6 +116,20 @@ The AI Policy Scanner page (`/gap-analysis`) includes an interactive file upload
 -   **Output:** On a successful API response, the extracted, structured data is displayed in a review section, allowing the user to verify the information before proceeding to the gap analysis step.
 -   **Error Handling:** If the API call fails (due to an invalid key, network issues, or other errors), a descriptive error message is shown, and the user can try uploading the file again.
 
+### ACORD Policy Local Storage
+
+To ensure data persistence and offline accessibility, parsed insurance policy information is stored in the browser's `localStorage`. This allows the application to retain structured policy data across sessions without needing to re-process documents.
+
+#### Storage Strategy
+
+-   **Storage Key:** All policy data is stored under a single key: `agentos_acord_policies`.
+-   **Data Structure:** The data is organized as a JSON object where each key is a `customerId`. The value for each customer is another object containing:
+    -   `policies`: An array of `PolicyACORD` objects representing all parsed policies for that customer.
+    -   `lastUpdated`: An ISO 8601 timestamp indicating the last time any policy for that customer was added or modified.
+    -   `version`: A version number for the data structure to support future schema migrations.
+-   **Policy Versioning:** Each individual `PolicyACORD` object within the `policies` array also contains its own `lastUpdated` timestamp. This helps track when a specific policy was last amended or updated.
+-   **Data Integrity:** The storage service includes error handling to gracefully manage corrupted or unparsable data in `localStorage`, preventing application crashes.
+
 ### Error Handling and Empty States
 
 -   **Failed Google Sign-In:** If the user denies permission or an error occurs during the OAuth flow on the Settings page, the status indicator will update to "Status: Connection failed" and a global error notification will appear.
