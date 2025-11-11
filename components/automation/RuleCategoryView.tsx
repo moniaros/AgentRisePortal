@@ -1,0 +1,88 @@
+import React, { useState, useMemo } from 'react';
+import { useParams } from 'react-router-dom';
+import { useLocalization } from '../../hooks/useLocalization';
+import { useAutomationRules } from '../../hooks/useAutomationRules';
+import { AutomationRule, RuleCategory, UserSystemRole } from '../../types';
+import { useAuth } from '../../hooks/useAuth';
+
+import RulesTable from './RulesTable';
+import RulesFilters from './RulesFilters';
+import ConfirmationModal from '../ui/ConfirmationModal';
+import ErrorMessage from '../ui/ErrorMessage';
+import SkeletonLoader from '../ui/SkeletonLoader';
+
+const RuleCategoryView: React.FC = () => {
+    const { category } = useParams<{ category: RuleCategory }>();
+    const { t } = useLocalization();
+    const { rules, isLoading, error, toggleRuleStatus, deleteRule } = useAutomationRules();
+    const { currentUser } = useAuth();
+    
+    const [filters, setFilters] = useState({
+        search: '',
+        status: 'all' as 'all' | 'active' | 'inactive',
+    });
+    const [ruleToDelete, setRuleToDelete] = useState<AutomationRule | null>(null);
+    
+    const isAdmin = currentUser?.partyRole.roleType === UserSystemRole.ADMIN;
+
+    const filteredRules = useMemo(() => {
+        if (!category) return [];
+        const rulesForCategory = rules.filter(r => r.category === category);
+        
+        return rulesForCategory.filter(rule => {
+            const searchMatch = filters.search === '' || t(rule.nameKey).toLowerCase().includes(filters.search.toLowerCase());
+            const statusMatch = filters.status === 'all' || (filters.status === 'active' && rule.isEnabled) || (filters.status === 'inactive' && !rule.isEnabled);
+            return searchMatch && statusMatch;
+        });
+    }, [rules, filters, t, category]);
+
+    const handleDeleteRequest = (rule: AutomationRule) => {
+        setRuleToDelete(rule);
+    };
+
+    const confirmDelete = () => {
+        if (ruleToDelete) {
+            deleteRule(ruleToDelete.id);
+            setRuleToDelete(null);
+        }
+    };
+
+    if (isLoading) {
+        return <SkeletonLoader className="h-96 w-full" />;
+    }
+
+    if (error) {
+        return <ErrorMessage message={error.message} />;
+    }
+
+    return (
+        <div className="space-y-4">
+            <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+                <RulesFilters filters={filters} onFilterChange={setFilters} />
+            </div>
+            <RulesTable
+                rules={filteredRules}
+                isAdmin={isAdmin}
+                onToggleStatus={toggleRuleStatus}
+                onDelete={handleDeleteRequest}
+                onEdit={(rule) => alert(`Editing: ${t(rule.nameKey)}`)}
+                onDuplicate={(rule) => alert(`Duplicating: ${t(rule.nameKey)}`)}
+            />
+
+            {ruleToDelete && (
+                <ConfirmationModal
+                    isOpen={!!ruleToDelete}
+                    onClose={() => setRuleToDelete(null)}
+                    onConfirm={confirmDelete}
+                    title={t('automationRules.deleteConfirm.title')}
+                    confirmText={t('common.delete')}
+                    confirmButtonClass="bg-red-600 hover:bg-red-700"
+                >
+                    <p>{t('automationRules.deleteConfirm.message').replace('{ruleName}', t(ruleToDelete.nameKey))}</p>
+                </ConfirmationModal>
+            )}
+        </div>
+    );
+};
+
+export default RuleCategoryView;

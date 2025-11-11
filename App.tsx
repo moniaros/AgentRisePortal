@@ -32,6 +32,8 @@ import Testimonials from './pages/Testimonials';
 import Sitemap from './pages/Sitemap';
 import AutomationRules from './pages/AutomationRules';
 import Support from './pages/Support';
+import AutomationOverview from './components/automation/AutomationOverview';
+import RuleCategoryView from './components/automation/RuleCategoryView';
 
 const App: React.FC = () => {
   return (
@@ -46,6 +48,7 @@ const App: React.FC = () => {
                   <Route path="/login" element={<Login />} />
                   <Route path="/logout" element={<Logout />} />
                   <Route path="/capture/:campaignId" element={<LeadCapturePage />} />
+                  
                   <Route path="/" element={<Layout><Dashboard /></Layout>} />
                   <Route path="/micro-crm" element={<Layout><MicroCRM /></Layout>} />
                   <Route path="/customer/:customerId" element={<Layout><CustomerProfile /></Layout>} />
@@ -57,7 +60,12 @@ const App: React.FC = () => {
                   <Route path="/analytics" element={<Layout><Analytics /></Layout>} />
                   <Route path="/profile" element={<Layout><Profile /></Layout>} />
                   <Route path="/settings" element={<Layout><Settings /></Layout>} />
-                  <Route path="/crm/automation-rules" element={<Layout><AutomationRules /></Layout>} />
+
+                  <Route path="/crm/automation-rules" element={<Layout><AutomationRules /></Layout>}>
+                    <Route index element={<AutomationOverview />} />
+                    <Route path=":category" element={<RuleCategoryView />} />
+                  </Route>
+
                   <Route path="/user-management" element={<Layout><UserManagement /></Layout>} />
                   <Route path="/leads-dashboard" element={<Layout><LeadsDashboard /></Layout>} />
                   <Route path="/microsite-builder" element={<Layout><MicrositeBuilder /></Layout>} />
