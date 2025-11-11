@@ -153,13 +153,18 @@ This section details each page, organized by the main navigation categories.
 -   **File:** `pages/GapAnalysis.tsx`
 -   **Purpose:** To use the Gemini API to analyze a client's policy for coverage gaps.
 -   **Functionalities:**
-    -   Allows users to upload a policy document via a drag-and-drop or file browser interface.
-    -   Simulates extracting policy data from the document.
-    -   Provides a text area for the user to describe the client's needs.
-    -   Sends the policy data and user needs to the Gemini API for analysis.
-    -   Displays the structured results (gaps, upsell, cross-sell opportunities).
--   **UI Elements:** `FileUploader` component, text area, results display with color-coded cards.
--   **Data Source:** `services/api.ts` (`fetchParsedPolicy`) for mock extraction, and the Gemini API for analysis.
+    -   **Step 1: Data Extraction:**
+        -   Allows users to upload a policy document (PDF, JPG, PNG).
+        -   Retrieves the Gemini API key from `localStorage`.
+        -   Sends the document's text content to the Google Gemini API using a detailed prompt and a specific JSON schema to extract structured policy information.
+        -   Displays the extracted data for user review.
+    -   **Step 2: Gap Analysis:**
+        -   Provides a text area for the user to describe the client's needs and context.
+        -   Sends the extracted policy data and user needs to the Gemini API for analysis.
+        -   Displays the structured results (gaps, upsell, cross-sell opportunities).
+-   **UI Elements:** `FileUploader` component, `PolicyParser` for displaying extracted data, text area for user context, and a results display with color-coded cards.
+-   **Data Source:** The Gemini API is used for both data extraction and gap analysis.
+-   **Error Handling:** The UI displays specific error messages if the Gemini API key is not configured or if either of the API calls fail.
 -   **Localization:** Fully supported.
 
 ##### File Upload Component
@@ -169,7 +174,7 @@ This section details each page, organized by the main navigation categories.
     1.  **Initial State:** A dashed-border drop zone is displayed, inviting the user to either drag a file onto it or click it to open the native file browser.
     2.  **Interaction:** When a user drags a file over the area, the UI provides immediate visual feedback: the border becomes solid and a "Drop file to upload" message appears.
     3.  **Validation:** Upon file drop or selection, the system validates the file. It checks for allowed MIME types (PDF, JPG, PNG) and ensures the file size is within the configured limit (10MB). If validation fails, an error message is shown directly within the component, and the process stops.
-    4.  **Status Display:** After a valid file is selected, the upload component is replaced with a status card. This card displays the file's name, its size (formatted in MB), and a "Change File" button. The application then automatically begins the next step (simulated data extraction), showing a "Extracting policy data..." status.
+    4.  **Status Display:** After a valid file is selected, the upload component is replaced with a status card. This card displays the file's name, its size (formatted in MB), and a "Change File" button. The application then automatically begins the AI data extraction process, showing a "Extracting policy data..." status.
     5.  **Re-upload:** The user can click the "Change File" button at any point to discard the current selection and return to the initial upload interface.
 
 #### Page: News & Updates

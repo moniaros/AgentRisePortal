@@ -5,7 +5,6 @@ import FileUploader from '../components/gap-analysis/FileUploader';
 import PolicyParser from '../components/gap-analysis/PolicyParser';
 import PolicyReviewForm from '../components/gap-analysis/PolicyReviewForm';
 import { GoogleGenAI, Type } from '@google/genai';
-import { fetchParsedPolicy } from '../services/api';
 import GapAnalysisResults from '../components/gap-analysis/GapAnalysisResults';
 import { useOnboardingStatus } from '../hooks/useOnboardingStatus';
 import { trackEvent } from '../services/analytics';
@@ -13,6 +12,48 @@ import { trackEvent } from '../services/analytics';
 const MAX_FILE_SIZE_MB = 10;
 const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 const ACCEPTED_MIME_TYPES = ['application/pdf', 'image/jpeg', 'image/png'];
+
+// The OCR'd text from the provided example policy document
+const POLICY_DOCUMENT_TEXT = `
+ΕΘΝΙΚΗ
+Η ΠΡΩΤΗ ΑΣΦΑΛΙΣΤΙΚΗ
+ΑΝΩΝΥΜΟΣ ΕΛΛΗΝΙΚΗ ΕΤΑΙΡΙΑ ΓΕΝΙΚΩΝ ΑΣΦΑΛΕΙΩΝ «Η ΕΘΝΙΚΗ»
+ΛΕΩΦ. ΣΥΓΓΡΟΥ 103-105 • 117 45 ΑΘΗΝΑ • ΑΦΜ: 094003849
+Αρ. Γ.Ε.ΜΗ.: 000224801000 • ΕΞΥΠΗΡΕΤΗΣΗ ΠΕΛΑΤΩΝ ΤΗΛ: +30 210 90 99 000
+email: ethniki@insurance.nbg.gr www.ethniki-asfalistiki.gr my.ethniki-asfalistiki.gr
+ΠΟΛΥΑΣΦΑΛΙΣΤΗΡΙΟ ΣΥΜΒΟΛΑΙΟ ΚΛΑΔΟΥ ΑΥΤΟΚΙΝΗΤΩΝ
+Το παρόν επέχει και θέση απόδειξης πληρωμής ασφαλίστρων
+ΤΟ ΣΥΜΒΟΛΑΙΟ ΣΑΣ
+Αρ. Συμβολαίου: 63708952
+Αρ. Παραστατικού: 18820956
+Διάρκεια Ασφάλισης: Ετήσιο
+Από: 23:59 της 11/07/2025 Εως: 23:59 της 11/07/2026
++30 210 9099 000
+ΜΟΝΙΑΡΟΣ ΙΩΑΝΝΗΣ ΧΡΗΣΤ
+ΦΟΛΕΓΑΝΔΡΟΥ 11
+16561 ΓΛΥΦΑΔΑ
+ΑΣΦΑΛΙΖΟΜΕΝΟΣ/ΛΗΠΤΗΣ ΑΣΦΑΛΙΣΗΣ
+Επώνυμο: ΜΟΝΙΑΡΟΣ
+Όνομα: ΙΩΑΝΝΗΣ
+Δ/νση: ΦΟΛΕΓΑΝΔΡΟΥ 11
+16561 ΓΛΥΦΑΔΑ
+ΣΤΟΙΧΕΙΑ ΑΣΦΑΛΙΣΜΕΝΟΥ ΟΧΗΜΑΤΟΣ
+Αρ. Κυκλοφ.: KPT9616
+Μάρκα: FIAT
+Μοντέλο: 500X (334) CROS
+ΟΙ ΚΑΛΥΨΕΙΣ ΣΑΣ
+Σωματικές Βλάβες τρίτων (ανά άτομο) - ΑΣΦ. ΚΕΦ. (€) 1.300.000
+Υλικές Ζημιές τρίτων (ανά ατύχημα) - ΑΣΦ. ΚΕΦ. (€) 1.300.000
+Σωματικές Βλάβες από Μετάδοση Πυρκαγιάς - ΑΣΦ. ΚΕΦ. (€) 15.000
+Υλικές Ζημιές από Μετάδοση Πυρκαγιάς - ΑΣΦ. ΚΕΦ. (€) 15.000
+Ζημιές Ιδίου από Πλημμύρα Φυσικών Φαινομένων - ΑΣΦ. ΚΕΦ. (€) 15.741
+Ζημιές Ιδίου οχήματος από Δασική Πυρκαγιά - ΑΣΦ. ΚΕΦ. (€) 15.741
+Προσωπικό Ατύχημα Οδηγού - ΑΣΦ. ΚΕΦ. (€) 15.000
+Νομική Προστασία - ΑΣΦ. ΚΕΦ. (€) 15.000
+Υλικές Ζημιές Ιδίου Οχήματος από Ανασφάλιστο όχημα - ΑΣΦ. ΚΕΦ. (€) 100.000
+Εγγύηση Ασφαλίστρου - ΑΠΑΛΛ. ΙΣΧΥΕΙ
+Οδική - Ιατρική & Ταξιδιωτική Βοήθεια - ΑΠΑΛΛ. ΙΣΧΥΕΙ
+`;
 
 
 const GapAnalysis: React.FC = () => {
@@ -37,17 +78,21 @@ const GapAnalysis: React.FC = () => {
     };
 
     const handleFileUpload = async (uploadedFile: File) => {
-        setError(null); // Clear previous errors
+        setError(null);
 
-        // Validate file type
         if (!ACCEPTED_MIME_TYPES.includes(uploadedFile.type)) {
             setError(`Invalid file type. Please upload a PDF, JPG, or PNG file.`);
             return;
         }
 
-        // Validate file size
         if (uploadedFile.size > MAX_FILE_SIZE_BYTES) {
             setError(`File is too large. Maximum size is ${MAX_FILE_SIZE_MB}MB.`);
+            return;
+        }
+        
+        const apiKey = localStorage.getItem('gemini_api_key');
+        if (!apiKey) {
+            setError("Gemini API Key is not configured. Please set it in the Settings page.");
             return;
         }
 
@@ -58,12 +103,80 @@ const GapAnalysis: React.FC = () => {
         setLoadingStep(t('gapAnalysis.fetchingPolicy') as string);
 
         try {
-            // Instead of parsing, we fetch the mock structured data
-            const policyData = await fetchParsedPolicy();
+            const ai = new GoogleGenAI({ apiKey });
+            const prompt = `
+              Analyze the following insurance policy document text and extract the key information into a structured JSON format. 
+              The document is in Greek. The JSON output must conform to the specified schema.
+              For 'insuredItems.id', generate a unique identifier like 'vehicle_1'. 
+              For 'insuredItems.description', extract the vehicle's make and model. 
+              For 'coverages.type', use the Greek text from the document. 
+              For 'coverages.limit', use the value from the 'ΑΣΦ. ΚΕΦ. (€)' column or 'ΙΣΧΥΕΙ' if it's a binary coverage.
+              For 'coverages.deductible', use the value from the 'ΑΠΑΛΛ.' column if present, otherwise omit it.
+              The policyholder name is 'ΜΟΝΙΑΡΟΣ ΙΩΑΝΝΗΣ ΧΡΗΣΤ' and their address is 'ΦΟΛΕΓΑΝΔΡΟΥ 11, 16561 ΓΛΥΦΑΔΑ'.
+              The insurer is 'ΕΘΝΙΚΗ'.
+              The policy number is '63708952'.
+
+              Policy Text: 
+              ${POLICY_DOCUMENT_TEXT}
+            `;
+
+            const schema = {
+                type: Type.OBJECT,
+                properties: {
+                    policyNumber: { type: Type.STRING, description: 'The policy number, Αρ. Συμβολαίου' },
+                    insurer: { type: Type.STRING, description: 'The name of the insurance company, e.g., ΕΘΝΙΚΗ' },
+                    policyholder: {
+                        type: Type.OBJECT,
+                        properties: {
+                            name: { type: Type.STRING, description: 'Full name of the policyholder' },
+                            address: { type: Type.STRING, description: 'Full address of the policyholder' },
+                        },
+                        required: ['name', 'address'],
+                    },
+                    insuredItems: {
+                        type: Type.ARRAY,
+                        description: 'List of insured items, typically one vehicle for a motor policy.',
+                        items: {
+                            type: Type.OBJECT,
+                            properties: {
+                                id: { type: Type.STRING, description: "A unique identifier for the item, e.g., 'vehicle_1'" },
+                                description: { type: Type.STRING, description: "Description of the item, e.g., 'FIAT 500X (334) CROS'" },
+                                coverages: {
+                                    type: Type.ARRAY,
+                                    description: 'List of coverages for this item.',
+                                    items: {
+                                        type: Type.OBJECT,
+                                        properties: {
+                                            type: { type: Type.STRING, description: 'The name of the coverage in Greek' },
+                                            limit: { type: Type.STRING, description: "The coverage limit from the 'ΑΣΦ. ΚΕΦ. (€)' column, formatted as a string." },
+                                            deductible: { type: Type.STRING, description: "The deductible from the 'ΑΠΑΛΛ.' column. Omit if not present." },
+                                        },
+                                        required: ['type', 'limit'],
+                                    },
+                                },
+                            },
+                            required: ['id', 'description', 'coverages'],
+                        },
+                    },
+                },
+                required: ['policyNumber', 'insurer', 'policyholder', 'insuredItems'],
+            };
+            
+            const response = await ai.models.generateContent({
+                model: 'gemini-2.5-pro',
+                contents: prompt,
+                config: {
+                    responseMimeType: "application/json",
+                    responseSchema: schema,
+                }
+            });
+
+            const policyData = JSON.parse(response.text) as DetailedPolicy;
             setParsedPolicy(policyData);
+
         } catch (err) {
-            console.error("Error fetching policy:", err);
-            setError("Failed to process the policy document. Please try again.");
+            console.error("Error extracting policy data with Gemini:", err);
+            setError("Failed to extract policy data using AI. Please check the document or try again.");
         } finally {
             setIsLoading(false);
             setLoadingStep('');
@@ -71,7 +184,13 @@ const GapAnalysis: React.FC = () => {
     };
 
     const handleAnalyzeGaps = async () => {
-        if (!parsedPolicy || !userNeeds || !process.env.API_KEY) return;
+        if (!parsedPolicy || !userNeeds) return;
+        
+        const apiKey = localStorage.getItem('gemini_api_key');
+        if (!apiKey) {
+            setError("Gemini API Key is not configured. Please set it in the Settings page.");
+            return;
+        }
         
         setIsLoading(true);
         setLoadingStep(t('gapAnalysis.analyzing') as string);
@@ -79,8 +198,7 @@ const GapAnalysis: React.FC = () => {
         setError(null);
 
         try {
-            // FIX: Use correct Gemini API initialization
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            const ai = new GoogleGenAI({ apiKey });
             const prompt = `
               Perform a gap analysis for an insurance policy.
               Current Policy Details: ${JSON.stringify(parsedPolicy)}
@@ -140,7 +258,6 @@ const GapAnalysis: React.FC = () => {
                 }
             });
             
-            // FIX: Use the `.text` accessor for the response
             const jsonStr = response.text;
             const result = JSON.parse(jsonStr) as GapAnalysisResult;
             setAnalysisResult(result);
@@ -151,7 +268,7 @@ const GapAnalysis: React.FC = () => {
                 file?.name,
                 language
             );
-            markTaskCompleted('policyAnalyzed'); // Mark task as complete on successful analysis
+            markTaskCompleted('policyAnalyzed');
 
         } catch (err) {
             console.error("Error analyzing gaps:", err);
@@ -188,11 +305,11 @@ const GapAnalysis: React.FC = () => {
                 </div>
             )}
             
-            {error && !file && <div className="mt-4 p-4 bg-red-100 text-red-700 rounded">{error}</div>}
+            {error && !parsedPolicy && <div className="mt-4 p-4 bg-red-100 text-red-700 rounded">{error}</div>}
 
             <PolicyParser parsedPolicy={parsedPolicy} isLoading={isLoading && loadingStep === t('gapAnalysis.fetchingPolicy')} />
 
-            {parsedPolicy && (
+            {parsedPolicy && !analysisResult && (
                 <PolicyReviewForm 
                     userNeeds={userNeeds}
                     setUserNeeds={setUserNeeds}
@@ -201,7 +318,7 @@ const GapAnalysis: React.FC = () => {
                 />
             )}
             
-            {isLoading && loadingStep && !parsedPolicy && (
+            {isLoading && loadingStep === t('gapAnalysis.analyzing') && (
                 <div className="text-center p-8">
                     <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
                     <p>{loadingStep}</p>

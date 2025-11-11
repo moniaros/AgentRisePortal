@@ -100,15 +100,21 @@ This section displays customer reviews and provides tools for managing replies.
 
 ### AI Policy Scanner
 
-The AI Policy Scanner page (`/gap-analysis`) includes an interactive file upload component for submitting policy documents.
+The AI Policy Scanner page (`/gap-analysis`) includes an interactive file upload component and uses the Gemini API for intelligent document processing.
 
 -   **Dual Upload Methods:** Users can either drag and drop a file directly onto the designated area or click it to open their system's file browser.
--   **Visual Feedback:** The drop zone provides clear visual cues, changing its border style and color when a file is dragged over it to indicate an active state.
--   **File Validation:** Before processing, the uploader validates the selected file against two criteria:
-    -   **File Type:** Only `PDF`, `JPG`, and `PNG` files are accepted.
-    -   **File Size:** The file must be under a predefined limit (e.g., 10MB).
-    -   An explicit error message is displayed if a file fails validation.
--   **Status and Re-upload:** Once a valid file is selected, the uploader UI is replaced by a status card showing the file's name and size. This card includes a "Change File" button, allowing the user to easily discard the current selection and upload a new document. The application then automatically proceeds to the (simulated) data extraction step.
+-   **File Validation:** The uploader validates the selected file for type (`PDF`, `JPG`, `PNG`) and size (under 10MB).
+-   **Status and Re-upload:** Once a valid file is selected, a status card shows the file's name and size, with an option to change the file.
+
+#### Gemini API Integration for Data Extraction
+-   **Trigger:** A successful file upload.
+-   **Authentication:** The application retrieves the user's Gemini API key from `localStorage` (`gemini_api_key`). If the key is not found, an error is displayed, and the process stops.
+-   **Process:**
+    1.  The text content of the policy document is sent to the Google Gemini API.
+    2.  A specific prompt instructs the model to act as a policy parser and extract key information (e.g., policy number, policyholder, coverages) into a predefined JSON structure.
+    3.  A loading indicator is displayed to the user with the message "Extracting policy data...".
+-   **Output:** On a successful API response, the extracted, structured data is displayed in a review section, allowing the user to verify the information before proceeding to the gap analysis step.
+-   **Error Handling:** If the API call fails (due to an invalid key, network issues, or other errors), a descriptive error message is shown, and the user can try uploading the file again.
 
 ### Error Handling and Empty States
 
@@ -126,7 +132,7 @@ The AI Policy Scanner page (`/gap-analysis`) includes an interactive file upload
 
 ### Local Development
 
-For local development, these API calls are mocked by fetching data from static JSON files:
+For local development, some API calls are mocked by fetching data from static JSON files:
 -   `/data/gbp_location.json` (for the business summary)
 -   `/data/gbp_reviews.json` (for the list of reviews)
 This allows for UI development and testing without requiring live API credentials.
