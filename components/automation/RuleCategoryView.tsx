@@ -10,6 +10,7 @@ import RulesFilters from './RulesFilters';
 import ConfirmationModal from '../ui/ConfirmationModal';
 import ErrorMessage from '../ui/ErrorMessage';
 import SkeletonLoader from '../ui/SkeletonLoader';
+import RuleTesterModal from './testing/RuleTesterModal';
 
 const RuleCategoryView: React.FC = () => {
     const { category } = useParams<{ category: RuleCategory }>();
@@ -23,6 +24,7 @@ const RuleCategoryView: React.FC = () => {
         status: 'all' as 'all' | 'active' | 'inactive',
     });
     const [ruleToDelete, setRuleToDelete] = useState<AutomationRule | null>(null);
+    const [ruleToTest, setRuleToTest] = useState<AutomationRule | null>(null);
     
     const isAdmin = currentUser?.partyRole.roleType === UserSystemRole.ADMIN;
 
@@ -71,6 +73,7 @@ const RuleCategoryView: React.FC = () => {
                 onToggleStatus={toggleRuleStatus}
                 onDelete={handleDeleteRequest}
                 onEdit={handleEdit}
+                onTest={setRuleToTest}
                 onDuplicate={(rule) => alert(`Duplicating: ${rule.name}`)}
             />
 
@@ -85,6 +88,14 @@ const RuleCategoryView: React.FC = () => {
                 >
                     <p>{t('automationRules.deleteConfirm.message').replace('{ruleName}', ruleToDelete.name)}</p>
                 </ConfirmationModal>
+            )}
+
+            {ruleToTest && (
+                <RuleTesterModal
+                    isOpen={!!ruleToTest}
+                    onClose={() => setRuleToTest(null)}
+                    rule={ruleToTest}
+                />
             )}
         </div>
     );

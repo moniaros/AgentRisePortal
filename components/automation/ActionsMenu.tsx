@@ -6,9 +6,10 @@ interface ActionsMenuProps {
     onEdit: () => void;
     onDuplicate: () => void;
     onDelete: () => void;
+    onTest: () => void;
 }
 
-const ActionsMenu: React.FC<ActionsMenuProps> = ({ onEdit, onDuplicate, onDelete }) => {
+const ActionsMenu: React.FC<ActionsMenuProps> = ({ onEdit, onDuplicate, onDelete, onTest }) => {
     const { t } = useLocalization();
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
@@ -35,6 +36,7 @@ const ActionsMenu: React.FC<ActionsMenuProps> = ({ onEdit, onDuplicate, onDelete
             {isOpen && (
                 <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 z-10">
                     <div className="py-1" role="menu" aria-orientation="vertical">
+                        <button onClick={onTest} className="w-full text-left block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem">{t('automationRules.actions.test')}</button>
                         <button onClick={onEdit} className="w-full text-left block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem">{t('automationRules.actions.edit')}</button>
                         <button onClick={onDuplicate} className="w-full text-left block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem">{t('automationRules.actions.duplicate')}</button>
                         <button onClick={onDelete} className="w-full text-left block px-4 py-2 text-sm text-red-700 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem">{t('automationRules.actions.delete')}</button>

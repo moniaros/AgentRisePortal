@@ -243,7 +243,7 @@ This section details each page, organized by the main navigation categories.
     -   Features a tabbed sub-navigation to switch between an overview, rule categories (`Lead Conversion`, `Communication Automation`), and a new `Templates` manager.
     -   Displays automation rules for a selected category in a filterable table.
     -   Admins can toggle rules between "Active" and "Inactive".
-    -   Admins can access an actions menu to Edit, Duplicate, or Delete a rule.
+    -   Admins can access an actions menu to Edit, Duplicate, Delete, or Test a rule.
 -   **UI Elements:** Tabbed sub-navigation, filter controls, data table, confirmation modal.
 -   **Data Source:** `hooks/useAutomationRules.ts` (fetches from `/data/rules/automation_rules.json`).
 -   **Localization:** Fully supported.
@@ -277,3 +277,19 @@ This section details each page, organized by the main navigation categories.
 -   **UI Elements:** Template lists grouped by channel, "Create Template" button, and a comprehensive editor modal with a placeholder selector and a preview pane.
 -   **Data Source:** All template data is fetched and managed via the `hooks/useTemplates.ts` hook, which reads from the JSON files in the `/data/templates/` directory.
 -   **Localization:** Fully supported, including the UI and the live preview toggle.
+
+### 3.7. Automation Rule Testing
+-   **File:** `components/automation/testing/RuleTesterModal.tsx`
+-   **Purpose:** A dedicated interface to simulate and verify the behavior of an automation rule before it is enabled. This feature is crucial for preventing unintended actions and ensuring rules work as expected.
+-   **Functionalities:**
+    -   **Access Points:** The tester can be launched from the actions menu on the main rules list or directly from the Rule Builder page (allowing tests on unsaved changes).
+    -   **Sample Data Selection:** Users select a sample lead from a list of dummy CRM data. The details of the selected lead are displayed for context.
+    -   **Simulation Engine:** A lightweight, front-end rule engine evaluates the rule's conditions against the selected lead's data.
+    -   **Step-wise Results:**
+        -   **Condition Check:** The UI displays each condition from the rule along with its outcome (`Passed` or `Failed`) and the actual data value from the sample lead.
+        -   **Overall Outcome:** A clear message indicates whether the rule's conditions were met and if the actions would have been executed.
+        -   **Action Previews:** If the conditions pass, the UI renders a preview for each defined action. For messaging actions, it shows the final message content with all dynamic placeholders replaced, with a toggle to view the preview in both English and Greek.
+    -   **Error Feedback:** If an action references a non-existent template, a clear error message is displayed in the preview section.
+-   **UI Elements:** A multi-step modal, dropdown for sample data selection, and a detailed results view with color-coded status indicators and message preview panes.
+-   **Data Source:** Rule data is passed directly to the component. Sample lead data is fetched via `hooks/useCrmData.ts`. Templates are provided by `hooks/useTemplates.ts`.
+-   **Localization:** Fully supported, including all UI text and the bilingual message previews.

@@ -461,7 +461,8 @@
     "actions": {
       "edit": "Edit",
       "duplicate": "Duplicate",
-      "delete": "Delete"
+      "delete": "Delete",
+      "test": "Test Rule"
     },
     "deleteConfirm": {
       "title": "Delete Rule",
@@ -487,6 +488,23 @@
         "placeholders": "Placeholders",
         "preview": "Preview"
       }
+    },
+    "testing": {
+      "title": "Test Automation Rule",
+      "selectLead": "Select a Sample Lead to Test Against",
+      "runTest": "Run Test",
+      "results": "Test Results",
+      "backToSelection": "Test Another Lead",
+      "conditionsCheck": "Conditions Check",
+      "passed": "Passed",
+      "failed": "Failed",
+      "ruleWouldRun": "Rule conditions met. Actions would be executed.",
+      "ruleWouldNotRun": "Rule conditions not met. No actions would be executed.",
+      "actionPreview": "Action Previews",
+      "templateNotFound": "Error: Template not found.",
+      "noActions": "This rule has no actions defined.",
+      "conditionEval": "Condition: {field} {operator} {value}",
+      "actualValue": "Actual: {value}"
     }
   },
   "support": {

@@ -299,6 +299,17 @@ export interface AutomationRule {
     agencyId: string;
 }
 
+export interface ConditionResult {
+    condition: RuleCondition;
+    passed: boolean;
+    actualValue: string | number | undefined;
+}
+
+export interface SimulationResult {
+    conditionsMet: boolean;
+    conditionResults: ConditionResult[];
+}
+
 
 // Analytics & Admin
 export interface AuditLog {

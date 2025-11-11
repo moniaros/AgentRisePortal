@@ -12,9 +12,10 @@ interface RulesTableProps {
   onDelete: (rule: AutomationRule) => void;
   onEdit: (rule: AutomationRule) => void;
   onDuplicate: (rule: AutomationRule) => void;
+  onTest: (rule: AutomationRule) => void;
 }
 
-const RulesTable: React.FC<RulesTableProps> = ({ rules, isAdmin, onToggleStatus, onDelete, onEdit, onDuplicate }) => {
+const RulesTable: React.FC<RulesTableProps> = ({ rules, isAdmin, onToggleStatus, onDelete, onEdit, onDuplicate, onTest }) => {
   const { t } = useLocalization();
 
   return (
@@ -60,6 +61,7 @@ const RulesTable: React.FC<RulesTableProps> = ({ rules, isAdmin, onToggleStatus,
                     onEdit={() => onEdit(rule)}
                     onDuplicate={() => onDuplicate(rule)}
                     onDelete={() => onDelete(rule)}
+                    onTest={() => onTest(rule)}
                   />
                 )}
               </td>
