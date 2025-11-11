@@ -55,6 +55,7 @@ The following table summarizes all defined routes in the application.
 | `/crm/automation-rules/new`   | `RuleBuilder`       | Page to create a new automation rule.                                   | -                |
 | `/crm/automation-rules/edit/:ruleId`   | `RuleBuilder`       | Page to edit an existing automation rule.                                   | `ruleId`       |
 | `/crm/automation-rules/templates`   | `TemplatesManager`       | Page to manage communication templates.                                   | -       |
+| `/crm/automation-rules/settings` | `AutomationSettings` | Page to configure communication channel APIs. | - |
 | `/user-management`             | `UserManagement`        | Page for admins to manage users and view audit logs.                        | -                |
 | `/leads-dashboard`             | `LeadsDashboard`        | A visual dashboard summarizing lead data and funnels.                       | -                |
 | `/microsite-builder`           | `MicrositeBuilder`      | Tool for building a simple, public-facing agency website.                   | -                |
@@ -240,7 +241,7 @@ This section details each page, organized by the main navigation categories.
 -   **File:** `pages/AutomationRules.tsx`
 -   **Purpose:** Provides a UI for administrators to manage agency-specific automation rules.
 -   **Functionalities:**
-    -   Features a tabbed sub-navigation to switch between an overview, rule categories (`Lead Conversion`, `Communication Automation`), and a new `Templates` manager.
+    -   Features a tabbed sub-navigation to switch between an overview, rule categories (`Lead Conversion`, `Communication Automation`), `Templates`, and `Settings`.
     -   Displays automation rules for a selected category in a filterable table.
     -   Admins can toggle rules between "Active" and "Inactive".
     -   Admins can access an actions menu to Edit, Duplicate, Delete, or Test a rule.
@@ -293,3 +294,16 @@ This section details each page, organized by the main navigation categories.
 -   **UI Elements:** A multi-step modal, dropdown for sample data selection, and a detailed results view with color-coded status indicators and message preview panes.
 -   **Data Source:** Rule data is passed directly to the component. Sample lead data is fetched via `hooks/useCrmData.ts`. Templates are provided by `hooks/useTemplates.ts`.
 -   **Localization:** Fully supported, including all UI text and the bilingual message previews.
+
+### 3.8. Communication Channel Settings
+-   **File:** `pages/AutomationSettings.tsx`
+-   **Purpose:** A centralized UI for administrators to configure the credentials and settings for all external communication services used by the automation engine.
+-   **Functionalities:**
+    -   **Channel Management:** Provides separate configuration sections for Email (SMTP), Viber, WhatsApp, and SMS providers.
+    -   **Enable/Disable:** Each channel can be individually enabled or disabled with a toggle switch.
+    -   **Credential Storage:** Forms are provided to securely input and save API keys, tokens, hostnames, and other required credentials. The data is persisted locally.
+    -   **Connection Testing:** Each section includes a "Test Connection" button that simulates a connection to the respective service, providing immediate success or failure feedback to validate the credentials.
+    -   **Centralized Saving:** A single "Save All Settings" button persists all changes made across the different channel configurations.
+-   **UI Elements:** A main form containing individual cards for each communication channel. Each card includes a title, a toggle switch, labeled input fields for credentials, a test button, and a status message area.
+-   **Data Source:** All settings are managed via the `hooks/useAutomationSettings.ts` hook, which reads from a mock JSON file (`/data/settings/automation.json`) and persists to `localStorage`.
+-   **Localization:** Fully supported, including all titles, labels, buttons, and status messages.

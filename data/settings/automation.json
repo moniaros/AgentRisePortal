@@ -1,0 +1,26 @@
+{
+    "email": {
+        "isEnabled": false,
+        "host": "",
+        "port": 587,
+        "username": "",
+        "password": "",
+        "fromAddress": ""
+    },
+    "viber": {
+        "isEnabled": false,
+        "apiKey": "",
+        "senderName": ""
+    },
+    "whatsapp": {
+        "isEnabled": false,
+        "apiKey": "",
+        "phoneNumberId": ""
+    },
+    "sms": {
+        "isEnabled": false,
+        "apiKey": "",
+        "apiSecret": "",
+        "senderId": ""
+    }
+}

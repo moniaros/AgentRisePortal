@@ -36,6 +36,7 @@ import AutomationOverview from './components/automation/AutomationOverview';
 import RuleCategoryView from './components/automation/RuleCategoryView';
 import RuleBuilder from './pages/RuleBuilder';
 import TemplatesManager from './pages/TemplatesManager';
+import AutomationSettings from './pages/AutomationSettings';
 
 const App: React.FC = () => {
   return (
@@ -68,6 +69,7 @@ const App: React.FC = () => {
                     <Route path="new" element={<RuleBuilder />} />
                     <Route path="edit/:ruleId" element={<RuleBuilder />} />
                     <Route path="templates" element={<TemplatesManager />} />
+                    <Route path="settings" element={<AutomationSettings />} />
                     <Route path=":category" element={<RuleCategoryView />} />
                   </Route>
 

@@ -505,6 +505,42 @@
       "noActions": "Αυτός ο κανόνας δεν έχει καθορισμένες ενέργειες.",
       "conditionEval": "Συνθήκη: {field} {operator} {value}",
       "actualValue": "Πραγματική τιμή: {value}"
+    },
+    "settings": {
+      "title": "Ρυθμίσεις Καναλιών Επικοινωνίας",
+      "description": "Διαμορφώστε τα κλειδιά API και τις ρυθμίσεις για κάθε κανάλι επικοινωνίας που χρησιμοποιείται στους κανόνες αυτοματισμού.",
+      "enableChannel": "Ενεργοποίηση καναλιού",
+      "saveButton": "Αποθήκευση Όλων των Ρυθμίσεων",
+      "testButton": "Δοκιμή Σύνδεσης",
+      "testingConnection": "Γίνεται δοκιμή...",
+      "connectionSuccess": "Η σύνδεση είναι επιτυχής!",
+      "connectionFailed": "Η σύνδεση απέτυχε.",
+      "channels": {
+        "email": {
+          "title": "Ρυθμίσεις Email (SMTP)",
+          "host": "SMTP Host",
+          "port": "Port",
+          "username": "Όνομα Χρήστη",
+          "password": "Κωδικός",
+          "fromAddress": "Προεπιλεγμένη Διεύθυνση 'Από'"
+        },
+        "viber": {
+          "title": "Viber Business API",
+          "apiKey": "Κλειδί API",
+          "senderName": "Όνομα Αποστολέα"
+        },
+        "whatsapp": {
+          "title": "WhatsApp API (Meta)",
+          "apiKey": "Κλειδί API",
+          "phoneNumberId": "Αναγνωριστικό Αριθμού Τηλεφώνου"
+        },
+        "sms": {
+          "title": "Πάροχος SMS (π.χ., Twilio)",
+          "apiKey": "Κλειδί API / Account SID",
+          "apiSecret": "API Secret / Auth Token",
+          "senderId": "Αναγνωριστικό Αποστολέα / Αριθμός"
+        }
+      }
     }
   },
   "support": {

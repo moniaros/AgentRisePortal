@@ -52,6 +52,9 @@ const AutomationRules: React.FC = () => {
                     <NavLink to="/crm/automation-rules/templates" className={navLinkClasses}>
                         {t('nav.templates')}
                     </NavLink>
+                    <NavLink to="/crm/automation-rules/settings" className={navLinkClasses}>
+                        {t('nav.settings')}
+                    </NavLink>
                 </nav>
             </div>
             

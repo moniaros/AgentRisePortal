@@ -505,6 +505,42 @@
       "noActions": "This rule has no actions defined.",
       "conditionEval": "Condition: {field} {operator} {value}",
       "actualValue": "Actual: {value}"
+    },
+    "settings": {
+      "title": "Communication Channel Settings",
+      "description": "Configure the API credentials and settings for each communication channel used in automation rules.",
+      "enableChannel": "Enable this channel",
+      "saveButton": "Save All Settings",
+      "testButton": "Test Connection",
+      "testingConnection": "Testing...",
+      "connectionSuccess": "Connection successful!",
+      "connectionFailed": "Connection failed.",
+      "channels": {
+        "email": {
+          "title": "Email (SMTP) Settings",
+          "host": "SMTP Host",
+          "port": "Port",
+          "username": "Username",
+          "password": "Password",
+          "fromAddress": "Default 'From' Address"
+        },
+        "viber": {
+          "title": "Viber Business API",
+          "apiKey": "API Key",
+          "senderName": "Sender Name"
+        },
+        "whatsapp": {
+          "title": "WhatsApp API (Meta)",
+          "apiKey": "API Key",
+          "phoneNumberId": "Phone Number ID"
+        },
+        "sms": {
+          "title": "SMS Provider (e.g., Twilio)",
+          "apiKey": "API Key / Account SID",
+          "apiSecret": "API Secret / Auth Token",
+          "senderId": "Sender ID / From Number"
+        }
+      }
     }
   },
   "support": {

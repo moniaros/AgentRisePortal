@@ -310,6 +310,41 @@ export interface SimulationResult {
     conditionResults: ConditionResult[];
 }
 
+export interface SmtpSettings {
+    isEnabled: boolean;
+    host?: string;
+    port?: number;
+    username?: string;
+    password?: string;
+    fromAddress?: string;
+}
+
+export interface ViberSettings {
+    isEnabled: boolean;
+    apiKey?: string;
+    senderName?: string;
+}
+
+export interface WhatsAppSettings {
+    isEnabled: boolean;
+    apiKey?: string;
+    phoneNumberId?: string;
+}
+
+export interface SmsSettings {
+    isEnabled: boolean;
+    apiKey?: string;
+    apiSecret?: string;
+    senderId?: string;
+}
+
+export interface AutomationChannelSettings {
+    email: SmtpSettings;
+    viber: ViberSettings;
+    whatsapp: WhatsAppSettings;
+    sms: SmsSettings;
+}
+
 
 // Analytics & Admin
 export interface AuditLog {
