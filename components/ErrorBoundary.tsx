@@ -26,7 +26,8 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   // FIX: The 'public' modifier is redundant for class methods in TypeScript and was causing a type error. It has been removed.
-  render() {
+  // Converting to a class property arrow function to ensure `this` is correctly bound, which may resolve the type error on `this.props`.
+  render = () => {
     if (this.state.hasError) {
       return (
         <div className="flex flex-col justify-center items-center h-screen bg-red-100 text-red-700 p-4">
