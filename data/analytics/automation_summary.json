@@ -1,0 +1,10 @@
+{
+    "conversionRateBefore": 18.5,
+    "conversionRateAfter": 25.2,
+    "messagesSentByChannel": [
+        { "channel": "email", "count": 132 },
+        { "channel": "sms", "count": 88 },
+        { "channel": "whatsapp", "count": 45 },
+        { "channel": "viber", "count": 12 }
+    ]
+}

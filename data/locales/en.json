@@ -30,7 +30,8 @@
     "content": "Content",
     "management": "Management",
     "support": "Support",
-    "templates": "Templates"
+    "templates": "Templates",
+    "eventLog": "Event Log"
   },
   "header": {
     "search": "Search...",
@@ -92,7 +93,9 @@
     "inactive": "Inactive",
     "expired": "Expired",
     "approved": "Approved",
-    "pending": "Pending"
+    "pending": "Pending",
+    "success": "Success",
+    "failure": "Failure"
   },
   "leads": {
     "searchPlaceholder": "Search by name or email...",
@@ -541,6 +544,35 @@
           "senderId": "Sender ID / From Number"
         }
       }
+    },
+    "eventLog": {
+      "title": "Automation Event Log",
+      "description": "Review the history of all rule executions, their outcomes, and their impact.",
+      "filters": {
+        "allRules": "All Rules",
+        "allChannels": "All Channels",
+        "dateRange": "Date Range",
+        "last7Days": "Last 7 Days",
+        "last30Days": "Last 30 Days"
+      },
+      "kpis": {
+        "totalEvents": "Total Events",
+        "successRate": "Success Rate",
+        "messagesSent": "Messages Sent",
+        "conversions": "Conversions Attributed"
+      },
+      "charts": {
+        "conversionImpact": "Conversion Rate Impact"
+      },
+      "table": {
+        "rule": "Rule",
+        "status": "Status",
+        "channel": "Channel",
+        "target": "Target",
+        "details": "Details",
+        "timestamp": "Timestamp"
+      },
+      "noEvents": "No events match the current filters."
     }
   },
   "support": {

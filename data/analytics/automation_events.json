@@ -1,0 +1,70 @@
+[
+  {
+    "id": "evt-1",
+    "timestamp": "2024-09-23T10:05:00Z",
+    "ruleId": "rule-1",
+    "ruleName": "Follow up on New High-Score Leads",
+    "status": "success",
+    "channel": "email",
+    "target": { "id": "lead_1", "name": "Alice Smith" },
+    "details": "Email 'Welcome New Lead' sent to alice.s@email.com",
+    "impact": "Lead status changed: new -> contacted",
+    "agencyId": "agency_1"
+  },
+  {
+    "id": "evt-2",
+    "timestamp": "2024-09-23T10:05:01Z",
+    "ruleId": "rule-1",
+    "ruleName": "Follow up on New High-Score Leads",
+    "status": "success",
+    "channel": "sms",
+    "target": { "id": "lead_1", "name": "Alice Smith" },
+    "details": "SMS 'Initial Introduction' sent.",
+    "agencyId": "agency_1"
+  },
+  {
+    "id": "evt-3",
+    "timestamp": "2024-09-22T14:20:00Z",
+    "ruleId": "rule-2",
+    "ruleName": "Send Renewal Reminders",
+    "status": "failure",
+    "channel": "email",
+    "target": { "id": "cust_1", "name": "Michael Scott" },
+    "details": "Error: SMTP connection failed. Please check credentials in settings.",
+    "agencyId": "agency_1"
+  },
+  {
+    "id": "evt-4",
+    "timestamp": "2024-09-21T09:00:00Z",
+    "ruleId": "rule-2",
+    "ruleName": "Send Renewal Reminders",
+    "status": "success",
+    "channel": "email",
+    "target": { "id": "cust_2", "name": "Diana Prince" },
+    "details": "Email 'Your Quote is Ready' sent to diana.p@email.com.",
+    "agencyId": "agency_1"
+  },
+  {
+    "id": "evt-5",
+    "timestamp": "2024-09-20T11:30:00Z",
+    "ruleId": "rule-1",
+    "ruleName": "Follow up on New High-Score Leads",
+    "status": "success",
+    "channel": "email",
+    "target": { "id": "lead_2", "name": "Bob Johnson" },
+    "details": "Email 'Welcome New Lead' sent to bob.j@email.com",
+    "impact": "Lead status changed: new -> contacted",
+    "agencyId": "agency_1"
+  },
+    {
+    "id": "evt-6",
+    "timestamp": "2024-09-20T11:30:01Z",
+    "ruleId": "rule-1",
+    "ruleName": "Follow up on New High-Score Leads",
+    "status": "success",
+    "channel": "sms",
+    "target": { "id": "lead_2", "name": "Bob Johnson" },
+    "details": "SMS 'Initial Introduction' sent.",
+    "agencyId": "agency_1"
+  }
+]

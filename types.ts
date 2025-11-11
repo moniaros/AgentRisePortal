@@ -345,6 +345,28 @@ export interface AutomationChannelSettings {
     sms: SmsSettings;
 }
 
+export interface AutomationEvent {
+  id: string;
+  timestamp: string;
+  ruleId: string;
+  ruleName: string;
+  status: 'success' | 'failure';
+  channel?: TemplateChannel;
+  target: {
+    id: string;
+    name: string;
+  };
+  details: string;
+  impact?: string;
+  agencyId: string;
+}
+
+export interface AutomationAnalytics {
+    conversionRateBefore: number;
+    conversionRateAfter: number;
+    messagesSentByChannel: { channel: TemplateChannel, count: number }[];
+}
+
 
 // Analytics & Admin
 export interface AuditLog {

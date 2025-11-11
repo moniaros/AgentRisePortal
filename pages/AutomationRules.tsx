@@ -55,6 +55,9 @@ const AutomationRules: React.FC = () => {
                     <NavLink to="/crm/automation-rules/settings" className={navLinkClasses}>
                         {t('nav.settings')}
                     </NavLink>
+                    <NavLink to="/crm/automation-rules/event-log" className={navLinkClasses}>
+                        {t('nav.eventLog')}
+                    </NavLink>
                 </nav>
             </div>
             

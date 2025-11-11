@@ -56,6 +56,7 @@ The following table summarizes all defined routes in the application.
 | `/crm/automation-rules/edit/:ruleId`   | `RuleBuilder`       | Page to edit an existing automation rule.                                   | `ruleId`       |
 | `/crm/automation-rules/templates`   | `TemplatesManager`       | Page to manage communication templates.                                   | -       |
 | `/crm/automation-rules/settings` | `AutomationSettings` | Page to configure communication channel APIs. | - |
+| `/crm/automation-rules/event-log` | `AutomationEventLog` | Page to view the history and impact of rule executions. | - |
 | `/user-management`             | `UserManagement`        | Page for admins to manage users and view audit logs.                        | -                |
 | `/leads-dashboard`             | `LeadsDashboard`        | A visual dashboard summarizing lead data and funnels.                       | -                |
 | `/microsite-builder`           | `MicrositeBuilder`      | Tool for building a simple, public-facing agency website.                   | -                |
@@ -241,7 +242,7 @@ This section details each page, organized by the main navigation categories.
 -   **File:** `pages/AutomationRules.tsx`
 -   **Purpose:** Provides a UI for administrators to manage agency-specific automation rules.
 -   **Functionalities:**
-    -   Features a tabbed sub-navigation to switch between an overview, rule categories (`Lead Conversion`, `Communication Automation`), `Templates`, and `Settings`.
+    -   Features a tabbed sub-navigation to switch between an overview, rule categories (`Lead Conversion`, `Communication Automation`), `Templates`, `Settings`, and `Event Log`.
     -   Displays automation rules for a selected category in a filterable table.
     -   Admins can toggle rules between "Active" and "Inactive".
     -   Admins can access an actions menu to Edit, Duplicate, Delete, or Test a rule.
@@ -307,3 +308,15 @@ This section details each page, organized by the main navigation categories.
 -   **UI Elements:** A main form containing individual cards for each communication channel. Each card includes a title, a toggle switch, labeled input fields for credentials, a test button, and a status message area.
 -   **Data Source:** All settings are managed via the `hooks/useAutomationSettings.ts` hook, which reads from a mock JSON file (`/data/settings/automation.json`) and persists to `localStorage`.
 -   **Localization:** Fully supported, including all titles, labels, buttons, and status messages.
+
+### 3.9. Automation Event Log & Reporting
+-   **File:** `pages/AutomationEventLog.tsx`
+-   **Purpose:** Provides a historical log and analytics dashboard for all automation rule executions, allowing administrators to monitor performance, troubleshoot issues, and measure impact.
+-   **Functionalities:**
+    -   **KPI Dashboard:** Displays high-level metrics, including Total Events, Success Rate, Messages Sent, and Conversions Attributed to automation.
+    -   **Conversion Impact Visualization:** A bar chart compares lead conversion rates from a period before automation was active to the current period, providing a clear visual of its effectiveness.
+    -   **Detailed Event Log:** A comprehensive table lists every rule execution with details such as timestamp, rule name, status (success/failure), channel, and the affected lead/customer.
+    -   **Advanced Filtering:** The event log can be filtered by a specific rule, a date range (e.g., last 7 or 30 days), and the communication channel used.
+-   **UI Elements:** KPI cards, a bar chart for analytics, filter controls (dropdowns and date selectors), and a detailed data table with status badges.
+-   **Data Source:** Historical event data and analytics are fetched via the `hooks/useAutomationEvents.ts` hook, which reads from mock JSON files (`/data/analytics/automation_events.json` and `/data/analytics/automation_summary.json`).
+-   **Localization:** Fully supported for all UI elements, including chart labels and table headers.
