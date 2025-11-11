@@ -67,6 +67,11 @@ const App: React.FC = () => {
                   <Route path="/testimonials" element={<Layout><Testimonials /></Layout>} />
                   <Route path="/sitemap" element={<Layout><Sitemap /></Layout>} />
                   <Route path="/support" element={<Layout><Support /></Layout>} />
+
+                  {/* Redirects */}
+                  <Route path="/campaigns" element={<Navigate to="/analytics" replace />} />
+                  <Route path="/microsite" element={<Navigate to="/microsite-builder" replace />} />
+                  
                   <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
               </Router>

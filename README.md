@@ -134,24 +134,12 @@ The platform is currently a high-fidelity MVP with a simulated backend. The foll
     }
     ```
 
-#### Navigation & CRM Improvements
--   **New "Overview" Section:** The main sidebar has been restructured to include a new top-level "Overview" section for high-level dashboards.
--   **New "CRM" Section:** A collapsible parent menu item for "CRM" has been added to organize all related functionalities.
-    -   **Customers & Leads (`/micro-crm`):** The CRM and Leads pages have been merged into a single, unified view. This page now lists recent leads at the top ("pinned") followed by the full customer list, with a shared search bar to filter both.
-    -   **Import Policy (AI) (`/gap-analysis`):** The "AI Gap Analysis" page has been renamed and repurposed as a primary tool for importing policy data into the CRM.
--   **Restructured "Campaigns" Menu:** A new collapsible "Campaigns" parent menu has been added to the sidebar for better organization. It contains:
-    -   **Campaign Analytics:** The former "Analytics" page, now focused on campaign performance.
-    -   **Social Posts:** The former "Social Composer" page.
-    -   **Social Ads:** The former "Ad Campaigns" page.
--   **New "Management" Section:** A collapsible parent menu item for "Management" has been added to organize administrative and support functionalities.
-    -   **User Management (`/user-management`):** This link has been moved into the Management section and is now only visible to users with an `Admin` role, enforcing Role-Based Access Control (RBAC).
-    -   **Billing (`/billing`):** This link has been moved into the Management section.
-    -   **Support (`/support`):** A new placeholder page and navigation link have been added for future help and support features.
--   **Restructured "Settings" Menu:** A new collapsible "Settings" parent menu has been added to the sidebar for better organization of user and application configuration. It contains:
-    -   **Profile (`/profile`):** The user's own profile page.
-    -   **App Settings (`/settings`):** General application settings like Social Connections and Google Tag Manager configuration.
-    -   **Automation Rules (`/settings/automation-rules`):** Centralized management for all workflow automation.
--   **Embedded AI Analysis:** The customer detail page (`/customer/:id`) now features an embedded "AI Policy Analysis" panel. This allows agents to upload and analyze a policy document directly within the customer's profile, with the analysis results automatically logged to the customer's timeline for a complete record.
+#### Comprehensive Navigation Restructuring
+-   **Description:** The application's main navigation has been completely overhauled to create a more logical, scalable, and user-friendly structure.
+-   **New Sidebar Structure:** The main sidebar is now organized into collapsible, high-level sections, decluttering the UI and grouping related features. The new sections are: `Overview`, `CRM`, `Campaigns`, `Website`, `Content`, `Management`, and `Settings`.
+-   **Consolidated CRM:** The previous standalone "Leads List" page has been removed. Its functionality is now integrated into the main `Customers & Leads` page within the CRM section, creating a unified view for managing all contacts.
+-   **Route Redirects:** To maintain usability and support old bookmarks, redirects have been implemented (e.g., `/campaigns` now redirects to `/analytics`).
+-   **Context-Aware Breadcrumbs:** The breadcrumb navigation has been enhanced to reflect the new hierarchy. It now dynamically displays the parent menu section (e.g., "Home / CRM / Customer Profile"), giving users a clearer sense of their location within the application.
 
 #### SEO & Analytics Integration
 -   **Description:** The platform incorporates SEO best practices and comprehensive analytics tracking to monitor traffic and user engagement.
