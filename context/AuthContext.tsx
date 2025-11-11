@@ -1,8 +1,5 @@
-
 import React, { createContext, useState, ReactNode, useEffect, useCallback } from 'react';
-// FIX: Import types from the correct path
 import { User } from '../types';
-// FIX: Import mock data from the correct path
 import { MOCK_USERS } from '../data/mockData';
 
 interface AuthContextType {

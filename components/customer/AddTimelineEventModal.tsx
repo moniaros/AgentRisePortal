@@ -1,8 +1,6 @@
-
 import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { useLocalization } from '../../hooks/useLocalization';
-// FIX: Import types from correct path
 import { TimelineEvent, Attachment } from '../../types';
 
 type TimelineEventFormData = Omit<TimelineEvent, 'id' | 'date' | 'author' | 'annotations'>;

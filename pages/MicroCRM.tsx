@@ -1,12 +1,9 @@
-
 import React, { useState, useMemo } from 'react';
 import { useCrmData } from '../hooks/useCrmData';
 import { useLocalization } from '../hooks/useLocalization';
 import CustomersTable from '../components/crm/CustomersTable';
 import CrmLeadsTable from '../components/crm/CrmLeadsTable';
-// FIX: Import the CustomerFormModal component to resolve module error.
 import CustomerFormModal from '../components/crm/CustomerFormModal';
-// FIX: Import types from correct path
 import { Customer } from '../types';
 import ErrorMessage from '../components/ui/ErrorMessage';
 import SkeletonLoader from '../components/ui/SkeletonLoader';

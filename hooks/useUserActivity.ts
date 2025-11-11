@@ -1,9 +1,6 @@
-
 import { useMemo } from 'react';
 import { useOfflineSync } from './useOfflineSync';
-// FIX: Import from services/api
 import { fetchUserActivity } from '../services/api';
-// FIX: Import from types
 import { UserActivityEvent } from '../types';
 
 export const useUserActivity = (userId: string | undefined) => {

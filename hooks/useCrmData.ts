@@ -1,10 +1,7 @@
-
 import { useCallback, useMemo } from 'react';
 import { useOfflineSync } from './useOfflineSync';
-// FIX: Import types from correct path
 import { Customer, Lead, TimelineEvent, Annotation } from '../types';
 import { useAuth } from './useAuth';
-// FIX: Import mock data from correct path
 import { MOCK_CUSTOMERS, MOCK_LEADS } from '../data/mockData';
 
 // In a real app, these would be API calls
@@ -30,13 +27,11 @@ export const useCrmData = () => {
     const isLoading = customersLoading || leadsLoading;
     const error = customersError || leadsError;
     
-    const addCustomer = useCallback((customerData: Omit<Customer, 'id' | 'timeline' | 'agencyId' | 'policies' | 'assignedAgentId'>) => {
-        if (!agencyId || !currentUser) return;
+    const addCustomer = useCallback((customerData: Omit<Customer, 'id' | 'timeline' | 'agencyId'>) => {
+        if (!agencyId) return;
         const newCustomer: Customer = {
             ...customerData,
             id: `cust_${Date.now()}`,
-            policies: [],
-            assignedAgentId: currentUser.id,
             timeline: [{
                 id: `evt_${Date.now()}`,
                 date: new Date().toISOString(),
@@ -58,13 +53,12 @@ export const useCrmData = () => {
         setAllCustomers(allCustomers.filter(c => c.id !== customerId));
     }, [allCustomers, setAllCustomers]);
 
-    const addLead = useCallback((leadData: Omit<Lead, 'id' | 'createdAt' | 'agencyId'>) => {
+    const addLead = useCallback((leadData: Omit<Lead, 'id' | 'createdAt'>) => {
         if (!agencyId) return;
         const newLead: Lead = {
             ...leadData,
             id: `lead_${Date.now()}`,
             createdAt: new Date().toISOString(),
-            agencyId: agencyId,
         };
         setAllLeads([...allLeads, newLead]);
     }, [allLeads, setAllLeads, agencyId]);

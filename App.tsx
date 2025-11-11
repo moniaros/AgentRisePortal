@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
@@ -11,7 +10,6 @@ import ErrorBoundary from './components/ErrorBoundary';
 import Layout from './components/Layout';
 import Login from './pages/Login';
 import Logout from './pages/Logout';
-// FIX: Import the Dashboard component to resolve module error.
 import Dashboard from './pages/Dashboard';
 import LeadGeneration from './pages/LeadGeneration';
 import MicroCRM from './pages/MicroCRM';
@@ -33,7 +31,6 @@ import NewsListing from './pages/NewsListing';
 import NewsArticleDetail from './pages/NewsArticleDetail';
 import Testimonials from './pages/Testimonials';
 import Sitemap from './pages/Sitemap';
-// FIX: Import the AutomationRules component to resolve module error.
 import AutomationRules from './pages/AutomationRules';
 
 const App: React.FC = () => {
@@ -61,6 +58,7 @@ const App: React.FC = () => {
                   <Route path="/analytics" element={<Layout><Analytics /></Layout>} />
                   <Route path="/profile" element={<Layout><Profile /></Layout>} />
                   <Route path="/settings" element={<Layout><Settings /></Layout>} />
+                  <Route path="/settings/automation-rules" element={<Layout><AutomationRules /></Layout>} />
                   <Route path="/user-management" element={<Layout><UserManagement /></Layout>} />
                   <Route path="/leads-dashboard" element={<Layout><LeadsDashboard /></Layout>} />
                   <Route path="/microsite-builder" element={<Layout><MicrositeBuilder /></Layout>} />
@@ -69,7 +67,6 @@ const App: React.FC = () => {
                   <Route path="/news/:articleId" element={<Layout><NewsArticleDetail /></Layout>} />
                   <Route path="/testimonials" element={<Layout><Testimonials /></Layout>} />
                   <Route path="/sitemap" element={<Layout><Sitemap /></Layout>} />
-                  <Route path="/settings/automation-rules" element={<Layout><AutomationRules /></Layout>} />
                   <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
               </Router>

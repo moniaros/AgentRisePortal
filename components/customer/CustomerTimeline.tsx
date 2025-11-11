@@ -1,6 +1,4 @@
-
 import React, { useState, useMemo } from 'react';
-// FIX: Import types from correct path
 import { TimelineEvent } from '../../types';
 import { useLocalization } from '../../hooks/useLocalization';
 
@@ -35,12 +33,10 @@ const TimelineEventItem: React.FC<{ event: TimelineEvent; onAddAnnotation: (even
         }
     };
     
-    const formatBytes = (bytes: number): string => {
+    const formatBytes = (bytes: number) => {
         if (bytes === 0) return '0 Bytes';
         const k = 1024;
-        const sizeInKB = parseFloat((bytes / k).toFixed(1));
-        // Fix: Use replacement syntax for translations
-        return t('customer.attachmentSize', {size: sizeInKB});
+        return parseFloat((bytes / k).toFixed(1));
     };
 
     return (
@@ -63,7 +59,8 @@ const TimelineEventItem: React.FC<{ event: TimelineEvent; onAddAnnotation: (even
                             {event.attachments.map((file, index) => (
                                 <a href={file.url} key={index} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-500 hover:underline flex items-center gap-2">
                                     📎 {file.name}
-                                    <span className="text-gray-400">({formatBytes(file.size)})</span>
+                                    {/* Fix: Use replacement syntax for translations */}
+                                    <span className="text-gray-400">{t('customer.attachmentSize', {size: formatBytes(file.size)}) as string}</span>
                                 </a>
                             ))}
                         </div>

@@ -1,0 +1,22 @@
+[
+    {
+        "id": "rule-pay-001",
+        "nameKey": "automationRules.rules.payment_failed.name",
+        "category": "payment",
+        "triggerKey": "automationRules.rules.payment_failed.trigger",
+        "isEnabled": true,
+        "lastExecuted": "2024-07-25T09:15:00Z",
+        "successRate": 1.0,
+        "agencyId": "agency_1"
+    },
+    {
+        "id": "rule-pay-002",
+        "nameKey": "automationRules.rules.payment_success.name",
+        "category": "payment",
+        "triggerKey": "automationRules.rules.payment_success.trigger",
+        "isEnabled": false,
+        "lastExecuted": "2024-07-20T11:00:00Z",
+        "successRate": 1.0,
+        "agencyId": "agency_1"
+    }
+]

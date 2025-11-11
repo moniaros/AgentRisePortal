@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { useLocalization } from '../hooks/useLocalization';
 import { useAnalyticsData } from '../hooks/useAnalyticsData';
@@ -9,7 +8,6 @@ import PerformanceChart from '../components/analytics/PerformanceChart';
 import SpendChart from '../components/analytics/SpendChart';
 import SkeletonLoader from '../components/ui/SkeletonLoader';
 import ErrorMessage from '../components/ui/ErrorMessage';
-// FIX: Import types from correct path
 import { Campaign, Language, AnalyticsRecord } from '../types';
 
 const Analytics: React.FC = () => {

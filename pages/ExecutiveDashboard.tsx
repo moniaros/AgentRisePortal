@@ -1,10 +1,8 @@
-
 import React from 'react';
 import { useLocalization } from '../hooks/useLocalization';
 import { useExecutiveData } from '../hooks/useExecutiveData';
 import ErrorMessage from '../components/ui/ErrorMessage';
 import SkeletonLoader from '../components/ui/SkeletonLoader';
-// FIX: Import the AgencyGrowthChart component to resolve module error.
 import AgencyGrowthChart from '../components/executive/AgencyGrowthChart';
 import ProductMixDonutChart from '../components/executive/ProductMixDonutChart';
 import ClaimsTrendChart from '../components/executive/ClaimsTrendChart';

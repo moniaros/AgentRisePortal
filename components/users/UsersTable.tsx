@@ -1,4 +1,3 @@
-
 import React from 'react';
 // FIX: Module '"../../types"' has no exported member 'UserRole'. Use 'UserSystemRole' instead.
 import { User, UserSystemRole } from '../../types';

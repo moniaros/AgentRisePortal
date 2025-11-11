@@ -1,0 +1,32 @@
+[
+    {
+        "id": "rule-la-001",
+        "nameKey": "automationRules.rules.assign_new_lead_round_robin.name",
+        "category": "lead_assignment",
+        "triggerKey": "automationRules.rules.assign_new_lead_round_robin.trigger",
+        "isEnabled": true,
+        "lastExecuted": "2024-07-28T14:30:00Z",
+        "successRate": 1.0,
+        "agencyId": "agency_1"
+    },
+    {
+        "id": "rule-la-002",
+        "nameKey": "automationRules.rules.assign_high_value_lead.name",
+        "category": "lead_assignment",
+        "triggerKey": "automationRules.rules.assign_high_value_lead.trigger",
+        "isEnabled": true,
+        "lastExecuted": "2024-07-27T10:00:00Z",
+        "successRate": 0.98,
+        "agencyId": "agency_1"
+    },
+    {
+        "id": "rule-la-003",
+        "nameKey": "automationRules.rules.assign_new_lead_round_robin.name",
+        "category": "lead_assignment",
+        "triggerKey": "automationRules.rules.assign_new_lead_round_robin.trigger",
+        "isEnabled": false,
+        "lastExecuted": null,
+        "successRate": 0,
+        "agencyId": "agency_2"
+    }
+]
