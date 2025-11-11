@@ -15,6 +15,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
     const [isCrmOpen, setIsCrmOpen] = useState(true);
     const [isCampaignsOpen, setIsCampaignsOpen] = useState(true);
     const [isManagementOpen, setIsManagementOpen] = useState(true);
+    const [isSettingsOpen, setIsSettingsOpen] = useState(true);
 
     const overviewLinks = [
         { path: '/', label: t('nav.dashboard'), icon: 'dashboard' },
@@ -43,6 +44,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
         { path: '/user-management', label: t('nav.userManagement'), icon: 'settings', adminOnly: true },
         { path: '/billing', label: t('nav.billing'), icon: 'billing', adminOnly: false },
         { path: '/support', label: t('nav.support'), icon: 'support', adminOnly: false },
+    ];
+
+    const settingsLinks = [
+        { path: '/profile', label: t('nav.profile'), icon: 'profile', adminOnly: false },
+        { path: '/settings', label: t('nav.appSettings'), icon: 'settings', adminOnly: false },
+        { path: '/settings/automation-rules', label: t('nav.automationRules'), icon: 'automation', adminOnly: false },
     ];
 
     const NavItem: React.FC<{ path: string, label: any, icon: string }> = ({ path, label, icon }) => (
@@ -114,6 +121,20 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                                 }
                                 return <li key={link.path}><NavItem {...link} /></li>;
                             })}
+                        </ul>
+                    )}
+                </div>
+
+                <div className="mt-6">
+                    <button onClick={() => setIsSettingsOpen(!isSettingsOpen)} className="w-full flex justify-between items-center px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                        <span>{t('nav.settings')}</span>
+                        <svg className={`w-4 h-4 transition-transform ${isSettingsOpen ? 'rotate-90' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+                    </button>
+                    {isSettingsOpen && (
+                        <ul className="pl-2">
+                            {settingsLinks.map(link => (
+                                <li key={link.path}><NavItem {...link} /></li>
+                            ))}
                         </ul>
                     )}
                 </div>

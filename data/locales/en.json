@@ -28,7 +28,11 @@
     "news": "News & Updates",
     "testimonials": "Testimonials",
     "management": "Management",
-    "support": "Support"
+    "support": "Support",
+    "settings": "Settings",
+    "profile": "Profile",
+    "appSettings": "App Settings",
+    "automationRules": "Automation Rules"
   },
   "header": {
     "search": "Search...",
@@ -287,7 +291,7 @@
     }
   },
   "settings": {
-    "title": "Settings",
+    "title": "App Settings",
     "socialConnections": {
       "title": "Social Connections",
       "description": "Connect your social media accounts to enable direct posting and lead generation.",

@@ -134,7 +134,7 @@ The platform is currently a high-fidelity MVP with a simulated backend. The foll
     }
     ```
 
-#### Navigation Improvements
+#### Navigation & CRM Improvements
 -   **New "Overview" Section:** The main sidebar has been restructured to include a new top-level "Overview" section for high-level dashboards.
 -   **New "CRM" Section:** A collapsible parent menu item for "CRM" has been added to organize all related functionalities.
     -   **Customers & Leads (`/micro-crm`):** The CRM and Leads pages have been merged into a single, unified view. This page now lists recent leads at the top ("pinned") followed by the full customer list, with a shared search bar to filter both.
@@ -147,6 +147,10 @@ The platform is currently a high-fidelity MVP with a simulated backend. The foll
     -   **User Management (`/user-management`):** This link has been moved into the Management section and is now only visible to users with an `Admin` role, enforcing Role-Based Access Control (RBAC).
     -   **Billing (`/billing`):** This link has been moved into the Management section.
     -   **Support (`/support`):** A new placeholder page and navigation link have been added for future help and support features.
+-   **Restructured "Settings" Menu:** A new collapsible "Settings" parent menu has been added to the sidebar for better organization of user and application configuration. It contains:
+    -   **Profile (`/profile`):** The user's own profile page.
+    -   **App Settings (`/settings`):** General application settings like Social Connections and Google Tag Manager configuration.
+    -   **Automation Rules (`/settings/automation-rules`):** Centralized management for all workflow automation.
 -   **Embedded AI Analysis:** The customer detail page (`/customer/:id`) now features an embedded "AI Policy Analysis" panel. This allows agents to upload and analyze a policy document directly within the customer's profile, with the analysis results automatically logged to the customer's timeline for a complete record.
 
 #### SEO & Analytics Integration

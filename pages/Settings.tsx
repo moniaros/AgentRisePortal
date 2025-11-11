@@ -35,23 +35,7 @@ const Settings: React.FC = () => {
 
     return (
         <div className="max-w-4xl mx-auto space-y-8">
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-white">{t('settings.title') as string}</h1>
-
-            {/* Automation Rules */}
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-                <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 text-blue-500">
-                        {React.cloneElement(ICONS.automation, { className: 'w-8 h-8' })}
-                    </div>
-                    <div>
-                        <h2 className="text-xl font-semibold mb-2">{t('settings.automation.title')}</h2>
-                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{t('settings.automation.description')}</p>
-                        <Link to="/settings/automation-rules" className="inline-block px-4 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700">
-                            {t('settings.automation.manage')}
-                        </Link>
-                    </div>
-                </div>
-            </div>
+            <h1 className="text-3xl font-bold text-gray-800 dark:text-white">{t('nav.appSettings') as string}</h1>
 
             {/* Social Connections */}
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
