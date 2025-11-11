@@ -1,37 +1,38 @@
+
 {
   "nav": {
     "dashboard": "Dashboard",
-    "leadGen": "Leads List",
+    "leadGen": "Leads",
     "crm": "CRM",
-    "customersAndLeads": "Customers & Leads",
-    "importPolicyAI": "Import Policy (AI)",
+    "customersAndLeads": "Clients & Leads",
+    "importPolicyAI": "AI Policy Import",
     "gapAnalysis": "AI Gap Analysis",
     "onboarding": "Onboarding",
     "billing": "Billing",
     "micrositeBuilder": "Microsite Builder",
     "socialComposer": "Social Composer",
     "socialPosts": "Social Posts",
-    "campaigns": "Campaigns",
-    "socialAds": "Social Ads",
+    "campaigns": "Marketing",
+    "socialAds": "Campaign Manager",
     "analytics": "Analytics",
     "campaignAnalytics": "Campaign Analytics",
     "settings": "Settings",
     "appSettings": "App Settings",
-    "profile": "Profile",
+    "profile": "My Profile",
     "userManagement": "User Management",
     "leadsDashboard": "Leads Dashboard",
-    "executiveDashboard": "Executive Dashboard",
+    "executiveDashboard": "Executive View",
     "executiveAnalytics": "Executive Analytics",
     "news": "News & Updates",
     "testimonials": "Testimonials",
-    "automationRules": "Automation Rules",
+    "automationRules": "Automation",
     "overview": "Overview",
     "website": "Website",
     "content": "Content",
     "management": "Management",
     "support": "Support",
     "templates": "Templates",
-    "eventLog": "Event Log"
+    "eventLog": "History & Analytics"
   },
   "header": {
     "search": "Search...",
@@ -41,8 +42,8 @@
     "socials": "Socials"
   },
   "login": {
-    "title": "Agent Portal Login",
-    "subtitle": "Access your lead generation and management dashboard.",
+    "title": "Sign in to AgentOS",
+    "subtitle": "Your all-in-one platform for lead generation and client management.",
     "emailLabel": "Email Address",
     "emailPlaceholder": "you@example.com",
     "passwordLabel": "Password",
@@ -64,22 +65,22 @@
     "recentReviews": "Recent Reviews",
     "basedOn": "based on",
     "reviews": "reviews",
-    "showUnreplied": "Show only reviews without a reply",
+    "showUnreplied": "Show only unreplied reviews",
     "stars": "stars",
-    "generateAiReply": "Generate AI Reply",
-    "generatingReply": "Generating...",
+    "generateAiReply": "Draft with AI",
+    "generatingReply": "Drafting...",
     "postReply": "Post Reply",
     "yourReply": "Your Reply",
     "replyPosted": "Reply Posted!",
     "emptyStates": {
       "noReviews": "No recent reviews found.",
-      "allReplied": "All reviews have been replied to!"
+      "allReplied": "All reviews have been replied to."
     },
     "errors": {
       "dataFetchFailed": "Failed to load dashboard data. Please try refreshing the page.",
       "replyGenerationFailed": "Failed to generate AI reply.",
       "replyPostFailed": "Failed to post reply. Please try again.",
-      "noApiKey": "Error: Gemini API Key is not configured in Settings."
+      "noApiKey": "AI features are disabled. Please configure your Gemini API Key in Settings to enable them."
     },
     "retry": "Retry"
   },
@@ -122,14 +123,14 @@
     "viewProfile": "View Profile",
     "edit": "Edit",
     "delete": "Delete",
-    "addCustomer": "Add Customer",
-    "editCustomer": "Edit Customer",
-    "confirmDelete": "Are you sure you want to delete this customer?",
+    "addCustomer": "Add Client",
+    "editCustomer": "Edit Client",
+    "confirmDelete": "Are you sure you want to delete this client?",
     "cancel": "Cancel",
     "save": "Save",
-    "searchAll": "Search customers and leads...",
+    "searchAll": "Search clients and leads...",
     "recentLeads": "Recent Leads",
-    "customers": "All Customers",
+    "customers": "All Clients",
     "form": {
       "firstName": "First Name",
       "lastName": "Last Name",
@@ -142,7 +143,7 @@
       "addPolicy": "Add Policy",
       "policyNumber": "Policy Number",
       "insurer": "Insurer",
-      "premium": "Premium (€)",
+      "premium": "Premium",
       "startDate": "Start Date",
       "endDate": "End Date",
       "communicationPreferences": "Communication Preferences"
@@ -172,24 +173,24 @@
     "uploadAttachment": "Upload a file (e.g. policy document, quote PDF)",
     "annotationPlaceholder": "Add a note or annotation...",
     "saveAnnotation": "Save Note",
-    "flagEvent": "Flag Event",
-    "unflagEvent": "Unflag Event",
+    "flagEvent": "Flag for Follow-up",
+    "unflagEvent": "Remove Flag",
     "attachmentSize": "{size} KB",
     "renewalModalTitle": "Renew Policy",
     "forPolicy": "For policy",
     "newEndDate": "New End Date",
     "confirmRenewal": "Confirm Renewal",
     "attentionFlagTitle": "Set Attention Flag",
-    "attentionReason": "Reason",
-    "attentionReasonPlaceholder": "e.g., High value client, follow up quarterly.",
+    "attentionReason": "Reason for Flag",
+    "attentionReasonPlaceholder": "e.g., High-value client, follow up quarterly.",
     "sms": "SMS",
     "analyzePolicies": "AI Policy Analysis",
-    "analyzeDescription": "Upload a customer's existing policy document (PDF, JPG, etc.). Our AI will analyze it for cross-sell/upsell opportunities and add the findings to their timeline."
+    "analyzeDescription": "Upload a client's policy document (PDF, JPG). Our AI will scan for coverage gaps and new opportunities, then add a summary to their timeline."
   },
   "gapAnalysis": {
-    "title": "Import Policy (AI)",
-    "description": "Upload a client's policy document. Our AI will extract the key information, identify coverage gaps, and suggest opportunities.",
-    "addToCrm": "Add Policy to CRM",
+    "title": "AI Policy Scanner",
+    "description": "Upload a client's policy document. Our AI will extract key information, identify coverage gaps, and suggest new opportunities.",
+    "addToCrm": "Add Policy to Client",
     "dragDrop": "Drag & drop your file here, or",
     "browse": "browse",
     "fileTypes": "PDF, PNG, JPG supported",
@@ -198,7 +199,7 @@
     "extractedInfo": "Extracted Policy Information",
     "policyHolder": "Policyholder",
     "insuredItems": "Insured Items & Coverages",
-    "userNeedsTitle": "Describe Customer Needs",
+    "userNeedsTitle": "Provide Client Context",
     "userNeedsPlaceholder": "e.g., 'Client just had a child and is concerned about life coverage.' or 'Client is buying a new, more expensive car and travels a lot for work.'",
     "analyzeGaps": "Analyze for Gaps",
     "resultsTitle": "AI Analysis Results",
@@ -214,7 +215,7 @@
     "features": {
       "crm": {
         "title": "Unified CRM",
-        "description": "Manage all your leads and customers in one place."
+        "description": "Manage all your leads and clients in one place."
       },
       "gapAnalysis": {
         "title": "AI-Powered Analysis",
@@ -230,17 +231,17 @@
       "profile": "Complete your agent profile",
       "policy": "Analyze your first policy document",
       "campaign": "Create your first social media post",
-      "allDone": "All done! You're ready to go.",
+      "allDone": "Setup complete! You're ready to grow your business.",
       "getStarted": "Go to Dashboard"
     }
   },
   "socialComposer": {
     "aiHelper": {
-      "title": "AI Post Helper",
+      "title": "AI Content Assistant",
       "placeholder": "Enter a topic, e.g., 'the importance of home insurance'",
       "button": "Generate"
     },
-    "placeholder": "What's on your mind?",
+    "placeholder": "Compose your post or generate content with AI...",
     "schedule": "Schedule Post",
     "platforms": "Publish to",
     "preview": "Preview",
@@ -334,7 +335,7 @@
     "admin": "Admin",
     "sendInvite": "Send Invite",
     "removeUser": "Remove",
-    "cannotRemoveSelf": "You cannot remove yourself.",
+    "cannotRemoveSelf": "You cannot remove your own account.",
     "confirmRemove": "Are you sure you want to remove {userName}?",
     "log": {
       "timestamp": "Timestamp",
@@ -478,12 +479,12 @@
     "pending_review": "Pending Review"
   },
   "automationRules": {
-    "title": "Automation Rules",
+    "title": "Automation Engine",
     "searchPlaceholder": "Search rules...",
     "allCategories": "All Categories",
     "noRules": "No automation rules match the current filters.",
     "overview": {
-      "title": "Overview",
+      "title": "Automation Overview",
       "totalRules": "Total Rules",
       "activeRules": "Active Rules",
       "avgSuccessRate": "Avg. Success Rate"
@@ -532,15 +533,15 @@
     },
     "testing": {
       "title": "Test Automation Rule",
-      "selectLead": "Select a Sample Lead to Test Against",
-      "runTest": "Run Test",
-      "results": "Test Results",
+      "selectLead": "Select a sample lead for simulation",
+      "runTest": "Run Simulation",
+      "results": "Simulation Results",
       "backToSelection": "Test Another Lead",
       "conditionsCheck": "Conditions Check",
       "passed": "Passed",
       "failed": "Failed",
-      "ruleWouldRun": "Rule conditions met. Actions would be executed.",
-      "ruleWouldNotRun": "Rule conditions not met. No actions would be executed.",
+      "ruleWouldRun": "Simulation Passed: The rule's actions would be triggered for this lead.",
+      "ruleWouldNotRun": "Simulation Failed: The rule's conditions were not met.",
       "actionPreview": "Action Previews",
       "templateNotFound": "Error: Template not found.",
       "noActions": "This rule has no actions defined.",
@@ -548,8 +549,8 @@
       "actualValue": "Actual: {value}"
     },
     "settings": {
-      "title": "Communication Channel Settings",
-      "description": "Configure the API credentials and settings for each communication channel used in automation rules.",
+      "title": "Channel Integrations",
+      "description": "Configure API credentials to enable automated messaging channels like Email, SMS, and more.",
       "enableChannel": "Enable this channel",
       "saveButton": "Save All Settings",
       "testButton": "Test Connection",
@@ -584,8 +585,8 @@
       }
     },
     "eventLog": {
-      "title": "Automation Event Log",
-      "description": "Review the history of all rule executions, their outcomes, and their impact.",
+      "title": "Automation History & Analytics",
+      "description": "Monitor the performance of your automation rules, review execution history, and measure their impact on conversions.",
       "filters": {
         "allRules": "All Rules",
         "allChannels": "All Channels",
@@ -615,12 +616,12 @@
   },
   "support": {
     "title": "Support Center",
-    "description": "Help, FAQs, and contact information will be available here in a future update."
+    "description": "Our Help Center is under construction. Documentation, FAQs, and support contact options will be available here soon."
   },
   "leadCapture": {
-    "title": "Get a Free Quote",
-    "subtitle": "Fill out the form below and one of our expert agents will contact you shortly.",
-    "submitButton": "Get My Quote",
+    "title": "Request Your Free Insurance Quote",
+    "subtitle": "Complete the brief form below and an expert agent will contact you shortly to discuss your needs.",
+    "submitButton": "Request Quote",
     "thankYouTitle": "Thank You!",
     "thankYouMessage": "Your request has been submitted. An agent will be in touch with you soon.",
     "invalidCampaign": "This campaign is no longer active.",

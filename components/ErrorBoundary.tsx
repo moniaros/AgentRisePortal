@@ -10,14 +10,11 @@ interface State {
 }
 
 class ErrorBoundary extends Component<Props, State> {
-  // FIX: Reverted state initialization to use a standard constructor. The public class field syntax, while modern, appears to be causing a type-checking issue where `this.props` is not correctly identified on the component instance in this project's specific build environment.
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      hasError: false,
-      error: undefined,
-    };
-  }
+  // FIX: Using public class field to initialize state. This is a more modern syntax and can resolve `this` context issues in certain build setups compared to a constructor.
+  state: State = {
+    hasError: false,
+    error: undefined,
+  };
 
   static getDerivedStateFromError(error: Error): State {
     // Update state so the next render will show the fallback UI.
