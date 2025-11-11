@@ -1,11 +1,11 @@
 import React from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
-import { ActionType, MessageTemplate } from '../../../types';
+import { ActionType, MessageTemplate, TemplateChannel } from '../../../types';
 
 interface ActionRowProps {
     control: any;
     index: number;
-    templates: Record<string, MessageTemplate[]>;
+    templates: MessageTemplate[];
     onRemove: () => void;
 }
 
@@ -20,7 +20,7 @@ const ActionRow: React.FC<ActionRowProps> = ({ control, index, templates, onRemo
     const { watch } = useFormContext();
     const actionType = watch(`actions.${index}.type`);
     
-    const getTemplateTypeKey = (type: ActionType) => {
+    const getTemplateTypeKey = (type: ActionType): TemplateChannel | '' => {
         switch (type) {
             case 'send_email': return 'email';
             case 'send_sms': return 'sms';
@@ -30,7 +30,9 @@ const ActionRow: React.FC<ActionRowProps> = ({ control, index, templates, onRemo
         }
     };
     
-    const currentTemplates = templates[getTemplateTypeKey(actionType)] || [];
+    const templateTypeKey = getTemplateTypeKey(actionType);
+    const currentTemplates = templates.filter(t => t.channel === templateTypeKey);
+
 
     return (
         <div className="flex items-center gap-2 p-2 border rounded dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50">

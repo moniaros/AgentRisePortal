@@ -9,30 +9,26 @@ interface State {
   error?: Error;
 }
 
-// FIX: Changed to use the named import `Component` to ensure TypeScript correctly recognizes the inherited properties like `props`.
 class ErrorBoundary extends Component<Props, State> {
-  // Use a class property to initialize state, which is a common and modern pattern.
-  // FIX: Removed 'public' modifier to align with common React class component style and avoid potential tooling issues.
-  
-  // FIX: Reverted to class property syntax for state initialization. The constructor implementation was likely causing type inference issues with the build tooling, leading to `this.state` and `this.props` not being recognized.
-  state: State = {
-    hasError: false,
-    error: undefined,
-  };
+  // FIX: Added a constructor to properly initialize state and props, resolving the TypeScript error where `this.props` was not being recognized.
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      hasError: false,
+      error: undefined,
+    };
+  }
 
-  // FIX: Removed 'public' modifier. Static methods are public by default.
   static getDerivedStateFromError(error: Error): State {
     // Update state so the next render will show the fallback UI.
     return { hasError: true, error };
   }
 
-  // FIX: Removed 'public' modifier. Methods are public by default.
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // You can also log the error to an error reporting service
     console.error("Uncaught error:", error, errorInfo);
   }
 
-  // FIX: Removed 'public' modifier. The render method is public by default.
   render() {
     if (this.state.hasError) {
       // You can render any custom fallback UI

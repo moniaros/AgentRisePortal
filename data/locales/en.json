@@ -29,7 +29,8 @@
     "website": "Website",
     "content": "Content",
     "management": "Management",
-    "support": "Support"
+    "support": "Support",
+    "templates": "Templates"
   },
   "header": {
     "search": "Search...",
@@ -466,34 +467,25 @@
       "title": "Delete Rule",
       "message": "Are you sure you want to delete the rule '{ruleName}'? This action cannot be undone."
     },
-    "rules": {
-      "renewal_reminder_30_days": {
-        "name": "Renewal Reminder (30 Days)",
-        "trigger": "30 days before policy expiration"
+    "templates": {
+      "title": "Communication Templates",
+      "description": "Create, edit, and manage message templates for all automated communications.",
+      "create": "Create Template",
+      "edit": "Edit Template",
+      "noTemplates": "No templates created yet for this channel.",
+      "channels": {
+        "email": "Email",
+        "sms": "SMS",
+        "viber": "Viber",
+        "whatsapp": "WhatsApp"
       },
-      "renewal_reminder_7_days": {
-        "name": "Renewal Reminder (7 Days)",
-        "trigger": "7 days before policy expiration"
-      },
-      "payment_failed": {
-        "name": "Notify on Failed Payment",
-        "trigger": "When a scheduled payment fails"
-      },
-      "payment_success": {
-        "name": "Send Receipt on Success",
-        "trigger": "When a payment is successful"
-      },
-      "assign_new_lead_round_robin": {
-        "name": "Assign New Lead (Round Robin)",
-        "trigger": "When a new lead is created"
-      },
-      "assign_high_value_lead": {
-        "name": "Assign High-Value Lead to Senior Agent",
-        "trigger": "New lead with value > €1000"
-      },
-      "create_follow_up_task": {
-        "name": "Create Follow-Up Task",
-        "trigger": "After a lead's status changes to 'Contacted'"
+      "form": {
+        "name": "Template Name",
+        "namePlaceholder": "e.g., 'Welcome Email for New Leads'",
+        "channel": "Channel",
+        "content": "Message Content",
+        "placeholders": "Placeholders",
+        "preview": "Preview"
       }
     }
   },

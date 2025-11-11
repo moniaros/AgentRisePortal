@@ -1,5 +1,5 @@
 import { MOCK_CUSTOMERS, MOCK_LEADS, MOCK_AUDIT_LOGS, MOCK_USERS, MOCK_ANALYTICS_DATA, MOCK_EXECUTIVE_DATA, MOCK_NEWS_ARTICLES, MOCK_TESTIMONIALS, MOCK_USER_ACTIVITY, MOCK_KPI_DATA } from '../data/mockData';
-import { DetailedPolicy, AnalyticsData, User, AuditLog, ExecutiveData, NewsArticle, Testimonial, UserActivityEvent, AutomationRule, MessageTemplate } from '../types';
+import { DetailedPolicy, AnalyticsData, User, AuditLog, ExecutiveData, NewsArticle, Testimonial, UserActivityEvent, AutomationRule, MessageTemplate, TemplateChannel } from '../types';
 
 const SIMULATED_DELAY = 500;
 
@@ -101,24 +101,31 @@ export const fetchAutomationRules = async (): Promise<AutomationRule[]> => {
     }
 };
 
-export const fetchTemplates = async (): Promise<Record<string, MessageTemplate[]>> => {
-    const templateTypes = ['email', 'sms', 'viber', 'whatsapp'];
+export const fetchTemplates = async (): Promise<MessageTemplate[]> => {
+    const templateTypes: TemplateChannel[] = ['email', 'sms', 'viber', 'whatsapp'];
     try {
         const responses = await Promise.all(
             templateTypes.map(type => fetch(`/data/templates/${type}.json`))
         );
 
+        if (responses.some(res => !res.ok)) {
+            throw new Error('Failed to fetch one or more template files.');
+        }
+
         const templatesData = await Promise.all(responses.map(res => res.json()));
 
-        const allTemplates: Record<string, MessageTemplate[]> = {};
+        const allTemplates: MessageTemplate[] = [];
         templateTypes.forEach((type, index) => {
-            allTemplates[type] = templatesData[index];
+            const templatesForType = templatesData[index] as Omit<MessageTemplate, 'channel'>[];
+            templatesForType.forEach(t => {
+                allTemplates.push({ ...t, channel: type });
+            });
         });
 
         return allTemplates;
 
     } catch (error) {
         console.error("Error fetching message templates:", error);
-        return {};
+        return [];
     }
 };

@@ -54,6 +54,7 @@ The following table summarizes all defined routes in the application.
 | `/crm/automation-rules`   | `AutomationRules`       | Page to manage workflow automation rules.                                   | -                |
 | `/crm/automation-rules/new`   | `RuleBuilder`       | Page to create a new automation rule.                                   | -                |
 | `/crm/automation-rules/edit/:ruleId`   | `RuleBuilder`       | Page to edit an existing automation rule.                                   | `ruleId`       |
+| `/crm/automation-rules/templates`   | `TemplatesManager`       | Page to manage communication templates.                                   | -       |
 | `/user-management`             | `UserManagement`        | Page for admins to manage users and view audit logs.                        | -                |
 | `/leads-dashboard`             | `LeadsDashboard`        | A visual dashboard summarizing lead data and funnels.                       | -                |
 | `/microsite-builder`           | `MicrositeBuilder`      | Tool for building a simple, public-facing agency website.                   | -                |
@@ -239,16 +240,15 @@ This section details each page, organized by the main navigation categories.
 -   **File:** `pages/AutomationRules.tsx`
 -   **Purpose:** Provides a UI for administrators to manage agency-specific automation rules.
 -   **Functionalities:**
-    -   Features a tabbed sub-navigation to switch between an overview and specific rule categories (`Lead Conversion`, `Communication Automation`).
-    -   Displays all automation rules for a selected category in a filterable table.
+    -   Features a tabbed sub-navigation to switch between an overview, rule categories (`Lead Conversion`, `Communication Automation`), and a new `Templates` manager.
+    -   Displays automation rules for a selected category in a filterable table.
     -   Admins can toggle rules between "Active" and "Inactive".
-    -   Admins can access an actions menu to (mock) Edit, Duplicate, or Delete a rule.
-    -   Deleting a rule triggers a confirmation modal.
--   **UI Elements:** Tabbed sub-navigation, filter controls, data table with toggle switches and actions menu, confirmation modal.
--   **Data Source:** `hooks/useAutomationRules.ts` (fetches from `/data/rules/*.json`).
--   **Localization:** Fully supported (rule names and triggers are read from localization keys).
-### 3.5. Automation Rule Builder
+    -   Admins can access an actions menu to Edit, Duplicate, or Delete a rule.
+-   **UI Elements:** Tabbed sub-navigation, filter controls, data table, confirmation modal.
+-   **Data Source:** `hooks/useAutomationRules.ts` (fetches from `/data/rules/automation_rules.json`).
+-   **Localization:** Fully supported.
 
+### 3.5. Automation Rule Builder
 -   **Files:** `pages/RuleBuilder.tsx`, `components/automation/builder/*`
 -   **Purpose:** A dedicated, form-based interface for creating and editing complex automation rules. This feature is accessible to Admin users via the "Automation Rules" page.
 -   **Functionalities:**
@@ -257,16 +257,23 @@ This section details each page, organized by the main navigation categories.
     -   **Condition Builder ("IF"):**
         -   Users can add one or more conditions that must *all* be met for the rule to run.
         -   Conditions are based on CRM data fields with ACORD-aligned vocabulary.
-        -   Available fields:
-            -   **Lead Status:** Check if the lead's status `is` or `is not` a specific value (e.g., 'New', 'Contacted').
-            -   **Lead Score:** Perform numerical comparisons (`is equal to`, `greater than`, `less than`).
-            -   **Policy Interest:** Check the lead's product interest.
+        -   Available fields: Lead Status, Lead Score, Policy Interest.
     -   **Action Builder ("THEN"):**
         -   Users can define one or more actions to be executed when conditions are met.
         -   **Multichannel Messaging:** Actions support sending messages via Email, SMS, Viber, and WhatsApp.
-        -   **Template Selection:** For each messaging action, users can select from a pre-defined list of message templates, ensuring consistent communication.
--   **UI Elements:** Dynamic forms with dropdowns, text inputs, `react-hook-form` for validation, "Add Condition" and "Add Action" buttons.
--   **Data Source:**
-    -   Rule data is managed via `hooks/useAutomationRules.ts`.
-    -   Messaging templates are fetched from dummy JSON files located in `data/templates/`.
-    -   CRM field options (e.g., lead statuses) are sourced from the application's core types and mock data.
+        -   **Template Selection:** Users select from a pre-defined list of message templates.
+-   **UI Elements:** Dynamic forms with dropdowns, `react-hook-form` for validation, "Add Condition/Action" buttons.
+-   **Data Source:** Rule data is managed via `hooks/useAutomationRules.ts`. Messaging templates are fetched via the `useTemplates` hook.
+
+### 3.6. Communication Templates Manager
+-   **File:** `pages/TemplatesManager.tsx`
+-   **Purpose:** Provides a centralized UI for creating and managing reusable message templates for automation rules.
+-   **Functionalities:**
+    -   **View Templates:** Displays all existing templates, grouped by channel (Email, SMS, Viber, WhatsApp).
+    -   **CRUD Operations:** Allows users to Create, Edit, and Delete templates.
+    -   **Template Editor:** A modal-based editor for defining a template's name, channel, and content.
+    -   **Dynamic Placeholders:** The editor provides a list of ACORD-aligned placeholders (e.g., `{{Lead.FirstName}}`, `{{Lead.Score}}`) that can be easily inserted into the message content. This ensures personalized, data-driven communication.
+    -   **Live Multilingual Preview:** A preview pane shows how the rendered message will appear. Users can toggle between English and Greek to verify the output with sample data.
+-   **UI Elements:** Template lists grouped by channel, "Create Template" button, and a comprehensive editor modal with a placeholder selector and a preview pane.
+-   **Data Source:** All template data is fetched and managed via the `hooks/useTemplates.ts` hook, which reads from the JSON files in the `/data/templates/` directory.
+-   **Localization:** Fully supported, including the UI and the live preview toggle.

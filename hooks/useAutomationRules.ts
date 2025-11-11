@@ -1,14 +1,12 @@
-import { useMemo, useCallback, useState, useEffect } from 'react';
+import { useMemo, useCallback } from 'react';
 import { useOfflineSync } from './useOfflineSync';
-import { fetchAutomationRules, fetchTemplates } from '../services/api';
-import { AutomationRule, MessageTemplate } from '../types';
+import { fetchAutomationRules } from '../services/api';
+import { AutomationRule } from '../types';
 import { useAuth } from './useAuth';
 
 export const useAutomationRules = () => {
     const { currentUser } = useAuth();
     const agencyId = currentUser?.agencyId;
-
-    const [templates, setTemplates] = useState<Record<string, MessageTemplate[]>>({});
 
     const {
         data: allRules,
@@ -16,10 +14,6 @@ export const useAutomationRules = () => {
         error: errorRules,
         updateData: setAllRules,
     } = useOfflineSync<AutomationRule[]>('automation_rules_data', fetchAutomationRules, []);
-
-    useEffect(() => {
-        fetchTemplates().then(setTemplates);
-    }, []);
 
     const rules = useMemo(() => {
         return allRules.filter(rule => rule.agencyId === agencyId);
@@ -53,7 +47,6 @@ export const useAutomationRules = () => {
 
     return {
         rules,
-        templates,
         isLoading: isLoadingRules,
         error: errorRules,
         addRule,

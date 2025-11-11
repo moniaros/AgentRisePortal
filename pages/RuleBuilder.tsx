@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
-import { useForm, useFieldArray, Controller } from 'react-hook-form';
+import { useForm, useFieldArray } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAutomationRules } from '../hooks/useAutomationRules';
 import { useLocalization } from '../hooks/useLocalization';
-import { AutomationRule, RuleCategory, RuleTriggerType } from '../types';
+import { AutomationRule } from '../types';
 import ConditionRow from '../components/automation/builder/ConditionRow';
 import ActionRow from '../components/automation/builder/ActionRow';
+import { useTemplates } from '../hooks/useTemplates';
 
 const defaultRule: Omit<AutomationRule, 'id' | 'agencyId'> = {
     name: '',
@@ -23,11 +24,12 @@ const RuleBuilder: React.FC = () => {
     const { ruleId } = useParams<{ ruleId: string }>();
     const navigate = useNavigate();
     const { t } = useLocalization();
-    const { rules, templates, addRule, updateRule } = useAutomationRules();
+    const { rules, addRule, updateRule } = useAutomationRules();
+    const { templates } = useTemplates();
 
     const isEditing = Boolean(ruleId);
     
-    const { register, control, handleSubmit, reset, watch } = useForm<AutomationRule>({
+    const { register, control, handleSubmit, reset } = useForm<AutomationRule>({
         defaultValues: defaultRule,
     });
 

@@ -270,10 +270,13 @@ export interface RuleCondition {
     value: string | number;
 }
 
+export type TemplateChannel = 'email' | 'sms' | 'viber' | 'whatsapp';
+
 export interface MessageTemplate {
-    id: string;
-    name: string;
-    content: string;
+  id: string;
+  name: string;
+  content: string;
+  channel: TemplateChannel;
 }
 
 export interface RuleAction {
