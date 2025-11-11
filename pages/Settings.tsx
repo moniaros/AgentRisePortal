@@ -1,92 +1,140 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+
+import React, { useState, useEffect } from 'react';
 import { useLocalization } from '../hooks/useLocalization';
-import { SOCIAL_PLATFORMS, ICONS } from '../constants';
-import { SocialPlatform } from '../types';
-import SocialAuthModal from '../components/settings/SocialAuthModal';
+import { useNotification } from '../hooks/useNotification';
 
 const Settings: React.FC = () => {
     const { t } = useLocalization();
-    const [connectedAccounts, setConnectedAccounts] = useState<Set<string>>(() => new Set(['facebook']));
-    const [selectedPlatform, setSelectedPlatform] = useState<SocialPlatform | null>(null);
-    const [gtmId, setGtmId] = useState(() => localStorage.getItem('gtmContainerId') || '');
+    const { addNotification } = useNotification();
+    const [clientId, setClientId] = useState('');
+    const [apiKey, setApiKey] = useState('');
+    const [connectionStatus, setConnectionStatus] = useState('Status: Not Connected');
 
-    const handleConnect = (platform: SocialPlatform) => {
-        setSelectedPlatform(platform);
+    useEffect(() => {
+        const savedClientId = localStorage.getItem('google_client_id');
+        const savedApiKey = localStorage.getItem('gemini_api_key');
+        if (savedClientId) setClientId(savedClientId);
+        if (savedApiKey) setApiKey(savedApiKey);
+
+        const checkInitialStatus = () => {
+            const gapi = (window as any).gapi;
+            if (gapi?.auth2) {
+                const authInstance = gapi.auth2.getAuthInstance();
+                if (authInstance?.isSignedIn.get()) {
+                    setConnectionStatus('Status: Connected');
+                }
+            }
+        };
+
+        const gapi = (window as any).gapi;
+        if (gapi) {
+            gapi.load('client:auth2', checkInitialStatus);
+        }
+    }, []);
+
+    const handleSave = () => {
+        localStorage.setItem('google_client_id', clientId);
+        localStorage.setItem('gemini_api_key', apiKey);
+        addNotification('Settings saved successfully!', 'success');
     };
 
-    const handleDisconnect = (platformKey: string) => {
-        setConnectedAccounts(prev => {
-            const newSet = new Set(prev);
-            newSet.delete(platformKey);
-            return newSet;
+    const handleConnectGoogle = () => {
+        const gapi = (window as any).gapi;
+        const storedClientId = localStorage.getItem('google_client_id');
+
+        if (!storedClientId) {
+            addNotification('Please save a Google Cloud Client ID first.', 'error');
+            return;
+        }
+
+        if (!gapi) {
+            addNotification('Google API script is not loaded yet. Please wait and try again.', 'error');
+            return;
+        }
+
+        setConnectionStatus('Status: Connecting...');
+
+        gapi.load('client:auth2', () => {
+            gapi.client.init({
+                clientId: storedClientId,
+                scope: 'https://www.googleapis.com/auth/business.manage',
+                plugin_name: 'AgentOS'
+            }).then(() => {
+                const authInstance = gapi.auth2.getAuthInstance();
+                if (!authInstance.isSignedIn.get()) {
+                    authInstance.signIn().then(() => {
+                        setConnectionStatus('Status: Connected');
+                        addNotification('Successfully connected to Google Business Profile!', 'success');
+                    }, (error: any) => {
+                        console.error('Google Sign-In Error:', error);
+                        setConnectionStatus('Status: Connection failed');
+                        addNotification('Failed to connect to Google Business Profile.', 'error');
+                    });
+                } else {
+                     setConnectionStatus('Status: Already Connected');
+                     addNotification('Already connected to Google Business Profile!', 'info');
+                }
+            }, (error: any) => {
+                console.error('GAPI Client Init Error:', error);
+                setConnectionStatus('Status: Initialization failed');
+                addNotification('Failed to initialize Google API client.', 'error');
+            });
         });
-    };
-    
-    const handleAuthSuccess = (platformKey: string) => {
-        setConnectedAccounts(prev => new Set(prev).add(platformKey));
-        setSelectedPlatform(null);
-    };
-
-    const handleGtmSave = () => {
-        localStorage.setItem('gtmContainerId', gtmId);
-        alert('GTM ID saved. Please refresh the page for it to take effect.');
     };
 
     return (
         <div className="max-w-4xl mx-auto space-y-8">
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-white">{t('nav.appSettings') as string}</h1>
+            <h1 className="text-3xl font-bold text-gray-800 dark:text-white">{t('nav.appSettings')}</h1>
 
-            {/* Social Connections */}
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 className="text-xl font-semibold mb-4">{t('settings.socialConnections.title') as string}</h2>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">{t('settings.socialConnections.description') as string}</p>
+                <h2 className="text-xl font-semibold mb-4">Setup</h2>
                 <div className="space-y-4">
-                    {SOCIAL_PLATFORMS.map(platform => (
-                        <div key={platform.key} className="flex items-center justify-between p-4 border dark:border-gray-700 rounded-md">
-                            <div className="flex items-center gap-4">
-                                {platform.icon}
-                                <span className="font-medium">{platform.name}</span>
-                            </div>
-                            {connectedAccounts.has(platform.key) ? (
-                                <button onClick={() => handleDisconnect(platform.key)} className="px-4 py-1.5 text-sm bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300 rounded-full hover:bg-red-200">
-                                    {t('settings.socialConnections.disconnect') as string}
-                                </button>
-                            ) : (
-                                <button onClick={() => handleConnect(platform)} className="px-4 py-1.5 text-sm bg-blue-600 text-white rounded-full hover:bg-blue-700">
-                                    {t('settings.socialConnections.connect') as string}
-                                </button>
-                            )}
-                        </div>
-                    ))}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Google Cloud Client ID</label>
+                        <input
+                            type="text"
+                            value={clientId}
+                            onChange={(e) => setClientId(e.target.value)}
+                            className="mt-1 w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
+                            placeholder="Enter your Google Cloud Client ID"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Gemini API Key</label>
+                        <input
+                            type="password"
+                            value={apiKey}
+                            onChange={(e) => setApiKey(e.target.value)}
+                            className="mt-1 w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
+                            placeholder="Enter your Gemini API Key"
+                        />
+                    </div>
+                    <div className="flex items-center justify-between pt-2">
+                        <button
+                            onClick={handleSave}
+                            className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                        >
+                            Save Settings
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            {/* GTM Configuration */}
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-                 <h2 className="text-xl font-semibold mb-4">{t('settings.gtm.title') as string}</h2>
-                 <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{t('settings.gtm.description') as string}</p>
-                 <div className="flex items-center gap-4">
-                    <input 
-                        type="text"
-                        value={gtmId}
-                        onChange={(e) => setGtmId(e.target.value)}
-                        placeholder="GTM-XXXXXXX"
-                        className="flex-grow p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <button onClick={handleGtmSave} className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-                        {t('crm.save') as string}
+                <h2 className="text-xl font-semibold mb-4">Integrations</h2>
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h3 className="font-medium">Google Business Profile</h3>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">{connectionStatus}</p>
+                    </div>
+                    <button
+                        onClick={handleConnectGoogle}
+                        className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+                    >
+                        Connect Google Business Profile
                     </button>
-                 </div>
+                </div>
             </div>
-
-            {selectedPlatform && (
-                <SocialAuthModal 
-                    platform={selectedPlatform}
-                    onClose={() => setSelectedPlatform(null)}
-                    onSuccess={handleAuthSuccess}
-                />
-            )}
         </div>
     );
 };
