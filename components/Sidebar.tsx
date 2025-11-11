@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useLocalization } from '../hooks/useLocalization';
 import { ICONS } from '../constants';
@@ -9,17 +9,20 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
     const { t } = useLocalization();
+    const [isCrmOpen, setIsCrmOpen] = useState(true);
 
     const overviewLinks = [
         { path: '/', label: t('nav.dashboard'), icon: 'dashboard' },
         { path: '/executive-dashboard', label: t('nav.executiveAnalytics'), icon: 'analytics' },
     ];
+    
+    const crmLinks = [
+        { path: '/micro-crm', label: t('nav.customersAndLeads'), icon: 'crm' },
+        { path: '/gap-analysis', label: t('nav.importPolicyAI'), icon: 'magic' },
+    ];
 
     const navLinks = [
         { path: '/leads-dashboard', label: t('nav.leadsDashboard'), icon: 'analytics' },
-        { path: '/lead-generation', label: t('nav.leadGen'), icon: 'leadGen' },
-        { path: '/micro-crm', label: t('nav.crm'), icon: 'crm' },
-        { path: '/gap-analysis', label: t('nav.gapAnalysis'), icon: 'gapAnalysis' },
         { path: '/social-composer', label: t('nav.socialComposer'), icon: 'socialComposer' },
         { path: '/ad-campaigns', label: t('nav.adCampaigns'), icon: 'campaigns' },
         { path: '/analytics', label: t('nav.analytics'), icon: 'analytics' },
@@ -59,10 +62,24 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                 <ul>
                     {overviewLinks.map(link => <li key={link.path}><NavItem {...link} /></li>)}
                 </ul>
+                
+                <div className="mt-6">
+                    <button onClick={() => setIsCrmOpen(!isCrmOpen)} className="w-full flex justify-between items-center px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                        <span>{t('nav.crm')}</span>
+                        <svg className={`w-4 h-4 transition-transform ${isCrmOpen ? 'rotate-90' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+                    </button>
+                    {isCrmOpen && (
+                        <ul className="pl-2">
+                            {crmLinks.map(link => <li key={link.path}><NavItem {...link} /></li>)}
+                        </ul>
+                    )}
+                </div>
+
                 <h2 className="px-2 mt-6 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Menu</h2>
                 <ul>
                     {navLinks.map(link => <li key={link.path}><NavItem {...link} /></li>)}
                 </ul>
+
                 <h2 className="px-2 mt-6 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Management</h2>
                  <ul>
                     {managementLinks.map(link => <li key={link.path}><NavItem {...link} /></li>)}

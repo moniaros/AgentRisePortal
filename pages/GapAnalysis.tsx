@@ -136,8 +136,8 @@ const GapAnalysis: React.FC = () => {
     
     return (
         <div>
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">{t('nav.gapAnalysis') as string}</h1>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">{t('gapAnalysis.description') as string}</p>
+            <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">{t('gapAnalysis.title')}</h1>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">{t('gapAnalysis.description')}</p>
 
             {!file && <FileUploader onFileUpload={handleFileUpload} isLoading={isLoading} />}
             
@@ -165,8 +165,16 @@ const GapAnalysis: React.FC = () => {
             
             {analysisResult && (
                  <div className="mt-8">
-                    <h2 className="text-2xl font-semibold mb-4">{t('gapAnalysis.resultsTitle') as string}</h2>
+                    <h2 className="text-2xl font-semibold mb-4">{t('gapAnalysis.resultsTitle')}</h2>
                     <GapAnalysisResults result={analysisResult} />
+                    <div className="text-center mt-6">
+                        <button 
+                            onClick={() => alert('This would add the extracted policy information to a new or existing customer in the CRM.')}
+                            className="px-6 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition shadow-md"
+                        >
+                            {t('gapAnalysis.addToCrm')}
+                        </button>
+                    </div>
                 </div>
             )}
         </div>

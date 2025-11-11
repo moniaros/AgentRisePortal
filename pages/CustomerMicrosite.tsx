@@ -15,6 +15,7 @@ import EditProfileModal from '../components/customer/EditProfileModal';
 import PolicyRecommendationModal from '../components/customer/PolicyRecommendationModal';
 import { GoogleGenAI } from '@google/genai';
 import { useAuth } from '../hooks/useAuth';
+import EmbeddedGapAnalysis from '../components/customer/EmbeddedGapAnalysis';
 
 const CustomerProfile: React.FC = () => {
     const { customerId } = useParams<{ customerId: string }>();
@@ -44,7 +45,6 @@ const CustomerProfile: React.FC = () => {
         addTimelineEvent(customer.id, {
             type: 'system',
             content: `Address updated to: ${newAddress}`,
-            // FIX: Property 'name' does not exist on type 'User'. Use party.partyName properties instead.
             author: currentUser ? `${currentUser.party.partyName.firstName} ${currentUser.party.partyName.lastName}` : 'System',
         });
         setAddressModalOpen(false);
@@ -57,7 +57,6 @@ const CustomerProfile: React.FC = () => {
         addTimelineEvent(customer.id, {
             type: 'policy_update',
             content: `Policy ${selectedPolicy.policyNumber} renewed. New end date: ${newEndDate}`,
-            // FIX: Property 'name' does not exist on type 'User'. Use party.partyName properties instead.
             author: currentUser ? `${currentUser.party.partyName.firstName} ${currentUser.party.partyName.lastName}` : 'System',
         });
         setRenewalModalOpen(false);
@@ -74,7 +73,6 @@ const CustomerProfile: React.FC = () => {
         setAiRecommendation(null);
         
         try {
-            // FIX: Updated Gemini API call to align with current SDK guidelines.
             const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             const prompt = `
               Review the following insurance policy for a client and provide recommendations.
@@ -98,7 +96,6 @@ const CustomerProfile: React.FC = () => {
     const handleAddTimelineEvent = (data: Omit<TimelineEvent, 'id' | 'date' | 'author' | 'annotations'>) => {
         addTimelineEvent(customer.id, {
             ...data,
-            // FIX: Property 'name' does not exist on type 'User'. Use party.partyName properties instead.
             author: currentUser ? `${currentUser.party.partyName.firstName} ${currentUser.party.partyName.lastName}` : 'System'
         });
         setTimelineModalOpen(false);
@@ -153,6 +150,13 @@ const CustomerProfile: React.FC = () => {
                 </div>
             </div>
 
+            {/* Embedded AI Gap Analysis */}
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 className="text-2xl font-semibold mb-2">{t('customer.analyzePolicies')}</h2>
+                <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-2xl">{t('customer.analyzeDescription')}</p>
+                <EmbeddedGapAnalysis customer={customer} />
+            </div>
+
             {/* Timeline */}
             <div>
                 <div className="flex justify-between items-center mb-4">
@@ -163,7 +167,6 @@ const CustomerProfile: React.FC = () => {
                 </div>
                 <CustomerTimeline
                     timeline={customer.timeline}
-                    // FIX: Property 'name' does not exist on type 'User'. Use party.partyName properties instead.
                     onAddAnnotation={(eventId, content) => addAnnotationToEvent(customer.id, eventId, { content, author: currentUser ? `${currentUser.party.partyName.firstName} ${currentUser.party.partyName.lastName}` : 'System' })}
                     onFlagEvent={(eventId) => toggleTimelineEventFlag(customer.id, eventId)}
                 />

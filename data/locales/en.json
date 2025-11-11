@@ -14,9 +14,9 @@
     "overview": "Overview",
     "dashboard": "Dashboard",
     "leadsDashboard": "Leads Dashboard",
-    "leadGen": "Leads List",
-    "crm": "Micro-CRM",
-    "gapAnalysis": "AI Gap Analysis",
+    "crm": "CRM",
+    "customersAndLeads": "Customers & Leads",
+    "importPolicyAI": "Import Policy (AI)",
     "socialComposer": "Social Composer",
     "adCampaigns": "Ad Campaigns",
     "analytics": "Analytics",
@@ -91,6 +91,7 @@
     "confirmDelete": "Are you sure you want to delete this customer?",
     "customers": "Customers",
     "searchCustomers": "Search customers...",
+    "searchAll": "Search leads & customers...",
     "recentLeads": "Recent Leads",
     "viewProfile": "View Profile",
     "edit": "Edit",
@@ -154,10 +155,13 @@
     "hideDetails": "Hide Details",
     "coverages": "Coverages",
     "limit": "Limit",
-    "deductible": "Deductible"
+    "deductible": "Deductible",
+    "analyzePolicies": "AI Policy Analysis",
+    "analyzeDescription": "Upload a new or existing policy document for this customer. Our AI will analyze it for cross-sell and upsell opportunities, and the results will be saved to their timeline."
   },
   "gapAnalysis": {
-    "description": "Upload a client's policy document (PDF, PNG, JPG) to automatically extract key information and analyze it for coverage gaps.",
+    "title": "Import Policy (AI)",
+    "description": "Upload a client's policy document (PDF, PNG, JPG). Our AI will extract key information and analyze it for coverage gaps, allowing you to import the details directly into your CRM.",
     "dragDrop": "Drag & drop your file here, or",
     "browse": "browse",
     "fileTypes": "PDF, PNG, JPG up to 10MB",
@@ -169,7 +173,8 @@
     "insuredItems": "Insured Items & Coverages",
     "userNeedsTitle": "Client's Needs & Context",
     "userNeedsPlaceholder": "Describe the client's situation, concerns, or what they want to protect (e.g., 'Client just bought a more expensive car and is worried about theft', 'Wants to make sure their new home office equipment is covered').",
-    "analyzeGaps": "Analyze for Gaps"
+    "analyzeGaps": "Analyze for Gaps",
+    "addToCrm": "Add Policy to CRM (Mock)"
   },
   "socialComposer": {
     "placeholder": "What's on your mind?",

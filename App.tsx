@@ -11,7 +11,6 @@ import Layout from './components/Layout';
 import Login from './pages/Login';
 import Logout from './pages/Logout';
 import Dashboard from './pages/Dashboard';
-import LeadGeneration from './pages/LeadGeneration';
 import MicroCRM from './pages/MicroCRM';
 import CustomerProfile from './pages/CustomerMicrosite';
 import GapAnalysis from './pages/GapAnalysis';
@@ -47,7 +46,6 @@ const App: React.FC = () => {
                   <Route path="/logout" element={<Logout />} />
                   <Route path="/capture/:campaignId" element={<LeadCapturePage />} />
                   <Route path="/" element={<Layout><Dashboard /></Layout>} />
-                  <Route path="/lead-generation" element={<Layout><LeadGeneration /></Layout>} />
                   <Route path="/micro-crm" element={<Layout><MicroCRM /></Layout>} />
                   <Route path="/customer/:customerId" element={<Layout><CustomerProfile /></Layout>} />
                   <Route path="/gap-analysis" element={<Layout><GapAnalysis /></Layout>} />

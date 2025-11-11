@@ -134,59 +134,7 @@ The platform is currently a high-fidelity MVP with a simulated backend. The foll
     }
     ```
 
-#### 4. Micro-CRM
--   **Description:** A core CRM for managing customers and leads. Users can add, edit, and delete customer profiles, view associated leads, and manage policies. All data is scoped to the user's agency.
--   **Components:** `MicroCRM.tsx`, `CustomersTable.tsx`, `CrmLeadsTable.tsx`, `CustomerFormModal.tsx`.
--   **Data Structures:**
-    ```typescript
-    interface Customer {
-        id: string;
-        firstName: string;
-        lastName: string;
-        email: string;
-        phone: string;
-        policies: Policy[];
-        timeline: TimelineEvent[];
-        agencyId: string;
-    }
-    interface Lead {
-        id: string;
-        firstName: string;
-        lastName: string;
-        source: string;
-        status: 'new' | 'contacted' | 'qualified' | 'closed' | 'rejected';
-        campaignId?: string;
-        agencyId: string;
-    }
-    ```
-
-#### 5. Customer Microsite & Timeline
--   **Description:** A detailed view for each customer, showing their contact information, policies, and a chronological timeline of interactions (notes, policy changes, etc.).
--   **Components:** `CustomerMicrosite.tsx`, `PolicyCard.tsx`, `CustomerTimeline.tsx`.
--   **Data Structures:**
-    ```typescript
-    interface Policy {
-        id: string;
-        type: 'auto' | 'home' | 'life' | 'health';
-        policyNumber: string;
-        premium: number;
-        isActive: boolean;
-    }
-    interface TimelineEvent {
-        id: string;
-        date: string;
-        type: 'call' | 'email' | 'meeting' | 'note' | 'policy_update';
-        title: string;
-        content: string;
-    }
-    ```
-
-#### 6. AI-Powered Gap Analysis
--   **Description:** Agents can upload a client's existing policy document (PDF/Image). Google Gemini API extracts key policy information and then analyzes it against user-described needs to identify coverage gaps.
--   **Components:** `GapAnalysis.tsx`, `FileUploader.tsx`, `PolicyParser.tsx`.
--   **Technology:** `@google/genai` (Gemini API).
-
-#### 7. Social Media Composer & Lead Capture
+#### 4. Social Media Composer & Lead Capture
 -   **Description:** A tool for drafting and "publishing" social media posts. It includes templates, character limits, and image previews. Crucially, it can attach a lead capture form, which generates a unique landing page to convert prospects into leads directly within the CRM. Includes robust, bilingual error handling.
 -   **Components:** `SocialComposer.tsx`, `PostPreview.tsx`, `LeadCapturePage.tsx`.
 -   **Data Structures:**
@@ -200,7 +148,7 @@ The platform is currently a high-fidelity MVP with a simulated backend. The foll
     }
     ```
 
-#### 8. Campaign Management & Analytics
+#### 5. Campaign Management & Analytics
 -   **Description:** A foundational module for creating and viewing advertising campaigns. The accompanying analytics dashboard visualizes performance data (spend, impressions, CTR, conversions) with robust filtering.
 -   **Components:** `AdCampaigns.tsx`, `CampaignWizard.tsx`, `Analytics.tsx`, `PerformanceChart.tsx`, `SpendChart.tsx`.
 -   **Data Structures:**
@@ -215,7 +163,7 @@ The platform is currently a high-fidelity MVP with a simulated backend. The foll
     }
     ```
 
-#### 9. SEO & Analytics Integration
+#### 6. SEO & Analytics Integration
 -   **Description:** The platform incorporates SEO best practices and comprehensive analytics tracking to monitor traffic and user engagement.
 -   **SEO Features:**
     -   **Dynamic Meta Tags:** Pages like News Articles dynamically update `document.title` and `meta description` tags for better search engine results.
@@ -228,10 +176,12 @@ The platform is currently a high-fidelity MVP with a simulated backend. The foll
 -   **Components:** `GTMProvider.tsx`, `RouteAnalyticsTracker.tsx`, `Sitemap.tsx`.
 -   **Services:** `services/analytics.ts`.
 
-#### Navigation Improvements
+#### Navigation & CRM Improvements
 -   **New "Overview" Section:** The main sidebar has been restructured to include a new top-level "Overview" section for high-level dashboards.
--   **Executive Analytics:** The "Executive Dashboard" has been renamed to "Executive Analytics" for clarity and moved into the new "Overview" section.
--   **Enhanced Analytics Page:** The Executive Analytics page has been enhanced to include key campaign summary KPIs (Total Spend, Impressions, CTR, Conversions), providing a more comprehensive single-view dashboard for leadership.
+-   **New "CRM" Section:** A collapsible parent menu item for "CRM" has been added to organize all related functionalities.
+    -   **Customers & Leads (`/micro-crm`):** The CRM and Leads pages have been merged into a single, unified view. This page now lists recent leads at the top ("pinned") followed by the full customer list, with a shared search bar to filter both.
+    -   **Import Policy (AI) (`/gap-analysis`):** The "AI Gap Analysis" page has been renamed and repurposed as a primary tool for importing policy data into the CRM.
+-   **Embedded AI Analysis:** The customer detail page (`/customer/:id`) now features an embedded "AI Policy Analysis" panel. This allows agents to upload and analyze a policy document directly within the customer's profile, with the analysis results automatically logged to the customer's timeline for a complete record.
 
 ### Comprehensive Pages and Routing Documentation
 
