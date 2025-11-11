@@ -1,4 +1,44 @@
 {
+  "common": {
+    "loading": "Φόρτωση...",
+    "close": "Κλείσιμο",
+    "actions": "Ενέργειες",
+    "edit": "Επεξεργασία",
+    "delete": "Διαγραφή",
+    "save": "Αποθήκευση",
+    "cancel": "Άκυρο",
+    "all": "Όλα",
+    "active": "Ενεργός",
+    "inactive": "Ανενεργός",
+    "status": "Κατάσταση"
+  },
+  "nav": {
+    "overview": "Επισκόπηση",
+    "dashboard": "Πίνακας Ελέγχου",
+    "executiveAnalytics": "Συνοπτικά Αναλυτικά",
+    "crm": "CRM",
+    "customersAndLeads": "Πελάτες & Leads",
+    "leadsDashboard": "Πίνακας Leads",
+    "importPolicyAI": " скенер συμβολαίου AI",
+    "automationRules": "Κανόνες Αυτοματισμού",
+    "campaigns": "Καμπάνιες",
+    "campaignAnalytics": "Αναλυτικά Καμπανιών",
+    "socialPosts": "Δημιουργία Post",
+    "socialAds": "Διαφημίσεις",
+    "website": "Ιστοσελίδα & Περιεχόμενο",
+    "micrositeBuilder": "Δόμηση Microsite",
+    "news": "Νέα & Ανακοινώσεις",
+    "testimonials": "Μαρτυρίες Πελατών",
+    "management": "Διαχείριση",
+    "userManagement": "Διαχείριση Χρηστών",
+    "billing": "Συνδρομές & Πληρωμές",
+    "support": "Κέντρο Υποστήριξης",
+    "settings": "Ρυθμίσεις",
+    "profile": "Το Προφίλ μου",
+    "appSettings": "Ρυθμίσεις Εφαρμογής",
+    "templates": "Πρότυπα",
+    "eventLog": "Αρχείο Συμβάντων"
+  },
   "header": {
     "search": "Αναζήτηση...",
     "online": "Σε σύνδεση",
@@ -6,50 +46,113 @@
     "logout": "Αποσύνδεση",
     "socials": "Κοινωνικά Δίκτυα"
   },
-  "nav": {
-    "overview": "Επισκόπηση",
-    "dashboard": "Πίνακας Ελέγχου",
-    "executiveAnalytics": "Analytics",
-    "crm": "CRM",
-    "customersAndLeads": "Πελάτες & Leads",
-    "leadsDashboard": "Πίνακας Leads",
-    "importPolicyAI": "Αναλυση Συμβολαίων",
-    "automationRules": "Κανόνες Αυτοματισμού",
-    "campaigns": "Καμπανιες",
-    "campaignAnalytics": "Analytics",
-    "socialPosts": "Δημιουργία Αναρτήσεων",
-    "socialAds": "Διαφημιστικές Καμπάνιες",
-    "website": "Ιστοσελιδα",
-    "micrositeBuilder": "Δόμηση Microsite",
-    "news": "Νέα & Αναλύσεις",
-    "content": "Περιεχόμενο",
-    "testimonials": "Μαρτυρίες Πελατών",
-    "management": "Διαχείριση Πρακτορείου",
-    "userManagement": "Διαχείριση Χρηστών",
-    "billing": "Χρεώσεις & Συνδρομές",
-    "support": "Κέντρο Υποστήριξης",
-    "settings": "Ρυθμίσεις",
-    "profile": "Το Προφίλ μου",
-    "appSettings": "Ρυθμίσεις Εφαρμογής",
-    "leadGen": "Δημιουργία Υποψηφίων",
-    "templates": "Πρότυπα Μηνυμάτων",
-    "eventLog": "Αρχείο Συμβάντων"
+  "login": {
+    "title": "Καλώς ήρθατε στην Ασφαλιστική σας Πύλη",
+    "subtitle": "Συνδεθείτε για να διαχειριστείτε τους υποψήφιους και τους πελάτες σας.",
+    "emailLabel": "Διεύθυνση Email",
+    "emailPlaceholder": "you@example.com",
+    "passwordLabel": "Κωδικός Πρόσβασης",
+    "rememberMe": "Να με θυμάσαι",
+    "forgotPassword": "Ξεχάσατε τον κωδικό σας;",
+    "loginButton": "Σύνδεση",
+    "authenticating": "Γίνεται έλεγχος...",
+    "errorInvalidCredentials": "Λάθος email ή κωδικός. Παρακαλώ προσπαθήστε ξανά."
   },
-  "common": {
-    "loading": "Φόρτωση...",
+  "validation": {
+    "required": "Το πεδίο '{fieldName}' είναι υποχρεωτικό.",
+    "invalidEmail": "Παρακαλώ εισάγετε μια έγκυρη διεύθυνση email.",
+    "policyNumberRequired": "Ο αριθμός συμβολαίου είναι υποχρεωτικός."
+  },
+  "dashboard": {
+    "basedOn": "Βάσει",
+    "reviews": "αξιολογήσεων",
+    "recentReviews": "Πρόσφατες Αξιολογήσεις Πελατών",
+    "showUnreplied": "Εμφάνιση μόνο αναπάντητων",
+    "stars": "αστέρια",
+    "generateAiReply": "Δημιουργία Απάντησης με AI",
+    "generatingReply": "Δημιουργία...",
+    "retry": "Προσπάθεια ξανά",
+    "yourReply": "Η Απάντησή σας:",
+    "postReply": "Δημοσίευση Απάντησης",
+    "replyPosted": "Η απάντηση δημοσιεύτηκε επιτυχώς!",
+    "emptyStates": {
+      "noReviews": "Δεν βρέθηκαν ακόμη αξιολογήσεις για αυτή την επιχείρηση.",
+      "allReplied": "Εξαιρετική δουλειά! Έχετε απαντήσει σε όλες τις πρόσφατες αξιολογήσεις."
+    },
+    "errors": {
+      "noApiKey": "Το κλειδί API δεν έχει ρυθμιστεί.",
+      "dataFetchFailed": "Η λήψη δεδομένων Google Business Profile απέτυχε.",
+      "replyGenerationFailed": "Η δημιουργία απάντησης με AI απέτυχε.",
+      "replyPostFailed": "Η δημοσίευση της απάντησης απέτυχε."
+    },
+    "kpis": {
+      "newInquiriesToday": "Νέα Αιτήματα Σήμερα",
+      "newInquiriesSubtitle": "Νέα αιτήματα προσφοράς προς ανάθεση.",
+      "overdueFollowUps": "Εκπρόθεσμες Ενέργειες",
+      "overdueFollowUpsSubtitle": "Ευκαιρίες που απαιτούν άμεση δράση.",
+      "unreadMessages": "Αδιάβαστα Μηνύματα",
+      "unreadMessagesSubtitle": "Ενεργές συνομιλίες με πελάτες.",
+      "newPortalSubmissions": "Νέες Υποβολές Portal",
+      "newPortalSubmissionsSubtitle": "Απαιτήσεις & αιτήματα για σήμερα.",
+      "adPerformance": "Απόδοση Διαφημίσεων Σήμερα",
+      "adPerformanceSubtitle": "{leads} leads από €{spend} δαπάνη",
+      "activePortalUsers": "Ενεργοί Χρήστες Portal Σήμερα",
+      "activePortalUsersSubtitle": "Πελάτες που συνδέθηκαν στο portal."
+    }
+  },
+  "crm": {
+    "name": "Όνομα",
+    "status": "Κατάσταση",
+    "campaign": "Καμπάνια",
+    "potentialValue": "Δυνητική Αξία",
+    "addCustomer": "Προσθήκη Πελάτη",
+    "editCustomer": "Επεξεργασία Πελάτη",
+    "searchAll": "Αναζήτηση πελατών και leads...",
+    "confirmDelete": "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτόν τον πελάτη; Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.",
+    "recentLeads": "Πρόσφατα Leads",
+    "customers": "Πελάτες",
+    "viewProfile": "Προβολή Προφίλ",
     "edit": "Επεξεργασία",
-    "close": "Κλείσιμο",
-    "actions": "Ενέργειες",
-    "all": "Όλα",
-    "active": "Ενεργό",
-    "inactive": "Ανενεργό",
-    "delete": "Διαγραφή"
+    "delete": "Διαγραφή",
+    "cancel": "Άκυρο",
+    "save": "Αποθήκευση",
+    "syncPolicies": "Συγχρονισμός Συμβολαίων",
+    "syncing": "Συγχρονισμός...",
+    "syncSuccess": "Επιτυχής συγχρονισμός {syncedCustomers} νέων πελατών και {syncedPolicies} συμβολαίων.",
+    "form": {
+      "firstName": "Όνομα",
+      "lastName": "Επώνυμο",
+      "email": "Email",
+      "phone": "Τηλέφωνο",
+      "address": "Διεύθυνση",
+      "dob": "Ημερομηνία Γέννησης",
+      "policies": "Συμβόλαια",
+      "policyNumber": "Αριθμός Συμβολαίου",
+      "insurer": "Ασφαλιστική Εταιρεία",
+      "premium": "Ασφάλιστρο",
+      "startDate": "Ημερομηνία Έναρξης",
+      "endDate": "Ημερομηνία Λήξης",
+      "addPolicy": "Προσθήκη Συμβολαίου",
+      "noPolicies": "Δεν έχουν προστεθεί συμβόλαια ακόμη.",
+      "communicationPreferences": "Προτιμήσεις Επικοινωνίας"
+    }
+  },
+  "leads": {
+    "searchPlaceholder": "Αναζήτηση με όνομα ή email...",
+    "allStatuses": "Όλες οι Καταστάσεις",
+    "allSources": "Όλες οι Πηγές",
+    "source": "Πηγή",
+    "createdDate": "Ημερομηνία Δημιουργίας",
+    "viewDetails": "Λεπτομέρειες",
+    "noLeadsFound": "Δεν βρέθηκαν leads με τα τρέχοντα φίλτρα.",
+    "leadDetails": "Λεπτομέρειες Lead",
+    "policyInterest": "Ενδιαφέρον για Συμβόλαιο"
   },
   "statusLabels": {
-    "new": "Νέος",
+    "new": "Νέο",
     "contacted": "Έγινε Επικοινωνία",
-    "qualified": "Προεπιλεγμένος",
-    "closed": "Κλεισμένος",
+    "qualified": "Προεπιλεγμένο",
+    "closed": "Κλεισμένο",
     "rejected": "Απορρίφθηκε",
     "active": "Ενεργό",
     "inactive": "Ανενεργό",
@@ -58,137 +161,41 @@
     "failure": "Αποτυχία"
   },
   "policyTypes": {
-    "auto": "Ασφάλιση Αυτοκινήτου",
-    "home": "Ασφάλιση Κατοικίας",
-    "life": "Ασφάλιση Ζωής",
-    "health": "Ασφάλιση Υγείας"
-  },
-  "validation": {
-    "required": "Το πεδίο '{fieldName}' είναι υποχρεωτικό.",
-    "invalidEmail": "Παρακαλώ εισάγετε μια έγκυρη διεύθυνση email.",
-    "policyNumberRequired": "Ο Αριθμός Συμβολαίου είναι υποχρεωτικό πεδίο."
-  },
-  "login": {
-    "title": "Καλώς ορίσατε στην Πύλη του Πρακτορείου σας",
-    "subtitle": "Εισαγάγετε τα στοιχεία σας για πρόσβαση στον πίνακα ελέγχου.",
-    "emailLabel": "Διεύθυνση Email",
-    "emailPlaceholder": "you@example.com",
-    "passwordLabel": "Κωδικός Πρόσβασης",
-    "rememberMe": "Να με θυμάσαι",
-    "forgotPassword": "Ξεχάσατε τον κωδικό σας;",
-    "loginButton": "Σύνδεση",
-    "authenticating": "Γίνεται έλεγχος...",
-    "errorInvalidCredentials": "Τα στοιχεία που δώσατε είναι λανθασμένα. Παρακαλώ προσπαθήστε ξανά."
-  },
-  "dashboard": {
-    "kpis": {
-      "newInquiriesToday": "Νέα Αιτήματα Σήμερα",
-      "newInquiriesSubtitle": "Συναλλαγές που απαιτούν άμεση παρακολούθηση.",
-      "overdueFollowUps": "Εκπρόθεσμες Ενέργειες",
-      "overdueFollowUpsSubtitle": "Ανοιχτές ευκαιρίες που απαιτούν άμεση δράση.",
-      "unreadMessages": "Αδιάβαστα Μηνύματα",
-      "unreadMessagesSubtitle": "Εισερχόμενες αλληλεπιδράσεις που αναμένουν απάντηση.",
-      "newPortalSubmissions": "Νέες Υποβολές Πύλης",
-      "newPortalSubmissionsSubtitle": "Νέες απαιτήσεις & αιτήματα για διατήρηση πελατών.",
-      "adPerformance": "Σημερινή Απόδοση Διαφημίσεων (CPL)",
-      "adPerformanceSubtitle": "{leads} leads με €{spend}",
-      "activePortalUsers": "Ενεργοί Χρήστες Πύλης Σήμερα",
-      "activePortalUsersSubtitle": "Πελάτες που συνδέθηκαν στην πύλη."
-    },
-    "basedOn": "Βάσει",
-    "reviews": "αξιολογήσεων",
-    "recentReviews": "Πρόσφατες Αξιολογήσεις Πελατών",
-    "showUnreplied": "Εμφάνιση μόνο αναπάντητων",
-    "stars": "αστέρια",
-    "generatingReply": "Δημιουργία απάντησης...",
-    "retry": "Επανάληψη",
-    "generateAiReply": "Δημιουργία Απάντησης με AI",
-    "yourReply": "Η Απάντησή σας:",
-    "postReply": "Δημοσίευση Απάντησης",
-    "replyPosted": "Η απάντησή σας δημοσιεύθηκε επιτυχώς.",
-    "emptyStates": {
-      "noReviews": "Δεν έχουν βρεθεί αξιολογήσεις για αυτήν την τοποθεσία.",
-      "allReplied": "Εξαιρετική δουλειά! Έχετε απαντήσει σε όλες τις πρόσφατες αξιολογήσεις."
-    },
-    "errors": {
-      "dataFetchFailed": "Αποτυχία λήψης δεδομένων Google Business Profile. Παρακαλώ ελέξτε τη σύνδεσή σας στις Ρυθμίσεις.",
-      "noApiKey": "Δεν έχει διαμορφωθεί κλειδί API για το Google Gemini. Παρακαλώ προσθέστε το στις Ρυθμίσεις.",
-      "replyGenerationFailed": "Η δημιουργία απάντησης από την AI απέτυχε. Παρακαλώ προσπαθήστε ξανά.",
-      "replyPostFailed": "Η δημοσίευση της απάντησης απέτυχε. Ελέξτε τη σύνδεσή σας και προσπαθήστε ξανά."
-    }
-  },
-  "crm": {
-    "name": "Όνομα",
-    "status": "Κατάσταση",
-    "potentialValue": "Δυνητική Αξία",
-    "campaign": "Καμπάνια",
-    "viewProfile": "Προβολή Προφίλ",
-    "edit": "Επεξεργασία",
-    "delete": "Διαγραφή",
-    "cancel": "Ακύρωση",
-    "save": "Αποθήκευση Αλλαγών",
-    "addCustomer": "Προσθήκη Πελάτη",
-    "editCustomer": "Επεξεργασία Προφίλ Πελάτη",
-    "searchAll": "Αναζήτηση με όνομα ή email πελάτη...",
-    "recentLeads": "Πρόσφατοι Υποψήφιοι",
-    "customers": "Όλοι οι Πελάτες",
-    "confirmDelete": "Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά αυτό το αρχείο πελάτη;",
-    "syncPolicies": "Συγχρονισμός από Τοπική Αποθήκευση",
-    "syncing": "Συγχρονισμός...",
-    "syncSuccess": "Ο συγχρονισμός ολοκληρώθηκε. Εισήχθησαν {syncedCustomers} νέα προφίλ πελατών και {syncedPolicies} συμβόλαια.",
-    "form": {
-      "firstName": "Όνομα",
-      "lastName": "Επώνυμο",
-      "email": "Email",
-      "phone": "Τηλέφωνο",
-      "address": "Πλήρης Διεύθυνση",
-      "dob": "Ημερομηνία Γέννησης",
-      "communicationPreferences": "Προτιμήσεις Επικοινωνίας",
-      "policies": "Συμβόλαια",
-      "policyNumber": "Αριθμός Συμβολαίου",
-      "insurer": "Ασφαλιστική Εταιρεία",
-      "premium": "Ασφάλιστρο",
-      "startDate": "Ημερομηνία Έναρξης",
-      "endDate": "Ημερομηνία Λήξης",
-      "noPolicies": "Δεν έχουν προστεθεί συμβόλαια για αυτόν τον πελάτη.",
-      "addPolicy": "Προσθήκη Συμβολαίου"
-    }
-  },
-  "leads": {
-    "searchPlaceholder": "Αναζήτηση με όνομα ή email...",
-    "allStatuses": "Όλες οι Καταστάσεις",
-    "allSources": "Όλες οι Πηγές",
-    "viewDetails": "Προβολή Λεπτομερειών",
-    "noLeadsFound": "Δεν βρέθηκαν υποψήφιοι πελάτες με τα τρέχοντα φίλτρα.",
-    "source": "Πηγή",
-    "createdDate": "Ημερομηνία Δημιουργίας",
-    "leadDetails": "Λεπτομέρειες Υποψηφίου",
-    "policyInterest": "Ενδιαφέρον για Συμβόλαιο"
+    "auto": "Αυτοκινήτου",
+    "home": "Κατοικίας",
+    "life": "Ζωής",
+    "health": "Υγείας"
   },
   "customer": {
     "editProfile": "Επεξεργασία Προφίλ",
-    "analyzePolicies": "Ανάλυση Νέου Συμβολαίου με AI",
-    "analyzeDescription": "Ανεβάστε ένα έγγραφο συμβολαίου για αυτόν τον πελάτη. Ο βοηθός AI θα εξάγει τα βασικά στοιχεία, θα αποθηκεύσει το συμβόλαιο στο προφίλ του και θα προσθέσει μια σύνοψη της ανάλυσης στο χρονολόγιο.",
+    "setAttentionFlag": "Σήμανση Προσοχής",
+    "attentionNeeded": "Απαιτείται Προσοχή",
+    "clearFlag": "Κατάργηση",
     "timeline": "Χρονολόγιο Πελάτη",
     "addEvent": "Προσθήκη Συμβάντος",
-    "changeAddressTitle": "Ενημέρωση Διεύθυνσης Πελάτη",
+    "contactInfo": "Στοιχεία Επικοινωνίας",
+    "sms": "SMS",
+    "noTimeline": "Δεν έχουν καταγραφεί συμβάντα για αυτόν τον πελάτη.",
+    "addEventTitle": "Προσθήκη Συμβάντος στο Χρονολόγιο",
+    "eventType": "Τύπος Συμβάντος",
+    "eventDetails": "Λεπτομέρειες",
+    "eventDetailsPlaceholder": "Καταγραφή κλήσης, σημείωσης, ή λεπτομερειών συνάντησης...",
+    "attachments": "Επισυναπτόμενα",
+    "uploadAttachment": "Ανέβασμα αρχείου (PDF, PNG, JPG)",
+    "attachmentSize": "({size} KB)",
+    "annotationPlaceholder": "Προσθήκη σημείωσης...",
+    "saveAnnotation": "Αποθήκευση Σημείωσης",
+    "flagEvent": "Σήμανση Συμβάντος",
+    "unflagEvent": "Αφαίρεση Σήμανσης",
     "attentionFlagTitle": "Ορισμός Σήμανσης Προσοχής",
     "attentionReason": "Αιτία Σήμανσης",
-    "attentionReasonPlaceholder": "π.χ. Πελάτης υψηλής αξίας, εκκρεμεί διαπραγμάτευση ανανέωσης...",
-    "addEventTitle": "Προσθήκη Νέου Συμβάντος στο Χρονολόγιο",
-    "eventType": "Τύπος Συμβάντος",
-    "eventDetails": "Λεπτομέρειες Συμβάντος",
-    "eventDetailsPlaceholder": "Καταγράψτε τις λεπτομέρειες μιας κλήσης, συνάντησης ή γενικής σημείωσης...",
-    "attachments": "Συνημμένα",
-    "uploadAttachment": "Μεταφόρτωση αρχείου (μέγ. 5MB)",
-    "annotationPlaceholder": "Προσθέστε μια σχολιασμό σε αυτό το συμβάν...",
-    "saveAnnotation": "Αποθήκευση Σημείωσης",
-    "flagEvent": "Σήμανση για Παρακολούθηση",
-    "unflagEvent": "Αφαίρεση Σήμανσης",
-    "noTimeline": "Δεν έχουν καταγραφεί συμβάντα στο χρονολόγιο για αυτόν τον πελάτη.",
-    "attachmentSize": "({size} KB)",
-    "sms": "SMS",
-    "coverages": "Καλύψεις"
+    "attentionReasonPlaceholder": "π.χ. Πελάτης υψηλής αξίας, επερχόμενη ανανέωση, πρόσφατη απαίτηση...",
+    "changeAddressTitle": "Αλλαγή Διεύθυνσης",
+    "coverages": "Καλύψεις",
+    "storedAnalyses": "Αποθηκευμένες Αναλύσεις AI",
+    "noAnalyses": "Δεν έχουν αποθηκευτεί αναλύσεις AI για αυτόν τον πελάτη.",
+    "analysisFor": "Ανάλυση για:",
+    "analysisDate": "Ημερομηνία ανάλυσης {date}"
   },
   "timelineTypes": {
     "note": "Σημείωση",
@@ -200,112 +207,109 @@
     "claim": "Απαίτηση"
   },
   "gapAnalysis": {
-    "title": "AI Αναλυτής Συμβολαίων",
-    "subtitle": "Αξιοποιήστε τον αναλυτή μας με τεχνητή νοημοσύνη για την αυτόματη εξαγωγή δεδομένων από έγγραφα συμβολαίων (PDF, PNG, JPG) και τον εντοπισμό πιθανών κενών κάλυψης και ευκαιριών πώλησης.",
-    "step1": "Βήμα 1: Μεταφορτώστε ένα Έγγραφο Συμβολαίου",
-    "step2": "Βήμα 2: Παρέχετε Πληροφορίες Πελάτη (Προαιρετικό)",
-    "fetchingPolicy": "Γίνεται εξαγωγή δεδομένων συμβολαίου...",
-    "analyzing": "Γίνεται ανάλυση για κενά & ευκαιρίες...",
-    "dragDrop": "Σύρετε και αποθέστε ένα αρχείο εδώ, ή",
-    "browse": "αναζητήστε στα αρχεία σας",
-    "fileTypes": "Υποστηριζόμενοι τύποι αρχείων: PDF, PNG, JPG",
-    "extractedInfo": "Εξαχθείσες Πληροφορίες Συμβολαίου",
-    "policyHolder": "Αντισυμβαλλόμενος",
+    "title": " скенер συμβολαίου AI",
+    "subtitle": "Ανεβάστε ένα υπάρχον έγγραφο συμβολαίου (PDF, PNG, JPG) για αυτόματη εξαγωγή βασικών πληροφοριών και ανάλυση κενών κάλυψης.",
+    "step1": "Ανέβασμα Εγγράφου Συμβολαίου",
+    "step2": "Περιγραφή Αναγκών Πελάτη",
+    "fetchingPolicy": "Εξαγωγή δεδομένων συμβολαίου...",
+    "analyzing": "Ανάλυση για κενά...",
+    "dragDrop": "Σύρετε και αφήστε το αρχείο σας εδώ, ή",
+    "browse": "αναζητήστε",
+    "fileTypes": "Υποστηρίζει: PDF, PNG, JPG, JPEG",
+    "extractedInfo": "Πληροφορίες που Εξήχθησαν",
+    "policyHolder": "Συμβαλλόμενος",
     "insuredItems": "Ασφαλισμένα Αντικείμενα & Καλύψεις",
     "userNeedsTitle": "Ανάγκες & Πλαίσιο Πελάτη",
-    "userNeedsPlaceholder": "π.χ. «Ο πελάτης απέκτησε πρόσφατα παιδί και ενδιαφέρεται για ασφάλεια ζωής.» ή «Ο πελάτης αγοράζει δεύτερο όχημα.»",
-    "analyzeGaps": "Ανάλυση για Κενά & Ευκαιρίες",
-    "resultsTitle": "Αποτελέσματα Ανάλυσης AI",
-    "startOver": "Επανεκκίνηση",
-    "coverageGaps": "Εντοπισμένα Κενά Κάλυψης",
+    "userNeedsPlaceholder": "Παράδειγμα: 'Ο πελάτης είναι μια τετραμελής οικογένεια με δύο αυτοκίνητα. Ανησυχούν για την αστική ευθύνη και έχουν έναν νέο έφηβο οδηγό.'",
+    "analyzeGaps": "Ανάλυση Κενών",
+    "resultsTitle": "Αποτελέσματα Ανάλυσης",
+    "startOver": "Έναρξη από την αρχή",
+    "coverageGaps": "Κενά Κάλυψης",
     "current": "Τρέχον",
     "recommended": "Προτεινόμενο",
     "upsellOpportunities": "Ευκαιρίες Upsell",
-    "crossSellOpportunities": "Ευκαιρίες Cross-Sell",
+    "crossSellOpportunities": "Ευκαιρίες Cross-sell",
+    "saveSuccess": "Τα αποτελέσματα της ανάλυσης αποθηκεύτηκαν επιτυχώς!",
     "errors": {
-      "parsingFailed": "Αποτυχία ανάλυσης του εγγράφου. Παρακαλώ δοκιμάστε με μια καθαρότερη εικόνα ή διαφορετικό τύπο αρχείου.",
-      "analysisFailed": "Η ανάλυση AI δεν ολοκληρώθηκε. Μπορεί να είναι προσωρινό πρόβλημα. Παρακαλώ προσπαθήστε ξανά."
-    },
-    "saveSuccess": "Τα αποτελέσματα της ανάλυσης αποθηκεύτηκαν τοπικά."
+      "parsingFailed": "Η ανάλυση του εγγράφου απέτυχε. Το AI δεν μπόρεσε να κατανοήσει τη μορφή. Παρακαλώ δοκιμάστε άλλο έγγραφο.",
+      "analysisFailed": "Η ανάλυση κενών απέτυχε. Παρακαλώ ελέγξτε τα δεδομένα σας και προσπαθήστε ξανά."
+    }
   },
   "onboarding": {
-    "title": "Καλώς ορίσατε στο AgentOS, {name}!",
-    "subtitle": "Ας διαμορφώσουμε το πρακτορείο σας για την επιτυχία. Εδώ είναι μερικά βασικά χαρακτηριστικά για να εξερευνήσετε αρχικά:",
+    "title": "Καλώς ήρθες, {name}!",
+    "subtitle": "Ας ρυθμίσουμε το AgentOS portal σου για επιτυχία. Εδώ είναι μερικά βασικά χαρακτηριστικά για να ξεκινήσεις.",
     "features": {
       "crm": {
-        "title": "Micro-CRM",
-        "description": "Διαχειριστείτε όλους τους πελάτες και τους υποψήφιους πελάτες σας σε ένα απλό, ισχυρό περιβάλλον."
+        "title": "Ενοποιημένο CRM",
+        "description": "Διαχειρίσου όλους τους πελάτες και τα leads σου σε ένα μέρος. Παρακολούθησε συμβόλαια, επικοινωνίες και σημαντικά γεγονότα."
       },
       "gapAnalysis": {
-        "title": "AI Αναλυτής Συμβολαίων",
-        "description": "Αναλύστε άμεσα έγγραφα συμβολαίων για να ανακαλύψετε πολύτιμες ευκαιρίες upsell και cross-sell."
+        "title": "Ανάλυση Κενών με AI",
+        "description": "Ανέβασε υπάρχοντα συμβόλαια για να εντοπίσεις άμεσα κενά κάλυψης και να ανακαλύψεις νέες ευκαιρίες πωλήσεων."
       },
       "social": {
-        "title": "Δημιουργία Αναρτήσεων",
-        "description": "Αξιοποιήστε την AI για να δημιουργήσετε και να προγραμματίσετε ελκυστικό περιεχόμενο για τα μέσα κοινωνικής δικτύωσης σε δευτερόλεπτα."
+        "title": "Marketing στα Social Media",
+        "description": "Δημιούργησε, προγραμμάτισε και ανέλυσε δημοσιεύσεις και διαφημιστικές καμπάνιες για να δημιουργήσεις νέα leads."
       }
     },
     "checklist": {
-      "title": "Η Λίστα Εργασιών Έναρξης",
-      "profile": "Συμπληρώστε το προφίλ του ασφαλιστή σας",
-      "policy": "Αναλύστε το πρώτο σας έγγραφο συμβολαίου",
-      "campaign": "Δημιουργήστε την πρώτη σας ανάρτηση στα social media",
-      "allDone": "Η ρύθμιση ολοκληρώθηκε! Είστε έτοιμοι να απογειώσετε το πρακτορείο σας.",
+      "title": "Η Λίστα Ελέγχου Ρυθμίσεών σου",
+      "profile": "Συμπλήρωσε το προφίλ του ασφαλιστή σου",
+      "policy": "Κάνε την πρώτη σου ανάλυση συμβολαίου με AI",
+      "campaign": "Δημιούργησε την πρώτη σου δημοσίευση στα social media",
+      "allDone": "Όλα έτοιμα! Είσαι έτοιμος να αρχίσεις να αναπτύσσεις την επιχείρησή σου.",
       "getStarted": "Μετάβαση στον Πίνακα Ελέγχου"
     }
   },
-  "billing": {
-    "title": "Οι Χρεώσεις δεν είναι Ενεργές Ακόμα"
-  },
   "socialComposer": {
-    "placeholder": "Για ποιο θέμα θα θέλατε να κάνετε μια ανάρτηση;",
-    "schedule": "Προγραμματισμός Ανάρτησης",
-    "platforms": "Δημοσίευση Σε",
-    "preview": "Ζωντανή Προεπισκόπηση",
-    "templatesTitle": "Ή, ξεκινήστε από ένα πρότυπο:",
+    "aiHelper": {
+      "title": "Βοηθός Περιεχομένου AI",
+      "placeholder": "Εισάγετε ένα θέμα, π.χ. 'η σημασία της ασφάλειας ζωής'",
+      "button": "Δημιουργία"
+    },
+    "placeholder": "Τι σκέφτεστε;",
+    "schedule": "Προγραμματισμός",
+    "platforms": "Δημοσίευση σε",
+    "preview": "Προεπισκόπηση",
+    "templatesTitle": "Χρήση Προτύπου",
     "templates": [
       {
         "title": "Συμβουλή για Ασφάλεια Αυτοκινήτου",
-        "content": "Γνωρίζατε; Ο συνδυασμός ασφάλειας αυτοκινήτου και κατοικίας μπορεί να σας εξοικονομήσει έως και 20%! Επικοινωνήστε μαζί μου σήμερα για μια δωρεάν προσφορά. #InsuranceTips #AutoInsurance #SaveMoney"
+        "content": "Γνωρίζατε ότι ο συνδυασμός ασφάλειας αυτοκινήτου και κατοικίας μπορεί να σας εξοικονομήσει έως και 20%; 🚗🏠 Ρωτήστε με πώς! #InsuranceTips #SaveMoney #AutoInsurance"
       },
       {
-        "title": "Μύθος για την Ασφάλεια Ζωής",
-        "content": "Μύθος: Η ασφάλεια ζωής είναι πολύ ακριβή. Αλήθεια: Ένας υγιής 30χρονος μπορεί συχνά να λάβει σημαντική κάλυψη με κόστος μικρότερο από έναν καθημερινό καφέ. Προστατέψτε το μέλλον της οικογένειάς σας. #LifeInsurance #FinancialPlanning"
+        "title": "Παρασκευή & Ασφάλεια Ζωής",
+        "content": "Είναι Παρασκευή! Μια εξαιρετική μέρα για να σκεφτείτε την προστασία του μέλλοντος της οικογένειάς σας. Η ασφάλεια ζωής είναι πιο προσιτή από όσο νομίζετε. Ας μιλήσουμε. #LifeInsurance #FamilyFirst #FinancialPlanning"
       },
       {
-        "title": "Γενική Ερώτηση",
-        "content": "Ποιο είναι το ένα πράγμα που θα θέλατε να γνωρίζατε για την ασφάλιση πριν αγοράσετε το πρώτο σας συμβόλαιο; Μοιραστείτε το στα σχόλια! #InsuranceQuestions #AskAnAgent"
+        "title": "Μαρτυρία Πελάτη",
+        "content": "Είμαι τόσο χαρούμενος που βοήθησα έναν ακόμη πελάτη να βρει την ιδανική κάλυψη! ⭐⭐⭐⭐⭐ 'Η καλύτερη εξυπηρέτηση που είχα ποτέ!' - Ευχαριστώ για τα καλά λόγια! #CustomerLove #HappyClient #InsuranceAgent"
       }
-    ],
-    "aiHelper": {
-      "title": "Βοηθός Περιεχομένου AI",
-      "placeholder": "π.χ. «μια ανάρτηση για τη σημασία της αστικής ευθύνης»",
-      "button": "Δημιουργία Περιεχομένου"
-    }
+    ]
   },
   "campaigns": {
-    "create": "Δημιουργία Νέας Καμπάνιας"
+    "create": "Δημιουργία Καμπάνιας"
   },
   "campaignAnalytics": {
-    "title": "Analytics Καμπανιών",
-    "noData": "Δεν υπάρχουν διαθέσιμα δεδομένα για τα επιλεγμένα φίλτρα.",
-    "kpis": {
-      "totalSpend": "Συνολική Δαπάνη",
-      "totalImpressions": "Συνολικές Εμφανίσεις",
-      "ctr": "Ποσοστό Κλικ (CTR)",
-      "totalConversions": "Συνολικές Μετατροπές"
-    },
+    "title": "Αναλυτικά Στοιχεία Καμπανιών",
+    "noData": "Δεν υπάρχουν διαθέσιμα δεδομένα για τα επιλεγμένα φίλτρα. Δοκιμάστε διαφορετικό χρονικό εύρος ή καμπάνια.",
     "filters": {
       "campaign": "Καμπάνια",
       "allCampaigns": "Όλες οι Καμπάνιες",
       "network": "Δίκτυο",
       "allNetworks": "Όλα τα Δίκτυα",
-      "period": "Περίοδος",
+      "period": "Χρονική Περίοδος",
       "last7": "Τελευταίες 7 Ημέρες",
       "last30": "Τελευταίες 30 Ημέρες",
       "last90": "Τελευταίες 90 Ημέρες",
       "language": "Γλώσσα",
       "allLanguages": "Όλες οι Γλώσσες"
+    },
+    "kpis": {
+      "totalSpend": "Συνολική Δαπάνη",
+      "totalImpressions": "Συνολικές Εμφανίσεις",
+      "ctr": "Αναλογία Κλικ/Εμφανίσεων (CTR)",
+      "totalConversions": "Συνολικές Μετατροπές"
     },
     "charts": {
       "performanceTitle": "Απόδοση στο Χρόνο",
@@ -317,7 +321,7 @@
   },
   "profile": {
     "title": "Το Προφίλ μου",
-    "updateSuccess": "Το προφίλ ενημερώθηκε επιτυχώς.",
+    "updateSuccess": "Το προφίλ ενημερώθηκε επιτυχώς!",
     "change": "Αλλαγή",
     "personalInfo": "Προσωπικές Πληροφορίες",
     "profilePhoto": "Φωτογραφία Προφίλ",
@@ -326,11 +330,11 @@
     "jobTitle": "Επαγγελματικός Τίτλος",
     "department": "Τμήμα",
     "contactDetails": "Στοιχεία Επικοινωνίας",
-    "officeLocation": "Γραφείο / Υποκατάστημα",
+    "officeLocation": "Τοποθεσία Γραφείου / Υποκατάστημα",
     "workPhone": "Τηλέφωνο Εργασίας",
     "mobilePhone": "Κινητό Τηλέφωνο",
     "digitalSignature": "Ψηφιακή Υπογραφή",
-    "signatureDescription": "Αυτή η εικόνα θα χρησιμοποιηθεί ως υπογραφή σας σε έγγραφα και αυτοματοποιημένα email.",
+    "signatureDescription": "Αυτή η εικόνα θα χρησιμοποιηθεί σε έγγραφα και email όπου απαιτείται η υπογραφή σας.",
     "roleAndPermissions": "Ρόλος & Δικαιώματα",
     "roleTitle": "Τίτλος Ρόλου",
     "permissionsScope": "Εύρος Δικαιωμάτων",
@@ -339,8 +343,8 @@
     "licenseNumber": "Αριθμός Άδειας",
     "expirationDate": "Ημερομηνία Λήξης",
     "status": "Κατάσταση",
-    "recentActivity": "Αρχείο Πρόσφατης Δραστηριότητας",
-    "noActivity": "Δεν βρέθηκε πρόσφατη δραστηριότητα."
+    "recentActivity": "Πρόσφατη Δραστηριότητα",
+    "noActivity": "Δεν υπάρχει πρόσφατη δραστηριότητα για εμφάνιση."
   },
   "licenseStatus": {
     "valid": "Σε ισχύ",
@@ -350,80 +354,61 @@
   "settings": {
     "appearance": {
       "title": "Εμφάνιση",
-      "description": "Προσαρμόστε την οπτική εμφάνιση της εφαρμογής.",
+      "description": "Προσαρμόστε την εμφάνιση του χώρου εργασίας σας.",
       "darkMode": "Σκοτεινή Λειτουργία",
       "lightMode": "Φωτεινή Λειτουργία"
     },
     "setup": {
-      "title": "Διαμόρφωση API",
+      "title": "Ρύθμιση API & Ενσωματώσεων",
       "googleClientId": "Google Cloud Client ID",
-      "googleClientIdPlaceholder": "Εισαγάγετε το Google Client ID για OAuth",
+      "googleClientIdPlaceholder": "Εισαγάγετε το Google Client ID σας για OAuth",
       "geminiApiKey": "Google Gemini API Key",
-      "geminiApiKeyPlaceholder": "Εισαγάγετε το κλειδί API του Gemini",
+      "geminiApiKeyPlaceholder": "Εισαγάγετε το Gemini API Key σας για τις λειτουργίες AI",
       "saveButton": "Αποθήκευση Κλειδιών",
       "saveSuccess": "Τα κλειδιά API αποθηκεύτηκαν επιτυχώς."
     },
     "integrations": {
       "title": "Ενσωματώσεις",
       "gbp": "Google Business Profile",
-      "statusNotConnected": "Δεν υπάρχει σύνδεση",
-      "statusConnectedTo": "Συνδεδεμένο σε: {businessName}",
-      "statusFetchingProfiles": "Σύνδεση... ανάκτηση προφίλ...",
-      "statusNoAccounts": "Προειδοποίηση: Δεν βρέθηκαν λογαριασμοί Google Business.",
-      "statusFetchingLocations": "Ανάκτηση τοποθεσιών...",
-      "statusNoLocations": "Προειδοποίηση: Δεν βρέθηκαν τοποθεσίες στον λογαριασμό σας.",
-      "statusApiError": "Σφάλμα: Αδύνατη η σύνδεση με το Google API.",
-      "statusConnecting": "Γίνεται σύνδεση...",
+      "connectButton": "Σύνδεση",
+      "statusNotConnected": "Δεν είναι συνδεδεμένο",
+      "statusConnectedTo": "Συνδέθηκε με: {businessName}",
+      "statusConnecting": "Σύνδεση σε εξέλιξη...",
+      "statusFetchingProfiles": "Λήψη επαγγελματικών προφίλ...",
+      "statusNoAccounts": "Δεν βρέθηκαν Λογαριασμοί Google Business.",
+      "warningNoAccounts": "Ο λογαριασμός σας Google δεν διαχειρίζεται κανένα επαγγελματικό προφίλ.",
+      "statusFetchingLocations": "Λήψη τοποθεσιών επιχείρησης...",
+      "statusNoLocations": "Δεν βρέθηκαν τοποθεσίες επιχείρησης στον λογαριασμό σας.",
+      "warningNoLocations": "Δεν βρέθηκαν καταχωρημένες τοποθεσίες επιχείρησης στον λογαριασμό σας Google.",
+      "successConnected": "Επιτυχής σύνδεση με {businessName}!",
+      "statusApiError": "Σφάλμα API. Ελέγξτε την κονσόλα για λεπτομέρειες.",
+      "errorApi": "Προέκυψε σφάλμα API. Παρακαλώ προσπαθήστε ξανά αργότερα.",
+      "errorNoClientId": "Παρακαλώ αποθηκεύστε το Google Client ID σας πριν τη σύνδεση.",
+      "errorGapiNotLoaded": "Δεν ήταν δυνατή η φόρτωση του Google API client. Παρακαλώ ελέγξτε τη σύνδεσή σας ή δοκιμάστε ανανέωση.",
       "statusFailed": "Η σύνδεση απέτυχε.",
-      "connectButton": "Σύνδεση με Google",
-      "successConnected": "Επιτυχής σύνδεση με το {businessName}.",
-      "warningNoAccounts": "Δεν βρέθηκαν λογαριασμοί Google Business Profile που να σχετίζονται με αυτόν τον λογαριασμό Google.",
-      "warningNoLocations": "Δεν βρέθηκαν επαγγελματικές τοποθεσίες στον λογαριασμό σας Google Business.",
-      "errorNoClientId": "Το Google Client ID δεν έχει αποθηκευτεί. Παρακαλώ διαμορφώστε το παραπάνω.",
-      "errorGapiNotLoaded": "Αποτυχία φόρτωσης του Google API client. Ελέξτε τη σύνδεσή σας στο διαδίκτυο ή τυχόν ad blocker.",
-      "errorApi": "Παρουσιάστηκε σφάλμα API. Ελέξτε την κονσόλα του προγραμματιστή για λεπτομέρειες.",
-      "errorSignIn": "Η σύνδεση με τη Google απέτυχε. Παρακαλώ προσπαθήστε ξανά."
-    },
-    "socialConnections": {
-        "title": "Συνδέσεις Μέσων Κοινωνικής Δικτύωσης",
-        "description": "Συνδέστε τους λογαριασμούς κοινωνικής δικτύωσης για να ενεργοποιήσετε την απευθείας δημοσίευση και διαχείριση διαφημίσεων.",
-        "connect": "Σύνδεση",
-        "disconnect": "Αποσύνδεση",
-        "modalTitle": "Εξουσιοδότηση του AgentOS για πρόσβαση στο {platform};",
-        "permissionsTitle": "Θα παραχωρηθούν στο AgentOS τα ακόλουθα δικαιώματα:",
-        "cancel": "Ακύρωση",
-        "allow": "Αποδοχή & Σύνδεση",
-        "platforms": {
-            "facebook": {
-                "scopes": ["Ανάγνωση του προφίλ και των αναρτήσεών σας", "Δημοσίευση αναρτήσεων εκ μέρους σας", "Πρόσβαση στα analytics της σελίδας"]
-            },
-            "instagram": {
-                "scopes": ["Ανάγνωση του προφίλ και των πολυμέσων σας", "Δημοσίευση φωτογραφιών και βίντεο", "Πρόσβαση στα στατιστικά του προφίλ"]
-            },
-            "linkedin": {
-                "scopes": ["Ανάγνωση του προφίλ και των συνδέσεών σας", "Κοινοποίηση αναρτήσεων στο προφίλ ή την εταιρική σας σελίδα", "Πρόσβαση σε βασικά analytics"]
-            },
-            "x": {
-                "scopes": ["Ανάγνωση του προφίλ και του χρονολογίου σας", "Δημοσίευση και διαγραφή tweets εκ μέρους σας", "Πρόσβαση σε μετρήσεις αλληλεπίδρασης"]
-            }
-        }
+      "errorSignIn": "Η σύνδεση απέτυχε. Παρακαλώ ελέγξτε τον αποκλεισμό αναδυόμενων παραθύρων και προσπαθήστε ξανά."
     }
   },
+  "pagination": {
+    "previous": "Προηγούμενη",
+    "next": "Επόμενη",
+    "pageOf": "Σελίδα {currentPage} από {totalPages}"
+  },
   "userManagement": {
-    "inviteUser": "Πρόσκληση Μέλους Ομάδας",
+    "inviteUser": "Πρόσκληση Χρήστη",
     "users": "Χρήστες",
     "auditLogs": "Αρχείο Ελέγχου",
+    "confirmRemove": "Είστε σίγουροι ότι θέλετε να αφαιρέσετε τον χρήστη {userName};",
+    "cannotRemoveSelf": "Δεν μπορείτε να αφαιρέσετε τον δικό σας λογαριασμό χρήστη.",
     "role": "Ρόλος",
+    "removeUser": "Αφαίρεση",
     "agent": "Ασφαλιστής",
     "admin": "Διαχειριστής",
-    "removeUser": "Αφαίρεση",
-    "cannotRemoveSelf": "Δεν μπορείτε να αφαιρέσετε τον δικό σας λογαριασμό χρήστη.",
-    "confirmRemove": "Είστε βέβαιοι ότι θέλετε να αφαιρέσετε τον χρήστη {userName};",
-    "inviteModalTitle": "Πρόσκληση Νέου Μέλους Ομάδας",
+    "inviteModalTitle": "Πρόσκληση Νέου Χρήστη",
     "sendInvite": "Αποστολή Πρόσκλησης",
     "log": {
-      "timestamp": "Χρονική Σφραγίδα",
-      "actor": "Ενέργεια από",
+      "timestamp": "Ημερομηνία",
+      "actor": "Ενεργών Χρήστης",
       "header_action": "Ενέργεια",
       "target": "Στόχος",
       "details": "Λεπτομέρειες",
@@ -436,7 +421,7 @@
     "filters": {
       "searchByNameEmail": "Αναζήτηση με όνομα ή email...",
       "allRoles": "Όλοι οι Ρόλοι",
-      "searchLogs": "Αναζήτηση με χρήστη ή στόχο...",
+      "searchLogs": "Αναζήτηση αρχείων με χρήστη ή στόχο...",
       "allActions": "Όλες οι Ενέργειες"
     },
     "bulkActions": {
@@ -447,24 +432,91 @@
   },
   "leadsDashboard": {
     "kpis": {
-      "totalLeads": "Σύνολο Υποψηφίων",
-      "newLeads": "Νέοι Υποψήφιοι",
+      "totalLeads": "Συνολικά Leads",
+      "newLeads": "Νέα Leads",
       "conversionRate": "Ποσοστό Μετατροπής",
       "closedDeals": "Κλεισμένες Συμφωνίες"
     },
     "charts": {
-      "sourceTitle": "Υποψήφιοι ανά Πηγή",
-      "funnelTitle": "Χωνί Μετατροπής Υποψηφίων"
+      "sourceTitle": "Leads ανά Πηγή",
+      "funnelTitle": "Χωνί Κατάστασης Lead"
     }
+  },
+  "executive": {
+    "agencyGrowth": "Ανάπτυξη Πρακτορείου (GWP & Συμβόλαια)",
+    "productMix": "Μείγμα Προϊόντων (% Συμβολαίων)",
+    "claimsTrend": "Τάση Απαιτήσεων",
+    "leadFunnel": "Χωνί Υποψηφίων Πελατών",
+    "campaignRoi": "Απόδοση Επένδυσης (ROI) Καμπανιών",
+    "riskExposure": "Έκθεση σε Κίνδυνο",
+    "kpis": {
+      "totalGwpWon": "Συνολικό GWP (Πλατφόρμα)",
+      "totalGwpWonSubtitle": "Από Leads Marketing Πλατφόρμας",
+      "pipelineValue": "Συνολική Αξία Pipeline",
+      "pipelineValueSubtitle": "Αξία όλων των ανοιχτών ευκαιριών",
+      "leadToWonRate": "Ποσοστό Μετατροπής Lead",
+      "leadToWonRateSubtitle": "{wonCount} συμφωνίες από {leadCount} leads",
+      "avgCpa": "Μέσο Κόστος ανά Απόκτηση (CPA)",
+      "avgCpaSubtitle": "€{spend} δαπάνη για {count} συμφωνίες",
+      "micrositeFunnelRate": "Ποσοστό Μετατροπής Microsite",
+      "micrositeFunnelRateSubtitle": "{leads} leads από {pageviews} προβολές",
+      "avgReplyTime": "Μέσος Χρόνος 1ης Απάντησης",
+      "avgReplyTimeSubtitle": "Για νέα αιτήματα",
+      "crossSellLeads": "Leads από Cross-Sell",
+      "crossSellLeadsSubtitle": "Από καμπάνιες email"
+    }
+  },
+  "news": {
+    "title": "Νέα & Ανακοινώσεις",
+    "publishedOn": "Δημοσιεύθηκε στις {date}",
+    "by": "από",
+    "noArticles": "Δεν έχουν δημοσιευτεί ακόμη άρθρα.",
+    "backToList": "← Πίσω στη Λίστα Νέων",
+    "tags": "Ετικέτες",
+    "share": "Μοιραστείτε αυτό το άρθρο",
+    "shareOn": "Κοινοποίηση στο {platform}",
+    "copyLink": "Αντιγραφή συνδέσμου",
+    "linkCopied": "Ο σύνδεσμος αντιγράφηκε στο πρόχειρο!"
+  },
+  "testimonials": {
+    "title": "Μαρτυρίες Πελατών",
+    "add": "Προσθέστε τη Μαρτυρία σας",
+    "approved": "Εγκεκριμένες",
+    "pending": "Εκκρεμεί Έγκριση",
+    "noApproved": "Δεν υπάρχουν εγκεκριμένες μαρτυρίες προς εμφάνιση.",
+    "noPending": "Δεν υπάρχουν μαρτυρίες που εκκρεμούν για έγκριση.",
+    "reject": "Απόρριψη",
+    "approve": "Έγκριση",
+    "form": {
+      "title": "Υποβολή Μαρτυρίας",
+      "yourQuote": "Η Μαρτυρία σας",
+      "yourQuotePlaceholder": "Μοιραστείτε την εμπειρία σας με το πρακτορείο μας...",
+      "rating": "Βαθμολογία",
+      "submit": "Υποβολή Μαρτυρίας",
+      "success": "Ευχαριστούμε! Η μαρτυρία σας υποβλήθηκε για έλεγχο."
+    }
+  },
+  "sitemap": {
+    "title": "Χάρτης Ιστοτόπου",
+    "intro": "Μια επισκόπηση των κύριων δημόσιων σελίδων σε αυτή την πύλη.",
+    "pages": "Κύριες Σελίδες",
+    "newsArticles": "Άρθρα Νέων"
+  },
+  "support": {
+    "title": "Κέντρο Υποστήριξης",
+    "description": "Για βοήθεια, παρακαλούμε επικοινωνήστε με την ομάδα υποστήριξης στο support@agentos.com. Αυτή η σελίδα θα επεκταθεί με μια βάση γνώσεων και σύστημα ticketing σε μελλοντική έκδοση."
   },
   "micrositeBuilder": {
     "siteSettings": "Ρυθμίσεις Ιστοσελίδας",
-    "editSiteSettings": "Επεξεργασία Γενικών Ρυθμίσεων",
-    "addBlock": "Προσθήκη Ενότητας Περιεχομένου",
-    "footer": {
-      "contactUs": "Επικοινωνήστε Μαζί Μας",
-      "followUs": "Ακολουθήστε Μας",
-      "copyright": "Με επιφύλαξη παντός δικαιώματος."
+    "editSiteSettings": "Επεξεργασία Ρυθμίσεων",
+    "addBlock": "Προσθήκη Νέου Μπλοκ",
+    "content": {
+      "manageNews": "Διαχείριση Νέων",
+      "manageTestimonials": "Διαχείριση Μαρτυριών",
+      "newsList": "Τα Άρθρα σας",
+      "addNews": "Προσθήκη Άρθρου",
+      "editNews": "Επεξεργασία Άρθρου",
+      "testimonialsList": "Οι Μαρτυρίες σας"
     },
     "settings": {
       "siteTitle": "Τίτλος Ιστοσελίδας",
@@ -476,154 +528,83 @@
       "linkedinUrl": "URL LinkedIn",
       "xUrl": "URL X (Twitter)"
     },
-    "content": {
-        "manageNews": "Διαχείριση Νέων",
-        "manageTestimonials": "Διαχείριση Μαρτυριών",
-        "newsList": "Άρθρα",
-        "addNews": "Προσθήκη Νέου Άρθρου",
-        "editNews": "Επεξεργασία Άρθρου",
-        "testimonialsList": "Μαρτυρίες"
+    "footer": {
+      "contactUs": "Επικοινωνήστε Μαζί Μας",
+      "followUs": "Ακολουθήστε Μας",
+      "copyright": "Με την επιφύλαξη παντός δικαιώματος."
     }
   },
-  "executive": {
-    "agencyGrowth": "Ανάπτυξη Πρακτορείου (Ασφάλιστρα & Συμβόλαια)",
-    "productMix": "Μίγμα Προϊόντων (% Ασφαλίστρων)",
-    "claimsTrend": "Τάση Απαιτήσεων",
-    "leadFunnel": "Απόδοση Χωνιού Υποψηφίων",
-    "campaignRoi": "Απόδοση Επένδυσης (ROI) Καμπανιών",
-    "riskExposure": "Έκθεση σε Κίνδυνο ανά Τομέα",
-    "kpis": {
-      "totalGwpWon": "Συνολικό GWP Κερδισμένο",
-      "totalGwpWonSubtitle": "Από leads μάρκετινγκ πλατφόρμας",
-      "pipelineValue": "Αξία Pipeline",
-      "pipelineValueSubtitle": "Συνολική αξία όλων των ανοιχτών ευκαιριών",
-      "leadToWonRate": "Ποσοστό Μετατροπής Lead",
-      "leadToWonRateSubtitle": "{wonCount} συμβόλαια από {leadCount} leads",
-      "avgCpa": "Μέσο CPA",
-      "avgCpaSubtitle": "€{spend} δαπάνη για {count} συμβόλαια",
-      "micrositeFunnelRate": "Ποσοστό Μετατροπής Funnel",
-      "micrositeFunnelRateSubtitle": "{leads} leads από {pageviews} προβολές",
-      "avgReplyTime": "Μέσος Χρόνος Απάντησης",
-      "avgReplyTimeSubtitle": "Μέσος όρος ωρών για πρώτη απάντηση",
-      "crossSellLeads": "Leads από Cross-Sell",
-      "crossSellLeadsSubtitle": "Από καμπάνιες email"
-    }
-  },
-  "news": {
-    "title": "Νέα & Αναλύσεις",
-    "publishedOn": "Δημοσιεύτηκε στις {date}",
-    "by": "από",
-    "backToList": "Επιστροφή στη Λίστα Νέων",
-    "tags": "Ετικέτες",
-    "share": "Μοιραστείτε αυτό το άρθρο",
-    "shareOn": "Κοινοποίηση στο {platform}",
-    "copyLink": "Αντιγραφή συνδέσμου",
-    "linkCopied": "Ο σύνδεσμος αντιγράφηκε στο πρόχειρο!",
-    "noArticles": "Δεν έχουν δημοσιευτεί ακόμη άρθρα."
-  },
-  "testimonials": {
-    "title": "Μαρτυρίες Πελατών",
-    "add": "Προσθέστε τη Μαρτυρία σας",
-    "approved": "Εγκεκριμένες",
-    "pending": "Εκκρεμούν για Έγκριση",
-    "noApproved": "Δεν υπάρχουν εγκεκριμένες μαρτυρίες προς εμφάνιση.",
-    "noPending": "Δεν υπάρχουν μαρτυρίες που εκκρεμούν για έγκριση.",
-    "approve": "Έγκριση",
-    "reject": "Απόρριψη",
+  "leadCapture": {
+    "invalidCampaign": "Η Καμπάνια δεν Βρέθηκε",
+    "thankYouTitle": "Ευχαριστούμε!",
+    "thankYouMessage": "Οι πληροφορίες σας υποβλήθηκαν. Ένας εκπρόσωπος θα επικοινωνήσει μαζί σας σύντομα.",
+    "title": "Λάβετε τη Δωρεάν Προσφορά σας",
+    "subtitle": "Συμπληρώστε την παρακάτω φόρμα για να ξεκινήσετε.",
+    "submitButton": "Λήψη Προσφοράς",
     "form": {
-      "title": "Μοιραστείτε την Εμπειρία σας",
-      "yourQuote": "Η Μαρτυρία σας",
-      "yourQuotePlaceholder": "Πώς ήταν η εμπειρία σας με το πρακτορείο μας;",
-      "rating": "Η Βαθμολογία σας",
-      "submit": "Υποβολή Μαρτυρίας",
-      "success": "Ευχαριστούμε! Η μαρτυρία σας υποβλήθηκε για έλεγχο."
+      "name": "Ονοματεπώνυμο",
+      "email": "Διεύθυνση Email",
+      "phone": "Αριθμός Τηλεφώνου"
     }
-  },
-  "sitemap": {
-    "title": "Χάρτης Ιστοτόπου",
-    "intro": "Μια επισκόπηση των δημοσίως προσβάσιμων σελίδων αυτής της πλατφόρμας.",
-    "pages": "Κύριες Σελίδες",
-    "newsArticles": "Άρθρα"
-  },
-  "support": {
-    "title": "Κέντρο Υποστήριξης",
-    "description": "Αυτή η ενότητα είναι υπό ανάπτυξη. Στο μέλλον, θα βρείτε εδώ μια βάση γνώσεων, συχνές ερωτήσεις και επιλογές επικοινωνίας για τεχνική υποστήριξη."
   },
   "automationRules": {
     "title": "Κανόνες Αυτοματισμού",
-    "overview": {
-      "title": "Επισκόπηση",
-      "totalRules": "Σύνολο Κανόνων",
-      "activeRules": "Ενεργοί Κανόνες",
-      "avgSuccessRate": "Μέσος Όρος Επιτυχίας"
-    },
-    "categories": {
-      "lead_conversion": "Μετατροπή Υποψηφίων",
-      "communication_automation": "Αυτοματοποιημένη Επικοινωνία"
-    },
+    "searchPlaceholder": "Αναζήτηση κανόνων...",
+    "noRules": "Δεν βρέθηκαν κανόνες για αυτήν την κατηγορία.",
     "table": {
       "ruleName": "Όνομα Κανόνα",
       "category": "Κατηγορία",
       "lastExecuted": "Τελευταία Εκτέλεση",
       "successRate": "Ποσοστό Επιτυχίας"
     },
-    "searchPlaceholder": "Αναζήτηση κανόνων με όνομα...",
-    "noRules": "Δεν βρέθηκαν κανόνες αυτοματισμού για αυτήν την κατηγορία.",
     "actions": {
-      "test": "Δοκιμή Κανόνα",
+      "test": "Δοκιμή",
       "edit": "Επεξεργασία",
       "duplicate": "Αντιγραφή",
       "delete": "Διαγραφή"
     },
     "deleteConfirm": {
-      "title": "Διαγραφή Κανόνα Αυτοματισμού",
-      "message": "Είστε βέβαιοι ότι θέλετε να διαγράψετε τον κανόνα '{ruleName}'; Αυτή η ενέργεια δεν μπορεί να αναιρεθεί."
+      "title": "Διαγραφή Κανόνα",
+      "message": "Είστε σίγουροι ότι θέλετε να διαγράψετε τον κανόνα '{ruleName}'; Αυτή η ενέργεια δεν αναιρείται."
     },
-    "testing": {
-      "title": "Δοκιμή Κανόνα Αυτοματισμού",
-      "selectLead": "Βήμα 1: Επιλέξτε έναν Δείγμα Υποψήφιο για τη Δοκιμή",
-      "runTest": "Εκτέλεση Δοκιμής",
-      "results": "Αποτελέσματα Προσομοίωσης",
-      "ruleWouldRun": "ΠΡΟΫΠΟΘΕΣΕΙΣ ΕΚΠΛΗΡΩΘΗΚΑΝ: Οι ενέργειες του κανόνα θα είχαν ενεργοποιηθεί.",
-      "ruleWouldNotRun": "ΠΡΟΫΠΟΘΕΣΕΙΣ ΔΕΝ ΕΚΠΛΗΡΩΘΗΚΑΝ: Οι ενέργειες του κανόνα δεν θα είχαν ενεργοποιηθεί.",
-      "conditionsCheck": "Έλεγχος Προϋποθέσεων",
-      "passed": "Επιτυχής",
-      "failed": "Αποτυχία",
-      "conditionEval": "ΑΝ {field} {operator} '{value}'",
-      "actualValue": "Πραγματική τιμή: '{value}'",
-      "actionPreview": "Προεπισκόπηση Ενεργειών (εάν οι προϋποθέσεις εκπληρώνονταν)",
-      "templateNotFound": "Το πρότυπο δεν βρέθηκε.",
-      "noActions": "Αυτός ο κανόνας δεν έχει διαμορφωμένες ενέργειες.",
-      "backToSelection": "Πίσω στην Επιλογή Υποψηφίου"
+    "categories": {
+      "lead_conversion": "Μετατροπή Lead",
+      "communication_automation": "Αυτοματισμός Επικοινωνίας"
+    },
+    "overview": {
+      "title": "Επισκόπηση",
+      "totalRules": "Συνολικοί Κανόνες",
+      "activeRules": "Ενεργοί Κανόνες",
+      "avgSuccessRate": "Μέσο Ποσοστό Επιτυχίας"
     },
     "templates": {
       "title": "Πρότυπα Μηνυμάτων",
-      "description": "Διαχειριστείτε το περιεχόμενο για αυτοματοποιημένες επικοινωνίες. Χρησιμοποιήστε μεταβλητές όπως {{Lead.FirstName}} για εξατομίκευση.",
-      "create": "Δημιουργία Νέου Προτύπου",
+      "description": "Διαχειριστείτε επαναχρησιμοποιήσιμα πρότυπα μηνυμάτων για τους κανόνες αυτοματισμού σας σε διάφορα κανάλια.",
+      "create": "Δημιουργία Προτύπου",
       "edit": "Επεξεργασία Προτύπου",
-      "noTemplates": "Δεν έχουν δημιουργηθεί ακόμη πρότυπα για αυτό το κανάλι.",
+      "noTemplates": "Δεν έχουν δημιουργηθεί πρότυπα για αυτό το κανάλι.",
       "channels": {
-        "email": "Πρότυπα Email",
-        "sms": "Πρότυπα SMS",
-        "viber": "Πρότυπα Viber",
-        "whatsapp": "Πρότυπα WhatsApp"
+        "email": "Email",
+        "sms": "SMS",
+        "viber": "Viber",
+        "whatsapp": "WhatsApp"
       },
       "form": {
-        "namePlaceholder": "Εσωτερικό Όνομα Προτύπου (π.χ. Email Καλωσορίσματος)",
-        "content": "Περιεχόμενο Μηνύματος",
-        "placeholders": "Εισαγωγή Μεταβλητής",
-        "preview": "Ζωντανή Προεπισκόπηση"
+        "namePlaceholder": "Όνομα Προτύπου (π.χ. 'Email Καλωσορίσματος')",
+        "content": "Περιεχόμενο",
+        "placeholders": "Εισαγωγή Μεταβλητών",
+        "preview": "Προεπισκόπηση"
       }
     },
     "settings": {
-      "title": "Ρυθμίσεις & Διαπιστευτήρια Καναλιών",
-      "description": "Διαμορφώστε τα διαπιστευτήριά σας για τα κανάλια επικοινωνίας που σκοπεύετε να χρησιμοποιήσετε στους αυτοματισμούς σας.",
-      "enableChannel": "Ενεργοποίηση αυτού του Καναλιού",
+      "title": "Ρυθμίσεις Καναλιών",
+      "description": "Διαμορφώστε τα διαπιστευτήρια και τις ρυθμίσεις για κάθε κανάλι επικοινωνίας που θέλετε να ενεργοποιήσετε.",
+      "enableChannel": "Ενεργοποίηση Καναλιού",
       "testButton": "Δοκιμή Σύνδεσης",
-      "saveButton": "Αποθήκευση Όλων των Ρυθμίσεων",
-      "testingConnection": "Γίνεται δοκιμή...",
+      "testingConnection": "Δοκιμή...",
       "connectionSuccess": "Επιτυχία!",
-      "connectionFailed": "Αποτυχία!",
+      "connectionFailed": "Αποτυχία.",
+      "saveButton": "Αποθήκευση Ρυθμίσεων",
       "channels": {
         "email": {
           "title": "Email (SMTP)",
@@ -634,31 +615,31 @@
           "fromAddress": "Διεύθυνση Αποστολέα"
         },
         "viber": {
-          "title": "Viber Business",
+          "title": "Viber",
           "apiKey": "API Key",
           "senderName": "Όνομα Αποστολέα"
         },
         "whatsapp": {
-          "title": "WhatsApp Business API",
+          "title": "WhatsApp",
           "apiKey": "API Key",
-          "phoneNumberId": "Phone Number ID"
+          "phoneNumberId": "Αναγνωριστικό Αριθμού Τηλεφώνου"
         },
         "sms": {
-          "title": "Πάροχος SMS (π.χ. Twilio)",
-          "apiKey": "API Key / Account SID",
-          "apiSecret": "API Secret / Auth Token",
-          "senderId": "Αναγνωριστικό Αποστολέα / Αριθμός"
+          "title": "SMS",
+          "apiKey": "API Key",
+          "apiSecret": "API Secret",
+          "senderId": "Αναγνωριστικό Αποστολέα"
         }
       }
     },
     "eventLog": {
-      "title": "Αρχείο Συμβάντων Αυτοματισμού",
-      "description": "Ελέγξτε το λεπτομερές ιστορικό εκτέλεσης όλων των κανόνων αυτοματισμού σας.",
+      "title": "Αρχείο Συμβάντων",
+      "description": "Ελέγξτε το ιστορικό εκτέλεσης των κανόνων αυτοματισμού σας για να παρακολουθείτε την απόδοση και να επιλύετε προβλήματα.",
       "kpis": {
-        "totalEvents": "Σύνολο Συμβάντων (Φιλτραρισμένα)",
+        "totalEvents": "Συνολικά Συμβάντα",
         "successRate": "Ποσοστό Επιτυχίας",
-        "messagesSent": "Μηνύματα που Στάλθηκαν",
-        "conversions": "Μετατροπές Υποψηφίων"
+        "messagesSent": "Απεσταλμένα Μηνύματα",
+        "conversions": "Μετατροπές Lead"
       },
       "filters": {
         "allRules": "Όλοι οι Κανόνες",
@@ -667,33 +648,33 @@
         "last30Days": "Τελευταίες 30 Ημέρες"
       },
       "table": {
-        "timestamp": "Χρονική Σφραγίδα",
+        "timestamp": "Ημερομηνία",
         "rule": "Κανόνας",
         "status": "Κατάσταση",
         "details": "Λεπτομέρειες"
       },
       "noEvents": "Δεν βρέθηκαν συμβάντα για τα επιλεγμένα φίλτρα.",
       "charts": {
-        "conversionImpact": "Επίδραση στο Ποσοστό Μετατροπής Υποψηφίων"
+        "conversionImpact": "Επίπτωση στη Μετατροπή Lead"
       }
-    }
-  },
-  "pagination": {
-    "previous": "Προηγούμενη",
-    "next": "Επόμενη",
-    "pageOf": "Σελίδα {currentPage} από {totalPages}"
-  },
-  "leadCapture": {
-    "title": "Ζητήστε τη Δωρεάν Ασφαλιστική Προσφορά σας",
-    "subtitle": "Συμπληρώστε την παρακάτω φόρμα και ένας από τους εξειδικευμένους ασφαλιστές μας θα επικοινωνήσει μαζί σας σύντομα.",
-    "thankYouTitle": "Ευχαριστούμε!",
-    "thankYouMessage": "Το αίτημά σας υποβλήθηκε επιτυχώς. Ένας ασφαλιστής θα επικοινωνήσει μαζί σας σύντομα.",
-    "invalidCampaign": "Αυτή η καμπάνια είναι μη έγκυρη ή έχει λήξει.",
-    "submitButton": "Λήψη Δωρεάν Προσφοράς",
-    "form": {
-      "name": "Ονοματεπώνυμο",
-      "email": "Διεύθυνση Email",
-      "phone": "Τηλέφωνο"
+    },
+    "testing": {
+      "title": "Δοκιμή Κανόνα Αυτοματισμού",
+      "selectLead": "Επιλέξτε ένα δείγμα lead για τη δοκιμή:",
+      "runTest": "Εκτέλεση Δοκιμής",
+      "results": "Αποτελέσματα Προσομοίωσης",
+      "ruleWouldRun": "Οι συνθήκες του κανόνα πληρούνται. Οι ενέργειες θα εκτελεστούν.",
+      "ruleWouldNotRun": "Οι συνθήκες του κανόνα δεν πληρούνται. Οι ενέργειες δεν θα εκτελεστούν.",
+      "conditionsCheck": "Έλεγχος Συνθηκών:",
+      "passed": "Επιτυχής",
+      "failed": "Απέτυχε",
+      "conditionEval": "ΑΝ {field} {operator} '{value}'",
+      "actualValue": "Η πραγματική τιμή ήταν: {value}",
+      "actionPreview": "Προεπισκόπηση Ενεργειών:",
+      "backToSelection": "Πίσω στην Επιλογή",
+      "templateNotFound": "Το πρότυπο δεν βρέθηκε.",
+      "noActions": "Αυτός ο κανόνας δεν έχει ενέργειες για προεπισκόπηση.",
+      "noConditions": "Αυτός ο κανόνας δεν έχει συνθήκες για δοκιμή, θα εκτελεστεί πάντα."
     }
   }
 }
