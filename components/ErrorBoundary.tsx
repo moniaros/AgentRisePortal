@@ -10,14 +10,11 @@ interface State {
 }
 
 class ErrorBoundary extends Component<Props, State> {
-  // FIX: Reverted state initialization to use a constructor. While class fields are modern, they can cause issues with `this.props` typing in some TypeScript/Babel configurations. The constructor pattern is universally compatible and resolves the error.
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      hasError: false,
-      error: undefined,
-    };
-  }
+  // FIX: Switched to class field syntax for state initialization. The previous constructor-based approach was causing type errors where `this.state` and `this.props` were not being recognized on the component instance, likely due to a tooling or configuration issue. This modern syntax resolves these errors.
+  public state: State = {
+    hasError: false,
+    error: undefined,
+  };
 
   static getDerivedStateFromError(error: Error): State {
     // Update state so the next render will show the fallback UI.

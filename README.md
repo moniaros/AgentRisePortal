@@ -98,6 +98,18 @@ This section displays customer reviews and provides tools for managing replies.
     -   On successful simulation, the reply controls are replaced with a "Reply Posted!" confirmation message.
     -   After a brief moment, if the "Show only reviews without a reply" filter is active, the entire review card is removed from the feed.
 
+### AI Policy Scanner
+
+The AI Policy Scanner page (`/gap-analysis`) includes an interactive file upload component for submitting policy documents.
+
+-   **Dual Upload Methods:** Users can either drag and drop a file directly onto the designated area or click it to open their system's file browser.
+-   **Visual Feedback:** The drop zone provides clear visual cues, changing its border style and color when a file is dragged over it to indicate an active state.
+-   **File Validation:** Before processing, the uploader validates the selected file against two criteria:
+    -   **File Type:** Only `PDF`, `JPG`, and `PNG` files are accepted.
+    -   **File Size:** The file must be under a predefined limit (e.g., 10MB).
+    -   An explicit error message is displayed if a file fails validation.
+-   **Status and Re-upload:** Once a valid file is selected, the uploader UI is replaced by a status card showing the file's name and size. This card includes a "Change File" button, allowing the user to easily discard the current selection and upload a new document. The application then automatically proceeds to the (simulated) data extraction step.
+
 ### Error Handling and Empty States
 
 -   **Failed Google Sign-In:** If the user denies permission or an error occurs during the OAuth flow on the Settings page, the status indicator will update to "Status: Connection failed" and a global error notification will appear.

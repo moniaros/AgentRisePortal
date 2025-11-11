@@ -10,6 +10,11 @@ import GapAnalysisResults from '../components/gap-analysis/GapAnalysisResults';
 import { useOnboardingStatus } from '../hooks/useOnboardingStatus';
 import { trackEvent } from '../services/analytics';
 
+const MAX_FILE_SIZE_MB = 10;
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+const ACCEPTED_MIME_TYPES = ['application/pdf', 'image/jpeg', 'image/png'];
+
+
 const GapAnalysis: React.FC = () => {
     const { t, language } = useLocalization();
     const { markTaskCompleted } = useOnboardingStatus();
@@ -21,11 +26,34 @@ const GapAnalysis: React.FC = () => {
     const [loadingStep, setLoadingStep] = useState('');
     const [error, setError] = useState<string | null>(null);
 
-    const handleFileUpload = async (uploadedFile: File) => {
-        setFile(uploadedFile);
+    const resetState = () => {
+        setFile(null);
         setParsedPolicy(null);
         setAnalysisResult(null);
         setError(null);
+        setIsLoading(false);
+        setLoadingStep('');
+        setUserNeeds('');
+    };
+
+    const handleFileUpload = async (uploadedFile: File) => {
+        setError(null); // Clear previous errors
+
+        // Validate file type
+        if (!ACCEPTED_MIME_TYPES.includes(uploadedFile.type)) {
+            setError(`Invalid file type. Please upload a PDF, JPG, or PNG file.`);
+            return;
+        }
+
+        // Validate file size
+        if (uploadedFile.size > MAX_FILE_SIZE_BYTES) {
+            setError(`File is too large. Maximum size is ${MAX_FILE_SIZE_MB}MB.`);
+            return;
+        }
+
+        setFile(uploadedFile);
+        setParsedPolicy(null);
+        setAnalysisResult(null);
         setIsLoading(true);
         setLoadingStep(t('gapAnalysis.fetchingPolicy') as string);
 
@@ -35,7 +63,7 @@ const GapAnalysis: React.FC = () => {
             setParsedPolicy(policyData);
         } catch (err) {
             console.error("Error fetching policy:", err);
-            setError("Failed to fetch the policy details. Please try again.");
+            setError("Failed to process the policy document. Please try again.");
         } finally {
             setIsLoading(false);
             setLoadingStep('');
@@ -139,12 +167,29 @@ const GapAnalysis: React.FC = () => {
             <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">{t('gapAnalysis.title')}</h1>
             <p className="text-gray-600 dark:text-gray-400 mb-6">{t('gapAnalysis.description')}</p>
 
-            {!file && <FileUploader onFileUpload={handleFileUpload} isLoading={isLoading} />}
+            {!file ? (
+                <FileUploader onFileUpload={handleFileUpload} error={error} />
+            ) : (
+                <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mt-6">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <p className="font-semibold text-gray-900 dark:text-white">{file.name}</p>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                                {(file.size / 1024 / 1024).toFixed(2)} MB
+                            </p>
+                        </div>
+                        <button 
+                            onClick={resetState}
+                            className="px-4 py-2 text-sm bg-gray-200 dark:bg-gray-600 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500"
+                        >
+                            Change File
+                        </button>
+                    </div>
+                </div>
+            )}
             
-            {error && <div className="mt-4 p-4 bg-red-100 text-red-700 rounded">{error}</div>}
+            {error && !file && <div className="mt-4 p-4 bg-red-100 text-red-700 rounded">{error}</div>}
 
-            {file && <p className="mt-4 text-sm text-gray-600 dark:text-gray-400">Uploaded: <strong>{file.name}</strong></p>}
-            
             <PolicyParser parsedPolicy={parsedPolicy} isLoading={isLoading && loadingStep === t('gapAnalysis.fetchingPolicy')} />
 
             {parsedPolicy && (
@@ -156,7 +201,7 @@ const GapAnalysis: React.FC = () => {
                 />
             )}
             
-            {isLoading && loadingStep && (
+            {isLoading && loadingStep && !parsedPolicy && (
                 <div className="text-center p-8">
                     <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
                     <p>{loadingStep}</p>
@@ -166,6 +211,7 @@ const GapAnalysis: React.FC = () => {
             {analysisResult && (
                  <div className="mt-8">
                     <h2 className="text-2xl font-semibold mb-4">{t('gapAnalysis.resultsTitle')}</h2>
+                    {error && <div className="mb-4 p-4 bg-red-100 text-red-700 rounded">{error}</div>}
                     <GapAnalysisResults result={analysisResult} />
                     <div className="text-center mt-6">
                         <button 
