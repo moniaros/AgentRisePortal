@@ -93,7 +93,7 @@ const Analytics: React.FC = () => {
 
     return (
         <div>
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-6">{t('analytics.title') as string}</h1>
+            <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-6">{t('campaignAnalytics.title') as string}</h1>
             
             {isLoading ? <SkeletonLoader className="h-24 w-full mb-6" /> : (
                 <AnalyticsFilters
@@ -109,10 +109,10 @@ const Analytics: React.FC = () => {
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
-                    <KpiCard title={t('analytics.kpis.totalSpend') as string} value={`€${aggregatedData.totalSpend.toLocaleString('el-GR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} />
-                    <KpiCard title={t('analytics.kpis.totalImpressions') as string} value={aggregatedData.totalImpressions.toLocaleString('el-GR')} />
-                    <KpiCard title={t('analytics.kpis.ctr') as string} value={`${aggregatedData.ctr.toFixed(2)}%`} />
-                    <KpiCard title={t('analytics.kpis.totalConversions') as string} value={aggregatedData.totalConversions.toLocaleString('el-GR')} />
+                    <KpiCard title={t('campaignAnalytics.kpis.totalSpend') as string} value={`€${aggregatedData.totalSpend.toLocaleString('el-GR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} />
+                    <KpiCard title={t('campaignAnalytics.kpis.totalImpressions') as string} value={aggregatedData.totalImpressions.toLocaleString('el-GR')} />
+                    <KpiCard title={t('campaignAnalytics.kpis.ctr') as string} value={`${aggregatedData.ctr.toFixed(2)}%`} />
+                    <KpiCard title={t('campaignAnalytics.kpis.totalConversions') as string} value={aggregatedData.totalConversions.toLocaleString('el-GR')} />
                 </div>
             )}
             
@@ -133,7 +133,7 @@ const Analytics: React.FC = () => {
                     </div>
                 ) : (
                     <div className="mt-6 text-center py-10 bg-white dark:bg-gray-800 rounded-lg shadow-md">
-                        <p>{t('analytics.noData') as string}</p>
+                        <p>{t('campaignAnalytics.noData') as string}</p>
                     </div>
                 )
             )}

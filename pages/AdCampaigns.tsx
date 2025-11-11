@@ -1,4 +1,5 @@
 
+
 import React, { useState } from 'react';
 import { useCampaigns } from '../hooks/useCampaigns';
 import CampaignList from '../components/campaigns/CampaignList';
@@ -18,7 +19,7 @@ const AdCampaigns: React.FC = () => {
     return (
         <div>
             <div className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold text-gray-800 dark:text-white">{t('nav.adCampaigns')}</h1>
+                <h1 className="text-3xl font-bold text-gray-800 dark:text-white">{t('nav.socialAds')}</h1>
                 <button
                     onClick={() => setIsWizardOpen(true)}
                     className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"

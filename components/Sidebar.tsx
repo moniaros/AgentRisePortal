@@ -10,6 +10,7 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
     const { t } = useLocalization();
     const [isCrmOpen, setIsCrmOpen] = useState(true);
+    const [isCampaignsOpen, setIsCampaignsOpen] = useState(true);
 
     const overviewLinks = [
         { path: '/', label: t('nav.dashboard'), icon: 'dashboard' },
@@ -21,11 +22,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
         { path: '/gap-analysis', label: t('nav.importPolicyAI'), icon: 'magic' },
     ];
 
+    const campaignLinks = [
+        { path: '/analytics', label: t('nav.campaignAnalytics'), icon: 'analytics' },
+        { path: '/social-composer', label: t('nav.socialPosts'), icon: 'socialComposer' },
+        { path: '/ad-campaigns', label: t('nav.socialAds'), icon: 'campaigns' },
+    ];
+
     const navLinks = [
         { path: '/leads-dashboard', label: t('nav.leadsDashboard'), icon: 'analytics' },
-        { path: '/social-composer', label: t('nav.socialComposer'), icon: 'socialComposer' },
-        { path: '/ad-campaigns', label: t('nav.adCampaigns'), icon: 'campaigns' },
-        { path: '/analytics', label: t('nav.analytics'), icon: 'analytics' },
         { path: '/microsite-builder', label: t('nav.micrositeBuilder'), icon: 'micrositeBuilder' },
         { path: '/news', label: t('nav.news'), icon: 'news' },
         { path: '/testimonials', label: t('nav.testimonials'), icon: 'testimonials' },
@@ -71,6 +75,18 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                     {isCrmOpen && (
                         <ul className="pl-2">
                             {crmLinks.map(link => <li key={link.path}><NavItem {...link} /></li>)}
+                        </ul>
+                    )}
+                </div>
+
+                <div className="mt-6">
+                    <button onClick={() => setIsCampaignsOpen(!isCampaignsOpen)} className="w-full flex justify-between items-center px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                        <span>{t('nav.campaigns')}</span>
+                        <svg className={`w-4 h-4 transition-transform ${isCampaignsOpen ? 'rotate-90' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+                    </button>
+                    {isCampaignsOpen && (
+                        <ul className="pl-2">
+                            {campaignLinks.map(link => <li key={link.path}><NavItem {...link} /></li>)}
                         </ul>
                     )}
                 </div>

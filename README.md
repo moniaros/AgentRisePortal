@@ -134,36 +134,18 @@ The platform is currently a high-fidelity MVP with a simulated backend. The foll
     }
     ```
 
-#### 4. Social Media Composer & Lead Capture
--   **Description:** A tool for drafting and "publishing" social media posts. It includes templates, character limits, and image previews. Crucially, it can attach a lead capture form, which generates a unique landing page to convert prospects into leads directly within the CRM. Includes robust, bilingual error handling.
--   **Components:** `SocialComposer.tsx`, `PostPreview.tsx`, `LeadCapturePage.tsx`.
--   **Data Structures:**
-    ```typescript
-    interface Campaign {
-        id: string;
-        name: string;
-        // ... other campaign properties
-        leadCaptureForm?: { fields: LeadCaptureFormField[] };
-        agencyId: string;
-    }
-    ```
+#### Navigation & CRM Improvements
+-   **New "Overview" Section:** The main sidebar has been restructured to include a new top-level "Overview" section for high-level dashboards.
+-   **New "CRM" Section:** A collapsible parent menu item for "CRM" has been added to organize all related functionalities.
+    -   **Customers & Leads (`/micro-crm`):** The CRM and Leads pages have been merged into a single, unified view. This page now lists recent leads at the top ("pinned") followed by the full customer list, with a shared search bar to filter both.
+    -   **Import Policy (AI) (`/gap-analysis`):** The "AI Gap Analysis" page has been renamed and repurposed as a primary tool for importing policy data into the CRM.
+-   **Restructured "Campaigns" Menu:** A new collapsible "Campaigns" parent menu has been added to the sidebar for better organization. It contains:
+    -   **Campaign Analytics:** The former "Analytics" page, now focused on campaign performance.
+    -   **Social Posts:** The former "Social Composer" page.
+    -   **Social Ads:** The former "Ad Campaigns" page.
+-   **Embedded AI Analysis:** The customer detail page (`/customer/:id`) now features an embedded "AI Policy Analysis" panel. This allows agents to upload and analyze a policy document directly within the customer's profile, with the analysis results automatically logged to the customer's timeline for a complete record.
 
-#### 5. Campaign Management & Analytics
--   **Description:** A foundational module for creating and viewing advertising campaigns. The accompanying analytics dashboard visualizes performance data (spend, impressions, CTR, conversions) with robust filtering.
--   **Components:** `AdCampaigns.tsx`, `CampaignWizard.tsx`, `Analytics.tsx`, `PerformanceChart.tsx`, `SpendChart.tsx`.
--   **Data Structures:**
-    ```typescript
-    interface CampaignPerformanceMetrics {
-        date: string; // YYYY-MM-DD
-        campaignId: string;
-        impressions: number;
-        clicks: number;
-        conversions: number;
-        spend: number;
-    }
-    ```
-
-#### 6. SEO & Analytics Integration
+#### SEO & Analytics Integration
 -   **Description:** The platform incorporates SEO best practices and comprehensive analytics tracking to monitor traffic and user engagement.
 -   **SEO Features:**
     -   **Dynamic Meta Tags:** Pages like News Articles dynamically update `document.title` and `meta description` tags for better search engine results.
@@ -175,13 +157,6 @@ The platform is currently a high-fidelity MVP with a simulated backend. The foll
     -   **Custom Event Tracking:** Key user interactions, such as submitting a testimonial or completing an AI gap analysis, are tracked with custom events pushed to the `dataLayer`, allowing for detailed conversion monitoring in Google Analytics.
 -   **Components:** `GTMProvider.tsx`, `RouteAnalyticsTracker.tsx`, `Sitemap.tsx`.
 -   **Services:** `services/analytics.ts`.
-
-#### Navigation & CRM Improvements
--   **New "Overview" Section:** The main sidebar has been restructured to include a new top-level "Overview" section for high-level dashboards.
--   **New "CRM" Section:** A collapsible parent menu item for "CRM" has been added to organize all related functionalities.
-    -   **Customers & Leads (`/micro-crm`):** The CRM and Leads pages have been merged into a single, unified view. This page now lists recent leads at the top ("pinned") followed by the full customer list, with a shared search bar to filter both.
-    -   **Import Policy (AI) (`/gap-analysis`):** The "AI Gap Analysis" page has been renamed and repurposed as a primary tool for importing policy data into the CRM.
--   **Embedded AI Analysis:** The customer detail page (`/customer/:id`) now features an embedded "AI Policy Analysis" panel. This allows agents to upload and analyze a policy document directly within the customer's profile, with the analysis results automatically logged to the customer's timeline for a complete record.
 
 ### Comprehensive Pages and Routing Documentation
 

@@ -61,7 +61,7 @@ const SocialComposer: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left Column: Composer */}
             <div className="lg:col-span-2 space-y-6">
-                <h1 className="text-3xl font-bold text-gray-800 dark:text-white">{t('nav.socialComposer') as string}</h1>
+                <h1 className="text-3xl font-bold text-gray-800 dark:text-white">{t('nav.socialPosts') as string}</h1>
                 
                 {/* AI Helper */}
                 <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">

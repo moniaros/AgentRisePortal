@@ -15,7 +15,7 @@ const SpendChart: React.FC<SpendChartProps> = ({ data }) => {
     const { t } = useLocalization();
     return (
         <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md h-80">
-            <h3 className="text-lg font-semibold mb-4">{t('analytics.charts.spendTitle')}</h3>
+            <h3 className="text-lg font-semibold mb-4">{t('campaignAnalytics.charts.spendTitle')}</h3>
             <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={data} layout="vertical" margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
                     <XAxis type="number" tick={{ fontSize: 12 }} />

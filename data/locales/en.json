@@ -17,9 +17,10 @@
     "crm": "CRM",
     "customersAndLeads": "Customers & Leads",
     "importPolicyAI": "Import Policy (AI)",
-    "socialComposer": "Social Composer",
-    "adCampaigns": "Ad Campaigns",
-    "analytics": "Analytics",
+    "campaigns": "Campaigns",
+    "campaignAnalytics": "Campaign Analytics",
+    "socialPosts": "Social Posts",
+    "socialAds": "Social Ads",
     "userManagement": "User Management",
     "billing": "Billing",
     "micrositeBuilder": "Microsite Builder",
@@ -201,7 +202,7 @@
   "campaigns": {
     "create": "Create Campaign"
   },
-  "analytics": {
+  "campaignAnalytics": {
     "title": "Campaign Analytics",
     "noData": "No data available for the selected filters. Please broaden your search.",
     "filters": {
