@@ -8,6 +8,7 @@ import GapAnalysisResults from '../components/gap-analysis/GapAnalysisResults';
 import { GoogleGenAI, Type } from "@google/genai";
 import { trackEvent } from '../services/analytics';
 import { useNotification } from '../hooks/useNotification';
+import { saveAnalysisForCustomer } from '../services/analysisStorage';
 
 const GapAnalysis: React.FC = () => {
     const { t, language } = useLocalization();
@@ -134,7 +135,7 @@ const GapAnalysis: React.FC = () => {
     };
 
     const handleAnalyzeGaps = async () => {
-        if (!parsedPolicy || !userNeeds) return;
+        if (!parsedPolicy || !userNeeds || !file) return;
         
         if (!process.env.API_KEY) {
             setError(t('dashboard.errors.noApiKey'));
@@ -220,6 +221,15 @@ const GapAnalysis: React.FC = () => {
             const result = JSON.parse(jsonStr) as GapAnalysisResult;
             setAnalysisResult(result);
             trackEvent('ai_tool', 'Gap Analysis', 'analysis_success', undefined, language);
+
+            // Save the complete analysis to localStorage
+            const customerId = parsedPolicy.policyholder.name.replace(/\s+/g, '_').toLowerCase();
+            saveAnalysisForCustomer(customerId, {
+                fileName: file.name,
+                parsedPolicy: parsedPolicy,
+                analysisResult: result,
+            });
+            addNotification(t('gapAnalysis.saveSuccess'), 'success');
 
         } catch (err) {
             console.error("Error analyzing gaps:", err);

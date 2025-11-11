@@ -61,6 +61,38 @@ Parsed policy data is persisted in `localStorage` to ensure offline access and d
 -   **Versioning**: Both the root object and individual policy records contain a `version` and `lastUpdated` timestamp. This allows for future data migrations if the storage schema evolves.
 -   **Service Module**: All read/write operations are handled by the `services/policyStorage.ts` module, which includes error handling for safe JSON parsing.
 
+### AI Analysis Local Storage Strategy
+
+To ensure data persistence and enable offline access to AI-generated insights, all successful policy analysis results are serialized and saved to `localStorage`.
+
+-   **Storage Key**: `agentos_analysis_results`
+-   **Data Schema**: Data is stored in a customer-centric object. A pseudo-ID is generated from the policyholder's name for analyses performed outside an existing customer's profile.
+
+    ```json
+    {
+      "ioannis_moniaros": {
+        "version": 1,
+        "lastUpdated": "2023-10-28T12:00:00.000Z",
+        "analyses": [
+          {
+            "id": "analysis_1698494400000",
+            "createdAt": "2023-10-28T12:00:00.000Z",
+            "fileName": "policy_document.pdf",
+            "parsedPolicy": {
+              // DetailedPolicy object from Gemini extraction
+            },
+            "analysisResult": {
+              // GapAnalysisResult object from Gemini analysis
+            }
+          }
+        ]
+      }
+    }
+    ```
+
+-   **Service Module**: All read/write operations are encapsulated within the `services/analysisStorage.ts` module. This service manages the data structure, versioning, and includes error handling to prevent data corruption.
+-   **Purpose**: This local storage acts as a staging area for newly analyzed policies before they are formally synced and integrated into the main CRM data model.
+
 ### Policy Data Synchronization Mechanism
 
 The application provides a mechanism to sync the locally stored ACORD policy data with the main CRM data model.

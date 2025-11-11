@@ -631,3 +631,20 @@ export interface PolicyACORD {
         vin: string;
     };
 }
+
+// AI Analysis Local Storage
+export interface StoredAnalysis {
+    id: string;
+    createdAt: string;
+    fileName: string;
+    parsedPolicy: DetailedPolicy;
+    analysisResult: GapAnalysisResult;
+}
+
+export interface CustomerAnalysisStorage {
+    [customerId: string]: {
+        version: number;
+        lastUpdated: string;
+        analyses: StoredAnalysis[];
+    }
+}

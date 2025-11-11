@@ -225,7 +225,8 @@
     "errors": {
       "parsingFailed": "Failed to parse the provided document. Please try a clearer image or a different file format.",
       "analysisFailed": "The AI analysis could not be completed. This may be a temporary issue. Please try again."
-    }
+    },
+    "saveSuccess": "Analysis results have been saved locally."
   },
   "onboarding": {
     "title": "Welcome to AgentOS, {name}!",
