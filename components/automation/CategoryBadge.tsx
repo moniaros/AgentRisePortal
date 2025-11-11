@@ -10,10 +10,8 @@ const CategoryBadge: React.FC<CategoryBadgeProps> = ({ category }) => {
   const { t } = useLocalization();
 
   const colors: Record<RuleCategory, string> = {
-    renewal: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-    payment: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-    lead_assignment: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-    task_creation: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
+    lead_conversion: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+    communication_automation: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
   };
 
   return (

@@ -440,11 +440,15 @@
     "searchPlaceholder": "Search rules...",
     "allCategories": "All Categories",
     "noRules": "No automation rules match the current filters.",
+    "overview": {
+      "title": "Overview",
+      "totalRules": "Total Rules",
+      "activeRules": "Active Rules",
+      "avgSuccessRate": "Avg. Success Rate"
+    },
     "categories": {
-      "renewal": "Renewal",
-      "payment": "Payment",
-      "lead_assignment": "Lead Assignment",
-      "task_creation": "Task Creation"
+      "lead_conversion": "Lead Conversion",
+      "communication_automation": "Communication Automation"
     },
     "table": {
       "ruleName": "Rule Name",

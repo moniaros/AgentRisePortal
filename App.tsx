@@ -57,7 +57,7 @@ const App: React.FC = () => {
                   <Route path="/analytics" element={<Layout><Analytics /></Layout>} />
                   <Route path="/profile" element={<Layout><Profile /></Layout>} />
                   <Route path="/settings" element={<Layout><Settings /></Layout>} />
-                  <Route path="/settings/automation-rules" element={<Layout><AutomationRules /></Layout>} />
+                  <Route path="/crm/automation-rules" element={<Layout><AutomationRules /></Layout>} />
                   <Route path="/user-management" element={<Layout><UserManagement /></Layout>} />
                   <Route path="/leads-dashboard" element={<Layout><LeadsDashboard /></Layout>} />
                   <Route path="/microsite-builder" element={<Layout><MicrositeBuilder /></Layout>} />

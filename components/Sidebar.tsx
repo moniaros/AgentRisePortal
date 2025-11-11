@@ -43,6 +43,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                 { path: '/micro-crm', label: t('nav.customersAndLeads'), icon: 'crm' },
                 { path: '/leads-dashboard', label: t('nav.leadsDashboard'), icon: 'analytics' },
                 { path: '/gap-analysis', label: t('nav.importPolicyAI'), icon: 'magic' },
+                { path: '/crm/automation-rules', label: t('nav.automationRules'), icon: 'automation', adminOnly: true },
             ] 
         },
         { 
@@ -78,7 +79,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
             links: [
                 { path: '/profile', label: t('nav.profile'), icon: 'profile' },
                 { path: '/settings', label: t('nav.appSettings'), icon: 'settings' },
-                { path: '/settings/automation-rules', label: t('nav.automationRules'), icon: 'automation' },
             ] 
         },
     ];

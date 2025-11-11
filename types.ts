@@ -256,7 +256,7 @@ export interface Testimonial {
 }
 
 // Automation Rules
-export type RuleCategory = 'renewal' | 'payment' | 'lead_assignment' | 'task_creation';
+export type RuleCategory = 'lead_conversion' | 'communication_automation';
 
 export interface AutomationRule {
     id: string;

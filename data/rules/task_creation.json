@@ -2,7 +2,7 @@
     {
         "id": "rule-task-001",
         "nameKey": "automationRules.rules.create_follow_up_task.name",
-        "category": "task_creation",
+        "category": "communication_automation",
         "triggerKey": "automationRules.rules.create_follow_up_task.trigger",
         "isEnabled": true,
         "lastExecuted": "2024-07-26T18:00:00Z",

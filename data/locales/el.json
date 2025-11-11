@@ -440,11 +440,15 @@
     "searchPlaceholder": "Αναζήτηση κανόνων...",
     "allCategories": "Όλες οι Κατηγορίες",
     "noRules": "Δεν βρέθηκαν κανόνες που να ταιριάζουν με τα φίλτρα.",
+    "overview": {
+      "title": "Επισκόπηση",
+      "totalRules": "Συνολικοί Κανόνες",
+      "activeRules": "Ενεργοί Κανόνες",
+      "avgSuccessRate": "Μ.Ο. Επιτυχίας"
+    },
     "categories": {
-      "renewal": "Ανανέωση",
-      "payment": "Πληρωμή",
-      "lead_assignment": "Ανάθεση Υποψηφίου",
-      "task_creation": "Δημιουργία Εργασίας"
+      "lead_conversion": "Μετατροπή Υποψηφίων",
+      "communication_automation": "Αυτοματοποίηση Επικοινωνίας"
     },
     "table": {
       "ruleName": "Όνομα Κανόνα",
