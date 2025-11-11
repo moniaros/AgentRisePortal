@@ -1,0 +1,4 @@
+[
+  { "id": "sms-intro", "name": "Initial Introduction", "content": "Hi {lead.firstName}, this is John from AgentOS. I'll be your contact for your insurance inquiry. I will call you shortly." },
+  { "id": "sms-follow-up", "name": "Follow-Up Reminder", "content": "Hello {lead.firstName}, just a friendly reminder about your pending insurance quote. Let me know if you have any questions!" }
+]

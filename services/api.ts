@@ -1,5 +1,5 @@
 import { MOCK_CUSTOMERS, MOCK_LEADS, MOCK_AUDIT_LOGS, MOCK_USERS, MOCK_ANALYTICS_DATA, MOCK_EXECUTIVE_DATA, MOCK_NEWS_ARTICLES, MOCK_TESTIMONIALS, MOCK_USER_ACTIVITY, MOCK_KPI_DATA } from '../data/mockData';
-import { DetailedPolicy, AnalyticsData, User, AuditLog, ExecutiveData, NewsArticle, Testimonial, UserActivityEvent, AutomationRule } from '../types';
+import { DetailedPolicy, AnalyticsData, User, AuditLog, ExecutiveData, NewsArticle, Testimonial, UserActivityEvent, AutomationRule, MessageTemplate } from '../types';
 
 const SIMULATED_DELAY = 500;
 
@@ -89,24 +89,36 @@ export const fetchTestimonials = async (): Promise<Testimonial[]> => {
 };
 
 export const fetchAutomationRules = async (): Promise<AutomationRule[]> => {
-    const ruleFiles = ['lead_assignment.json', 'payment.json', 'renewal.json', 'task_creation.json'];
     try {
-        const responses = await Promise.all(
-            ruleFiles.map(file => fetch(`/data/rules/${file}`))
-        );
-
-        for (const response of responses) {
-            if (!response.ok) {
-                throw new Error(`Failed to fetch ${response.url}`);
-            }
+        const response = await fetch(`/data/rules/automation_rules.json`);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch automation_rules.json`);
         }
-        
-        const allRulesArrays = await Promise.all(responses.map(res => res.json()));
-        
-        return allRulesArrays.flat();
-
+        return await response.json();
     } catch (error) {
         console.error("Error fetching automation rules:", error);
         return [];
+    }
+};
+
+export const fetchTemplates = async (): Promise<Record<string, MessageTemplate[]>> => {
+    const templateTypes = ['email', 'sms', 'viber', 'whatsapp'];
+    try {
+        const responses = await Promise.all(
+            templateTypes.map(type => fetch(`/data/templates/${type}.json`))
+        );
+
+        const templatesData = await Promise.all(responses.map(res => res.json()));
+
+        const allTemplates: Record<string, MessageTemplate[]> = {};
+        templateTypes.forEach((type, index) => {
+            allTemplates[type] = templatesData[index];
+        });
+
+        return allTemplates;
+
+    } catch (error) {
+        console.error("Error fetching message templates:", error);
+        return {};
     }
 };

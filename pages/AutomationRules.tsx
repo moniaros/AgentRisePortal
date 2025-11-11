@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, NavLink, Navigate } from 'react-router-dom';
+import { Outlet, NavLink, Navigate, useNavigate } from 'react-router-dom';
 import { useLocalization } from '../hooks/useLocalization';
 import { UserSystemRole } from '../types';
 import { useAuth } from '../hooks/useAuth';
@@ -7,10 +7,10 @@ import { useAuth } from '../hooks/useAuth';
 const AutomationRules: React.FC = () => {
     const { t } = useLocalization();
     const { currentUser } = useAuth();
+    const navigate = useNavigate();
     
     const isAdmin = currentUser?.partyRole.roleType === UserSystemRole.ADMIN;
 
-    // A simple loading check for the user role
     if (!currentUser) {
         return null; // Or a loader
     }
@@ -28,7 +28,15 @@ const AutomationRules: React.FC = () => {
 
     return (
         <div className="space-y-6">
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-white">{t('automationRules.title')}</h1>
+            <div className="flex justify-between items-center">
+                <h1 className="text-3xl font-bold text-gray-800 dark:text-white">{t('automationRules.title')}</h1>
+                <button
+                    onClick={() => navigate('/crm/automation-rules/new')}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+                >
+                    Create New Rule
+                </button>
+            </div>
             
              <div className="border-b border-gray-200 dark:border-gray-700">
                 <nav className="-mb-px flex space-x-8" aria-label="Tabs">

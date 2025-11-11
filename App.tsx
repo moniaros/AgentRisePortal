@@ -34,6 +34,7 @@ import AutomationRules from './pages/AutomationRules';
 import Support from './pages/Support';
 import AutomationOverview from './components/automation/AutomationOverview';
 import RuleCategoryView from './components/automation/RuleCategoryView';
+import RuleBuilder from './pages/RuleBuilder';
 
 const App: React.FC = () => {
   return (
@@ -63,6 +64,8 @@ const App: React.FC = () => {
 
                   <Route path="/crm/automation-rules" element={<Layout><AutomationRules /></Layout>}>
                     <Route index element={<AutomationOverview />} />
+                    <Route path="new" element={<RuleBuilder />} />
+                    <Route path="edit/:ruleId" element={<RuleBuilder />} />
                     <Route path=":category" element={<RuleCategoryView />} />
                   </Route>
 

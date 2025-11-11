@@ -1,0 +1,5 @@
+[
+  { "id": "email-welcome", "name": "Welcome New Lead", "content": "Hello {lead.firstName}, welcome to our agency! We're excited to help you find the best insurance coverage. An agent will be in touch shortly." },
+  { "id": "email-quote-ready", "name": "Your Quote is Ready", "content": "Hi {lead.firstName}, good news! Your insurance quote is ready for review. Please click the link below to see your options." },
+  { "id": "email-renewal-reminder", "name": "Policy Renewal Reminder", "content": "Hi {customer.firstName}, this is a reminder that your policy {policy.policyNumber} is due for renewal soon. Let's connect to review your coverage." }
+]

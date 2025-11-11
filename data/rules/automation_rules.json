@@ -1,0 +1,54 @@
+[
+  {
+    "id": "rule-1",
+    "name": "Follow up on New High-Score Leads",
+    "description": "When a new lead is created with a score over 80, send a welcome email and an SMS.",
+    "category": "lead_conversion",
+    "triggerType": "on_lead_creation",
+    "conditions": [
+      { "id": "cond-1", "field": "lead_score", "operator": "greater_than", "value": 80 },
+      { "id": "cond-2", "field": "lead_status", "operator": "is", "value": "new" }
+    ],
+    "actions": [
+      { "id": "act-1", "type": "send_email", "templateId": "email-welcome" },
+      { "id": "act-2", "type": "send_sms", "templateId": "sms-intro" }
+    ],
+    "isEnabled": true,
+    "lastExecuted": "2024-07-28T14:30:00Z",
+    "successRate": 1.0,
+    "agencyId": "agency_1"
+  },
+  {
+    "id": "rule-2",
+    "name": "Send Renewal Reminders",
+    "description": "30 days before a policy expires, send a renewal reminder email.",
+    "category": "communication_automation",
+    "triggerType": "on_status_change",
+    "conditions": [],
+    "actions": [
+      { "id": "act-3", "type": "send_email", "templateId": "email-quote-ready" }
+    ],
+    "isEnabled": true,
+    "lastExecuted": "2024-07-25T09:00:00Z",
+    "successRate": 0.98,
+    "agencyId": "agency_1"
+  },
+  {
+    "id": "rule-3",
+    "name": "Engage Qualified Home Insurance Leads",
+    "description": "When a lead is 'qualified' and interested in 'home' insurance, send a WhatsApp message.",
+    "category": "lead_conversion",
+    "triggerType": "on_status_change",
+    "conditions": [
+      { "id": "cond-3", "field": "lead_status", "operator": "is", "value": "qualified" },
+      { "id": "cond-4", "field": "policy_interest", "operator": "is", "value": "home" }
+    ],
+    "actions": [
+      { "id": "act-4", "type": "send_whatsapp", "templateId": "whatsapp-home-info" }
+    ],
+    "isEnabled": false,
+    "lastExecuted": null,
+    "successRate": 0,
+    "agencyId": "agency_1"
+  }
+]

@@ -106,6 +106,7 @@ export interface Lead {
     agencyId: string;
     customerId?: string;
     campaignId?: string;
+    score?: number;
 }
 
 export interface Coverage {
@@ -257,17 +258,44 @@ export interface Testimonial {
 
 // Automation Rules
 export type RuleCategory = 'lead_conversion' | 'communication_automation';
+export type ConditionField = 'lead_status' | 'lead_score' | 'policy_interest';
+export type ConditionOperator = 'is' | 'is_not' | 'greater_than' | 'less_than' | 'equals';
+export type ActionType = 'send_email' | 'send_sms' | 'send_viber' | 'send_whatsapp';
+export type RuleTriggerType = 'on_lead_creation' | 'on_status_change';
+
+export interface RuleCondition {
+    id: string;
+    field: ConditionField;
+    operator: ConditionOperator;
+    value: string | number;
+}
+
+export interface MessageTemplate {
+    id: string;
+    name: string;
+    content: string;
+}
+
+export interface RuleAction {
+    id: string;
+    type: ActionType;
+    templateId: string;
+}
 
 export interface AutomationRule {
     id: string;
-    nameKey: string; // localization key for the name
+    name: string;
+    description: string;
     category: RuleCategory;
-    triggerKey: string; // localization key for the trigger description
+    triggerType: RuleTriggerType;
+    conditions: RuleCondition[];
+    actions: RuleAction[];
     isEnabled: boolean;
     lastExecuted: string | null;
     successRate: number; // 0 to 1
     agencyId: string;
 }
+
 
 // Analytics & Admin
 export interface AuditLog {

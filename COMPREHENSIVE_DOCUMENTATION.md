@@ -51,7 +51,9 @@ The following table summarizes all defined routes in the application.
 | `/analytics`                   | `Analytics`             | Dashboard for analyzing ad campaign performance.                            | -                |
 | `/profile`                     | `Profile`               | Page for the logged-in user to view and edit their profile.                 | -                |
 | `/settings`                    | `Settings`              | Hub for application settings like social connections and GTM.               | -                |
-| `/settings/automation-rules`   | `AutomationRules`       | Page to manage workflow automation rules.                                   | -                |
+| `/crm/automation-rules`   | `AutomationRules`       | Page to manage workflow automation rules.                                   | -                |
+| `/crm/automation-rules/new`   | `RuleBuilder`       | Page to create a new automation rule.                                   | -                |
+| `/crm/automation-rules/edit/:ruleId`   | `RuleBuilder`       | Page to edit an existing automation rule.                                   | `ruleId`       |
 | `/user-management`             | `UserManagement`        | Page for admins to manage users and view audit logs.                        | -                |
 | `/leads-dashboard`             | `LeadsDashboard`        | A visual dashboard summarizing lead data and funnels.                       | -                |
 | `/microsite-builder`           | `MicrositeBuilder`      | Tool for building a simple, public-facing agency website.                   | -                |
@@ -245,3 +247,26 @@ This section details each page, organized by the main navigation categories.
 -   **UI Elements:** Tabbed sub-navigation, filter controls, data table with toggle switches and actions menu, confirmation modal.
 -   **Data Source:** `hooks/useAutomationRules.ts` (fetches from `/data/rules/*.json`).
 -   **Localization:** Fully supported (rule names and triggers are read from localization keys).
+### 3.5. Automation Rule Builder
+
+-   **Files:** `pages/RuleBuilder.tsx`, `components/automation/builder/*`
+-   **Purpose:** A dedicated, form-based interface for creating and editing complex automation rules. This feature is accessible to Admin users via the "Automation Rules" page.
+-   **Functionalities:**
+    -   **Rule Creation & Editing:** Provides a clean UI for defining a rule's name, description, trigger, conditions, and actions.
+    -   **Trigger Definition:** Users can select a primary trigger for the rule, such as "On Lead Creation".
+    -   **Condition Builder ("IF"):**
+        -   Users can add one or more conditions that must *all* be met for the rule to run.
+        -   Conditions are based on CRM data fields with ACORD-aligned vocabulary.
+        -   Available fields:
+            -   **Lead Status:** Check if the lead's status `is` or `is not` a specific value (e.g., 'New', 'Contacted').
+            -   **Lead Score:** Perform numerical comparisons (`is equal to`, `greater than`, `less than`).
+            -   **Policy Interest:** Check the lead's product interest.
+    -   **Action Builder ("THEN"):**
+        -   Users can define one or more actions to be executed when conditions are met.
+        -   **Multichannel Messaging:** Actions support sending messages via Email, SMS, Viber, and WhatsApp.
+        -   **Template Selection:** For each messaging action, users can select from a pre-defined list of message templates, ensuring consistent communication.
+-   **UI Elements:** Dynamic forms with dropdowns, text inputs, `react-hook-form` for validation, "Add Condition" and "Add Action" buttons.
+-   **Data Source:**
+    -   Rule data is managed via `hooks/useAutomationRules.ts`.
+    -   Messaging templates are fetched from dummy JSON files located in `data/templates/`.
+    -   CRM field options (e.g., lead statuses) are sourced from the application's core types and mock data.

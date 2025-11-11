@@ -24,7 +24,6 @@ const RulesTable: React.FC<RulesTableProps> = ({ rules, isAdmin, onToggleStatus,
           <tr>
             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('automationRules.table.ruleName')}</th>
             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('automationRules.table.category')}</th>
-            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('automationRules.table.trigger')}</th>
             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('common.status')}</th>
             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('automationRules.table.lastExecuted')}</th>
             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">{t('automationRules.table.successRate')}</th>
@@ -35,12 +34,12 @@ const RulesTable: React.FC<RulesTableProps> = ({ rules, isAdmin, onToggleStatus,
           {rules.length > 0 ? rules.map(rule => (
             <tr key={rule.id}>
               <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm font-medium text-gray-900 dark:text-white">{t(rule.nameKey)}</div>
+                <div className="text-sm font-medium text-gray-900 dark:text-white">{rule.name}</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">{rule.description}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <CategoryBadge category={rule.category} />
               </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{t(rule.triggerKey)}</td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <ToggleSwitch
                   id={`toggle-${rule.id}`}
@@ -67,7 +66,7 @@ const RulesTable: React.FC<RulesTableProps> = ({ rules, isAdmin, onToggleStatus,
             </tr>
           )) : (
             <tr>
-              <td colSpan={7} className="text-center py-10 text-gray-500 dark:text-gray-400">{t('automationRules.noRules')}</td>
+              <td colSpan={6} className="text-center py-10 text-gray-500 dark:text-gray-400">{t('automationRules.noRules')}</td>
             </tr>
           )}
         </tbody>

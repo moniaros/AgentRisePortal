@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useLocalization } from '../../hooks/useLocalization';
 import { useAutomationRules } from '../../hooks/useAutomationRules';
 import { AutomationRule, RuleCategory, UserSystemRole } from '../../types';
@@ -13,6 +13,7 @@ import SkeletonLoader from '../ui/SkeletonLoader';
 
 const RuleCategoryView: React.FC = () => {
     const { category } = useParams<{ category: RuleCategory }>();
+    const navigate = useNavigate();
     const { t } = useLocalization();
     const { rules, isLoading, error, toggleRuleStatus, deleteRule } = useAutomationRules();
     const { currentUser } = useAuth();
@@ -30,11 +31,11 @@ const RuleCategoryView: React.FC = () => {
         const rulesForCategory = rules.filter(r => r.category === category);
         
         return rulesForCategory.filter(rule => {
-            const searchMatch = filters.search === '' || t(rule.nameKey).toLowerCase().includes(filters.search.toLowerCase());
+            const searchMatch = filters.search === '' || rule.name.toLowerCase().includes(filters.search.toLowerCase());
             const statusMatch = filters.status === 'all' || (filters.status === 'active' && rule.isEnabled) || (filters.status === 'inactive' && !rule.isEnabled);
             return searchMatch && statusMatch;
         });
-    }, [rules, filters, t, category]);
+    }, [rules, filters, category]);
 
     const handleDeleteRequest = (rule: AutomationRule) => {
         setRuleToDelete(rule);
@@ -45,6 +46,10 @@ const RuleCategoryView: React.FC = () => {
             deleteRule(ruleToDelete.id);
             setRuleToDelete(null);
         }
+    };
+    
+    const handleEdit = (rule: AutomationRule) => {
+        navigate(`/crm/automation-rules/edit/${rule.id}`);
     };
 
     if (isLoading) {
@@ -65,8 +70,8 @@ const RuleCategoryView: React.FC = () => {
                 isAdmin={isAdmin}
                 onToggleStatus={toggleRuleStatus}
                 onDelete={handleDeleteRequest}
-                onEdit={(rule) => alert(`Editing: ${t(rule.nameKey)}`)}
-                onDuplicate={(rule) => alert(`Duplicating: ${t(rule.nameKey)}`)}
+                onEdit={handleEdit}
+                onDuplicate={(rule) => alert(`Duplicating: ${rule.name}`)}
             />
 
             {ruleToDelete && (
@@ -78,7 +83,7 @@ const RuleCategoryView: React.FC = () => {
                     confirmText={t('common.delete')}
                     confirmButtonClass="bg-red-600 hover:bg-red-700"
                 >
-                    <p>{t('automationRules.deleteConfirm.message').replace('{ruleName}', t(ruleToDelete.nameKey))}</p>
+                    <p>{t('automationRules.deleteConfirm.message').replace('{ruleName}', ruleToDelete.name)}</p>
                 </ConfirmationModal>
             )}
         </div>

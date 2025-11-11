@@ -80,11 +80,11 @@ export const MOCK_USERS: User[] = [
 ];
 
 export const MOCK_LEADS: Lead[] = [
-    { id: 'lead_1', firstName: 'Alice', lastName: 'Smith', email: 'alice.s@email.com', source: 'Facebook Campaign', status: 'new', potentialValue: 500, createdAt: '2023-10-01T10:00:00Z', policyType: PolicyType.AUTO, agencyId: 'agency_1' },
-    { id: 'lead_2', firstName: 'Bob', lastName: 'Johnson', email: 'bob.j@email.com', source: 'Website Form', status: 'contacted', potentialValue: 1200, createdAt: '2023-10-02T11:30:00Z', policyType: PolicyType.HOME, agencyId: 'agency_1' },
-    { id: 'lead_3', firstName: 'Charlie', lastName: 'Brown', email: 'charlie.b@email.com', source: 'Referral', status: 'qualified', potentialValue: 800, createdAt: '2023-09-28T14:00:00Z', policyType: PolicyType.LIFE, agencyId: 'agency_1' },
-    { id: 'lead_4', firstName: 'Diana', lastName: 'Prince', email: 'diana.p@email.com', source: 'Instagram Ad', status: 'closed', potentialValue: 1500, createdAt: '2023-09-25T09:00:00Z', customerId: 'cust_2', policyType: PolicyType.HEALTH, agencyId: 'agency_1' },
-    { id: 'lead_5', firstName: 'Eve', lastName: 'Adams', email: 'eve.a@email.com', source: 'LinkedIn', status: 'rejected', potentialValue: 600, createdAt: '2023-09-30T16:00:00Z', policyType: PolicyType.AUTO, agencyId: 'agency_1' },
+    { id: 'lead_1', firstName: 'Alice', lastName: 'Smith', email: 'alice.s@email.com', source: 'Facebook Campaign', status: 'new', potentialValue: 500, createdAt: '2023-10-01T10:00:00Z', policyType: PolicyType.AUTO, agencyId: 'agency_1', score: 85 },
+    { id: 'lead_2', firstName: 'Bob', lastName: 'Johnson', email: 'bob.j@email.com', source: 'Website Form', status: 'contacted', potentialValue: 1200, createdAt: '2023-10-02T11:30:00Z', policyType: PolicyType.HOME, agencyId: 'agency_1', score: 92 },
+    { id: 'lead_3', firstName: 'Charlie', lastName: 'Brown', email: 'charlie.b@email.com', source: 'Referral', status: 'qualified', potentialValue: 800, createdAt: '2023-09-28T14:00:00Z', policyType: PolicyType.LIFE, agencyId: 'agency_1', score: 78 },
+    { id: 'lead_4', firstName: 'Diana', lastName: 'Prince', email: 'diana.p@email.com', source: 'Instagram Ad', status: 'closed', potentialValue: 1500, createdAt: '2023-09-25T09:00:00Z', customerId: 'cust_2', policyType: PolicyType.HEALTH, agencyId: 'agency_1', score: 95 },
+    { id: 'lead_5', firstName: 'Eve', lastName: 'Adams', email: 'eve.a@email.com', source: 'LinkedIn', status: 'rejected', potentialValue: 600, createdAt: '2023-09-30T16:00:00Z', policyType: PolicyType.AUTO, agencyId: 'agency_1', score: 65 },
 ];
 
 export const MOCK_CUSTOMERS: Customer[] = [
