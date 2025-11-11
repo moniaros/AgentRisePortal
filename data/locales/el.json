@@ -1,4 +1,3 @@
-
 {
   "nav": {
     "dashboard": "Πίνακας Ελέγχου",
@@ -285,6 +284,38 @@
       "impressions": "Εμφανίσεις",
       "clicks": "Κλικ",
       "conversions": "Μετατροπές"
+    }
+  },
+  "settings": {
+    "setup": {
+      "title": "Ρύθμιση",
+      "googleClientId": "Google Cloud Client ID",
+      "googleClientIdPlaceholder": "Εισαγάγετε το Google Cloud Client ID σας",
+      "geminiApiKey": "Κλειδί API Gemini",
+      "geminiApiKeyPlaceholder": "Εισαγάγετε το κλειδί API Gemini σας",
+      "saveButton": "Αποθήκευση Ρυθμίσεων",
+      "saveSuccess": "Οι ρυθμίσεις αποθηκεύτηκαν με επιτυχία!"
+    },
+    "integrations": {
+      "title": "Ενσωματώσεις",
+      "gbp": "Επιχειρηματικό Προφίλ Google",
+      "connectButton": "Σύνδεση με το Επιχειρηματικό Προφίλ Google",
+      "statusNotConnected": "Κατάσταση: Δεν υπάρχει σύνδεση",
+      "statusConnecting": "Κατάσταση: Γίνεται σύνδεση...",
+      "statusFetchingProfiles": "Κατάσταση: Λήψη επιχειρηματικών προφίλ...",
+      "statusFetchingLocations": "Κατάσταση: Λήψη τοποθεσιών επιχείρησης...",
+      "statusConnectedTo": "Κατάσταση: Συνδεδεμένο με {businessName}",
+      "statusNoAccounts": "Κατάσταση: Δεν βρέθηκαν λογαριασμοί Επιχειρηματικού Προφίλ Google.",
+      "statusNoLocations": "Κατάσταση: Δεν βρέθηκαν τοποθεσίες επιχείρησης.",
+      "statusFailed": "Κατάσταση: Η σύνδεση απέτυχε",
+      "statusApiError": "Κατάσταση: Σφάλμα API",
+      "errorNoClientId": "Παρακαλώ αποθηκεύστε πρώτα ένα Google Cloud Client ID.",
+      "errorGapiNotLoaded": "Το script του Google API δεν έχει φορτωθεί ακόμη. Παρακαλώ περιμένετε και προσπαθήστε ξανά.",
+      "errorSignIn": "Η σύνδεση με το Επιχειρηματικό Προφίλ Google απέτυχε.",
+      "errorApi": "Παρουσιάστηκε σφάλμα κατά τη λήψη των επιχειρηματικών σας προφίλ.",
+      "warningNoAccounts": "Δεν βρέθηκαν λογαριασμοί Επιχειρηματικού Προφίλ Google για αυτόν τον χρήστη.",
+      "warningNoLocations": "Δεν βρέθηκαν τοποθεσίες επιχείρησης στον κύριο λογαριασμό σας στο Επιχειρηματικό Προφίλ Google.",
+      "successConnected": "Συνδεθήκατε με επιτυχία στο {businessName}!"
     }
   },
   "userManagement": {

@@ -22,15 +22,22 @@ This section contains a form for inputting and saving crucial API credentials.
 
 This section manages connections to external services.
 
--   **Connect Google Business Profile Button:** This button initiates the Google OAuth 2.0 flow.
-    -   It uses the Client ID saved in `localStorage`.
-    -   It requests the `https://www.googleapis.com/auth/business.manage` scope, which is required for managing a user's Google Business Profile.
-    -   The user is prompted with Google's standard consent screen.
--   **Status Indicator:** A text label displays the current connection state (e.g., "Status: Not Connected", "Status: Connecting...", "Status: Connected", "Status: Connection failed").
+-   **Connect Google Business Profile Button:** This button initiates the Google OAuth 2.0 flow to connect the user's Google Business Profile.
+-   **Status Indicator:** A text label displays the current connection state (e.g., "Status: Not Connected", "Status: Connected to My Business").
+
+#### OAuth Flow and Location Selection
+
+1.  **Initiation:** Clicking the "Connect" button starts the process. It requires the "Google Cloud Client ID" to be saved first.
+2.  **Authentication:** The app uses Google's `gapi` library to prompt the user to sign in and grant permission for the `https://www.googleapis.com/auth/business.manage` scope.
+3.  **Account Discovery:** Upon successful authentication, the application makes an API call to `accounts.list` to find all Google Business Profile accounts associated with the user.
+4.  **Location Discovery:** Using the first account found, the app then calls `locations.list` to retrieve a list of business locations managed by that account.
+5.  **Automatic Selection:** The application automatically selects the **first** business location from the list.
+6.  **Storage:** The selected location's title (e.g., `My Business`) and its unique resource name (e.g., `accounts/123/locations/456`) are saved to the browser's `localStorage`.
+7.  **Confirmation:** The status indicator updates to show the connected business name, and the user is redirected to the Dashboard.
 
 ### LocalStorage Usage
 
-The Settings page utilizes `localStorage` to persist credentials across browser sessions.
-
--   **`google_client_id`**: Stores the Google Cloud Client ID as a plain text string.
--   **`gemini_api_key`**: Stores the Gemini API Key as a plain text string. **Note:** While the input field is masked, the key is stored in plain text in `localStorage`.
+-   `google_client_id`: Stores the Google Cloud Client ID as a plain text string.
+-   `gemini_api_key`: Stores the Gemini API Key as a plain text string. **Note:** While the input field is masked, the key is stored in plain text in `localStorage`.
+-   `gbp_location_title`: Stores the title (business name) of the connected Google Business Profile location.
+-   `gbp_location_name`: Stores the full resource name (e.g., `accounts/{accountId}/locations/{locationId}`) of the connected location.

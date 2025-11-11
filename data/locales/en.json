@@ -1,4 +1,3 @@
-
 {
   "nav": {
     "dashboard": "Dashboard",
@@ -285,6 +284,38 @@
       "impressions": "Impressions",
       "clicks": "Clicks",
       "conversions": "Conversions"
+    }
+  },
+  "settings": {
+    "setup": {
+      "title": "Setup",
+      "googleClientId": "Google Cloud Client ID",
+      "googleClientIdPlaceholder": "Enter your Google Cloud Client ID",
+      "geminiApiKey": "Gemini API Key",
+      "geminiApiKeyPlaceholder": "Enter your Gemini API Key",
+      "saveButton": "Save Settings",
+      "saveSuccess": "Settings saved successfully!"
+    },
+    "integrations": {
+      "title": "Integrations",
+      "gbp": "Google Business Profile",
+      "connectButton": "Connect Google Business Profile",
+      "statusNotConnected": "Status: Not Connected",
+      "statusConnecting": "Status: Connecting...",
+      "statusFetchingProfiles": "Status: Fetching business profiles...",
+      "statusFetchingLocations": "Status: Fetching business locations...",
+      "statusConnectedTo": "Status: Connected to {businessName}",
+      "statusNoAccounts": "Status: No Google Business Profile accounts found.",
+      "statusNoLocations": "Status: No business locations found.",
+      "statusFailed": "Status: Connection failed",
+      "statusApiError": "Status: API Error",
+      "errorNoClientId": "Please save a Google Cloud Client ID first.",
+      "errorGapiNotLoaded": "Google API script is not loaded yet. Please wait and try again.",
+      "errorSignIn": "Failed to connect to Google Business Profile.",
+      "errorApi": "An error occurred while fetching your business profiles.",
+      "warningNoAccounts": "No Google Business Profile accounts found for this user.",
+      "warningNoLocations": "No business locations found in your primary Google Business Profile account.",
+      "successConnected": "Connected to {businessName}!"
     }
   },
   "userManagement": {
