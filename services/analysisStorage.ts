@@ -1,73 +1,59 @@
-import { StoredAnalysis, CustomerAnalysisStorage } from '../types';
+import { StoredAnalysis } from '../types';
 
-const STORAGE_KEY = 'agentos_analysis_results';
-const CURRENT_VERSION = 1;
+const STORAGE_KEY_PREFIX = 'agentos_analysis_';
+const MASTER_LIST_KEY = 'agentos_analysis_customers';
 
-/**
- * Retrieves and parses all stored analysis data from localStorage.
- * @returns The main storage object containing all customers' analyses.
- */
-const getStoredData = (): CustomerAnalysisStorage => {
+const getCustomerStorageKey = (customerId: string) => `${STORAGE_KEY_PREFIX}${customerId}`;
+
+const getMasterList = (): string[] => {
     try {
-        const rawData = localStorage.getItem(STORAGE_KEY);
-        if (!rawData) {
-            return {};
-        }
-        return JSON.parse(rawData) || {};
-    } catch (error) {
-        console.error("Error reading from analysis storage:", error);
-        localStorage.removeItem(STORAGE_KEY);
-        return {};
+        const list = localStorage.getItem(MASTER_LIST_KEY);
+        return list ? JSON.parse(list) : [];
+    } catch {
+        return [];
     }
 };
 
-/**
- * Saves the main storage object to localStorage.
- * @param data The complete analysis storage object.
- */
-const saveStoredData = (data: CustomerAnalysisStorage): void => {
-    try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-    } catch (error) {
-        console.error("Error writing to analysis storage:", error);
+const updateMasterList = (customerId: string): void => {
+    const list = getMasterList();
+    if (!list.includes(customerId)) {
+        list.push(customerId);
+        localStorage.setItem(MASTER_LIST_KEY, JSON.stringify(list));
     }
-};
-
-/**
- * Saves a new analysis result for a specific customer.
- * @param customerId The ID (or unique name) of the customer.
- * @param analysisData The analysis data to save.
- */
-export const saveAnalysisForCustomer = (
-    customerId: string, 
-    analysisData: Omit<StoredAnalysis, 'id' | 'createdAt'>
-): void => {
-    const allData = getStoredData();
-    const customerRecord = allData[customerId] || {
-        version: CURRENT_VERSION,
-        lastUpdated: new Date().toISOString(),
-        analyses: [],
-    };
-
-    const newAnalysis: StoredAnalysis = {
-        ...analysisData,
-        id: `analysis_${Date.now()}`,
-        createdAt: new Date().toISOString(),
-    };
-
-    customerRecord.analyses.push(newAnalysis);
-    customerRecord.lastUpdated = new Date().toISOString();
-    allData[customerId] = customerRecord;
-
-    saveStoredData(allData);
 };
 
 /**
  * Retrieves all stored analyses for a specific customer.
- * @param customerId The ID (or unique name) of the customer.
+ * @param customerId The ID of the customer.
  * @returns An array of StoredAnalysis objects.
  */
 export const getAnalysesForCustomer = (customerId: string): StoredAnalysis[] => {
-    const data = getStoredData();
-    return data[customerId]?.analyses || [];
+    try {
+        const rawData = localStorage.getItem(getCustomerStorageKey(customerId));
+        return rawData ? JSON.parse(rawData) : [];
+    } catch (error) {
+        console.error(`Error reading analyses for customer ${customerId}:`, error);
+        return [];
+    }
+};
+
+/**
+ * Saves a new analysis for a specific customer.
+ * @param customerId The ID of the customer.
+ * @param analysis The analysis data to save, without id or createdAt.
+ */
+export const saveAnalysisForCustomer = (customerId: string, analysis: Omit<StoredAnalysis, 'id' | 'createdAt'>): void => {
+    try {
+        const existingAnalyses = getAnalysesForCustomer(customerId);
+        const newAnalysis: StoredAnalysis = {
+            ...analysis,
+            id: `analysis_${Date.now()}`,
+            createdAt: new Date().toISOString(),
+        };
+        const updatedAnalyses = [newAnalysis, ...existingAnalyses];
+        localStorage.setItem(getCustomerStorageKey(customerId), JSON.stringify(updatedAnalyses));
+        updateMasterList(customerId);
+    } catch (error) {
+        console.error(`Error saving analysis for customer ${customerId}:`, error);
+    }
 };
