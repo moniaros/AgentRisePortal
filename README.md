@@ -228,6 +228,12 @@ The platform is currently a high-fidelity MVP with a simulated backend. The foll
 -   **Components:** `GTMProvider.tsx`, `RouteAnalyticsTracker.tsx`, `Sitemap.tsx`.
 -   **Services:** `services/analytics.ts`.
 
+### Comprehensive Pages and Routing Documentation
+
+For a complete and detailed audit of every page, component, route, and data source within the application, please refer to the comprehensive documentation document. This guide is intended for developers and stakeholders to understand the full scope and architecture of the front-end.
+
+[**View Comprehensive Documentation**](./COMPREHENSIVE_DOCUMENTATION.md)
+
 ---
 
 ## Product Roadmap: Path to an Enterprise-Level Platform
