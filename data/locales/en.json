@@ -67,8 +67,21 @@
     "showUnreplied": "Show only reviews without a reply",
     "stars": "stars",
     "generateAiReply": "Generate AI Reply",
+    "generatingReply": "Generating...",
     "postReply": "Post Reply",
-    "yourReply": "Your Reply"
+    "yourReply": "Your Reply",
+    "replyPosted": "Reply Posted!",
+    "emptyStates": {
+      "noReviews": "No recent reviews found.",
+      "allReplied": "All reviews have been replied to!"
+    },
+    "errors": {
+      "dataFetchFailed": "Failed to load dashboard data. Please try refreshing the page.",
+      "replyGenerationFailed": "Failed to generate AI reply.",
+      "replyPostFailed": "Failed to post reply. Please try again.",
+      "noApiKey": "Error: Gemini API Key is not configured in Settings."
+    },
+    "retry": "Retry"
   },
   "policyTypes": {
     "auto": "Auto",

@@ -92,7 +92,7 @@ const Settings: React.FC = () => {
             return;
         }
 
-        if (!gapi) {
+        if (!gapi?.load) {
             addNotification(t('settings.integrations.errorGapiNotLoaded'), 'error');
             return;
         }
@@ -101,21 +101,24 @@ const Settings: React.FC = () => {
 
         const handleAuth = () => {
             const authInstance = gapi.auth2.getAuthInstance();
+            if (!authInstance) {
+                 addNotification(t('settings.integrations.errorGapiNotLoaded'), 'error');
+                 setConnectionStatus(t('settings.integrations.statusFailed'));
+                 return;
+            }
+            
             const signInOptions = {
                 prompt: 'select_account' // Always ask user to select account
             };
 
-            if (!authInstance.isSignedIn.get()) {
-                authInstance.signIn(signInOptions).then(processGbpConnection, (err: any) => {
+            authInstance.signIn(signInOptions).then(
+                processGbpConnection, 
+                (err: any) => {
                     console.error('Sign-in error:', err);
                     setConnectionStatus(t('settings.integrations.statusFailed'));
                     addNotification(t('settings.integrations.errorSignIn'), 'error');
-                });
-            } else {
-                // If already signed in, we might need to re-grant scopes.
-                // Signing in again with the same scope will handle this.
-                 authInstance.signIn(signInOptions).then(processGbpConnection);
-            }
+                }
+            );
         };
 
         gapi.load('client:auth2', () => {
@@ -124,7 +127,11 @@ const Settings: React.FC = () => {
                     clientId: storedClientId,
                     scope: 'https://www.googleapis.com/auth/business.manage',
                     plugin_name: 'AgentOS'
-                }).then(handleAuth);
+                }).then(handleAuth, (error: any) => {
+                     console.error("GAPI init error:", error);
+                     setConnectionStatus(t('settings.integrations.statusFailed'));
+                     addNotification(t('settings.integrations.errorGapiNotLoaded'), 'error');
+                });
             } else {
                 handleAuth();
             }

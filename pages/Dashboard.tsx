@@ -21,7 +21,7 @@ const Dashboard: React.FC = () => {
         const locationName = localStorage.getItem('gbp_location_name');
         const gapi = (window as any).gapi;
 
-        if (!locationName || !gapi || !gapi.auth2 || !gapi.auth2.getAuthInstance().isSignedIn.get()) {
+        if (!locationName || !gapi?.auth2?.getAuthInstance()?.isSignedIn.get()) {
             navigate('/settings');
             return;
         }
@@ -34,13 +34,14 @@ const Dashboard: React.FC = () => {
                 setSummary(result.summary);
                 setReviews(result.reviews);
             } catch (err) {
-                setError(err instanceof Error ? err.message : 'Failed to load dashboard data.');
+                setError(t('dashboard.errors.dataFetchFailed') as string);
+                console.error(err);
             } finally {
                 setIsLoading(false);
             }
         };
         loadData();
-    }, [navigate]);
+    }, [navigate, t]);
 
     if (isLoading) {
         return (
@@ -67,7 +68,7 @@ const Dashboard: React.FC = () => {
     return (
         <div className="space-y-6">
             <BusinessHeader summary={summary} />
-            <ReviewFeed reviews={reviews} />
+            <ReviewFeed reviews={reviews} setReviews={setReviews} />
         </div>
     );
 };

@@ -68,12 +68,40 @@ This section displays customer reviews and provides tools for managing replies.
 
 -   **Filter Toggle:** A checkbox labeled "Show only reviews without a reply" is displayed above the feed. It is enabled by default, hiding reviews that already have a reply in the mock data.
 -   **Review Cards:** The feed consists of individual cards for each review, sorted with the newest first. Each card contains:
-    -   **Reviewer Name:** The name of the person who left the review.
-    -   **Star Rating:** Both a visual star representation (e.g., ★★★★☆) and a textual label (e.g., "(4 stars)").
-    -   **Review Text:** The full comment left by the reviewer.
-    -   **AI Reply Generation:** A "Generate AI Reply" button.
-    -   **Reply Area:** A disabled textarea, which will later be populated by the AI-generated response.
-    -   **Post Button:** A disabled "Post Reply" button that will be enabled once a reply is present.
+    -   Reviewer Name, Star Rating, and full Review Text.
+    -   "Generate AI Reply" button and a disabled reply area.
+
+#### AI Reply Generation & Posting
+
+-   **Trigger:** Clicking the "Generate AI Reply" button on a review card.
+-   **Prompt Construction:** A prompt is dynamically built for the Gemini API with the following criteria:
+    -   **General Tone:** "You are a helpful and friendly manager for an insurance agency. Your goal is to respond to customer reviews in a professional and appreciative manner."
+    -   **For Positive Reviews (4-5 stars):** The prompt asks the AI to thank the customer by name, acknowledge a positive point from their review, and keep the tone brief and warm.
+    -   **For Negative/Neutral Reviews (1-3 stars):** The prompt instructs the AI to apologize for the experience, show empathy, offer to resolve the issue offline (e.g., "contact us at contact@agency.com"), and thank them for the feedback.
+-   **UI Updates (Generation):**
+    -   While the API call is in progress, the button text changes to "Generating..." and becomes disabled.
+    -   Upon receiving a response, the reply `textarea` is populated with the AI-generated text and becomes enabled for editing.
+    -   The "Post Reply" button is also enabled.
+-   **Posting Flow:**
+    -   After editing the reply (if needed), clicking "Post Reply" initiates the posting process.
+    -   A simulated API call to `locations.reviews.updateReply` is made using the review's ID and the reply text.
+    -   During this process, all reply controls are disabled.
+    -   On successful simulation, the reply controls are replaced with a "Reply Posted!" confirmation message.
+    -   After a brief moment, if the "Show only reviews without a reply" filter is active, the entire review card is removed from the feed.
+
+### Error Handling and Empty States
+
+-   **Failed Google Sign-In:** If the user denies permission or an error occurs during the OAuth flow on the Settings page, the status indicator will update to "Status: Connection failed" and a global error notification will appear.
+-   **Failed Data Fetch:** If the main data fetch on the Dashboard fails, an error message component is displayed, preventing the page from crashing.
+-   **Failed AI Generation:** If the Gemini API call fails during reply generation:
+    -   An error message (e.g., "Failed to generate reply.") appears on the review card.
+    -   A "Retry" button is displayed, allowing the user to attempt the generation again.
+-   **Failed Reply Posting:** If the simulated `updateReply` call fails:
+    -   An error message appears below the "Post Reply" button.
+    -   The "Post Reply" button and textarea are re-enabled, allowing the user to try posting again.
+-   **Empty Review States:**
+    -   If there are no reviews for the business, the message "No recent reviews found." is displayed.
+    -   If all reviews have been replied to and the "Show only reviews without a reply" filter is active, the message "All reviews have been replied to!" is displayed.
 
 ### Local Development
 
