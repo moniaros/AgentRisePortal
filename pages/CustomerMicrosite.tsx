@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import { useCrmData } from '../hooks/useCrmData';
@@ -5,17 +6,14 @@ import { useLocalization } from '../hooks/useLocalization';
 import { Policy, TimelineEvent } from '../types';
 import ErrorMessage from '../components/ui/ErrorMessage';
 import SkeletonLoader from '../components/ui/SkeletonLoader';
-import PolicyCard from '../components/customer/PolicyCard';
 import CustomerTimeline from '../components/customer/CustomerTimeline';
 import AddressChangeModal from '../components/customer/AddressChangeModal';
-import RenewalModal from '../components/customer/RenewalModal';
 import AttentionFlagModal from '../components/customer/AttentionFlagModal';
 import AddTimelineEventModal from '../components/customer/AddTimelineEventModal';
 import EditProfileModal from '../components/customer/EditProfileModal';
-import PolicyRecommendationModal from '../components/customer/PolicyRecommendationModal';
-import { GoogleGenAI } from '@google/genai';
 import { useAuth } from '../hooks/useAuth';
 import EmbeddedGapAnalysis from '../components/customer/EmbeddedGapAnalysis';
+import DetailedPolicyView from '../components/customer/DetailedPolicyView';
 
 const CustomerProfile: React.FC = () => {
     const { customerId } = useParams<{ customerId: string }>();
@@ -26,15 +24,9 @@ const CustomerProfile: React.FC = () => {
     const customer = useMemo(() => customers.find(c => c.id === customerId), [customers, customerId]);
 
     const [isAddressModalOpen, setAddressModalOpen] = useState(false);
-    const [isRenewalModalOpen, setRenewalModalOpen] = useState(false);
     const [isAttentionModalOpen, setAttentionModalOpen] = useState(false);
     const [isTimelineModalOpen, setTimelineModalOpen] = useState(false);
     const [isEditProfileModalOpen, setEditProfileModalOpen] = useState(false);
-    const [isAiReviewModalOpen, setAiReviewModalOpen] = useState(false);
-    
-    const [selectedPolicy, setSelectedPolicy] = useState<Policy | null>(null);
-    const [aiRecommendation, setAiRecommendation] = useState<string | null>(null);
-    const [isAiLoading, setIsAiLoading] = useState(false);
 
     if (isLoading) return <SkeletonLoader className="h-screen w-full" />;
     if (error) return <ErrorMessage message={error.message as string} />;
@@ -50,47 +42,9 @@ const CustomerProfile: React.FC = () => {
         setAddressModalOpen(false);
     };
 
-    const handleRenewalSubmit = (newEndDate: string) => {
-        if (!selectedPolicy) return;
-        const updatedPolicies = customer.policies.map(p => p.id === selectedPolicy.id ? { ...p, endDate: newEndDate, isActive: true } : p);
+    const handlePolicyUpdate = (updatedPolicy: Policy) => {
+        const updatedPolicies = customer.policies.map(p => p.id === updatedPolicy.id ? updatedPolicy : p);
         updateCustomer({ ...customer, policies: updatedPolicies });
-        addTimelineEvent(customer.id, {
-            type: 'policy_update',
-            content: `Policy ${selectedPolicy.policyNumber} renewed. New end date: ${newEndDate}`,
-            author: currentUser ? `${currentUser.party.partyName.firstName} ${currentUser.party.partyName.lastName}` : 'System',
-        });
-        setRenewalModalOpen(false);
-    };
-    
-    const handleAiReview = async (policy: Policy) => {
-        if (!process.env.API_KEY) {
-            alert("API Key is not configured.");
-            return;
-        }
-        setSelectedPolicy(policy);
-        setAiReviewModalOpen(true);
-        setIsAiLoading(true);
-        setAiRecommendation(null);
-        
-        try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-            const prompt = `
-              Review the following insurance policy for a client and provide recommendations.
-              Client Name: ${customer.firstName} ${customer.lastName}
-              Policy Details: ${JSON.stringify(policy)}
-              
-              Based on the policy, suggest potential gaps, upsell opportunities, or ways the client can save money.
-              Format the response clearly with headings for each section (e.g., "Potential Gaps", "Recommendations").
-            `;
-
-            const response = await ai.models.generateContent({model: 'gemini-2.5-flash', contents: prompt});
-            setAiRecommendation(response.text);
-        } catch (err) {
-            console.error("AI review error:", err);
-            setAiRecommendation("Failed to get AI recommendation. Please try again.");
-        } finally {
-            setIsAiLoading(false);
-        }
     };
 
     const handleAddTimelineEvent = (data: Omit<TimelineEvent, 'id' | 'date' | 'author' | 'annotations'>) => {
@@ -139,12 +93,10 @@ const CustomerProfile: React.FC = () => {
                 <h2 className="text-2xl font-semibold mb-4">{t('crm.form.policies') as string}</h2>
                 <div className="space-y-4">
                     {customer.policies.map(policy => (
-                        <PolicyCard 
-                            key={policy.id} 
-                            policy={policy} 
-                            onRenew={(p) => { setSelectedPolicy(p); setRenewalModalOpen(true); }}
-                            onAiReview={handleAiReview}
-                            isAiLoading={isAiLoading && selectedPolicy?.id === policy.id}
+                        <DetailedPolicyView
+                            key={policy.id}
+                            policy={policy}
+                            onUpdatePolicy={handlePolicyUpdate}
                         />
                     ))}
                 </div>
@@ -174,11 +126,9 @@ const CustomerProfile: React.FC = () => {
             
             {/* Modals */}
             <AddressChangeModal isOpen={isAddressModalOpen} onClose={() => setAddressModalOpen(false)} currentAddress={customer.address || ''} onSubmit={handleAddressSubmit} />
-            {selectedPolicy && <RenewalModal isOpen={isRenewalModalOpen} onClose={() => setRenewalModalOpen(false)} policy={selectedPolicy} onSubmit={handleRenewalSubmit} />}
             <AttentionFlagModal isOpen={isAttentionModalOpen} onClose={() => setAttentionModalOpen(false)} currentReason={customer.attentionFlag} onSubmit={(reason) => { updateCustomerAttentionFlag(customer.id, reason); setAttentionModalOpen(false); }} />
             <AddTimelineEventModal isOpen={isTimelineModalOpen} onClose={() => setTimelineModalOpen(false)} onSubmit={handleAddTimelineEvent} />
             <EditProfileModal isOpen={isEditProfileModalOpen} onClose={() => setEditProfileModalOpen(false)} customer={customer} onSubmit={handleSaveProfile} />
-            {selectedPolicy && <PolicyRecommendationModal isOpen={isAiReviewModalOpen} onClose={() => setAiReviewModalOpen(false)} policy={selectedPolicy} recommendation={aiRecommendation} isLoading={isAiLoading} />}
 
         </div>
     );

@@ -1,3 +1,4 @@
+
 import React from "react";
 
 export enum Language {
@@ -69,6 +70,7 @@ export interface Coverage {
     type: string;
     limit: string;
     deductible?: string;
+    premium?: number;
 }
 
 export interface Policy {
@@ -81,6 +83,8 @@ export interface Policy {
     isActive: boolean;
     insurer: string;
     coverages: Coverage[];
+    beneficiaries?: InsuredPartyACORD[];
+    vehicle?: InsuredVehicleACORD;
 }
 
 export interface Annotation {

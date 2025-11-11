@@ -11,9 +11,9 @@ interface State {
 }
 
 class ErrorBoundary extends Component<Props, State> {
-  // FIX: Replaced state property initializer with a constructor to fix a typing issue where `this.props` was not being recognized.
   public state: State;
 
+  // FIX: The state property initializer was causing a typing issue. Replaced it with a standard constructor to ensure `this.props` is correctly initialized.
   constructor(props: Props) {
     super(props);
     this.state = {

@@ -130,6 +130,9 @@
     "searchAll": "Search clients and leads...",
     "recentLeads": "Recent Leads",
     "customers": "All Clients",
+    "syncPolicies": "Sync Policies from Storage",
+    "syncing": "Syncing...",
+    "syncSuccess": "Sync complete! {syncedCustomers} customers and {syncedPolicies} policies were updated or created.",
     "form": {
       "firstName": "First Name",
       "lastName": "Last Name",

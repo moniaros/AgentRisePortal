@@ -1,3 +1,4 @@
+
 # AgentRise: Application Documentation
 
 This document provides a technical reference for key features of the AgentRise web application.
@@ -86,7 +87,7 @@ This section displays customer reviews and provides tools for managing replies.
 -   **Prompt Construction:** A prompt is dynamically built for the Gemini API with the following criteria:
     -   **General Tone:** "You are a helpful and friendly manager for an insurance agency. Your goal is to respond to customer reviews in a professional and appreciative manner."
     -   **For Positive Reviews (4-5 stars):** The prompt asks the AI to thank the customer by name, acknowledge a positive point from their review, and keep the tone brief and warm.
-    -   **For Negative/Neutral Reviews (1-3 stars):** The prompt instructs the AI to apologize for the experience, show empathy, offer to resolve the issue offline (e.g., "contact us at contact@agency.com"), and thank them for the feedback.
+    -   **For Negative/Neutral Reviews (1-3 stars):** The prompt instructs the AI to apologize for their experience, show empathy, offer to resolve the issue offline (e.g., "contact us at contact@agency.com"), and thank them for the feedback.
 -   **UI Updates (Generation):**
     -   While the API call is in progress, the button text changes to "Generating..." and becomes disabled.
     -   Upon receiving a response, the reply `textarea` is populated with the AI-generated text and becomes enabled for editing.
@@ -116,9 +117,9 @@ The AI Policy Scanner page (`/gap-analysis`) includes an interactive file upload
 -   **Output:** On a successful API response, the extracted, structured data is displayed in a review section, allowing the user to verify the information before proceeding to the gap analysis step.
 -   **Error Handling:** If the API call fails (due to an invalid key, network issues, or other errors), a descriptive error message is shown, and the user can try uploading the file again.
 
-### ACORD Policy Local Storage
+### ACORD Policy Local Storage & Synchronization
 
-To ensure data persistence and offline accessibility, parsed insurance policy information is stored in the browser's `localStorage`. This allows the application to retain structured policy data across sessions without needing to re-process documents.
+To ensure data persistence and offline accessibility, parsed insurance policy information is stored locally and can be synchronized with the main CRM data model.
 
 #### Storage Strategy
 
@@ -129,6 +130,32 @@ To ensure data persistence and offline accessibility, parsed insurance policy in
     -   `version`: A version number for the data structure to support future schema migrations.
 -   **Policy Versioning:** Each individual `PolicyACORD` object within the `policies` array also contains its own `lastUpdated` timestamp. This helps track when a specific policy was last amended or updated.
 -   **Data Integrity:** The storage service includes error handling to gracefully manage corrupted or unparsable data in `localStorage`, preventing application crashes.
+
+#### Synchronization Mechanism
+
+A manual synchronization process can be triggered from the Micro-CRM page via the **"Sync Policies from Storage"** button. This action initiates the following logic:
+
+1.  **Read from Storage:** The system reads all `PolicyACORD` data from `localStorage`.
+2.  **Customer Matching:** For each customer's set of policies in storage, it attempts to find a matching customer in the current CRM data model by comparing the policyholder's full name.
+3.  **Update Existing Customer:** If a match is found, the system iterates through the stored policies.
+    -   If a policy with the same policy number already exists for that customer, it is updated with the details from storage.
+    -   If the policy is new, it is added to the customer's policy list.
+4.  **Create New Customer:** If no matching customer is found, a new customer record is created in the CRM using the policyholder's name and address from the stored policy data. All associated policies from storage are mapped and added to this new customer profile.
+5.  **Feedback:** The sync button enters a loading state during the process. Upon completion, a notification appears confirming the number of customers and policies that were created or updated.
+
+### Detailed Policy View UI
+
+On the customer profile page, each policy is displayed using a detailed, responsive component that presents the full ACORD-structured data in a user-friendly manner.
+
+-   **Data Presentation:** The `DetailedPolicyView` component organizes information into logical, collapsible sections (e.g., "Policy Details," "Coverages," "Beneficiaries," "Vehicle Details"). This prevents UI clutter and allows the user to focus on the information they need. The component uses the native `<details>` and `<summary>` elements for accessibility.
+-   **Inline Editing:**
+    -   To streamline data correction and updates, key fields like **coverage limits** and **beneficiary names/addresses** are editable inline.
+    -   Clicking on an editable field transforms it into a text input.
+    -   The change is saved automatically when the input loses focus (on blur) or when the user presses "Enter," triggering an update to the central CRM state.
+-   **Component Structure:**
+    -   `DetailedPolicyView.tsx`: The main container component that structures the layout and manages the collapsible sections.
+    -   `EditableField.tsx`: A reusable UI component that encapsulates the logic for switching between text display and an input field, handling the state and save callbacks.
+-   **Mobile Usability:** The layout is fully responsive. On smaller screens, tables are designed to be easily scrollable, and form elements are sized appropriately for touch interaction, ensuring a seamless experience on any device.
 
 ### Error Handling and Empty States
 

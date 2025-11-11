@@ -1,4 +1,5 @@
-import { DetailedPolicy, PolicyACORD, CoverageDetailACORD } from '../types';
+
+import { DetailedPolicy, PolicyACORD, CoverageDetailACORD, Policy, PolicyType, Coverage } from '../types';
 
 /**
  * Maps the internal DetailedPolicy representation to a structured PolicyACORD format.
@@ -14,7 +15,7 @@ export const mapToPolicyACORD = (policy: DetailedPolicy): PolicyACORD => {
         type: cov.type,
         limit: cov.limit,
         deductible: cov.deductible,
-        // 'premium' is not available in the source DetailedPolicy type.
+        premium: cov.premium,
     }));
 
     // Placeholder dates as they are not available in the source DetailedPolicy type.
@@ -35,9 +36,53 @@ export const mapToPolicyACORD = (policy: DetailedPolicy): PolicyACORD => {
         effectiveDate,
         expirationDate,
         coverages,
-        totalPremium: 0, // Not available in DetailedPolicy.
+        totalPremium: coverages.reduce((sum, cov) => sum + (cov.premium || 0), 0),
         lastUpdated: new Date().toISOString(),
+        beneficiaries: [], // Placeholder
+        vehicle: undefined, // Placeholder
     };
 
     return acordPolicy;
+};
+
+/**
+ * Maps a stored PolicyACORD object back to the internal CRM Policy format.
+ * @param acordPolicy The policy data from localStorage.
+ * @returns A Policy object compatible with the CRM state.
+ */
+export const mapAcordToCrmPolicy = (acordPolicy: PolicyACORD): Policy => {
+    const determinePolicyType = (coverages: CoverageDetailACORD[]): PolicyType => {
+        const coverageTypes = coverages.map(c => c.type.toLowerCase());
+        if (acordPolicy.vehicle) return PolicyType.AUTO;
+        if (coverageTypes.some(t => t.includes('liability') || t.includes('collision'))) {
+            return PolicyType.AUTO;
+        }
+        if (coverageTypes.some(t => t.includes('dwelling') || t.includes('property'))) {
+            return PolicyType.HOME;
+        }
+        return PolicyType.AUTO; // Default fallback
+    };
+
+    const crmCoverages: Coverage[] = acordPolicy.coverages.map(ac => ({
+        type: ac.type,
+        limit: ac.limit,
+        deductible: ac.deductible,
+        premium: ac.premium,
+    }));
+
+    const crmPolicy: Policy = {
+        id: acordPolicy.id,
+        type: determinePolicyType(acordPolicy.coverages),
+        policyNumber: acordPolicy.policyNumber,
+        premium: acordPolicy.totalPremium,
+        startDate: acordPolicy.effectiveDate.split('T')[0],
+        endDate: acordPolicy.expirationDate.split('T')[0],
+        isActive: new Date(acordPolicy.expirationDate) > new Date(),
+        insurer: acordPolicy.insurer.name,
+        coverages: crmCoverages,
+        beneficiaries: acordPolicy.beneficiaries,
+        vehicle: acordPolicy.vehicle,
+    };
+
+    return crmPolicy;
 };

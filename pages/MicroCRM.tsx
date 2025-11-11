@@ -9,10 +9,14 @@ import SkeletonLoader from '../components/ui/SkeletonLoader';
 import LeadControls from '../components/leads/LeadControls';
 import LeadsTable from '../components/leads/LeadsTable';
 import LeadDetailModal from '../components/leads/LeadDetailModal';
+import { usePolicySync } from '../hooks/usePolicySync';
+import { useNotification } from '../hooks/useNotification';
 
 const MicroCRM: React.FC = () => {
     const { t } = useLocalization();
     const { customers, leads, isLoading, error, addCustomer, updateCustomer, deleteCustomer } = useCrmData();
+    const { isSyncing, syncPolicies } = usePolicySync();
+    const { addNotification } = useNotification();
     
     const [filters, setFilters] = useState({ status: 'all', source: 'all', search: '' });
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -74,13 +78,23 @@ const MicroCRM: React.FC = () => {
         setSelectedLead(lead);
     };
 
+    const handleSync = async () => {
+        const { syncedCustomers, syncedPolicies } = await syncPolicies();
+        addNotification(t('crm.syncSuccess', { syncedCustomers, syncedPolicies }), 'success');
+    };
+
     return (
         <div>
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-3xl font-bold text-gray-800 dark:text-white">{t('nav.customersAndLeads')}</h1>
-                <button onClick={handleAddCustomer} className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
-                    {t('crm.addCustomer')}
-                </button>
+                <div className="flex items-center gap-2">
+                    <button onClick={handleSync} disabled={isSyncing} className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition disabled:bg-gray-400">
+                        {isSyncing ? t('crm.syncing') : t('crm.syncPolicies')}
+                    </button>
+                    <button onClick={handleAddCustomer} className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+                        {t('crm.addCustomer')}
+                    </button>
+                </div>
             </div>
             
             <div className="mb-6">
