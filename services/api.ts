@@ -1,7 +1,20 @@
 import { MOCK_CUSTOMERS, MOCK_LEADS, MOCK_AUDIT_LOGS, MOCK_USERS, MOCK_ANALYTICS_DATA, MOCK_EXECUTIVE_DATA, MOCK_NEWS_ARTICLES, MOCK_TESTIMONIALS, MOCK_USER_ACTIVITY } from '../data/mockData';
-import { DetailedPolicy, AnalyticsData, User, AuditLog, ExecutiveData, NewsArticle, Testimonial, UserActivityEvent, AutomationRule, MessageTemplate, TemplateChannel, AutomationEvent, AutomationAnalytics, GbpLocationSummary, GbpReview } from '../types';
+import { DetailedPolicy, AnalyticsData, User, AuditLog, ExecutiveData, NewsArticle, Testimonial, UserActivityEvent, AutomationRule, MessageTemplate, TemplateChannel, AutomationEvent, AutomationAnalytics, GbpLocationSummary, GbpReview, TransactionInquiry } from '../types';
 
 const SIMULATED_DELAY = 500;
+
+export const fetchInquiries = async (): Promise<TransactionInquiry[]> => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const res = await fetch('/data/inquiries.json');
+            if (!res.ok) throw new Error('Failed to fetch inquiries mock data');
+            const data = await res.json();
+            setTimeout(() => resolve(data), SIMULATED_DELAY);
+        } catch (err) {
+            reject(err);
+        }
+    });
+};
 
 export const fetchGbpData = async (locationId: string): Promise<{ summary: GbpLocationSummary; reviews: GbpReview[] }> => {
     // In a real app, we'd use locationId to make actual API calls

@@ -1,0 +1,42 @@
+[
+  {
+    "id": "inq_1",
+    "agencyId": "agency_1",
+    "policyType": "auto",
+    "status": "new",
+    "createdAt": "2024-10-27T10:00:00.000Z",
+    "details": "Quote request for a new 2024 Honda Civic."
+  },
+  {
+    "id": "inq_2",
+    "agencyId": "agency_1",
+    "policyType": "home",
+    "status": "new",
+    "createdAt": "2024-10-27T11:30:00.000Z",
+    "details": "Inquiry about homeowner's insurance for a new property purchase."
+  },
+  {
+    "id": "inq_3",
+    "agencyId": "agency_1",
+    "policyType": "life",
+    "status": "assigned",
+    "createdAt": "2024-10-26T15:00:00.000Z",
+    "details": "Question about term life insurance policies for a new family."
+  },
+    {
+    "id": "inq_4",
+    "agencyId": "agency_2",
+    "policyType": "auto",
+    "status": "new",
+    "createdAt": "2024-10-27T09:00:00.000Z",
+    "details": "Quote request for an agency not currently logged in."
+  },
+  {
+    "id": "inq_5",
+    "agencyId": "agency_1",
+    "policyType": "health",
+    "status": "closed",
+    "createdAt": "2024-10-25T18:00:00.000Z",
+    "details": "Resolved inquiry about health plan options."
+  }
+]

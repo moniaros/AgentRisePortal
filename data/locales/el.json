@@ -81,6 +81,10 @@
     "errorInvalidCredentials": "Τα στοιχεία που δώσατε είναι λανθασμένα. Παρακαλώ προσπαθήστε ξανά."
   },
   "dashboard": {
+    "kpis": {
+      "newInquiriesToday": "Νέα Αιτήματα Σήμερα",
+      "newInquiriesSubtitle": "Συναλλαγές που απαιτούν άμεση παρακολούθηση."
+    },
     "basedOn": "Βάσει",
     "reviews": "αξιολογήσεων",
     "recentReviews": "Πρόσφατες Αξιολογήσεις Πελατών",

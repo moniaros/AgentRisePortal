@@ -148,6 +148,16 @@ export interface Lead {
     campaignId?: string;
 }
 
+export interface TransactionInquiry {
+    id: string;
+    agencyId: string;
+    customerId?: string;
+    policyType: PolicyType;
+    status: 'new' | 'assigned' | 'closed';
+    createdAt: string;
+    details: string;
+}
+
 // Gap Analysis and Policy Parsing
 export interface DetailedPolicy {
     policyNumber: string;

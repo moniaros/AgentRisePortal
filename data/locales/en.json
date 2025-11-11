@@ -81,6 +81,10 @@
     "errorInvalidCredentials": "Invalid email or password provided. Please try again."
   },
   "dashboard": {
+    "kpis": {
+      "newInquiriesToday": "New Inquiries Today",
+      "newInquiriesSubtitle": "Transactions requiring immediate follow-up."
+    },
     "basedOn": "Based on",
     "reviews": "reviews",
     "recentReviews": "Recent Customer Reviews",
