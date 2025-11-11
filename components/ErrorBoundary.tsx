@@ -13,10 +13,15 @@ interface State {
 class ErrorBoundary extends Component<Props, State> {
   // Use a class property to initialize state, which is a common and modern pattern.
   // FIX: Removed 'public' modifier to align with common React class component style and avoid potential tooling issues.
-  state: State = {
-    hasError: false,
-    error: undefined,
-  };
+  
+  // FIX: Refactored state initialization to use a constructor. The class property syntax might not be correctly handled by the build tooling, leading to incorrect type inference where `this.props` is not recognized. Using a constructor is a more compatible approach.
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      hasError: false,
+      error: undefined,
+    };
+  }
 
   // FIX: Removed 'public' modifier. Static methods are public by default.
   static getDerivedStateFromError(error: Error): State {

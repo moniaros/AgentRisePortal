@@ -237,12 +237,11 @@ This section details each page, organized by the main navigation categories.
 -   **File:** `pages/AutomationRules.tsx`
 -   **Purpose:** Provides a UI for administrators to manage agency-specific automation rules.
 -   **Functionalities:**
-    -   Displays all automation rules in a filterable table.
+    -   Features a tabbed sub-navigation to switch between an overview and specific rule categories (`Lead Conversion`, `Communication Automation`).
+    -   Displays all automation rules for a selected category in a filterable table.
     -   Admins can toggle rules between "Active" and "Inactive".
     -   Admins can access an actions menu to (mock) Edit, Duplicate, or Delete a rule.
     -   Deleting a rule triggers a confirmation modal.
--   **UI Elements:** Filter controls, data table with toggle switches and actions menu, confirmation modal.
+-   **UI Elements:** Tabbed sub-navigation, filter controls, data table with toggle switches and actions menu, confirmation modal.
 -   **Data Source:** `hooks/useAutomationRules.ts` (fetches from `/data/rules/*.json`).
 -   **Localization:** Fully supported (rule names and triggers are read from localization keys).
-
----
