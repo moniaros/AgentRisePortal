@@ -493,7 +493,13 @@
     "riskExposure": "Έκθεση σε Κίνδυνο ανά Τομέα",
     "kpis": {
       "totalGwpWon": "Συνολικό GWP Κερδισμένο",
-      "totalGwpWonSubtitle": "Από leads μάρκετινγκ πλατφόρμας"
+      "totalGwpWonSubtitle": "Από leads μάρκετινγκ πλατφόρμας",
+      "leadToWonRate": "Ποσοστό Μετατροπής Lead",
+      "leadToWonRateSubtitle": "{wonCount} συμβόλαια από {leadCount} leads",
+      "avgCpa": "Μέσο CPA",
+      "avgCpaSubtitle": "€{spend} δαπάνη για {count} συμβόλαια",
+      "micrositeFunnelRate": "Ποσοστό Μετατροπής Funnel",
+      "micrositeFunnelRateSubtitle": "{leads} leads από {pageviews} προβολές"
     }
   },
   "news": {

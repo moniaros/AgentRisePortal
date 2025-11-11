@@ -12,28 +12,54 @@ import ClaimsTrendChart from '../components/executive/ClaimsTrendChart';
 import LeadFunnelChart from '../components/executive/LeadFunnelChart';
 import CampaignRoiTable from '../components/executive/CampaignRoiTable';
 import RiskExposureChart from '../components/executive/RiskExposureChart';
-import { useKpiSnapshotsData } from '../hooks/useKpiSnapshotsData';
+import { useAllKpiSnapshotsData } from '../hooks/useAllKpiSnapshotsData';
+import { useAllLeadsData } from '../hooks/useAllLeadsData';
+import { useAllPerformanceData } from '../hooks/useAllPerformanceData';
+import { useAllFunnelRunsData } from '../hooks/useAllFunnelRunsData';
 
 const ExecutiveDashboard: React.FC = () => {
     const { t } = useLocalization();
     const { data: executiveData, isLoading: isExecutiveLoading, error: executiveError } = useExecutiveData();
     const { data: analyticsData, isLoading: isAnalyticsLoading, error: analyticsError } = useAnalyticsData();
     const { campaigns, isLoading: isCampaignsLoading, error: campaignsError } = useCampaigns();
-    const { kpiSnapshots, isLoading: isKpiLoading, error: kpiError } = useKpiSnapshotsData();
+    const { allKpiSnapshots, isLoading: isKpiLoading, error: kpiError } = useAllKpiSnapshotsData();
+    const { allLeads, isLoading: areLeadsLoading, error: leadsError } = useAllLeadsData();
+    const { allPerformanceSamples, isLoading: arePerfLoading, error: perfError } = useAllPerformanceData();
+    const { allFunnelRuns, isLoading: areFunnelRunsLoading, error: funnelRunsError } = useAllFunnelRunsData();
     
     const [period, setPeriod] = useState(30); // days
 
-    const isLoading = isExecutiveLoading || isAnalyticsLoading || isCampaignsLoading || isKpiLoading;
-    const error = executiveError || analyticsError || campaignsError || kpiError;
+    const isLoading = isExecutiveLoading || isAnalyticsLoading || isCampaignsLoading || isKpiLoading || areLeadsLoading || arePerfLoading || areFunnelRunsLoading;
+    const error = executiveError || analyticsError || campaignsError || kpiError || leadsError || perfError || funnelRunsError;
+
+    const micrositeFunnelRate = useMemo(() => {
+        if (!allFunnelRuns) return { rate: '0.0', leads: 0, pageviews: 0 };
+        
+        const endDate = new Date();
+        const startDate = new Date();
+        startDate.setDate(endDate.getDate() - period);
+
+        const relevantRuns = allFunnelRuns.filter(run => {
+            const runDate = new Date(run.date);
+            return runDate >= startDate && runDate <= endDate;
+        });
+
+        const totalLeads = relevantRuns.reduce((sum, run) => sum + run.leads, 0);
+        const totalPageviews = relevantRuns.reduce((sum, run) => sum + run.pageviews, 0);
+        
+        const rate = totalPageviews > 0 ? ((totalLeads / totalPageviews) * 100).toFixed(1) : '0.0';
+
+        return { rate, leads: totalLeads, pageviews: totalPageviews };
+    }, [allFunnelRuns, period]);
 
     const totalGwpWon = useMemo(() => {
-        if (!kpiSnapshots) return 0;
+        if (!allKpiSnapshots) return 0;
 
         const endDate = new Date();
         const startDate = new Date();
         startDate.setDate(endDate.getDate() - period);
 
-        return kpiSnapshots
+        return allKpiSnapshots
             .filter(snapshot => {
                 const snapshotDate = new Date(snapshot.date);
                 return (
@@ -44,7 +70,52 @@ const ExecutiveDashboard: React.FC = () => {
             })
             .reduce((sum, snapshot) => sum + snapshot.won.gwp, 0);
 
-    }, [kpiSnapshots, period]);
+    }, [allKpiSnapshots, period]);
+
+    const leadToWonRate = useMemo(() => {
+        if (!allKpiSnapshots || !allLeads) return { rate: '0.0', wonCount: 0, leadCount: 0 };
+
+        const endDate = new Date();
+        const startDate = new Date();
+        startDate.setDate(endDate.getDate() - period);
+
+        const wonCount = allKpiSnapshots
+            .filter(s => new Date(s.date) >= startDate && new Date(s.date) <= endDate)
+            .reduce((sum, s) => sum + s.won.count, 0);
+
+        const leadCount = allLeads.filter(l => new Date(l.createdAt) >= startDate && new Date(l.createdAt) <= endDate).length;
+        
+        const rate = leadCount > 0 ? ((wonCount / leadCount) * 100).toFixed(1) : '0.0';
+
+        return { rate, wonCount, leadCount };
+    }, [allKpiSnapshots, allLeads, period]);
+    
+    const averageCpa = useMemo(() => {
+        if (!allKpiSnapshots || !allPerformanceSamples) return { cpa: 0, spend: 0, won: 0 };
+
+        const endDate = new Date();
+        const startDate = new Date();
+        startDate.setDate(endDate.getDate() - period);
+
+        const totalSpend = allPerformanceSamples
+            .filter(s => {
+                const sampleDate = new Date(s.date);
+                return sampleDate >= startDate && sampleDate <= endDate;
+            })
+            .reduce((sum, s) => sum + s.spend, 0);
+
+        const totalWonCount = allKpiSnapshots
+            .filter(s => {
+                const snapshotDate = new Date(s.date);
+                return snapshotDate >= startDate && snapshotDate <= endDate;
+            })
+            .reduce((sum, s) => sum + s.won.count, 0);
+
+        const cpa = totalWonCount > 0 ? totalSpend / totalWonCount : 0;
+
+        return { cpa, spend: totalSpend, won: totalWonCount };
+    }, [allKpiSnapshots, allPerformanceSamples, period]);
+
 
     const campaignKpis = useMemo(() => {
         if (!analyticsData || !campaigns) return { totalSpend: 0, totalImpressions: 0, ctr: 0, totalConversions: 0 };
@@ -80,12 +151,15 @@ const ExecutiveDashboard: React.FC = () => {
             </div>
 
             {isLoading ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-                    {[...Array(5)].map((_, i) => <SkeletonLoader key={i} className="h-24 w-full" />)}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-8 gap-6">
+                    {[...Array(8)].map((_, i) => <SkeletonLoader key={i} className="h-24 w-full" />)}
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-8 gap-6">
                     <KpiCard title={t('executive.kpis.totalGwpWon')} value={`€${totalGwpWon.toLocaleString('el-GR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} subtitle={t('executive.kpis.totalGwpWonSubtitle')} variant="success" />
+                    <KpiCard title={t('executive.kpis.leadToWonRate')} value={`${leadToWonRate.rate}%`} subtitle={t('executive.kpis.leadToWonRateSubtitle', { wonCount: leadToWonRate.wonCount, leadCount: leadToWonRate.leadCount })} />
+                    <KpiCard title={t('executive.kpis.avgCpa')} value={`€${averageCpa.cpa.toLocaleString('el-GR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} subtitle={t('executive.kpis.avgCpaSubtitle', { spend: averageCpa.spend.toLocaleString('el-GR'), count: averageCpa.won })} />
+                    <KpiCard title={t('executive.kpis.micrositeFunnelRate')} value={`${micrositeFunnelRate.rate}%`} subtitle={t('executive.kpis.micrositeFunnelRateSubtitle', { leads: micrositeFunnelRate.leads, pageviews: micrositeFunnelRate.pageviews })} variant="info" />
                     <KpiCard title={t('campaignAnalytics.kpis.totalSpend')} value={`€${campaignKpis.totalSpend.toLocaleString('el-GR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} />
                     <KpiCard title={t('campaignAnalytics.kpis.totalImpressions')} value={campaignKpis.totalImpressions.toLocaleString('el-GR')} />
                     <KpiCard title={t('campaignAnalytics.kpis.ctr')} value={`${campaignKpis.ctr.toFixed(2)}%`} />

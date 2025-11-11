@@ -493,7 +493,13 @@
     "riskExposure": "Risk Exposure by Area",
     "kpis": {
       "totalGwpWon": "Total GWP Won",
-      "totalGwpWonSubtitle": "From platform marketing leads"
+      "totalGwpWonSubtitle": "From platform marketing leads",
+      "leadToWonRate": "Lead-to-Won Rate",
+      "leadToWonRateSubtitle": "{wonCount} deals from {leadCount} leads",
+      "avgCpa": "Average CPA",
+      "avgCpaSubtitle": "€{spend} spend for {count} deals",
+      "micrositeFunnelRate": "Microsite Funnel Rate",
+      "micrositeFunnelRateSubtitle": "{leads} leads from {pageviews} views"
     }
   },
   "news": {

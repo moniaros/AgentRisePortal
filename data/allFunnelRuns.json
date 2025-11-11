@@ -1,0 +1,30 @@
+[
+  {
+    "id": "frun_1",
+    "agencyId": "agency_1",
+    "date": "2024-10-27T10:00:00.000Z",
+    "pageviews": 500,
+    "leads": 5
+  },
+  {
+    "id": "frun_2",
+    "agencyId": "agency_1",
+    "date": "2024-10-26T10:00:00.000Z",
+    "pageviews": 450,
+    "leads": 4
+  },
+  {
+    "id": "frun_3",
+    "agencyId": "agency_2",
+    "date": "2024-10-27T11:00:00.000Z",
+    "pageviews": 800,
+    "leads": 10
+  },
+  {
+    "id": "frun_4",
+    "agencyId": "agency_2",
+    "date": "2024-09-30T11:00:00.000Z",
+    "pageviews": 750,
+    "leads": 8
+  }
+]

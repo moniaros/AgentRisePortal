@@ -1,0 +1,38 @@
+[
+  {
+    "id": "perf_1",
+    "agencyId": "agency_1",
+    "date": "2024-10-27T10:00:00.000Z",
+    "spend": 80,
+    "conversions": {
+      "lead": 1
+    }
+  },
+  {
+    "id": "perf_2",
+    "agencyId": "agency_1",
+    "date": "2024-10-26T10:00:00.000Z",
+    "spend": 120,
+    "conversions": {
+      "lead": 5
+    }
+  },
+  {
+    "id": "perf_3",
+    "agencyId": "agency_2",
+    "date": "2024-10-27T11:00:00.000Z",
+    "spend": 200,
+    "conversions": {
+      "lead": 10
+    }
+  },
+  {
+    "id": "perf_4",
+    "agencyId": "agency_2",
+    "date": "2024-10-26T11:00:00.000Z",
+    "spend": 250,
+    "conversions": {
+      "lead": 12
+    }
+  }
+]

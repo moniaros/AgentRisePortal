@@ -228,6 +228,14 @@ export interface KPISnapshot {
     };
 }
 
+export interface FunnelRun {
+    id: string;
+    agencyId: string;
+    date: string;
+    pageviews: number;
+    leads: number;
+}
+
 
 // Gap Analysis and Policy Parsing
 export interface DetailedPolicy {

@@ -113,6 +113,15 @@ The agent dashboard features several Key Performance Indicator (KPI) cards for a
 -   **Total GWP Won**:
     -   **Purpose**: (Executive Dashboard) To show the total Gross Written Premium from deals won that originated from platform marketing leads.
     -   **Data Source**: Sums the `won.gwp` property from `KPISnapshot` records where the `source` is 'Platform Marketing Leads' and the `date` is within the selected period (e.g., Last 30 Days).
+-   **Lead-to-Won Conversion Rate**:
+    -   **Purpose**: (Executive Dashboard) To measure the effectiveness of the sales funnel from initial lead to a closed-won deal.
+    -   **Data Source**: Calculates `(Total KPISnapshot.won.count) / (Total Leads created)` for the selected time period.
+-   **Average Cost Per Acquisition (CPA)**:
+    -   **Purpose**: (Executive Dashboard) To measure the average cost to acquire a new paying customer through advertising efforts.
+    -   **Data Source**: Calculates `(Total PerfSample.spend) / (Total KPISnapshot.won.count)` for the selected time period.
+-   **Microsite Funnel Conversion Rate**:
+    -   **Purpose**: (Executive Dashboard) To measure the effectiveness of the public-facing microsite in converting visitors into leads.
+    -   **Data Source**: Calculates `(Total FunnelRun.leads / Total FunnelRun.pageviews) * 100` for the selected time period.
 
 ### Onboarding Checklist
 
