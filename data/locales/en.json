@@ -61,7 +61,9 @@
     "businessSummary": "Business Summary",
     "averageRating": "Average Rating",
     "totalReviews": "Total Reviews",
-    "recentReviews": "Recent Reviews"
+    "recentReviews": "Recent Reviews",
+    "basedOn": "based on",
+    "reviews": "reviews"
   },
   "policyTypes": {
     "auto": "Auto",

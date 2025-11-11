@@ -61,7 +61,9 @@
     "businessSummary": "Σύνοψη Επιχείρησης",
     "averageRating": "Μέση Βαθμολογία",
     "totalReviews": "Σύνολο Αξιολογήσεων",
-    "recentReviews": "Πρόσφατες Αξιολογήσεις"
+    "recentReviews": "Πρόσφατες Αξιολογήσεις",
+    "basedOn": "βάσει",
+    "reviews": "αξιολογήσεων"
   },
   "policyTypes": {
     "auto": "Αυτοκινήτου",

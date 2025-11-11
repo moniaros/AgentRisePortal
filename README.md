@@ -56,7 +56,7 @@ If authenticated, the Dashboard makes the following simulated API calls:
 
 1.  **`locations.get`**:
     -   **Purpose:** To fetch the overall business summary.
-    -   **Data Used:** The `title`, `averageRating`, and `totalReviewCount` fields are extracted and displayed in a prominent summary section.
+    -   **Data Used:** The `title`, `averageRating`, and `totalReviewCount` fields are extracted and displayed in a responsive header component. This header shows the business name, a numerical and visual star rating (e.g., "4.9 ★★★★★"), and the total number of reviews (e.g., "based on 132 reviews").
 
 2.  **`locations.reviews.list`**:
     -   **Purpose:** To fetch the most recent reviews for the business.

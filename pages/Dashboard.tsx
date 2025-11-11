@@ -6,6 +6,7 @@ import ErrorMessage from '../components/ui/ErrorMessage';
 import SkeletonLoader from '../components/ui/SkeletonLoader';
 import { GbpLocationSummary, GbpReview, GbpStarRating } from '../types';
 import StarRating from '../components/ui/StarRating';
+import BusinessHeader from '../components/dashboard/BusinessHeader';
 
 const starRatingMap: Record<GbpStarRating, number> = {
     'FIVE': 5,
@@ -32,7 +33,7 @@ const ReviewCard: React.FC<{ review: GbpReview }> = ({ review }) => {
 
 
 const Dashboard: React.FC = () => {
-    const { t, language } = useLocalization();
+    const { t } = useLocalization();
     const navigate = useNavigate();
 
     const [summary, setSummary] = useState<GbpLocationSummary | null>(null);
@@ -65,17 +66,10 @@ const Dashboard: React.FC = () => {
         loadData();
     }, [navigate]);
 
-    const formattedDate = new Date().toLocaleDateString(language, {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-    });
-
     if (isLoading) {
         return (
             <div className="space-y-6">
-                <SkeletonLoader className="h-24 w-full" />
+                <SkeletonLoader className="h-28 w-full" />
                 <SkeletonLoader className="h-12 w-1/3" />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <SkeletonLoader className="h-32 w-full" />
@@ -93,32 +87,10 @@ const Dashboard: React.FC = () => {
 
     return (
         <div className="space-y-6">
-            <header className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
-                <div>
-                    <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
-                        {summary?.title || 'Dashboard'}
-                    </h1>
-                    <p className="text-md text-gray-500 dark:text-gray-400 mt-1">{formattedDate}</p>
-                </div>
-            </header>
-
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md flex flex-col sm:flex-row items-center justify-around gap-6">
-                <div className="text-center">
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Average Rating</p>
-                    <div className="flex items-center gap-2 mt-1">
-                        <p className="text-4xl font-bold">{summary?.averageRating.toFixed(1)}</p>
-                        <StarRating rating={summary?.averageRating || 0} />
-                    </div>
-                </div>
-                <div className="h-16 w-px bg-gray-200 dark:bg-gray-700 hidden sm:block"></div>
-                 <div className="text-center">
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Total Reviews</p>
-                    <p className="text-4xl font-bold mt-1">{summary?.totalReviewCount}</p>
-                </div>
-            </div>
+            <BusinessHeader summary={summary} />
             
             <div>
-                <h2 className="text-2xl font-semibold mb-4">Recent Reviews</h2>
+                <h2 className="text-2xl font-semibold mb-4">{t('dashboard.recentReviews')}</h2>
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {reviews.map(review => <ReviewCard key={review.name} review={review} />)}
                 </div>
