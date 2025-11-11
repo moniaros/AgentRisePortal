@@ -1,5 +1,3 @@
-
-
 {
   "common": {
     "loading": "Φόρτωση...",
@@ -13,6 +11,7 @@
     "all": "Όλα"
   },
   "nav": {
+    "overview": "Επισκόπηση",
     "dashboard": "Πίνακας Ελέγχου",
     "leadsDashboard": "Πίνακας Leads",
     "leadGen": "Λίστα Leads",
@@ -24,7 +23,7 @@
     "userManagement": "Διαχείριση Χρηστών",
     "billing": "Χρεώσεις",
     "micrositeBuilder": "Δόμηση Microsite",
-    "executiveDashboard": "Πίνακας Διοίκησης",
+    "executiveAnalytics": "Εκτελεστική Ανάλυση",
     "news": "Νέα & Ανακοινώσεις",
     "testimonials": "Αξιολογήσεις"
   },

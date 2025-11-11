@@ -10,8 +10,12 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
     const { t } = useLocalization();
 
-    const navLinks = [
+    const overviewLinks = [
         { path: '/', label: t('nav.dashboard'), icon: 'dashboard' },
+        { path: '/executive-dashboard', label: t('nav.executiveAnalytics'), icon: 'analytics' },
+    ];
+
+    const navLinks = [
         { path: '/leads-dashboard', label: t('nav.leadsDashboard'), icon: 'analytics' },
         { path: '/lead-generation', label: t('nav.leadGen'), icon: 'leadGen' },
         { path: '/micro-crm', label: t('nav.crm'), icon: 'crm' },
@@ -27,7 +31,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
     const managementLinks = [
         { path: '/user-management', label: t('nav.userManagement'), icon: 'settings' },
         { path: '/billing', label: t('nav.billing'), icon: 'billing' },
-        { path: '/executive-dashboard', label: t('nav.executiveDashboard'), icon: 'dashboard' },
     ];
 
     const NavItem: React.FC<{ path: string, label: any, icon: string }> = ({ path, label, icon }) => (
@@ -52,7 +55,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                 <h1 className="text-2xl font-bold text-blue-600 dark:text-blue-400">AgentOS</h1>
             </div>
             <nav className="flex-1 p-4 overflow-y-auto">
-                <h2 className="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Menu</h2>
+                <h2 className="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">{t('nav.overview')}</h2>
+                <ul>
+                    {overviewLinks.map(link => <li key={link.path}><NavItem {...link} /></li>)}
+                </ul>
+                <h2 className="px-2 mt-6 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Menu</h2>
                 <ul>
                     {navLinks.map(link => <li key={link.path}><NavItem {...link} /></li>)}
                 </ul>

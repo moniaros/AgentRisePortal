@@ -228,6 +228,11 @@ The platform is currently a high-fidelity MVP with a simulated backend. The foll
 -   **Components:** `GTMProvider.tsx`, `RouteAnalyticsTracker.tsx`, `Sitemap.tsx`.
 -   **Services:** `services/analytics.ts`.
 
+#### Navigation Improvements
+-   **New "Overview" Section:** The main sidebar has been restructured to include a new top-level "Overview" section for high-level dashboards.
+-   **Executive Analytics:** The "Executive Dashboard" has been renamed to "Executive Analytics" for clarity and moved into the new "Overview" section.
+-   **Enhanced Analytics Page:** The Executive Analytics page has been enhanced to include key campaign summary KPIs (Total Spend, Impressions, CTR, Conversions), providing a more comprehensive single-view dashboard for leadership.
+
 ### Comprehensive Pages and Routing Documentation
 
 For a complete and detailed audit of every page, component, route, and data source within the application, please refer to the comprehensive documentation document. This guide is intended for developers and stakeholders to understand the full scope and architecture of the front-end.

@@ -1,5 +1,3 @@
-
-
 {
   "common": {
     "loading": "Loading...",
@@ -13,6 +11,7 @@
     "all": "All"
   },
   "nav": {
+    "overview": "Overview",
     "dashboard": "Dashboard",
     "leadsDashboard": "Leads Dashboard",
     "leadGen": "Leads List",
@@ -24,7 +23,7 @@
     "userManagement": "User Management",
     "billing": "Billing",
     "micrositeBuilder": "Microsite Builder",
-    "executiveDashboard": "Executive Dashboard",
+    "executiveAnalytics": "Executive Analytics",
     "news": "News & Updates",
     "testimonials": "Testimonials"
   },
