@@ -85,7 +85,11 @@
       "newInquiriesToday": "New Inquiries Today",
       "newInquiriesSubtitle": "Transactions requiring immediate follow-up.",
       "overdueFollowUps": "Overdue Follow-ups",
-      "overdueFollowUpsSubtitle": "Open opportunities that require immediate action."
+      "overdueFollowUpsSubtitle": "Open opportunities that require immediate action.",
+      "unreadMessages": "Unread Messages",
+      "unreadMessagesSubtitle": "Inbound interactions awaiting a response.",
+      "newPortalSubmissions": "New Portal Submissions",
+      "newPortalSubmissionsSubtitle": "New claims & service requests for client retention."
     },
     "basedOn": "Based on",
     "reviews": "reviews",

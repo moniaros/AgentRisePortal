@@ -85,7 +85,11 @@
       "newInquiriesToday": "Νέα Αιτήματα Σήμερα",
       "newInquiriesSubtitle": "Συναλλαγές που απαιτούν άμεση παρακολούθηση.",
       "overdueFollowUps": "Εκπρόθεσμες Ενέργειες",
-      "overdueFollowUpsSubtitle": "Ανοιχτές ευκαιρίες που απαιτούν άμεση δράση."
+      "overdueFollowUpsSubtitle": "Ανοιχτές ευκαιρίες που απαιτούν άμεση δράση.",
+      "unreadMessages": "Αδιάβαστα Μηνύματα",
+      "unreadMessagesSubtitle": "Εισερχόμενες αλληλεπιδράσεις που αναμένουν απάντηση.",
+      "newPortalSubmissions": "Νέες Υποβολές Πύλης",
+      "newPortalSubmissionsSubtitle": "Νέες απαιτήσεις & αιτήματα για διατήρηση πελατών."
     },
     "basedOn": "Βάσει",
     "reviews": "αξιολογήσεων",

@@ -1,7 +1,46 @@
 import { MOCK_CUSTOMERS, MOCK_LEADS, MOCK_AUDIT_LOGS, MOCK_USERS, MOCK_ANALYTICS_DATA, MOCK_EXECUTIVE_DATA, MOCK_NEWS_ARTICLES, MOCK_TESTIMONIALS, MOCK_USER_ACTIVITY } from '../data/mockData';
-import { DetailedPolicy, AnalyticsData, User, AuditLog, ExecutiveData, NewsArticle, Testimonial, UserActivityEvent, AutomationRule, MessageTemplate, TemplateChannel, AutomationEvent, AutomationAnalytics, GbpLocationSummary, GbpReview, TransactionInquiry, Opportunity__EXT } from '../types';
+import { DetailedPolicy, AnalyticsData, User, AuditLog, ExecutiveData, NewsArticle, Testimonial, UserActivityEvent, AutomationRule, MessageTemplate, TemplateChannel, AutomationEvent, AutomationAnalytics, GbpLocationSummary, GbpReview, TransactionInquiry, Opportunity__EXT, Interaction, FirstNoticeOfLoss, ServiceRequest } from '../types';
 
 const SIMULATED_DELAY = 500;
+
+export const fetchFirstNoticeOfLoss = async (): Promise<FirstNoticeOfLoss[]> => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const res = await fetch('/data/firstNoticeOfLoss.json');
+            if (!res.ok) throw new Error('Failed to fetch firstNoticeOfLoss mock data');
+            const data = await res.json();
+            setTimeout(() => resolve(data), SIMULATED_DELAY);
+        } catch (err) {
+            reject(err);
+        }
+    });
+};
+
+export const fetchServiceRequests = async (): Promise<ServiceRequest[]> => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const res = await fetch('/data/serviceRequests.json');
+            if (!res.ok) throw new Error('Failed to fetch serviceRequests mock data');
+            const data = await res.json();
+            setTimeout(() => resolve(data), SIMULATED_DELAY);
+        } catch (err) {
+            reject(err);
+        }
+    });
+};
+
+export const fetchInteractions = async (): Promise<Interaction[]> => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const res = await fetch('/data/interactions.json');
+            if (!res.ok) throw new Error('Failed to fetch interactions mock data');
+            const data = await res.json();
+            setTimeout(() => resolve(data), SIMULATED_DELAY);
+        } catch (err) {
+            reject(err);
+        }
+    });
+};
 
 export const fetchOpportunities = async (): Promise<Opportunity__EXT[]> => {
     return new Promise(async (resolve, reject) => {

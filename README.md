@@ -94,6 +94,14 @@ The agent dashboard features several Key Performance Indicator (KPI) cards for a
     -   **Purpose**: To highlight urgent, open opportunities that have passed their scheduled follow-up date.
     -   **Data Source**: Counts records from `Opportunity__EXT` where the `nextFollowUpDate` is in the past and the opportunity `stage` is not 'won' or 'lost'.
     -   **Visuals**: This card uses a "danger" theme (red coloring) to visually emphasize its urgency.
+-   **Unread Messages**:
+    -   **Purpose**: To highlight active, inbound customer communications that require an agent's attention.
+    -   **Data Source**: Counts `Interaction` records where `direction` is 'inbound' and `read` is `false`.
+    -   **Visuals**: This card uses an "info" theme (blue coloring) to signal an active engagement opportunity.
+-   **New Portal Submissions**:
+    -   **Purpose**: To track new claims (First Notice of Loss) and service requests submitted through the customer portal, highlighting urgent needs that are key to client retention.
+    -   **Data Source**: A combined count of `Transaction.FirstNoticeOfLoss` and `ServiceRequest` records where the `createdAt` timestamp is within the current day.
+    -   **Visuals**: This card uses a "success" theme (green coloring) to signal important client activity.
 -   **Google Business Profile Rating**: Displays the average star rating and total review count from the integrated Google Business Profile account.
 
 ### Onboarding Checklist

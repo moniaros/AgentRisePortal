@@ -169,6 +169,37 @@ export interface Opportunity__EXT {
     customerId: string;
 }
 
+export interface Interaction {
+    id: string;
+    agencyId: string;
+    customerId: string;
+    channel: 'email' | 'sms' | 'chat';
+    direction: 'inbound' | 'outbound';
+    content: string;
+    createdAt: string;
+    read: boolean;
+}
+
+export interface FirstNoticeOfLoss {
+    id: string;
+    agencyId: string;
+    customerId: string;
+    policyNumber: string;
+    lossDate: string;
+    description: string;
+    createdAt: string;
+}
+
+export interface ServiceRequest {
+    id: string;
+    agencyId: string;
+    customerId: string;
+    policyNumber: string;
+    requestType: 'add_driver' | 'remove_vehicle' | 'update_address' | 'document_request';
+    details: string;
+    createdAt: string;
+}
+
 
 // Gap Analysis and Policy Parsing
 export interface DetailedPolicy {

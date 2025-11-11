@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useLocalization } from '../hooks/useLocalization';
 import { fetchGbpData } from '../services/api';
 import ErrorMessage from '../components/ui/ErrorMessage';
@@ -9,11 +8,13 @@ import BusinessHeader from '../components/dashboard/BusinessHeader';
 import ReviewFeed from '../components/dashboard/ReviewFeed';
 import { useInquiriesData } from '../hooks/useInquiriesData';
 import { useOpportunitiesData } from '../hooks/useOpportunitiesData';
+import { useInteractionsData } from '../hooks/useInteractionsData';
+import { useFtnolData } from '../hooks/useFtnolData';
+import { useServiceRequestsData } from '../hooks/useServiceRequestsData';
 import KpiCard from '../components/analytics/KpiCard';
 
 const Dashboard: React.FC = () => {
     const { t } = useLocalization();
-    const navigate = useNavigate();
 
     const [summary, setSummary] = useState<GbpLocationSummary | null>(null);
     const [reviews, setReviews] = useState<GbpReview[]>([]);
@@ -22,6 +23,9 @@ const Dashboard: React.FC = () => {
 
     const { inquiries, isLoading: isInquiriesLoading, error: inquiriesError } = useInquiriesData();
     const { opportunities, isLoading: isOppsLoading, error: oppsError } = useOpportunitiesData();
+    const { interactions, isLoading: areInteractionsLoading, error: interactionsError } = useInteractionsData();
+    const { ftnol, isLoading: isFtnolLoading, error: ftnolError } = useFtnolData();
+    const { serviceRequests, isLoading: areServiceRequestsLoading, error: serviceRequestsError } = useServiceRequestsData();
 
     const newInquiriesToday = useMemo(() => {
         if (!inquiries) return 0;
@@ -45,12 +49,26 @@ const Dashboard: React.FC = () => {
         }).length;
     }, [opportunities]);
 
+    const unreadMessages = useMemo(() => {
+        if (!interactions) return 0;
+        return interactions.filter(interaction => interaction.direction === 'inbound' && !interaction.read).length;
+    }, [interactions]);
+
+    const newPortalSubmissions = useMemo(() => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const newFtnol = ftnol.filter(f => new Date(f.createdAt) >= today).length;
+        const newRequests = serviceRequests.filter(r => new Date(r.createdAt) >= today).length;
+        
+        return newFtnol + newRequests;
+    }, [ftnol, serviceRequests]);
+
     useEffect(() => {
         const locationName = localStorage.getItem('gbp_location_name');
-        const gapi = (window as any).gapi;
 
-        if (!locationName || !gapi?.auth2?.getAuthInstance()?.isSignedIn.get()) {
-            navigate('/settings');
+        if (!locationName) {
+            setIsGbpLoading(false); // If not configured, just stop the GBP loading process.
             return;
         }
 
@@ -69,10 +87,10 @@ const Dashboard: React.FC = () => {
             }
         };
         loadData();
-    }, [navigate, t]);
+    }, [t]);
 
-    const isLoading = isGbpLoading || isInquiriesLoading || isOppsLoading;
-    const error = gbpError || inquiriesError?.message || oppsError?.message;
+    const isLoading = isGbpLoading || isInquiriesLoading || isOppsLoading || areInteractionsLoading || isFtnolLoading || areServiceRequestsLoading;
+    const error = gbpError || inquiriesError?.message || oppsError?.message || interactionsError?.message || ftnolError?.message || serviceRequestsError?.message;
 
     if (isLoading) {
         return (
@@ -80,7 +98,8 @@ const Dashboard: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <SkeletonLoader className="h-24 w-full" />
                     <SkeletonLoader className="h-24 w-full" />
-                    <SkeletonLoader className="h-24 w-full md:col-span-2 lg:col-span-2" />
+                    <SkeletonLoader className="h-24 w-full" />
+                    <SkeletonLoader className="h-24 w-full" />
                 </div>
                 <SkeletonLoader className="h-28 w-full" />
                 <div className="flex justify-between items-center">
@@ -113,9 +132,18 @@ const Dashboard: React.FC = () => {
                     subtitle={t('dashboard.kpis.overdueFollowUpsSubtitle')}
                     variant="danger"
                 />
-                <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg shadow-md md:col-span-2 lg:col-span-2 flex items-center justify-center">
-                    <p className="text-sm text-gray-500">Other KPI cards coming soon...</p>
-                </div>
+                <KpiCard 
+                    title={t('dashboard.kpis.unreadMessages')} 
+                    value={unreadMessages}
+                    subtitle={t('dashboard.kpis.unreadMessagesSubtitle')}
+                    variant="info"
+                />
+                <KpiCard 
+                    title={t('dashboard.kpis.newPortalSubmissions')} 
+                    value={newPortalSubmissions}
+                    subtitle={t('dashboard.kpis.newPortalSubmissionsSubtitle')}
+                    variant="success"
+                />
             </div>
             
             {summary && <BusinessHeader summary={summary} />}

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "sr_1",
+    "agencyId": "agency_1",
+    "customerId": "cust_1",
+    "policyNumber": "CAR-12345",
+    "requestType": "add_driver",
+    "details": "Request to add my son, John Papageorgiou, DOB 2006-03-15, to my auto policy.",
+    "createdAt": "2024-10-27T16:00:00.000Z"
+  },
+  {
+    "id": "sr_2",
+    "agencyId": "agency_1",
+    "customerId": "cust_2",
+    "policyNumber": "HEALTH-FGHIJ",
+    "requestType": "document_request",
+    "details": "Can you please send me a copy of my health insurance ID card?",
+    "createdAt": "2024-10-26T12:00:00.000Z"
+  },
+  {
+    "id": "sr_3",
+    "agencyId": "agency_1",
+    "customerId": "cust_1",
+    "policyNumber": "HOME-67890",
+    "requestType": "update_address",
+    "details": "My mailing address has changed to: Leof. Posidonos 45, Glyfada, 16675",
+    "createdAt": "2024-10-27T16:30:00.000Z"
+  },
+  {
+    "id": "sr_4",
+    "agencyId": "agency_2",
+    "customerId": "cust_3",
+    "policyNumber": "CAR-XYZ",
+    "requestType": "remove_vehicle",
+    "details": "Please remove the 2018 Ford Focus from my commercial policy.",
+    "createdAt": "2024-10-27T10:00:00.000Z"
+  }
+]
