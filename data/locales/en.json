@@ -4,7 +4,7 @@
     "online": "Online",
     "offline": "Offline",
     "logout": "Logout",
-    "socials": "Socials"
+    "socials": "Social Networks"
   },
   "nav": {
     "overview": "Overview",
@@ -21,18 +21,18 @@
     "socialAds": "Ad Campaigns",
     "website": "Website",
     "micrositeBuilder": "Microsite Builder",
-    "news": "News",
+    "news": "News & Insights",
     "content": "Content",
     "testimonials": "Testimonials",
-    "management": "Management",
+    "management": "Agency Management",
     "userManagement": "User Management",
-    "billing": "Billing",
-    "support": "Support",
+    "billing": "Billing & Subscriptions",
+    "support": "Support Center",
     "settings": "Settings",
     "profile": "My Profile",
-    "appSettings": "App Settings",
+    "appSettings": "Application Settings",
     "leadGen": "Lead Generation",
-    "templates": "Templates",
+    "templates": "Message Templates",
     "eventLog": "Event Log"
   },
   "common": {
@@ -58,19 +58,19 @@
     "failure": "Failure"
   },
   "policyTypes": {
-    "auto": "Auto",
-    "home": "Home",
-    "life": "Life",
-    "health": "Health"
+    "auto": "Auto Insurance",
+    "home": "Home Insurance",
+    "life": "Life Insurance",
+    "health": "Health Insurance"
   },
   "validation": {
-    "required": "{fieldName} is required.",
+    "required": "The {fieldName} field is required.",
     "invalidEmail": "Please enter a valid email address.",
-    "policyNumberRequired": "Policy number is required."
+    "policyNumberRequired": "The Policy Number is a required field."
   },
   "login": {
-    "title": "Welcome Back",
-    "subtitle": "Sign in to manage your agency",
+    "title": "Welcome to your Agency Portal",
+    "subtitle": "Enter your credentials to access your dashboard.",
     "emailLabel": "Email Address",
     "emailPlaceholder": "you@example.com",
     "passwordLabel": "Password",
@@ -78,28 +78,28 @@
     "forgotPassword": "Forgot your password?",
     "loginButton": "Sign In",
     "authenticating": "Authenticating...",
-    "errorInvalidCredentials": "Invalid email or password. Please try again."
+    "errorInvalidCredentials": "Invalid email or password provided. Please try again."
   },
   "dashboard": {
     "basedOn": "Based on",
     "reviews": "reviews",
-    "recentReviews": "Recent Reviews",
-    "showUnreplied": "Show only unreplied",
+    "recentReviews": "Recent Customer Reviews",
+    "showUnreplied": "Show unreplied reviews only",
     "stars": "stars",
     "generatingReply": "Generating...",
     "retry": "Retry",
     "generateAiReply": "Generate AI Reply",
     "yourReply": "Your Reply:",
     "postReply": "Post Reply",
-    "replyPosted": "Reply posted successfully!",
+    "replyPosted": "Your reply has been posted successfully.",
     "emptyStates": {
-      "noReviews": "No reviews found for this location yet.",
-      "allReplied": "Great job! You've replied to all your recent reviews."
+      "noReviews": "No reviews have been found for this business location.",
+      "allReplied": "Excellent work! You have replied to all recent reviews."
     },
     "errors": {
-      "dataFetchFailed": "Failed to fetch Google Business Profile data. Please check your connection in Settings.",
-      "noApiKey": "Gemini API key is not configured. Please add it in Settings.",
-      "replyGenerationFailed": "Failed to generate AI reply. Please try again.",
+      "dataFetchFailed": "Failed to fetch Google Business Profile data. Please verify your connection in Settings.",
+      "noApiKey": "A Google Gemini API key has not been configured. Please add one in the Settings menu.",
+      "replyGenerationFailed": "The AI reply could not be generated. Please try again.",
       "replyPostFailed": "Failed to post the reply. Please check your connection and try again."
     }
   },
@@ -112,22 +112,22 @@
     "edit": "Edit",
     "delete": "Delete",
     "cancel": "Cancel",
-    "save": "Save",
+    "save": "Save Changes",
     "addCustomer": "Add Customer",
-    "editCustomer": "Edit Customer",
-    "searchAll": "Search customers and leads...",
+    "editCustomer": "Edit Customer Profile",
+    "searchAll": "Search by customer name or email...",
     "recentLeads": "Recent Leads",
     "customers": "All Customers",
-    "confirmDelete": "Are you sure you want to delete this customer?",
-    "syncPolicies": "Sync Policies from Storage",
+    "confirmDelete": "Are you sure you wish to permanently delete this customer record?",
+    "syncPolicies": "Sync from Local Storage",
     "syncing": "Syncing...",
-    "syncSuccess": "Synced {syncedCustomers} new customers and {syncedPolicies} policies.",
+    "syncSuccess": "Synchronization complete. Imported {syncedCustomers} new customer profiles and {syncedPolicies} policies.",
     "form": {
       "firstName": "First Name",
       "lastName": "Last Name",
       "email": "Email",
-      "phone": "Phone",
-      "address": "Address",
+      "phone": "Phone Number",
+      "address": "Full Address",
       "dob": "Date of Birth",
       "communicationPreferences": "Communication Preferences",
       "policies": "Policies",
@@ -136,8 +136,8 @@
       "premium": "Premium",
       "startDate": "Start Date",
       "endDate": "End Date",
-      "noPolicies": "No policies added yet.",
-      "addPolicy": "Add Policy"
+      "noPolicies": "No policies have been added for this customer.",
+      "addPolicy": "Add a Policy"
     }
   },
   "leads": {
@@ -147,31 +147,31 @@
     "viewDetails": "View Details",
     "noLeadsFound": "No leads match the current filters.",
     "source": "Source",
-    "createdDate": "Created Date",
+    "createdDate": "Date Created",
     "leadDetails": "Lead Details",
-    "policyInterest": "Policy Interest"
+    "policyInterest": "Policy of Interest"
   },
   "customer": {
     "editProfile": "Edit Profile",
-    "analyzePolicies": "Analyze Policies with AI",
-    "analyzeDescription": "Upload a new policy document for this customer. Our AI will extract the details, save it to their profile, and add an analysis summary to the timeline.",
-    "timeline": "Timeline",
-    "addEvent": "Add Event",
-    "changeAddressTitle": "Change Customer Address",
+    "analyzePolicies": "Analyze New Policy with AI",
+    "analyzeDescription": "Upload a policy document for this customer. The AI assistant will extract key details, save the policy to their profile, and summarize the analysis on the timeline.",
+    "timeline": "Customer Timeline",
+    "addEvent": "Add Timeline Event",
+    "changeAddressTitle": "Update Customer Address",
     "attentionFlagTitle": "Set Attention Flag",
     "attentionReason": "Reason for Flag",
     "attentionReasonPlaceholder": "e.g., High-value client, renewal negotiation pending...",
-    "addEventTitle": "Add Timeline Event",
+    "addEventTitle": "Add a New Timeline Event",
     "eventType": "Event Type",
-    "eventDetails": "Details",
-    "eventDetailsPlaceholder": "Log a call, meeting, or note...",
+    "eventDetails": "Event Details",
+    "eventDetailsPlaceholder": "Log the details of a call, meeting, or general note...",
     "attachments": "Attachments",
     "uploadAttachment": "Upload a file (max 5MB)",
-    "annotationPlaceholder": "Add an annotation...",
+    "annotationPlaceholder": "Add an annotation to this event...",
     "saveAnnotation": "Save Note",
     "flagEvent": "Flag for Follow-up",
-    "unflagEvent": "Unflag Event",
-    "noTimeline": "No timeline events recorded yet.",
+    "unflagEvent": "Remove Flag",
+    "noTimeline": "No timeline events have been recorded for this customer.",
     "attachmentSize": "({size} KB)",
     "sms": "SMS",
     "coverages": "Coverages"
@@ -181,73 +181,73 @@
     "call": "Call",
     "email": "Email",
     "meeting": "Meeting",
-    "system": "System",
+    "system": "System Event",
     "policy_update": "Policy Update",
     "claim": "Claim"
   },
   "gapAnalysis": {
     "title": "AI Policy Scanner",
-    "subtitle": "Upload an insurance policy document (PDF, PNG, JPG) to automatically extract coverage details and identify sales opportunities.",
+    "subtitle": "Utilize our AI-powered scanner to automatically extract key data from insurance documents (PDF, PNG, JPG) and identify potential coverage gaps and sales opportunities.",
     "step1": "Step 1: Upload a Policy Document",
     "step2": "Step 2: Provide Customer Context (Optional)",
     "fetchingPolicy": "Extracting policy data...",
-    "analyzing": "Analyzing for gaps...",
-    "dragDrop": "Drag & drop a file here, or",
-    "browse": "browse",
-    "fileTypes": "Supported: PDF, PNG, JPG",
+    "analyzing": "Analyzing for gaps & opportunities...",
+    "dragDrop": "Drag and drop a file here, or",
+    "browse": "browse your files",
+    "fileTypes": "Supported file types: PDF, PNG, JPG",
     "extractedInfo": "Extracted Policy Information",
     "policyHolder": "Policyholder",
     "insuredItems": "Insured Items & Coverages",
     "userNeedsTitle": "Customer Needs & Context",
-    "userNeedsPlaceholder": "e.g., 'Client just had a new baby and is concerned about life insurance.' or 'Customer is buying a second car.'",
+    "userNeedsPlaceholder": "e.g., 'Client recently had a new child and is concerned about life insurance.' or 'Customer is purchasing a second vehicle.'",
     "analyzeGaps": "Analyze for Gaps & Opportunities",
     "resultsTitle": "AI Analysis Results",
     "startOver": "Start Over",
-    "coverageGaps": "Coverage Gaps",
+    "coverageGaps": "Identified Coverage Gaps",
     "current": "Current",
     "recommended": "Recommended",
     "upsellOpportunities": "Upsell Opportunities",
     "crossSellOpportunities": "Cross-Sell Opportunities",
     "errors": {
-      "parsingFailed": "Failed to parse the policy document. Please try a clearer image or a different file.",
-      "analysisFailed": "The AI analysis failed. This could be a temporary issue. Please try again."
+      "parsingFailed": "Failed to parse the provided document. Please try a clearer image or a different file format.",
+      "analysisFailed": "The AI analysis could not be completed. This may be a temporary issue. Please try again."
     }
   },
   "onboarding": {
     "title": "Welcome to AgentOS, {name}!",
-    "subtitle": "Let's get your agency set up for success. Here are a few key features to explore:",
+    "subtitle": "Let's configure your agency for success. Here are a few key features to explore first:",
     "features": {
       "crm": {
         "title": "Micro-CRM",
-        "description": "Manage all your customers and leads in one simple, powerful interface."
+        "description": "Manage all of your customers and leads within one simple, powerful interface."
       },
       "gapAnalysis": {
         "title": "AI Policy Scanner",
-        "description": "Instantly analyze policy documents to find upsell and cross-sell opportunities."
+        "description": "Instantly analyze policy documents to discover valuable upsell and cross-sell opportunities."
       },
       "social": {
         "title": "Social Composer",
-        "description": "Use AI to create and schedule engaging social media content in seconds."
+        "description": "Leverage AI to create and schedule engaging social media content in seconds."
       }
     },
     "checklist": {
       "title": "Your Onboarding Checklist",
       "profile": "Complete your agent profile",
-      "policy": "Analyze your first policy",
+      "policy": "Analyze your first policy document",
       "campaign": "Create your first social media post",
-      "allDone": "All done! You're ready to supercharge your agency.",
-      "getStarted": "Go to Dashboard"
+      "allDone": "Setup complete! You're ready to supercharge your agency.",
+      "getStarted": "Proceed to Dashboard"
     }
   },
   "billing": {
     "title": "Billing is Not Yet Active"
   },
   "socialComposer": {
-    "placeholder": "What do you want to talk about?",
+    "placeholder": "What topic would you like to post about?",
     "schedule": "Schedule Post",
-    "platforms": "Publish to",
-    "preview": "Preview",
-    "templatesTitle": "Or, start with a template:",
+    "platforms": "Publish To",
+    "preview": "Live Preview",
+    "templatesTitle": "Or, start from a template:",
     "templates": [
       {
         "title": "Auto Insurance Tip",
@@ -265,15 +265,15 @@
     "aiHelper": {
       "title": "AI Content Assistant",
       "placeholder": "e.g., 'a post about the importance of umbrella insurance'",
-      "button": "Generate"
+      "button": "Generate Content"
     }
   },
   "campaigns": {
-    "create": "Create Campaign"
+    "create": "Create New Campaign"
   },
   "campaignAnalytics": {
     "title": "Campaign Analytics",
-    "noData": "No data available for the selected filters.",
+    "noData": "No data is available for the selected filters.",
     "kpis": {
       "totalSpend": "Total Spend",
       "totalImpressions": "Total Impressions",
@@ -302,7 +302,7 @@
   },
   "profile": {
     "title": "My Profile",
-    "updateSuccess": "Profile updated successfully!",
+    "updateSuccess": "Profile updated successfully.",
     "change": "Change",
     "personalInfo": "Personal Information",
     "profilePhoto": "Profile Photo",
@@ -311,20 +311,20 @@
     "jobTitle": "Job Title",
     "department": "Department",
     "contactDetails": "Contact Details",
-    "officeLocation": "Office / Branch",
+    "officeLocation": "Office / Branch Location",
     "workPhone": "Work Phone",
     "mobilePhone": "Mobile Phone",
     "digitalSignature": "Digital Signature",
-    "signatureDescription": "This image will be used as your signature in documents and emails.",
+    "signatureDescription": "This image will be used as your signature in documents and automated emails.",
     "roleAndPermissions": "Role & Permissions",
     "roleTitle": "Role Title",
     "permissionsScope": "Permissions Scope",
     "licensesAndCertifications": "Licenses & Certifications",
     "licenseType": "License Type",
     "licenseNumber": "License Number",
-    "expirationDate": "Expiration",
+    "expirationDate": "Expiration Date",
     "status": "Status",
-    "recentActivity": "Recent Activity",
+    "recentActivity": "Recent Activity Log",
     "noActivity": "No recent activity found."
   },
   "licenseStatus": {
@@ -340,13 +340,13 @@
       "lightMode": "Light Mode"
     },
     "setup": {
-      "title": "API & Integration Setup",
+      "title": "API Configuration",
       "googleClientId": "Google Cloud Client ID",
       "googleClientIdPlaceholder": "Enter your Google Client ID for OAuth",
       "geminiApiKey": "Google Gemini API Key",
       "geminiApiKeyPlaceholder": "Enter your Gemini API Key",
       "saveButton": "Save Keys",
-      "saveSuccess": "API keys saved successfully!"
+      "saveSuccess": "API keys have been saved successfully."
     },
     "integrations": {
       "title": "Integrations",
@@ -354,28 +354,28 @@
       "statusNotConnected": "Not Connected",
       "statusConnectedTo": "Connected to: {businessName}",
       "statusFetchingProfiles": "Connecting... fetching profiles...",
-      "statusNoAccounts": "Warning: No Google Business accounts found.",
+      "statusNoAccounts": "Warning: No Google Business accounts were found.",
       "statusFetchingLocations": "Fetching business locations...",
-      "statusNoLocations": "Warning: No business locations found in your account.",
-      "statusApiError": "Error: Could not connect to the API.",
+      "statusNoLocations": "Warning: No business locations were found in your account.",
+      "statusApiError": "Error: Could not connect to the Google API.",
       "statusConnecting": "Connecting...",
       "statusFailed": "Connection failed.",
       "connectButton": "Connect with Google",
-      "successConnected": "Successfully connected to {businessName}!",
+      "successConnected": "Successfully connected to {businessName}.",
       "warningNoAccounts": "No Google Business Profile accounts were found associated with that Google account.",
       "warningNoLocations": "No business locations were found in your Google Business account.",
-      "errorNoClientId": "Google Client ID is not saved. Please save it in the setup section above.",
-      "errorGapiNotLoaded": "Google API client failed to load. Please check your connection or ad blocker.",
-      "errorApi": "An API error occurred. Please check the console for details.",
+      "errorNoClientId": "The Google Client ID has not been saved. Please configure it in the setup section above.",
+      "errorGapiNotLoaded": "The Google API client failed to load. Please check your internet connection or ad blocker.",
+      "errorApi": "An API error occurred. Please check the developer console for more details.",
       "errorSignIn": "Google Sign-In failed. Please try again."
     },
     "socialConnections": {
-        "title": "Social Connections",
-        "description": "Connect your social media accounts to enable direct posting and ad management.",
+        "title": "Social Media Connections",
+        "description": "Connect your social media accounts to enable direct posting and advertising management.",
         "connect": "Connect",
         "disconnect": "Disconnect",
-        "modalTitle": "Allow AgentOS to access {platform}?",
-        "permissionsTitle": "AgentOS will be able to:",
+        "modalTitle": "Authorize AgentOS to access {platform}?",
+        "permissionsTitle": "AgentOS will be granted the following permissions:",
         "cancel": "Cancel",
         "allow": "Allow & Connect",
         "platforms": {
@@ -395,16 +395,16 @@
     }
   },
   "userManagement": {
-    "inviteUser": "Invite User",
+    "inviteUser": "Invite Team Member",
     "users": "Users",
     "auditLogs": "Audit Logs",
     "role": "Role",
     "agent": "Agent",
     "admin": "Admin",
     "removeUser": "Remove",
-    "cannotRemoveSelf": "You cannot remove yourself.",
-    "confirmRemove": "Are you sure you want to remove {userName}?",
-    "inviteModalTitle": "Invite a New User",
+    "cannotRemoveSelf": "You cannot remove your own user account.",
+    "confirmRemove": "Are you sure you want to remove the user {userName}?",
+    "inviteModalTitle": "Invite a New Team Member",
     "sendInvite": "Send Invite",
     "log": {
       "timestamp": "Timestamp",
@@ -444,8 +444,8 @@
   },
   "micrositeBuilder": {
     "siteSettings": "Site Settings",
-    "editSiteSettings": "Edit Site Settings",
-    "addBlock": "Add a Block",
+    "editSiteSettings": "Edit Global Site Settings",
+    "addBlock": "Add a Content Block",
     "footer": {
       "contactUs": "Contact Us",
       "followUs": "Follow Us",
@@ -479,7 +479,7 @@
     "riskExposure": "Risk Exposure by Area"
   },
   "news": {
-    "title": "News & Announcements",
+    "title": "News & Insights",
     "publishedOn": "Published on {date}",
     "by": "by",
     "backToList": "Back to News List",
@@ -487,7 +487,7 @@
     "share": "Share this article",
     "shareOn": "Share on {platform}",
     "copyLink": "Copy link",
-    "linkCopied": "Link copied!",
+    "linkCopied": "Link copied to clipboard!",
     "noArticles": "No news articles have been published yet."
   },
   "testimonials": {
@@ -495,8 +495,8 @@
     "add": "Add Your Testimonial",
     "approved": "Approved",
     "pending": "Pending Moderation",
-    "noApproved": "No approved testimonials to display yet.",
-    "noPending": "No testimonials are pending moderation.",
+    "noApproved": "There are no approved testimonials to display.",
+    "noPending": "There are no testimonials pending moderation.",
     "approve": "Approve",
     "reject": "Reject",
     "form": {
@@ -524,11 +524,11 @@
       "title": "Overview",
       "totalRules": "Total Rules",
       "activeRules": "Active Rules",
-      "avgSuccessRate": "Avg. Success Rate"
+      "avgSuccessRate": "Average Success Rate"
     },
     "categories": {
       "lead_conversion": "Lead Conversion",
-      "communication_automation": "Communication"
+      "communication_automation": "Automated Communication"
     },
     "table": {
       "ruleName": "Rule Name",
@@ -537,7 +537,7 @@
       "successRate": "Success Rate"
     },
     "searchPlaceholder": "Search rules by name...",
-    "noRules": "No rules found for this category.",
+    "noRules": "No automation rules were found for this category.",
     "actions": {
       "test": "Test Rule",
       "edit": "Edit",
@@ -553,8 +553,8 @@
       "selectLead": "Step 1: Select a Sample Lead to Test Against",
       "runTest": "Run Test",
       "results": "Simulation Results",
-      "ruleWouldRun": "Conditions MET: The rule's actions would have been triggered.",
-      "ruleWouldNotRun": "Conditions NOT MET: The rule's actions would not have been triggered.",
+      "ruleWouldRun": "CONDITIONS MET: The rule's actions would have been triggered.",
+      "ruleWouldNotRun": "CONDITIONS NOT MET: The rule's actions would not have been triggered.",
       "conditionsCheck": "Conditions Check",
       "passed": "Passed",
       "failed": "Failed",
@@ -568,9 +568,9 @@
     "templates": {
       "title": "Message Templates",
       "description": "Manage the content for automated communications. Use placeholders like {{Lead.FirstName}} to personalize messages.",
-      "create": "Create Template",
+      "create": "Create New Template",
       "edit": "Edit Template",
-      "noTemplates": "No templates for this channel yet.",
+      "noTemplates": "No templates have been created for this channel yet.",
       "channels": {
         "email": "Email Templates",
         "sms": "SMS Templates",
@@ -578,16 +578,16 @@
         "whatsapp": "WhatsApp Templates"
       },
       "form": {
-        "namePlaceholder": "Template Name (e.g., Welcome Email)",
-        "content": "Content",
+        "namePlaceholder": "Internal Template Name (e.g., Welcome Email for Auto Leads)",
+        "content": "Message Content",
         "placeholders": "Insert Placeholder",
         "preview": "Live Preview"
       }
     },
     "settings": {
-      "title": "Channel Settings",
-      "description": "Configure your credentials for the communication channels you want to use in your automations.",
-      "enableChannel": "Enable Channel",
+      "title": "Channel Settings & Credentials",
+      "description": "Configure your credentials for the communication channels you intend to use in your automations.",
+      "enableChannel": "Enable this Channel",
       "testButton": "Test Connection",
       "saveButton": "Save All Settings",
       "testingConnection": "Testing...",
@@ -608,21 +608,21 @@
           "senderName": "Sender Name"
         },
         "whatsapp": {
-          "title": "WhatsApp Business",
+          "title": "WhatsApp Business API",
           "apiKey": "API Key",
           "phoneNumberId": "Phone Number ID"
         },
         "sms": {
-          "title": "SMS Provider",
-          "apiKey": "API Key / Token",
-          "apiSecret": "API Secret",
+          "title": "SMS Provider (e.g., Twilio)",
+          "apiKey": "API Key / Account SID",
+          "apiSecret": "API Secret / Auth Token",
           "senderId": "Sender ID / From Number"
         }
       }
     },
     "eventLog": {
       "title": "Automation Event Log",
-      "description": "Review the execution history of all your automation rules.",
+      "description": "Review the detailed execution history of all your automation rules.",
       "kpis": {
         "totalEvents": "Total Events (Filtered)",
         "successRate": "Success Rate",
@@ -653,12 +653,12 @@
     "pageOf": "Page {currentPage} of {totalPages}"
   },
   "leadCapture": {
-    "title": "Get Your Free Quote",
-    "subtitle": "Fill out the form below and one of our expert agents will be in touch shortly.",
+    "title": "Request Your Free Insurance Quote",
+    "subtitle": "Complete the form below and one of our expert agents will contact you shortly.",
     "thankYouTitle": "Thank You!",
-    "thankYouMessage": "Your request has been submitted. An agent will contact you soon.",
-    "invalidCampaign": "Invalid or expired campaign.",
-    "submitButton": "Get My Quote",
+    "thankYouMessage": "Your request has been successfully submitted. An agent will be in touch with you soon.",
+    "invalidCampaign": "This campaign is either invalid or has expired.",
+    "submitButton": "Get My Free Quote",
     "form": {
       "name": "Full Name",
       "email": "Email Address",
