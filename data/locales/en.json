@@ -89,7 +89,11 @@
       "unreadMessages": "Unread Messages",
       "unreadMessagesSubtitle": "Inbound interactions awaiting a response.",
       "newPortalSubmissions": "New Portal Submissions",
-      "newPortalSubmissionsSubtitle": "New claims & service requests for client retention."
+      "newPortalSubmissionsSubtitle": "New claims & service requests for client retention.",
+      "adPerformance": "Today's Ad Performance (CPL)",
+      "adPerformanceSubtitle": "{leads} leads for €{spend}",
+      "activePortalUsers": "Active Portal Users Today",
+      "activePortalUsersSubtitle": "Customers who logged in to the portal."
     },
     "basedOn": "Based on",
     "reviews": "reviews",

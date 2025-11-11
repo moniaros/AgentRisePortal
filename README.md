@@ -102,6 +102,13 @@ The agent dashboard features several Key Performance Indicator (KPI) cards for a
     -   **Purpose**: To track new claims (First Notice of Loss) and service requests submitted through the customer portal, highlighting urgent needs that are key to client retention.
     -   **Data Source**: A combined count of `Transaction.FirstNoticeOfLoss` and `ServiceRequest` records where the `createdAt` timestamp is within the current day.
     -   **Visuals**: This card uses a "success" theme (green coloring) to signal important client activity.
+-   **Today's Ad Performance**:
+    -   **Purpose**: To provide a real-time view of daily ad effectiveness by calculating the Cost Per Lead (CPL).
+    -   **Data Source**: Aggregates `PerfSample.spend` and `PerfSample.conversions.lead` records where the `date` is the current day.
+    -   **Visuals**: This card uses a "danger" theme (red coloring) if the CPL exceeds a predefined threshold (e.g., €50), providing an immediate visual cue for poor performance.
+-   **Active Portal Users Today**:
+    -   **Purpose**: To provide context for agent outreach by showing which customers have recently logged in to the customer portal.
+    -   **Data Source**: Counts unique `PortalAccount__EXT` records where the `lastLoginAt` timestamp is within the current day.
 -   **Google Business Profile Rating**: Displays the average star rating and total review count from the integrated Google Business Profile account.
 
 ### Onboarding Checklist

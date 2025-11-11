@@ -89,7 +89,11 @@
       "unreadMessages": "Αδιάβαστα Μηνύματα",
       "unreadMessagesSubtitle": "Εισερχόμενες αλληλεπιδράσεις που αναμένουν απάντηση.",
       "newPortalSubmissions": "Νέες Υποβολές Πύλης",
-      "newPortalSubmissionsSubtitle": "Νέες απαιτήσεις & αιτήματα για διατήρηση πελατών."
+      "newPortalSubmissionsSubtitle": "Νέες απαιτήσεις & αιτήματα για διατήρηση πελατών.",
+      "adPerformance": "Σημερινή Απόδοση Διαφημίσεων (CPL)",
+      "adPerformanceSubtitle": "{leads} leads με €{spend}",
+      "activePortalUsers": "Ενεργοί Χρήστες Πύλης Σήμερα",
+      "activePortalUsersSubtitle": "Πελάτες που συνδέθηκαν στην πύλη."
     },
     "basedOn": "Βάσει",
     "reviews": "αξιολογήσεων",

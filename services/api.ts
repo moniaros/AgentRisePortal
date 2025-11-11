@@ -1,7 +1,33 @@
 import { MOCK_CUSTOMERS, MOCK_LEADS, MOCK_AUDIT_LOGS, MOCK_USERS, MOCK_ANALYTICS_DATA, MOCK_EXECUTIVE_DATA, MOCK_NEWS_ARTICLES, MOCK_TESTIMONIALS, MOCK_USER_ACTIVITY } from '../data/mockData';
-import { DetailedPolicy, AnalyticsData, User, AuditLog, ExecutiveData, NewsArticle, Testimonial, UserActivityEvent, AutomationRule, MessageTemplate, TemplateChannel, AutomationEvent, AutomationAnalytics, GbpLocationSummary, GbpReview, TransactionInquiry, Opportunity__EXT, Interaction, FirstNoticeOfLoss, ServiceRequest } from '../types';
+import { DetailedPolicy, AnalyticsData, User, AuditLog, ExecutiveData, NewsArticle, Testimonial, UserActivityEvent, AutomationRule, MessageTemplate, TemplateChannel, AutomationEvent, AutomationAnalytics, GbpLocationSummary, GbpReview, TransactionInquiry, Opportunity__EXT, Interaction, FirstNoticeOfLoss, ServiceRequest, PerfSample, PortalAccount__EXT } from '../types';
 
 const SIMULATED_DELAY = 500;
+
+export const fetchPortalAccounts = async (): Promise<PortalAccount__EXT[]> => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const res = await fetch('/data/portalAccounts.json');
+            if (!res.ok) throw new Error('Failed to fetch portalAccounts mock data');
+            const data = await res.json();
+            setTimeout(() => resolve(data), SIMULATED_DELAY);
+        } catch (err) {
+            reject(err);
+        }
+    });
+};
+
+export const fetchPerformanceSamples = async (): Promise<PerfSample[]> => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const res = await fetch('/data/performanceSamples.json');
+            if (!res.ok) throw new Error('Failed to fetch performanceSamples mock data');
+            const data = await res.json();
+            setTimeout(() => resolve(data), SIMULATED_DELAY);
+        } catch (err) {
+            reject(err);
+        }
+    });
+};
 
 export const fetchFirstNoticeOfLoss = async (): Promise<FirstNoticeOfLoss[]> => {
     return new Promise(async (resolve, reject) => {

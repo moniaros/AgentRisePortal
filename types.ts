@@ -200,6 +200,23 @@ export interface ServiceRequest {
     createdAt: string;
 }
 
+export interface PerfSample {
+    id: string;
+    agencyId: string;
+    date: string;
+    spend: number;
+    conversions: {
+        lead: number;
+    };
+}
+
+export interface PortalAccount__EXT {
+    id: string;
+    agencyId: string;
+    customerId: string;
+    lastLoginAt: string;
+}
+
 
 // Gap Analysis and Policy Parsing
 export interface DetailedPolicy {
