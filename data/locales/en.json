@@ -68,6 +68,7 @@
     "testimonialsTitle": "What Our Clients Say"
   },
   "leads": {
+    "title": "Leads",
     "searchPlaceholder": "Search by name or email...",
     "allStatuses": "All Statuses",
     "allSources": "All Sources",

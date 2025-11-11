@@ -57,6 +57,13 @@ This section provides a clear overview of the project's current status for produ
 
 The platform is currently a high-fidelity MVP with a simulated backend. The following features are implemented and functional from a UI and front-end logic perspective.
 
+#### Comprehensive Navigation & Content Strategy
+-   **Description:** The application's main navigation has been completely overhauled to create a more logical, scalable, and user-friendly structure.
+-   **Sectioned Sidebar:** The main sidebar is organized into collapsible, high-level sections (`Overview`, `CRM`, `Campaigns`, `Website`, `Management`, `Settings`), decluttering the UI and grouping related features.
+-   **Consolidated CRM:** The previous standalone "Leads" page has been removed. Its functionality, including advanced filtering by status, source, and name, is now fully integrated into the main `Customers & Leads` page. This creates a single, unified view for managing all contacts.
+-   **Content as a Feature of Microsite:** The "News" and "Testimonials" pages are no longer primary navigation items. They are now treated as content sources that can be displayed as widgets within the `Microsite Builder`, aligning the content creation process with its public-facing purpose. The pages remain accessible via direct links.
+-   **Route Redirects & Context-Aware Breadcrumbs:** Redirects ensure old bookmarks continue to work, and the breadcrumb navigation has been enhanced to reflect the new hierarchical structure (e.g., "Home / CRM / Customer Profile"), improving user orientation.
+
 #### 1. Modern Dashboard & UI
 -   **Description:** A clean, responsive user dashboard serves as the landing page post-login. It features a dynamic, time-aware greeting, the current date, and the user's agency affiliation. It also includes several key performance indicator (KPI) cards, including 'New Leads', 'Est. Monthly Revenue', and 'Total Policies in Force', which shows the current policy count with a month-over-month comparison. The entire UI is built with Tailwind CSS, supports bilingual (Greek/English) toggling, and is designed for a seamless experience on all devices.
 -   **Components:** `Dashboard.tsx`, `Layout.tsx`, `Header.tsx`, `Sidebar.tsx`.
@@ -133,13 +140,6 @@ The platform is currently a high-fidelity MVP with a simulated backend. The foll
         agencyId: string;
     }
     ```
-
-#### Comprehensive Navigation Restructuring
--   **Description:** The application's main navigation has been completely overhauled to create a more logical, scalable, and user-friendly structure.
--   **New Sidebar Structure:** The main sidebar is now organized into collapsible, high-level sections, decluttering the UI and grouping related features. The new sections are: `Overview`, `CRM`, `Campaigns`, `Website`, `Content`, `Management`, and `Settings`.
--   **Consolidated CRM:** The previous standalone "Leads List" page has been removed. Its functionality is now integrated into the main `Customers & Leads` page within the CRM section, creating a unified view for managing all contacts.
--   **Route Redirects:** To maintain usability and support old bookmarks, redirects have been implemented (e.g., `/campaigns` now redirects to `/analytics`).
--   **Context-Aware Breadcrumbs:** The breadcrumb navigation has been enhanced to reflect the new hierarchy. It now dynamically displays the parent menu section (e.g., "Home / CRM / Customer Profile"), giving users a clearer sense of their location within the application.
 
 #### SEO & Analytics Integration
 -   **Description:** The platform incorporates SEO best practices and comprehensive analytics tracking to monitor traffic and user engagement.

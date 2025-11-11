@@ -2,32 +2,43 @@ import React, { useState, useMemo } from 'react';
 import { useCrmData } from '../hooks/useCrmData';
 import { useLocalization } from '../hooks/useLocalization';
 import CustomersTable from '../components/crm/CustomersTable';
-import CrmLeadsTable from '../components/crm/CrmLeadsTable';
 import CustomerFormModal from '../components/crm/CustomerFormModal';
-import { Customer } from '../types';
+import { Customer, Lead } from '../types';
 import ErrorMessage from '../components/ui/ErrorMessage';
 import SkeletonLoader from '../components/ui/SkeletonLoader';
+import LeadControls from '../components/leads/LeadControls';
+import LeadsTable from '../components/leads/LeadsTable';
+import LeadDetailModal from '../components/leads/LeadDetailModal';
 
 const MicroCRM: React.FC = () => {
     const { t } = useLocalization();
     const { customers, leads, isLoading, error, addCustomer, updateCustomer, deleteCustomer } = useCrmData();
-    const [searchTerm, setSearchTerm] = useState('');
+    
+    const [filters, setFilters] = useState({ status: 'all', source: 'all', search: '' });
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null);
+    const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
 
     const filteredLeads = useMemo(() => {
-        return leads.filter(l =>
-            `${l.firstName} ${l.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            l.email.toLowerCase().includes(searchTerm.toLowerCase())
-        ).slice(0, 5); // Keep recent leads list concise
-    }, [leads, searchTerm]);
+        return leads.filter(lead => {
+            const statusMatch = filters.status === 'all' || lead.status === filters.status;
+            const sourceMatch = filters.source === 'all' || lead.source === filters.source;
+            const searchLower = filters.search.toLowerCase();
+            const searchMatch =
+                lead.firstName.toLowerCase().includes(searchLower) ||
+                lead.lastName.toLowerCase().includes(searchLower) ||
+                lead.email.toLowerCase().includes(searchLower);
+            return statusMatch && sourceMatch && searchMatch;
+        });
+    }, [leads, filters]);
 
     const filteredCustomers = useMemo(() => {
+        const searchLower = filters.search.toLowerCase();
         return customers.filter(c => 
-            `${c.firstName} ${c.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            c.email.toLowerCase().includes(searchTerm.toLowerCase())
+            `${c.firstName} ${c.lastName}`.toLowerCase().includes(searchLower) ||
+            c.email.toLowerCase().includes(searchLower)
         );
-    }, [customers, searchTerm]);
+    }, [customers, filters.search]);
 
     const handleAddCustomer = () => {
         setEditingCustomer(null);
@@ -54,6 +65,10 @@ const MicroCRM: React.FC = () => {
         setIsModalOpen(false);
         setEditingCustomer(null);
     };
+    
+    const handleViewLeadDetails = (lead: Lead) => {
+        setSelectedLead(lead);
+    };
 
     return (
         <div>
@@ -65,20 +80,14 @@ const MicroCRM: React.FC = () => {
             </div>
             
             <div className="mb-6">
-                 <input
-                    type="text"
-                    placeholder={t('crm.searchAll') as string}
-                    value={searchTerm}
-                    onChange={e => setSearchTerm(e.target.value)}
-                    className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
-                />
+                 <LeadControls filters={filters} onFilterChange={setFilters} allLeads={leads} />
             </div>
 
             {error && <ErrorMessage message={error.message} />}
 
             <div className="mb-8">
-                <h2 className="text-xl font-semibold mb-4">{t('crm.recentLeads')}</h2>
-                {isLoading ? <SkeletonLoader className="h-64 w-full" /> : <CrmLeadsTable leads={filteredLeads} />}
+                <h2 className="text-xl font-semibold mb-4">{t('leads.title')}</h2>
+                {isLoading ? <SkeletonLoader className="h-64 w-full" /> : <LeadsTable leads={filteredLeads} onViewDetails={handleViewLeadDetails} />}
             </div>
 
             <div>
@@ -93,6 +102,14 @@ const MicroCRM: React.FC = () => {
                 customer={editingCustomer}
                 mode={editingCustomer ? 'edit' : 'add'}
             />
+            
+            {selectedLead && (
+                <LeadDetailModal
+                    lead={selectedLead}
+                    isOpen={!!selectedLead}
+                    onClose={() => setSelectedLead(null)}
+                />
+            )}
         </div>
     );
 };

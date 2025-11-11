@@ -19,7 +19,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
         crm: true,
         campaigns: true,
         website: true,
-        content: true,
         management: true,
         settings: true,
     });
@@ -60,12 +59,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
             label: t('nav.website'),
             links: [
                 { path: '/microsite-builder', label: t('nav.micrositeBuilder'), icon: 'micrositeBuilder' },
-            ]
-        },
-        {
-            key: 'content',
-            label: t('nav.content'),
-            links: [
                 { path: '/news', label: t('nav.news'), icon: 'news' },
                 { path: '/testimonials', label: t('nav.testimonials'), icon: 'testimonials' },
             ]

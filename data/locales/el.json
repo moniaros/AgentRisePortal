@@ -68,6 +68,7 @@
     "testimonialsTitle": "Τι Λένε οι Πελάτες Μας"
   },
   "leads": {
+    "title": "Leads",
     "searchPlaceholder": "Αναζήτηση με όνομα ή email...",
     "allStatuses": "Όλες οι Καταστάσεις",
     "allSources": "Όλες οι Πηγές",
