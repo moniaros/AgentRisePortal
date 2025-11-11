@@ -58,24 +58,10 @@
     "policyNumberRequired": "Ο αριθμός συμβολαίου είναι υποχρεωτικός."
   },
   "dashboard": {
-    "greeting": {
-      "morning": "Καλημέρα",
-      "afternoon": "Καλό απόγευμα",
-      "evening": "Καλό βράδυ"
-    },
-    "agency": "Πρακτορείο",
-    "welcomeBanner": {
-      "title": "Καλώς ήρθατε στο AgentOS!",
-      "description": "Ας ξεκινήσουμε. Ακολουθήστε τον γρήγορο οδηγό μας για να ρυθμίσετε τον λογαριασμό σας και να ξεκινήσετε την πρώτη σας καμπάνια.",
-      "button": "Έναρξη",
-      "dismiss": "Παράλειψη προς το παρόν"
-    },
-    "newLeads": "Νέοι Υποψήφιοι (30η)",
-    "monthlyRevenue": "Εκτ. Μηνιαία Έσοδα",
-    "totalPoliciesInForce": "Συνολικές Πολιτικές σε Ισχύ",
-    "vsLastMonth": "σε σχέση με τον προηγ. μήνα",
-    "policyDistribution": "Κατανομή Συμβολαίων",
-    "testimonialsTitle": "Πρόσφατες Μαρτυρίες"
+    "businessSummary": "Σύνοψη Επιχείρησης",
+    "averageRating": "Μέση Βαθμολογία",
+    "totalReviews": "Σύνολο Αξιολογήσεων",
+    "recentReviews": "Πρόσφατες Αξιολογήσεις"
   },
   "policyTypes": {
     "auto": "Αυτοκινήτου",

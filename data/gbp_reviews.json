@@ -1,0 +1,184 @@
+{
+  "reviews": [
+    {
+      "name": "accounts/107446581337424449336/locations/11956534506518943323/reviews/AIe9_BEh-a-8fJ_xW_wY_iA_qC_zW-E_bQ",
+      "reviewer": {
+        "displayName": "Alice Smith"
+      },
+      "starRating": "FIVE",
+      "comment": "Incredibly helpful and professional service. They found me the best possible rate for my car insurance. The whole process was seamless and quick. Highly recommend!",
+      "createTime": "2023-10-28T14:30:00Z"
+    },
+    {
+      "name": "accounts/107446581337424449336/locations/11956534506518943323/reviews/AIe9_BEj_-_4gG_-_fA_fA_qC_zW-E_bQ",
+      "reviewer": {
+        "displayName": "Bob Johnson"
+      },
+      "starRating": "FIVE",
+      "comment": "Excellent experience from start to finish. They took the time to explain all the details of my home insurance policy and answered all my questions patiently.",
+      "createTime": "2023-10-27T11:00:00Z"
+    },
+    {
+      "name": "accounts/107446581337424449336/locations/11956534506518943323/reviews/AIe9_BEk-_fJ_xW_wY_iA_qC_zW-E_bQ",
+      "reviewer": {
+        "displayName": "Charlie Brown"
+      },
+      "starRating": "FOUR",
+      "comment": "Good service overall. The price was competitive and the agent was knowledgeable. It took a little longer than expected to get the final documents.",
+      "createTime": "2023-10-26T09:15:00Z"
+    },
+    {
+      "name": "accounts/107446581337424449336/locations/11956534506518943323/reviews/AIe9_BEl_a-8fJ_xW_wY_iA_qC_zW-E_bQ",
+      "reviewer": {
+        "displayName": "Diana Prince"
+      },
+      "starRating": "FIVE",
+      "comment": "Absolutely fantastic! They handled my complex business insurance needs with ease and found coverage that other agencies couldn't. Truly top-notch professionals.",
+      "createTime": "2023-10-25T18:00:00Z"
+    },
+    {
+      "name": "accounts/107446581337424449336/locations/11956534506518943323/reviews/AIe9_BEm_-_4gG_-_fA_fA_qC_zW-E_bQ",
+      "reviewer": {
+        "displayName": "Ethan Hunt"
+      },
+      "starRating": "FIVE",
+      "comment": "Fast, efficient, and friendly. What more could you ask for?",
+      "createTime": "2023-10-24T12:45:00Z"
+    },
+    {
+      "name": "accounts/107446581337424449336/locations/11956534506518943323/reviews/AIe9_BEn-_fJ_xW_wY_iA_qC_zW-E_bQ",
+      "reviewer": {
+        "displayName": "Fiona Glenanne"
+      },
+      "starRating": "THREE",
+      "comment": "The service was okay. The price was average. Nothing special but they got the job done.",
+      "createTime": "2023-10-23T16:20:00Z"
+    },
+    {
+      "name": "accounts/107446581337424449336/locations/11956534506518943323/reviews/AIe9_BEo_a-8fJ_xW_wY_iA_qC_zW-E_bQ",
+      "reviewer": {
+        "displayName": "George Costanza"
+      },
+      "starRating": "FIVE",
+      "comment": "They saved me a ton of money on my policy bundle. I was paying way too much before. Very happy with the switch!",
+      "createTime": "2023-10-22T10:30:00Z"
+    },
+    {
+      "name": "accounts/107446581337424449336/locations/11956534506518943323/reviews/AIe9_BEp_-_4gG_-_fA_fA_qC_zW-E_bQ",
+      "reviewer": {
+        "displayName": "Harry Potter"
+      },
+      "starRating": "FIVE",
+      "comment": "Magical service! It felt like they knew exactly what I needed before I even asked. Very intuitive and helpful.",
+      "createTime": "2023-10-21T13:00:00Z"
+    },
+    {
+      "name": "accounts/107446581337424449336/locations/11956534506518943323/reviews/AIe9_BEq-_fJ_xW_wY_iA_qC_zW-E_bQ",
+      "reviewer": {
+        "displayName": "Irene Adler"
+      },
+      "starRating": "FOUR",
+      "comment": "A very intelligent and thorough approach to insurance. I appreciated the attention to detail. Would recommend for those who value precision.",
+      "createTime": "2023-10-20T15:00:00Z"
+    },
+    {
+      "name": "accounts/107446581337424449336/locations/11956534506518943323/reviews/AIe9_BEr_a-8fJ_xW_wY_iA_qC_zW-E_bQ",
+      "reviewer": {
+        "displayName": "Jack Sparrow"
+      },
+      "starRating": "FIVE",
+      "comment": "They navigated the treacherous waters of insurance quotes for me and found a real treasure of a deal! Savvy?",
+      "createTime": "2023-10-19T17:45:00Z"
+    },
+    {
+      "name": "accounts/107446581337424449336/locations/11956534506518943323/reviews/AIe9_BEs_-_4gG_-_fA_fA_qC_zW-E_bQ",
+      "reviewer": {
+        "displayName": "Kim Possible"
+      },
+      "starRating": "FIVE",
+      "comment": "So what's the sitch? They made getting insurance super easy. No drama. Call them, beep them, if you wanna reach them.",
+      "createTime": "2023-10-18T11:20:00Z"
+    },
+    {
+      "name": "accounts/107446581337424449336/locations/11956534506518943323/reviews/AIe9_BEt-_fJ_xW_wY_iA_qC_zW-E_bQ",
+      "reviewer": {
+        "displayName": "Luke Skywalker"
+      },
+      "starRating": "FOUR",
+      "comment": "I've got a good feeling about this. The agent was very helpful and guided me through the process. The force is strong with this agency.",
+      "createTime": "2023-10-17T09:00:00Z"
+    },
+    {
+      "name": "accounts/107446581337424449336/locations/11956534506518943323/reviews/AIe9_BEu_a-8fJ_xW_wY_iA_qC_zW-E_bQ",
+      "reviewer": {
+        "displayName": "Michael Scott"
+      },
+      "starRating": "FIVE",
+      "comment": "It's a win-win-win. I win because I got great insurance. They win because they got my business. The insurance company wins... you get it. Great place.",
+      "createTime": "2023-10-16T14:00:00Z"
+    },
+    {
+      "name": "accounts/107446581337424449336/locations/11956534506518943323/reviews/AIe9_BEv_-_4gG_-_fA_fA_qC_zW-E_bQ",
+      "reviewer": {
+        "displayName": "Nancy Drew"
+      },
+      "starRating": "FIVE",
+      "comment": "I investigated several agencies, and the evidence was clear: this one offered the best combination of price and service. Case closed!",
+      "createTime": "2023-10-15T16:00:00Z"
+    },
+    {
+      "name": "accounts/107446581337424449336/locations/11956534506518943323/reviews/AIe9_BEw-_fJ_xW_wY_iA_qC_zW-E_bQ",
+      "reviewer": {
+        "displayName": "Oscar Martinez"
+      },
+      "starRating": "FOUR",
+      "comment": "Actually, their proposal was actuarially sound and quite competitive. I was pleasantly surprised by the numbers.",
+      "createTime": "2023-10-14T10:10:00Z"
+    },
+    {
+      "name": "accounts/107446581337424449336/locations/11956534506518943323/reviews/AIe9_BEx_a-8fJ_xW_wY_iA_qC_zW-E_bQ",
+      "reviewer": {
+        "displayName": "Pam Beesly"
+      },
+      "starRating": "FIVE",
+      "comment": "They were really nice and made the whole process feel less intimidating. I'm happy with my new policy.",
+      "createTime": "2023-10-13T12:00:00Z"
+    },
+    {
+      "name": "accounts/107446581337424449336/locations/11956534506518943323/reviews/AIe9_BEy_-_4gG_-_fA_fA_qC_zW-E_bQ",
+      "reviewer": {
+        "displayName": "Quentin Tarantino"
+      },
+      "starRating": "FIVE",
+      "comment": "Alright, here's the deal. Scene one: I need insurance. Scene two: I call these guys. Scene three: Boom! I'm covered. Great dialogue, great service. Five stars.",
+      "createTime": "2023-10-12T19:00:00Z"
+    },
+    {
+      "name": "accounts/107446581337424449336/locations/11956534506518943323/reviews/AIe9_BEz-_fJ_xW_wY_iA_qC_zW-E_bQ",
+      "reviewer": {
+        "displayName": "Rachel Green"
+      },
+      "starRating": "FOUR",
+      "comment": "Oh. My. God. Getting insurance was, like, so much easier than I thought it would be! The agent was super cute and helpful.",
+      "createTime": "2023-10-11T15:30:00Z"
+    },
+    {
+      "name": "accounts/107446581337424449336/locations/11956534506518943323/reviews/AIe9_BE0_a-8fJ_xW_wY_iA_qC_zW-E_bQ",
+      "reviewer": {
+        "displayName": "Steve Rogers"
+      },
+      "starRating": "FIVE",
+      "comment": "A good old-fashioned, reliable service. They stand for the right things: honesty, integrity, and fair prices. I can do this all day.",
+      "createTime": "2023-10-10T08:00:00Z"
+    },
+    {
+      "name": "accounts/107446581337424449336/locations/11956534506518943323/reviews/AIe9_BE1_-_4gG_-_fA_fA_qC_zW-E_bQ",
+      "reviewer": {
+        "displayName": "Tony Stark"
+      },
+      "starRating": "FIVE",
+      "comment": "I ran the numbers. 14,000,605 outcomes. This was the best one. Their tech is a bit dated, but the results are solid. Jarvis, send them a fruit basket.",
+      "createTime": "2023-10-09T20:00:00Z"
+    }
+  ]
+}

@@ -1,29 +1,30 @@
-import { MOCK_CUSTOMERS, MOCK_LEADS, MOCK_AUDIT_LOGS, MOCK_USERS, MOCK_ANALYTICS_DATA, MOCK_EXECUTIVE_DATA, MOCK_NEWS_ARTICLES, MOCK_TESTIMONIALS, MOCK_USER_ACTIVITY, MOCK_KPI_DATA } from '../data/mockData';
-import { DetailedPolicy, AnalyticsData, User, AuditLog, ExecutiveData, NewsArticle, Testimonial, UserActivityEvent, AutomationRule, MessageTemplate, TemplateChannel, AutomationEvent, AutomationAnalytics } from '../types';
+import { MOCK_CUSTOMERS, MOCK_LEADS, MOCK_AUDIT_LOGS, MOCK_USERS, MOCK_ANALYTICS_DATA, MOCK_EXECUTIVE_DATA, MOCK_NEWS_ARTICLES, MOCK_TESTIMONIALS, MOCK_USER_ACTIVITY } from '../data/mockData';
+import { DetailedPolicy, AnalyticsData, User, AuditLog, ExecutiveData, NewsArticle, Testimonial, UserActivityEvent, AutomationRule, MessageTemplate, TemplateChannel, AutomationEvent, AutomationAnalytics, GbpLocationSummary, GbpReview } from '../types';
 
 const SIMULATED_DELAY = 500;
 
-export const fetchDashboardData = async () => {
-    return new Promise<{
-        newLeadsCount: number;
-        monthlyRevenue: number;
-        policyDistribution: { name: string; value: number }[];
-        totalPoliciesInForce: { current: number; previous: number; };
-    }>(resolve => {
-        setTimeout(() => {
-            // FIX: Explicitly type the accumulator for the reduce function to ensure correct type inference.
-            const policyDist = MOCK_CUSTOMERS.flatMap(c => c.policies).reduce<Record<string, number>>((acc, policy) => {
-                acc[policy.type] = (acc[policy.type] || 0) + 1;
-                return acc;
-            }, {});
+export const fetchGbpData = async (locationId: string): Promise<{ summary: GbpLocationSummary; reviews: GbpReview[] }> => {
+    // In a real app, we'd use locationId to make actual API calls
+    console.log(`Fetching GBP data for ${locationId}`);
+    return new Promise(async (resolve, reject) => {
+        try {
+            const [summaryRes, reviewsRes] = await Promise.all([
+                fetch('/data/gbp_location.json'),
+                fetch('/data/gbp_reviews.json'),
+            ]);
+            if (!summaryRes.ok || !reviewsRes.ok) {
+                throw new Error('Failed to fetch GBP mock data');
+            }
+            const summary = await summaryRes.json();
+            const reviewsData = await reviewsRes.json();
             
-            resolve({
-                newLeadsCount: MOCK_LEADS.filter(l => l.status === 'new').length,
-                monthlyRevenue: MOCK_CUSTOMERS.flatMap(c => c.policies).reduce((sum, p) => sum + p.premium, 0) / 12,
-                policyDistribution: Object.entries(policyDist).map(([name, value]) => ({ name, value })),
-                totalPoliciesInForce: MOCK_KPI_DATA.totalPoliciesInForce,
-            });
-        }, SIMULATED_DELAY);
+            setTimeout(() => {
+                resolve({ summary, reviews: reviewsData.reviews });
+            }, SIMULATED_DELAY);
+
+        } catch (err) {
+            reject(err);
+        }
     });
 };
 

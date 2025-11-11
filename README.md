@@ -41,3 +41,30 @@ This section manages connections to external services.
 -   `gemini_api_key`: Stores the Gemini API Key as a plain text string. **Note:** While the input field is masked, the key is stored in plain text in `localStorage`.
 -   `gbp_location_title`: Stores the title (business name) of the connected Google Business Profile location.
 -   `gbp_location_name`: Stores the full resource name (e.g., `accounts/{accountId}/locations/{locationId}`) of the connected location.
+
+## Dashboard Page
+
+The Dashboard is the main landing page after a user has successfully connected their Google Business Profile. It provides an at-a-glance summary of their business's online reputation.
+
+### Authentication and Redirection
+
+On page load, the application checks `localStorage` for `gbp_location_name`. It also verifies that the user is signed in via the Google API client (`gapi`). If either of these checks fails, the user is immediately redirected to the `/settings` page to complete the connection.
+
+### API Calls and Data Display
+
+If authenticated, the Dashboard makes the following simulated API calls:
+
+1.  **`locations.get`**:
+    -   **Purpose:** To fetch the overall business summary.
+    -   **Data Used:** The `title`, `averageRating`, and `totalReviewCount` fields are extracted and displayed in a prominent summary section.
+
+2.  **`locations.reviews.list`**:
+    -   **Purpose:** To fetch the most recent reviews for the business.
+    -   **Data Used:** The 20 most recent reviews are retrieved. For each review, the `reviewer.displayName`, `starRating`, `comment`, and `createTime` fields are used to render a list of review cards.
+
+### Local Development
+
+For local development, these API calls are mocked by fetching data from static JSON files:
+-   `/data/gbp_location.json` (for the business summary)
+-   `/data/gbp_reviews.json` (for the list of reviews)
+This allows for UI development and testing without requiring live API credentials.

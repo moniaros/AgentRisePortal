@@ -58,24 +58,10 @@
     "policyNumberRequired": "Policy number is required."
   },
   "dashboard": {
-    "greeting": {
-      "morning": "Good morning",
-      "afternoon": "Good afternoon",
-      "evening": "Good evening"
-    },
-    "agency": "Agency",
-    "welcomeBanner": {
-      "title": "Welcome to AgentOS!",
-      "description": "Let's get you started. Follow our quick onboarding guide to set up your account and launch your first campaign.",
-      "button": "Start Onboarding",
-      "dismiss": "Skip for now"
-    },
-    "newLeads": "New Leads (30d)",
-    "monthlyRevenue": "Est. Monthly Revenue",
-    "totalPoliciesInForce": "Total Policies in Force",
-    "vsLastMonth": "vs last month",
-    "policyDistribution": "Policy Distribution",
-    "testimonialsTitle": "Recent Testimonials"
+    "businessSummary": "Business Summary",
+    "averageRating": "Average Rating",
+    "totalReviews": "Total Reviews",
+    "recentReviews": "Recent Reviews"
   },
   "policyTypes": {
     "auto": "Auto",

@@ -427,6 +427,25 @@ export interface NewsArticle {
     agencyId: 'global' | string; // 'global' for all agencies
 }
 
+// Google Business Profile
+export type GbpStarRating = 'STAR_RATING_UNSPECIFIED' | 'ONE' | 'TWO' | 'THREE' | 'FOUR' | 'FIVE';
+
+export interface GbpReview {
+    name: string;
+    reviewer: {
+        displayName: string;
+    };
+    starRating: GbpStarRating;
+    comment: string;
+    createTime: string;
+}
+
+export interface GbpLocationSummary {
+    title: string;
+    averageRating: number;
+    totalReviewCount: number;
+}
+
 // Microsite Builder
 export type BlockType = 'hero' | 'about' | 'services' | 'team' | 'testimonials' | 'faq' | 'contact' | 'news' | 'awards' | 'certificates' | 'policy_highlights' | 'location' | 'video' | 'downloads';
 
