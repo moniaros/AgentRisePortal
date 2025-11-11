@@ -18,7 +18,6 @@ interface StoredPolicies {
  * Handles potential parsing errors and data versioning.
  * @returns The main storage object containing all customers' policies.
  */
-// FIX: Export 'getStoredData' to make it available to other modules, such as the usePolicySync hook.
 export const getStoredData = (): StoredPolicies => {
     try {
         const rawData = localStorage.getItem(STORAGE_KEY);
