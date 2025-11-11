@@ -63,7 +63,12 @@
     "totalReviews": "Total Reviews",
     "recentReviews": "Recent Reviews",
     "basedOn": "based on",
-    "reviews": "reviews"
+    "reviews": "reviews",
+    "showUnreplied": "Show only reviews without a reply",
+    "stars": "stars",
+    "generateAiReply": "Generate AI Reply",
+    "postReply": "Post Reply",
+    "yourReply": "Your Reply"
   },
   "policyTypes": {
     "auto": "Auto",

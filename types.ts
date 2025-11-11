@@ -430,6 +430,11 @@ export interface NewsArticle {
 // Google Business Profile
 export type GbpStarRating = 'STAR_RATING_UNSPECIFIED' | 'ONE' | 'TWO' | 'THREE' | 'FOUR' | 'FIVE';
 
+export interface GbpReviewReply {
+    comment: string;
+    updateTime: string;
+}
+
 export interface GbpReview {
     name: string;
     reviewer: {
@@ -438,6 +443,7 @@ export interface GbpReview {
     starRating: GbpStarRating;
     comment: string;
     createTime: string;
+    reply?: GbpReviewReply;
 }
 
 export interface GbpLocationSummary {

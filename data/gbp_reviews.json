@@ -7,7 +7,11 @@
       },
       "starRating": "FIVE",
       "comment": "Incredibly helpful and professional service. They found me the best possible rate for my car insurance. The whole process was seamless and quick. Highly recommend!",
-      "createTime": "2023-10-28T14:30:00Z"
+      "createTime": "2023-10-28T14:30:00Z",
+      "reply": {
+        "comment": "Thank you so much, Alice! We're thrilled to hear you had a great experience. We appreciate your recommendation!",
+        "updateTime": "2023-10-28T16:00:00Z"
+      }
     },
     {
       "name": "accounts/107446581337424449336/locations/11956534506518943323/reviews/AIe9_BEj_-_4gG_-_fA_fA_qC_zW-E_bQ",
@@ -34,7 +38,11 @@
       },
       "starRating": "FIVE",
       "comment": "Absolutely fantastic! They handled my complex business insurance needs with ease and found coverage that other agencies couldn't. Truly top-notch professionals.",
-      "createTime": "2023-10-25T18:00:00Z"
+      "createTime": "2023-10-25T18:00:00Z",
+      "reply": {
+        "comment": "Thank you for the high praise, Diana! It was our pleasure to assist with your business insurance needs.",
+        "updateTime": "2023-10-26T10:00:00Z"
+      }
     },
     {
       "name": "accounts/107446581337424449336/locations/11956534506518943323/reviews/AIe9_BEm_-_4gG_-_fA_fA_qC_zW-E_bQ",

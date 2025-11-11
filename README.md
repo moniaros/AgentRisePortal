@@ -60,7 +60,20 @@ If authenticated, the Dashboard makes the following simulated API calls:
 
 2.  **`locations.reviews.list`**:
     -   **Purpose:** To fetch the most recent reviews for the business.
-    -   **Data Used:** The 20 most recent reviews are retrieved. For each review, the `reviewer.displayName`, `starRating`, `comment`, and `createTime` fields are used to render a list of review cards.
+    -   **Data Used:** The 20 most recent reviews are retrieved. This data powers the Review Feed section.
+
+### Review Feed UI
+
+This section displays customer reviews and provides tools for managing replies.
+
+-   **Filter Toggle:** A checkbox labeled "Show only reviews without a reply" is displayed above the feed. It is enabled by default, hiding reviews that already have a reply in the mock data.
+-   **Review Cards:** The feed consists of individual cards for each review, sorted with the newest first. Each card contains:
+    -   **Reviewer Name:** The name of the person who left the review.
+    -   **Star Rating:** Both a visual star representation (e.g., ★★★★☆) and a textual label (e.g., "(4 stars)").
+    -   **Review Text:** The full comment left by the reviewer.
+    -   **AI Reply Generation:** A "Generate AI Reply" button.
+    -   **Reply Area:** A disabled textarea, which will later be populated by the AI-generated response.
+    -   **Post Button:** A disabled "Post Reply" button that will be enabled once a reply is present.
 
 ### Local Development
 
