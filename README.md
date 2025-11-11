@@ -110,6 +110,9 @@ The agent dashboard features several Key Performance Indicator (KPI) cards for a
     -   **Purpose**: To provide context for agent outreach by showing which customers have recently logged in to the customer portal.
     -   **Data Source**: Counts unique `PortalAccount__EXT` records where the `lastLoginAt` timestamp is within the current day.
 -   **Google Business Profile Rating**: Displays the average star rating and total review count from the integrated Google Business Profile account.
+-   **Total GWP Won**:
+    -   **Purpose**: (Executive Dashboard) To show the total Gross Written Premium from deals won that originated from platform marketing leads.
+    -   **Data Source**: Sums the `won.gwp` property from `KPISnapshot` records where the `source` is 'Platform Marketing Leads' and the `date` is within the selected period (e.g., Last 30 Days).
 
 ### Onboarding Checklist
 

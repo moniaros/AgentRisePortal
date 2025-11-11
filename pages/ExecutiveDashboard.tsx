@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useLocalization } from '../hooks/useLocalization';
 import { useExecutiveData } from '../hooks/useExecutiveData';
 import { useAnalyticsData } from '../hooks/useAnalyticsData';
@@ -12,15 +12,39 @@ import ClaimsTrendChart from '../components/executive/ClaimsTrendChart';
 import LeadFunnelChart from '../components/executive/LeadFunnelChart';
 import CampaignRoiTable from '../components/executive/CampaignRoiTable';
 import RiskExposureChart from '../components/executive/RiskExposureChart';
+import { useKpiSnapshotsData } from '../hooks/useKpiSnapshotsData';
 
 const ExecutiveDashboard: React.FC = () => {
     const { t } = useLocalization();
     const { data: executiveData, isLoading: isExecutiveLoading, error: executiveError } = useExecutiveData();
     const { data: analyticsData, isLoading: isAnalyticsLoading, error: analyticsError } = useAnalyticsData();
     const { campaigns, isLoading: isCampaignsLoading, error: campaignsError } = useCampaigns();
+    const { kpiSnapshots, isLoading: isKpiLoading, error: kpiError } = useKpiSnapshotsData();
+    
+    const [period, setPeriod] = useState(30); // days
 
-    const isLoading = isExecutiveLoading || isAnalyticsLoading || isCampaignsLoading;
-    const error = executiveError || analyticsError || campaignsError;
+    const isLoading = isExecutiveLoading || isAnalyticsLoading || isCampaignsLoading || isKpiLoading;
+    const error = executiveError || analyticsError || campaignsError || kpiError;
+
+    const totalGwpWon = useMemo(() => {
+        if (!kpiSnapshots) return 0;
+
+        const endDate = new Date();
+        const startDate = new Date();
+        startDate.setDate(endDate.getDate() - period);
+
+        return kpiSnapshots
+            .filter(snapshot => {
+                const snapshotDate = new Date(snapshot.date);
+                return (
+                    snapshot.source === 'Platform Marketing Leads' &&
+                    snapshotDate >= startDate &&
+                    snapshotDate <= endDate
+                );
+            })
+            .reduce((sum, snapshot) => sum + snapshot.won.gwp, 0);
+
+    }, [kpiSnapshots, period]);
 
     const campaignKpis = useMemo(() => {
         if (!analyticsData || !campaigns) return { totalSpend: 0, totalImpressions: 0, ctr: 0, totalConversions: 0 };
@@ -43,17 +67,29 @@ const ExecutiveDashboard: React.FC = () => {
         <div className="space-y-8">
             <h1 className="text-3xl font-bold text-gray-800 dark:text-white">{t('nav.executiveAnalytics') as string}</h1>
             
-            <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300 -mb-4">Campaign Summary</h2>
+            <div className="flex justify-between items-center">
+                 <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300">Campaign Summary</h2>
+                 <div>
+                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">{t('campaignAnalytics.filters.period')}</label>
+                    <select value={period} onChange={e => setPeriod(parseInt(e.target.value, 10))} className="p-2 text-sm border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md">
+                        <option value={7}>{t('campaignAnalytics.filters.last7')}</option>
+                        <option value={30}>{t('campaignAnalytics.filters.last30')}</option>
+                        <option value={90}>{t('campaignAnalytics.filters.last90')}</option>
+                    </select>
+                </div>
+            </div>
+
             {isLoading ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {[...Array(4)].map((_, i) => <SkeletonLoader key={i} className="h-24 w-full" />)}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+                    {[...Array(5)].map((_, i) => <SkeletonLoader key={i} className="h-24 w-full" />)}
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <KpiCard title={t('analytics.kpis.totalSpend')} value={`€${campaignKpis.totalSpend.toLocaleString('el-GR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} />
-                    <KpiCard title={t('analytics.kpis.totalImpressions')} value={campaignKpis.totalImpressions.toLocaleString('el-GR')} />
-                    <KpiCard title={t('analytics.kpis.ctr')} value={`${campaignKpis.ctr.toFixed(2)}%`} />
-                    <KpiCard title={t('analytics.kpis.totalConversions')} value={campaignKpis.totalConversions.toLocaleString('el-GR')} />
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+                    <KpiCard title={t('executive.kpis.totalGwpWon')} value={`€${totalGwpWon.toLocaleString('el-GR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} subtitle={t('executive.kpis.totalGwpWonSubtitle')} variant="success" />
+                    <KpiCard title={t('campaignAnalytics.kpis.totalSpend')} value={`€${campaignKpis.totalSpend.toLocaleString('el-GR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} />
+                    <KpiCard title={t('campaignAnalytics.kpis.totalImpressions')} value={campaignKpis.totalImpressions.toLocaleString('el-GR')} />
+                    <KpiCard title={t('campaignAnalytics.kpis.ctr')} value={`${campaignKpis.ctr.toFixed(2)}%`} />
+                    <KpiCard title={t('campaignAnalytics.kpis.totalConversions')} value={campaignKpis.totalConversions.toLocaleString('el-GR')} />
                 </div>
             )}
 

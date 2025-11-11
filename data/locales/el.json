@@ -490,7 +490,11 @@
     "claimsTrend": "Τάση Απαιτήσεων",
     "leadFunnel": "Απόδοση Χωνιού Υποψηφίων",
     "campaignRoi": "Απόδοση Επένδυσης (ROI) Καμπανιών",
-    "riskExposure": "Έκθεση σε Κίνδυνο ανά Τομέα"
+    "riskExposure": "Έκθεση σε Κίνδυνο ανά Τομέα",
+    "kpis": {
+      "totalGwpWon": "Συνολικό GWP Κερδισμένο",
+      "totalGwpWonSubtitle": "Από leads μάρκετινγκ πλατφόρμας"
+    }
   },
   "news": {
     "title": "Νέα & Αναλύσεις",

@@ -217,6 +217,17 @@ export interface PortalAccount__EXT {
     lastLoginAt: string;
 }
 
+export interface KPISnapshot {
+    id: string;
+    agencyId: string;
+    date: string;
+    source: 'Platform Marketing Leads' | 'Agent Sourced' | 'Referral';
+    won: {
+        gwp: number; // Gross Written Premium
+        count: number;
+    };
+}
+
 
 // Gap Analysis and Policy Parsing
 export interface DetailedPolicy {

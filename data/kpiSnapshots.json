@@ -1,0 +1,62 @@
+[
+  {
+    "id": "kpi_1",
+    "agencyId": "agency_1",
+    "date": "2024-10-27T10:00:00.000Z",
+    "source": "Platform Marketing Leads",
+    "won": {
+      "gwp": 1250.75,
+      "count": 1
+    }
+  },
+  {
+    "id": "kpi_2",
+    "agencyId": "agency_1",
+    "date": "2024-10-26T14:00:00.000Z",
+    "source": "Agent Sourced",
+    "won": {
+      "gwp": 800.00,
+      "count": 1
+    }
+  },
+  {
+    "id": "kpi_3",
+    "agencyId": "agency_1",
+    "date": "2024-10-25T11:00:00.000Z",
+    "source": "Platform Marketing Leads",
+    "won": {
+      "gwp": 2300.00,
+      "count": 2
+    }
+  },
+  {
+    "id": "kpi_4",
+    "agencyId": "agency_1",
+    "date": "2024-10-24T09:00:00.000Z",
+    "source": "Referral",
+    "won": {
+      "gwp": 1500.50,
+      "count": 1
+    }
+  },
+  {
+    "id": "kpi_5",
+    "agencyId": "agency_1",
+    "date": "2024-09-30T16:00:00.000Z",
+    "source": "Platform Marketing Leads",
+    "won": {
+      "gwp": 450.00,
+      "count": 1
+    }
+  },
+  {
+    "id": "kpi_6",
+    "agencyId": "agency_2",
+    "date": "2024-10-27T12:00:00.000Z",
+    "source": "Platform Marketing Leads",
+    "won": {
+      "gwp": 5000.00,
+      "count": 1
+    }
+  }
+]

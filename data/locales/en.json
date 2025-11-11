@@ -490,7 +490,11 @@
     "claimsTrend": "Claims Trend",
     "leadFunnel": "Lead Funnel Performance",
     "campaignRoi": "Campaign ROI",
-    "riskExposure": "Risk Exposure by Area"
+    "riskExposure": "Risk Exposure by Area",
+    "kpis": {
+      "totalGwpWon": "Total GWP Won",
+      "totalGwpWonSubtitle": "From platform marketing leads"
+    }
   },
   "news": {
     "title": "News & Insights",
