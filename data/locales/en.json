@@ -26,7 +26,9 @@
     "micrositeBuilder": "Microsite Builder",
     "executiveAnalytics": "Executive Analytics",
     "news": "News & Updates",
-    "testimonials": "Testimonials"
+    "testimonials": "Testimonials",
+    "management": "Management",
+    "support": "Support"
   },
   "header": {
     "search": "Search...",
@@ -566,6 +568,10 @@
     "change": "Change",
     "recentActivity": "Recent Activity",
     "noActivity": "No recent activity found."
+  },
+  "support": {
+    "title": "Support Center",
+    "description": "Need help? Find answers to your questions here. This section is planned for a future release and will contain FAQs, documentation, and contact information for our support team."
   },
   "activityTypes": {
     "login": "Login",

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useLocalization } from '../hooks/useLocalization';
 import { ICONS } from '../constants';
+import { useAuth } from '../hooks/useAuth';
+import { UserSystemRole } from '../types';
 
 interface SidebarProps {
     isOpen: boolean;
@@ -9,8 +11,10 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
     const { t } = useLocalization();
+    const { currentUser } = useAuth();
     const [isCrmOpen, setIsCrmOpen] = useState(true);
     const [isCampaignsOpen, setIsCampaignsOpen] = useState(true);
+    const [isManagementOpen, setIsManagementOpen] = useState(true);
 
     const overviewLinks = [
         { path: '/', label: t('nav.dashboard'), icon: 'dashboard' },
@@ -36,8 +40,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
     ];
 
     const managementLinks = [
-        { path: '/user-management', label: t('nav.userManagement'), icon: 'settings' },
-        { path: '/billing', label: t('nav.billing'), icon: 'billing' },
+        { path: '/user-management', label: t('nav.userManagement'), icon: 'settings', adminOnly: true },
+        { path: '/billing', label: t('nav.billing'), icon: 'billing', adminOnly: false },
+        { path: '/support', label: t('nav.support'), icon: 'support', adminOnly: false },
     ];
 
     const NavItem: React.FC<{ path: string, label: any, icon: string }> = ({ path, label, icon }) => (
@@ -96,10 +101,22 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                     {navLinks.map(link => <li key={link.path}><NavItem {...link} /></li>)}
                 </ul>
 
-                <h2 className="px-2 mt-6 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Management</h2>
-                 <ul>
-                    {managementLinks.map(link => <li key={link.path}><NavItem {...link} /></li>)}
-                </ul>
+                <div className="mt-6">
+                    <button onClick={() => setIsManagementOpen(!isManagementOpen)} className="w-full flex justify-between items-center px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                        <span>{t('nav.management')}</span>
+                        <svg className={`w-4 h-4 transition-transform ${isManagementOpen ? 'rotate-90' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+                    </button>
+                    {isManagementOpen && (
+                        <ul className="pl-2">
+                            {managementLinks.map(link => {
+                                if (link.adminOnly && currentUser?.partyRole.roleType !== UserSystemRole.ADMIN) {
+                                    return null;
+                                }
+                                return <li key={link.path}><NavItem {...link} /></li>;
+                            })}
+                        </ul>
+                    )}
+                </div>
             </nav>
             <div className="p-4 border-t dark:border-gray-700">
                 <NavItem path="/logout" label={t('header.logout')} icon="logout" />

@@ -31,6 +31,7 @@ import NewsArticleDetail from './pages/NewsArticleDetail';
 import Testimonials from './pages/Testimonials';
 import Sitemap from './pages/Sitemap';
 import AutomationRules from './pages/AutomationRules';
+import Support from './pages/Support';
 
 const App: React.FC = () => {
   return (
@@ -65,6 +66,7 @@ const App: React.FC = () => {
                   <Route path="/news/:articleId" element={<Layout><NewsArticleDetail /></Layout>} />
                   <Route path="/testimonials" element={<Layout><Testimonials /></Layout>} />
                   <Route path="/sitemap" element={<Layout><Sitemap /></Layout>} />
+                  <Route path="/support" element={<Layout><Support /></Layout>} />
                   <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
               </Router>
