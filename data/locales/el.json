@@ -111,10 +111,10 @@
       "allReplied": "Εξαιρετική δουλειά! Έχετε απαντήσει σε όλες τις πρόσφατες αξιολογήσεις."
     },
     "errors": {
-      "dataFetchFailed": "Αποτυχία λήψης δεδομένων Google Business Profile. Παρακαλώ ελέγξτε τη σύνδεσή σας στις Ρυθμίσεις.",
+      "dataFetchFailed": "Αποτυχία λήψης δεδομένων Google Business Profile. Παρακαλώ ελέξτε τη σύνδεσή σας στις Ρυθμίσεις.",
       "noApiKey": "Δεν έχει διαμορφωθεί κλειδί API για το Google Gemini. Παρακαλώ προσθέστε το στις Ρυθμίσεις.",
       "replyGenerationFailed": "Η δημιουργία απάντησης από την AI απέτυχε. Παρακαλώ προσπαθήστε ξανά.",
-      "replyPostFailed": "Η δημοσίευση της απάντησης απέτυχε. Ελέγξτε τη σύνδεσή σας και προσπαθήστε ξανά."
+      "replyPostFailed": "Η δημοσίευση της απάντησης απέτυχε. Ελέξτε τη σύνδεσή σας και προσπαθήστε ξανά."
     }
   },
   "crm": {
@@ -379,8 +379,8 @@
       "warningNoAccounts": "Δεν βρέθηκαν λογαριασμοί Google Business Profile που να σχετίζονται με αυτόν τον λογαριασμό Google.",
       "warningNoLocations": "Δεν βρέθηκαν επαγγελματικές τοποθεσίες στον λογαριασμό σας Google Business.",
       "errorNoClientId": "Το Google Client ID δεν έχει αποθηκευτεί. Παρακαλώ διαμορφώστε το παραπάνω.",
-      "errorGapiNotLoaded": "Αποτυχία φόρτωσης του Google API client. Ελέγξτε τη σύνδεσή σας στο διαδίκτυο ή τυχόν ad blocker.",
-      "errorApi": "Παρουσιάστηκε σφάλμα API. Ελέγξτε την κονσόλα του προγραμματιστή για λεπτομέρειες.",
+      "errorGapiNotLoaded": "Αποτυχία φόρτωσης του Google API client. Ελέξτε τη σύνδεσή σας στο διαδίκτυο ή τυχόν ad blocker.",
+      "errorApi": "Παρουσιάστηκε σφάλμα API. Ελέξτε την κονσόλα του προγραμματιστή για λεπτομέρειες.",
       "errorSignIn": "Η σύνδεση με τη Google απέτυχε. Παρακαλώ προσπαθήστε ξανά."
     },
     "socialConnections": {
@@ -503,7 +503,9 @@
       "micrositeFunnelRate": "Ποσοστό Μετατροπής Funnel",
       "micrositeFunnelRateSubtitle": "{leads} leads από {pageviews} προβολές",
       "avgReplyTime": "Μέσος Χρόνος Απάντησης",
-      "avgReplyTimeSubtitle": "Μέσος όρος ωρών για πρώτη απάντηση"
+      "avgReplyTimeSubtitle": "Μέσος όρος ωρών για πρώτη απάντηση",
+      "crossSellLeads": "Leads από Cross-Sell",
+      "crossSellLeadsSubtitle": "Από καμπάνιες email"
     }
   },
   "news": {

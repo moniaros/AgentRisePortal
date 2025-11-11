@@ -503,7 +503,9 @@
       "micrositeFunnelRate": "Microsite Funnel Rate",
       "micrositeFunnelRateSubtitle": "{leads} leads from {pageviews} views",
       "avgReplyTime": "Avg. Time to First Reply",
-      "avgReplyTimeSubtitle": "Average hours to first response"
+      "avgReplyTimeSubtitle": "Average hours to first response",
+      "crossSellLeads": "Leads from Cross-Sell",
+      "crossSellLeadsSubtitle": "From email campaigns"
     }
   },
   "news": {

@@ -17,6 +17,7 @@ import { useAllLeadsData } from '../hooks/useAllLeadsData';
 import { useAllPerformanceData } from '../hooks/useAllPerformanceData';
 import { useAllFunnelRunsData } from '../hooks/useAllFunnelRunsData';
 import { useAllOpportunitiesData } from '../hooks/useAllOpportunitiesData';
+import { useAllConversionsData } from '../hooks/useAllConversionsData';
 
 const ExecutiveDashboard: React.FC = () => {
     const { t } = useLocalization();
@@ -28,11 +29,12 @@ const ExecutiveDashboard: React.FC = () => {
     const { allPerformanceSamples, isLoading: arePerfLoading, error: perfError } = useAllPerformanceData();
     const { allFunnelRuns, isLoading: areFunnelRunsLoading, error: funnelRunsError } = useAllFunnelRunsData();
     const { allOpportunities, isLoading: areOppsLoading, error: oppsError } = useAllOpportunitiesData();
+    const { allConversions, isLoading: areConversionsLoading, error: conversionsError } = useAllConversionsData();
     
     const [period, setPeriod] = useState(30); // days
 
-    const isLoading = isExecutiveLoading || isAnalyticsLoading || isCampaignsLoading || isKpiLoading || areLeadsLoading || arePerfLoading || areFunnelRunsLoading || areOppsLoading;
-    const error = executiveError || analyticsError || campaignsError || kpiError || leadsError || perfError || funnelRunsError || oppsError;
+    const isLoading = isExecutiveLoading || isAnalyticsLoading || isCampaignsLoading || isKpiLoading || areLeadsLoading || arePerfLoading || areFunnelRunsLoading || areOppsLoading || areConversionsLoading;
+    const error = executiveError || analyticsError || campaignsError || kpiError || leadsError || perfError || funnelRunsError || oppsError || conversionsError;
 
     const filteredSnapshots = useMemo(() => {
         if (!allKpiSnapshots) return [];
@@ -44,6 +46,23 @@ const ExecutiveDashboard: React.FC = () => {
             return snapshotDate >= startDate && snapshotDate <= endDate;
         });
     }, [allKpiSnapshots, period]);
+
+    const leadsFromCrossSell = useMemo(() => {
+        if (!allConversions) return 0;
+
+        const endDate = new Date();
+        const startDate = new Date();
+        startDate.setDate(endDate.getDate() - period);
+
+        return allConversions.filter(c => {
+            const convDate = new Date(c.date);
+            return convDate >= startDate &&
+                   convDate <= endDate &&
+                   c.kind === 'lead' &&
+                   c.utm_source === 'email' &&
+                   c.utm_campaign.includes('cross-sell');
+        }).length;
+    }, [allConversions, period]);
 
     const pipelineValue = useMemo(() => {
         if (!allOpportunities) return 0;
@@ -160,13 +179,14 @@ const ExecutiveDashboard: React.FC = () => {
                     {[...Array(10)].map((_, i) => <SkeletonLoader key={i} className="h-24 w-full" />)}
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-6">
                     <KpiCard title={t('executive.kpis.totalGwpWon')} value={`€${totalGwpWon.toLocaleString('el-GR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} subtitle={t('executive.kpis.totalGwpWonSubtitle')} variant="success" />
                     <KpiCard title={t('executive.kpis.pipelineValue')} value={`€${pipelineValue.toLocaleString('el-GR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`} subtitle={t('executive.kpis.pipelineValueSubtitle')} variant="success" />
                     <KpiCard title={t('executive.kpis.leadToWonRate')} value={`${leadToWonRate.rate}%`} subtitle={t('executive.kpis.leadToWonRateSubtitle', { wonCount: leadToWonRate.wonCount, leadCount: leadToWonRate.leadCount })} />
                     <KpiCard title={t('executive.kpis.avgCpa')} value={`€${averageCpa.cpa.toLocaleString('el-GR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} subtitle={t('executive.kpis.avgCpaSubtitle', { spend: averageCpa.spend.toLocaleString('el-GR'), count: averageCpa.won })} />
                     <KpiCard title={t('executive.kpis.micrositeFunnelRate')} value={`${micrositeFunnelRate.rate}%`} subtitle={t('executive.kpis.micrositeFunnelRateSubtitle', { leads: micrositeFunnelRate.leads, pageviews: micrositeFunnelRate.pageviews })} variant="info" />
                     <KpiCard title={t('executive.kpis.avgReplyTime')} value={`${averageReplyTime.toFixed(1)} hrs`} subtitle={t('executive.kpis.avgReplyTimeSubtitle')} variant="info" />
+                    <KpiCard title={t('executive.kpis.crossSellLeads')} value={leadsFromCrossSell} subtitle={t('executive.kpis.crossSellLeadsSubtitle')} />
                     <KpiCard title={t('campaignAnalytics.kpis.totalSpend')} value={`€${campaignKpis.totalSpend.toLocaleString('el-GR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} />
                     <KpiCard title={t('campaignAnalytics.kpis.totalImpressions')} value={campaignKpis.totalImpressions.toLocaleString('el-GR')} />
                     <KpiCard title={t('campaignAnalytics.kpis.ctr')} value={`${campaignKpis.ctr.toFixed(2)}%`} />

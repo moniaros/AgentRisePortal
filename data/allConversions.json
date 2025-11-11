@@ -1,0 +1,8 @@
+[
+  { "id": "conv1", "agencyId": "agency_1", "date": "2024-10-27T10:00:00Z", "kind": "lead", "utm_source": "email", "utm_medium": "newsletter", "utm_campaign": "q4_cross-sell_umbrella" },
+  { "id": "conv2", "agencyId": "agency_1", "date": "2024-10-26T11:00:00Z", "kind": "lead", "utm_source": "google", "utm_medium": "cpc", "utm_campaign": "auto_insurance_promo" },
+  { "id": "conv3", "agencyId": "agency_2", "date": "2024-10-25T12:00:00Z", "kind": "lead", "utm_source": "email", "utm_medium": "newsletter", "utm_campaign": "q4_cross-sell_life" },
+  { "id": "conv4", "agencyId": "agency_1", "date": "2024-10-24T13:00:00Z", "kind": "sale", "utm_source": "email", "utm_medium": "newsletter", "utm_campaign": "q4_cross-sell_umbrella" },
+  { "id": "conv5", "agencyId": "agency_2", "date": "2024-10-23T14:00:00Z", "kind": "lead", "utm_source": "facebook", "utm_medium": "social", "utm_campaign": "brand_awareness_fall" },
+  { "id": "conv6", "agencyId": "agency_1", "date": "2024-09-30T15:00:00Z", "kind": "lead", "utm_source": "email", "utm_medium": "newsletter", "utm_campaign": "q3_cross-sell_home" }
+]

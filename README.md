@@ -128,6 +128,9 @@ The agent dashboard features several Key Performance Indicator (KPI) cards for a
 -   **Pipeline Value**:
     -   **Purpose**: (Executive Dashboard) To provide a sales forecast by showing the total potential value of all open deals.
     -   **Data Source**: Sums the `value` property from all `Opportunity__EXT` records where the `stage` is not 'won' or 'lost'.
+-   **Leads from Cross-Sell Campaigns**:
+    -   **Purpose**: (Executive Dashboard) To measure the effectiveness of email marketing campaigns aimed at cross-selling to existing customers.
+    -   **Data Source**: Counts `Conversion` records where `kind` is 'lead', `utm_source` is 'email', `utm_campaign` contains the string 'cross-sell', and the `date` is within the selected period.
 
 ### Onboarding Checklist
 

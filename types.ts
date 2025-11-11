@@ -237,6 +237,16 @@ export interface FunnelRun {
     leads: number;
 }
 
+export interface Conversion {
+    id: string;
+    agencyId: string;
+    date: string;
+    kind: 'lead' | 'sale';
+    utm_source: string;
+    utm_medium: string;
+    utm_campaign: string;
+}
+
 
 // Gap Analysis and Policy Parsing
 export interface DetailedPolicy {
