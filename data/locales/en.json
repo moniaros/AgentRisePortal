@@ -494,6 +494,8 @@
     "kpis": {
       "totalGwpWon": "Total GWP Won",
       "totalGwpWonSubtitle": "From platform marketing leads",
+      "pipelineValue": "Pipeline Value",
+      "pipelineValueSubtitle": "Total value of all open deals",
       "leadToWonRate": "Lead-to-Won Rate",
       "leadToWonRateSubtitle": "{wonCount} deals from {leadCount} leads",
       "avgCpa": "Average CPA",

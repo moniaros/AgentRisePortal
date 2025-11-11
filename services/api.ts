@@ -3,6 +3,19 @@ import { DetailedPolicy, AnalyticsData, User, AuditLog, ExecutiveData, NewsArtic
 
 const SIMULATED_DELAY = 500;
 
+export const fetchAllOpportunities = async (): Promise<Opportunity__EXT[]> => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const res = await fetch('/data/allOpportunities.json');
+            if (!res.ok) throw new Error('Failed to fetch allOpportunities mock data');
+            const data = await res.json();
+            setTimeout(() => resolve(data), SIMULATED_DELAY);
+        } catch (err) {
+            reject(err);
+        }
+    });
+};
+
 export const fetchAllFunnelRuns = async (): Promise<FunnelRun[]> => {
     return new Promise(async (resolve, reject) => {
         try {

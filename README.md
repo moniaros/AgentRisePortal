@@ -125,6 +125,9 @@ The agent dashboard features several Key Performance Indicator (KPI) cards for a
 -   **Average Time to First Reply**:
     -   **Purpose**: (Executive Dashboard) To measure the team's responsiveness to new inquiries.
     -   **Data Source**: Averages the `avgTimeToFirstReplyH` property from `KPISnapshot` records over the selected period.
+-   **Pipeline Value**:
+    -   **Purpose**: (Executive Dashboard) To provide a sales forecast by showing the total potential value of all open deals.
+    -   **Data Source**: Sums the `value` property from all `Opportunity__EXT` records where the `stage` is not 'won' or 'lost'.
 
 ### Onboarding Checklist
 

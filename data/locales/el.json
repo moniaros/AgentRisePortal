@@ -494,6 +494,8 @@
     "kpis": {
       "totalGwpWon": "Συνολικό GWP Κερδισμένο",
       "totalGwpWonSubtitle": "Από leads μάρκετινγκ πλατφόρμας",
+      "pipelineValue": "Αξία Pipeline",
+      "pipelineValueSubtitle": "Συνολική αξία όλων των ανοιχτών ευκαιριών",
       "leadToWonRate": "Ποσοστό Μετατροπής Lead",
       "leadToWonRateSubtitle": "{wonCount} συμβόλαια από {leadCount} leads",
       "avgCpa": "Μέσο CPA",
