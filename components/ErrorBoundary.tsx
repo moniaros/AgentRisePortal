@@ -1,3 +1,4 @@
+
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 
 interface Props {
@@ -10,14 +11,11 @@ interface State {
 }
 
 class ErrorBoundary extends Component<Props, State> {
-  // FIX: Using a standard constructor to initialize state ensures `this.props` is correctly set up via `super(props)`, resolving potential type-checking issues where `this.props` might not be inferred correctly.
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      hasError: false,
-      error: undefined,
-    };
-  }
+  // FIX: Using a state property initializer is a more modern and less error-prone way to initialize state in a class component, avoiding potential issues with `this` in the constructor.
+  state: State = {
+    hasError: false,
+    error: undefined,
+  };
 
   static getDerivedStateFromError(error: Error): State {
     // Update state so the next render will show the fallback UI.

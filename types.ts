@@ -1,19 +1,24 @@
-import React from 'react';
 
-// General
+import React from "react";
+
 export enum Language {
     EN = 'en',
-    EL = 'el',
+    EL = 'el'
 }
 
-export interface TranslationTokens {
+export type TranslationTokens = {
     [key: string]: string | TranslationTokens;
+};
+
+export interface SocialPlatform {
+    key: string;
+    name: string;
+    icon: React.ReactElement<React.SVGProps<SVGSVGElement>>;
 }
 
-// User & Auth - ACORD Aligned Schema
 export enum UserSystemRole {
     AGENT = 'agent',
-    ADMIN = 'admin',
+    ADMIN = 'admin'
 }
 
 export type LicenseStatus = 'valid' | 'expired' | 'pending_review';
@@ -25,88 +30,40 @@ export interface AcordLicense {
     status: LicenseStatus;
 }
 
-export interface AcordPartyRole {
-    roleType: UserSystemRole; // Maps to system-level permissions
-    roleTitle: string; // e.g., 'Senior Insurance Agent'
-    permissionsScope: 'agency' | 'global' | 'team';
-    jobTitle?: string;
-    department?: string;
-    licenses?: AcordLicense[];
-}
-
-export interface AcordPartyName {
-    firstName: string;
-    lastName: string;
-}
-
-export interface AcordContactInfo {
-    email: string;
-    workPhone?: string;
-    mobilePhone?: string;
-}
-
-export interface AcordAddressInfo {
-    fullAddress?: string; // For simplicity, using a single field. Can be expanded.
-}
-
-export interface AcordParty {
-    partyName: AcordPartyName;
-    contactInfo: AcordContactInfo;
-    addressInfo?: AcordAddressInfo;
-    profilePhotoUrl?: string; // Base64 data URL for PartyPhoto
-    signature?: string; // Base64 data URL for PartySignature
-}
-
 export interface User {
     id: string;
     agencyId: string;
-    party: AcordParty;
-    partyRole: AcordPartyRole;
-}
-
-
-// User Activity
-export type UserActivityType = 'login' | 'action' | 'notification';
-
-export interface UserActivityEvent {
-    id: string;
-    userId: string;
-    timestamp: string;
-    type: UserActivityType;
-    description: string;
-    details?: {
-        ipAddress?: string;
-        targetId?: string; // e.g., leadId, policyId
+    party: {
+        partyName: {
+            firstName: string;
+            lastName: string;
+        };
+        contactInfo: {
+            email: string;
+            workPhone?: string;
+            mobilePhone?: string;
+        };
+        addressInfo?: {
+            fullAddress: string;
+        };
+        profilePhotoUrl?: string;
+        signature?: string;
     };
-    agencyId: string;
+    partyRole: {
+        roleType: UserSystemRole;
+        roleTitle: string;
+        permissionsScope: string;
+        jobTitle?: string;
+        department?: string;
+        licenses?: AcordLicense[];
+    };
 }
-
-
-// CRM - Leads & Customers
-export type LeadStatus = 'new' | 'contacted' | 'qualified' | 'closed' | 'rejected';
 
 export enum PolicyType {
     AUTO = 'auto',
     HOME = 'home',
     LIFE = 'life',
-    HEALTH = 'health',
-}
-
-export interface Lead {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone?: string;
-    source: string;
-    status: LeadStatus;
-    potentialValue: number;
-    createdAt: string;
-    policyType: PolicyType;
-    agencyId: string;
-    customerId?: string;
-    campaignId?: string;
-    score?: number;
+    HEALTH = 'health'
 }
 
 export interface Coverage {
@@ -127,17 +84,17 @@ export interface Policy {
     coverages: Coverage[];
 }
 
-export interface Attachment {
-    name: string;
-    size: number;
-    url: string;
-}
-
 export interface Annotation {
     id: string;
     date: string;
     content: string;
     author: string;
+}
+
+export interface Attachment {
+    name: string;
+    size: number;
+    url: string;
 }
 
 export interface TimelineEvent {
@@ -166,209 +123,30 @@ export interface Customer {
     attentionFlag?: string;
 }
 
-// Gap Analysis
-export interface DetailedPolicy {
-    policyNumber: string;
-    insurer: string;
-    policyholder: {
-        name: string;
-        address: string;
-    };
-    insuredItems: {
-        id: string;
-        description: string;
-        coverages: Coverage[];
-    }[];
-}
+export type LeadStatus = 'new' | 'contacted' | 'qualified' | 'closed' | 'rejected';
 
-export interface GapAnalysisResult {
-    gaps: {
-        area: string;
-        current: string;
-        recommended: string;
-        reason: string;
-    }[];
-    upsell_opportunities: {
-        product: string;
-        recommendation: string;
-        benefit: string;
-    }[];
-    cross_sell_opportunities: {
-        product: string;
-        recommendation: string;
-        benefit: string;
-    }[];
-}
-
-// Social & Campaigns
-export interface SocialPlatform {
-    key: string;
-    name: string;
-    icon: React.ReactElement<React.SVGProps<SVGSVGElement>>;
+export interface Lead {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone?: string;
+    source: string;
+    campaignId?: string;
+    status: LeadStatus;
+    potentialValue: number;
+    createdAt: string;
+    policyType: PolicyType;
+    agencyId: string;
+    score?: number;
+    customerId?: string;
 }
 
 export enum CampaignObjective {
-    LEAD_GENERATION = 'lead_generation',
-    BRAND_AWARENESS = 'brand_awareness',
-    SALES = 'sales',
+    LEAD_GENERATION = 'LEAD_GENERATION',
+    BRAND_AWARENESS = 'BRAND_AWARENESS'
 }
 
-export interface LeadCaptureFormField {
-    name: string;
-    type: 'text' | 'email' | 'tel' | 'number';
-    required: boolean;
-}
-
-export interface Campaign {
-    id: string;
-    name: string;
-    objective: CampaignObjective;
-    network: 'facebook' | 'instagram' | 'linkedin' | 'x';
-    language: Language;
-    audience: {
-        ageRange: [number, number];
-        interests: string[];
-    };
-    budget: number;
-    startDate: string;
-    endDate: string;
-    creative: {
-        headline: string;
-        body: string;
-        image: string;
-    };
-    status: 'draft' | 'active' | 'completed';
-    agencyId: string;
-    leadCaptureForm?: {
-        fields: LeadCaptureFormField[];
-    };
-}
-
-// Testimonials
-export interface Testimonial {
-    id: string;
-    authorName: string;
-    authorPhotoUrl?: string;
-    quote: string;
-    rating: number; // 1 to 5
-    status: 'pending' | 'approved' | 'rejected';
-    agencyId: string;
-    createdAt: string;
-}
-
-// Automation Rules
-export type RuleCategory = 'lead_conversion' | 'communication_automation';
-export type ConditionField = 'lead_status' | 'lead_score' | 'policy_interest';
-export type ConditionOperator = 'is' | 'is_not' | 'greater_than' | 'less_than' | 'equals';
-export type ActionType = 'send_email' | 'send_sms' | 'send_viber' | 'send_whatsapp';
-export type RuleTriggerType = 'on_lead_creation' | 'on_status_change';
-
-export interface RuleCondition {
-    id: string;
-    field: ConditionField;
-    operator: ConditionOperator;
-    value: string | number;
-}
-
-export type TemplateChannel = 'email' | 'sms' | 'viber' | 'whatsapp';
-
-export interface MessageTemplate {
-  id: string;
-  name: string;
-  content: string;
-  channel: TemplateChannel;
-}
-
-export interface RuleAction {
-    id: string;
-    type: ActionType;
-    templateId: string;
-}
-
-export interface AutomationRule {
-    id: string;
-    name: string;
-    description: string;
-    category: RuleCategory;
-    triggerType: RuleTriggerType;
-    conditions: RuleCondition[];
-    actions: RuleAction[];
-    isEnabled: boolean;
-    lastExecuted: string | null;
-    successRate: number; // 0 to 1
-    agencyId: string;
-}
-
-export interface ConditionResult {
-    condition: RuleCondition;
-    passed: boolean;
-    actualValue: string | number | undefined;
-}
-
-export interface SimulationResult {
-    conditionsMet: boolean;
-    conditionResults: ConditionResult[];
-}
-
-export interface SmtpSettings {
-    isEnabled: boolean;
-    host?: string;
-    port?: number;
-    username?: string;
-    password?: string;
-    fromAddress?: string;
-}
-
-export interface ViberSettings {
-    isEnabled: boolean;
-    apiKey?: string;
-    senderName?: string;
-}
-
-export interface WhatsAppSettings {
-    isEnabled: boolean;
-    apiKey?: string;
-    phoneNumberId?: string;
-}
-
-export interface SmsSettings {
-    isEnabled: boolean;
-    apiKey?: string;
-    apiSecret?: string;
-    senderId?: string;
-}
-
-export interface AutomationChannelSettings {
-    email: SmtpSettings;
-    viber: ViberSettings;
-    whatsapp: WhatsAppSettings;
-    sms: SmsSettings;
-}
-
-export interface AutomationEvent {
-  id: string;
-  timestamp: string;
-  ruleId: string;
-  ruleName: string;
-  status: 'success' | 'failure';
-  channel?: TemplateChannel;
-  target: {
-    id: string;
-    name: string;
-  };
-  details: string;
-  impact?: string;
-  agencyId: string;
-}
-
-export interface AutomationAnalytics {
-    conversionRateBefore: number;
-    conversionRateAfter: number;
-    messagesSentByChannel: { channel: TemplateChannel, count: number }[];
-}
-
-
-// Analytics & Admin
 export interface AuditLog {
     id: string;
     timestamp: string;
@@ -399,20 +177,11 @@ export interface ExecutiveData {
     riskExposure: { area: string; exposure: number; mitigation: number }[];
 }
 
-
-// Onboarding
-export interface OnboardingProgress {
-    profileCompleted: boolean;
-    policyAnalyzed: boolean;
-    campaignCreated: boolean;
-}
-
-// News & Announcements
 export interface NewsArticle {
-    id: string; // slug
+    id: string;
     title: string;
     summary: string;
-    content: string; // Can contain basic HTML
+    content: string;
     author: {
         name: string;
         avatarUrl?: string;
@@ -424,26 +193,44 @@ export interface NewsArticle {
         title: string;
         description: string;
     };
-    agencyId: 'global' | string; // 'global' for all agencies
+    agencyId: 'global' | string;
 }
 
-// Google Business Profile
-export type GbpStarRating = 'STAR_RATING_UNSPECIFIED' | 'ONE' | 'TWO' | 'THREE' | 'FOUR' | 'FIVE';
-
-export interface GbpReviewReply {
-    comment: string;
-    updateTime: string;
+export interface Testimonial {
+    id: string;
+    authorName: string;
+    authorPhotoUrl?: string;
+    quote: string;
+    rating: number;
+    status: 'pending' | 'approved' | 'rejected';
+    agencyId: string;
+    createdAt: string;
 }
 
-export interface GbpReview {
-    name: string;
-    reviewer: {
-        displayName: string;
+export type UserActivityType = 'login' | 'action' | 'notification';
+
+export interface UserActivityEvent {
+    id: string;
+    userId: string;
+    timestamp: string;
+    type: UserActivityType;
+    description: string;
+    details?: Record<string, any>;
+    agencyId: string;
+}
+
+export interface DetailedPolicy {
+    policyNumber: string;
+    insurer: string;
+    policyholder: {
+        name: string;
+        address: string;
     };
-    starRating: GbpStarRating;
-    comment: string;
-    createTime: string;
-    reply?: GbpReviewReply;
+    insuredItems: {
+        id: string;
+        description: string;
+        coverages: Coverage[];
+    }[];
 }
 
 export interface GbpLocationSummary {
@@ -452,172 +239,203 @@ export interface GbpLocationSummary {
     totalReviewCount: number;
 }
 
-// Microsite Builder
-export type BlockType = 'hero' | 'about' | 'services' | 'team' | 'testimonials' | 'faq' | 'contact' | 'news' | 'awards' | 'certificates' | 'policy_highlights' | 'location' | 'video' | 'downloads';
+export type GbpStarRating = 'STAR_RATING_UNSPECIFIED' | 'ONE' | 'TWO' | 'THREE' | 'FOUR' | 'FIVE';
 
-interface BaseBlock {
+export interface GbpReview {
+    name: string;
+    starRating: GbpStarRating;
+    comment: string;
+    createTime: string;
+    updateTime: string;
+    reviewer: {
+        displayName: string;
+        profilePhotoUrl: string;
+    };
+    reply?: {
+        comment: string;
+        updateTime: string;
+    };
+}
+
+export type RuleCategory = 'lead_conversion' | 'communication_automation';
+export type TriggerType = 'on_lead_creation' | 'on_status_change';
+export type ConditionField = 'lead_status' | 'lead_score' | 'policy_interest';
+export type ConditionOperator = 'is' | 'is_not' | 'equals' | 'greater_than' | 'less_than';
+export type ActionType = 'send_email' | 'send_sms' | 'send_viber' | 'send_whatsapp';
+
+export interface RuleCondition {
+    id: string;
+    field: ConditionField;
+    operator: ConditionOperator;
+    value: string;
+}
+
+export interface RuleAction {
+    id: string;
+    type: ActionType;
+    templateId: string;
+}
+
+export interface AutomationRule {
+    id: string;
+    name: string;
+    description: string;
+    category: RuleCategory;
+    triggerType: TriggerType;
+    conditions: RuleCondition[];
+    actions: RuleAction[];
+    isEnabled: boolean;
+    lastExecuted: string | null;
+    successRate: number;
+    agencyId: string;
+}
+
+export type TemplateChannel = 'email' | 'sms' | 'viber' | 'whatsapp';
+
+export interface MessageTemplate {
+    id: string;
+    name: string;
+    channel: TemplateChannel;
+    content: string;
+}
+
+export interface AutomationEvent {
+    id: string;
+    timestamp: string;
+    ruleId: string;
+    ruleName: string;
+    status: 'success' | 'failure';
+    details: string;
+    impact?: string;
+    channel?: TemplateChannel;
+    agencyId: string;
+}
+
+export interface AutomationAnalytics {
+    conversionRateBefore: number;
+    conversionRateAfter: number;
+    messagesSentByChannel: { channel: TemplateChannel; count: number }[];
+}
+
+export interface LeadCaptureFormField {
+    name: string;
+    type: 'text' | 'email' | 'tel' | 'number';
+    required: boolean;
+}
+
+export interface Campaign {
+    id: string;
+    name: string;
+    objective: CampaignObjective;
+    network: 'facebook' | 'instagram' | 'linkedin' | 'x';
+    language: Language;
+    audience: {
+        ageRange: [number, number];
+        interests: string[];
+    };
+    budget: number;
+    startDate: string;
+    endDate: string;
+    creative: {
+        headline: string;
+        body: string;
+        image: string;
+    };
+    status: 'active' | 'draft' | 'completed';
+    agencyId: string;
+    leadCaptureForm?: {
+        fields: LeadCaptureFormField[];
+    };
+}
+
+// Microsite Builder Types
+export type BlockType = 
+    'hero' | 'about' | 'services' | 'team' | 'testimonials' | 'faq' | 'contact' | 'news' | 
+    'awards' | 'certificates' | 'policy_highlights' | 'location' | 'video' | 'downloads';
+
+export interface BaseBlock {
     id: string;
     type: BlockType;
+    title?: string;
 }
 
 export interface HeroBlock extends BaseBlock {
     type: 'hero';
-    title: string;
-    subtitle: string;
-    ctaText: string;
-    imageUrl: string;
+    subtitle?: string;
+    ctaText?: string;
+    imageUrl?: string;
 }
 
 export interface AboutBlock extends BaseBlock {
     type: 'about';
-    title: string;
-    content: string;
-    imageUrl: string;
-}
-
-export interface ServiceItem {
-    id: string;
-    name: string;
-    description: string;
-    icon: string;
+    content?: string;
+    imageUrl?: string;
 }
 
 export interface ServicesBlock extends BaseBlock {
     type: 'services';
-    title: string;
-    services: ServiceItem[];
-}
-
-export interface TeamMember {
-    id: string;
-    name: string;
-    role: string;
-    imageUrl: string;
-    bio: string;
+    services: { id: string; name: string; description: string; icon?: string }[];
 }
 
 export interface TeamBlock extends BaseBlock {
     type: 'team';
-    title: string;
-    members: TeamMember[];
-}
-
-export interface TestimonialItem {
-    id: string;
-    quote: string;
-    author: string;
+    members: { id: string; name: string; role: string; imageUrl: string }[];
 }
 
 export interface TestimonialsBlock extends BaseBlock {
     type: 'testimonials';
-    title: string;
-    testimonials: TestimonialItem[];
-}
-
-export interface FaqItem {
-    id: string;
-    question: string;
-    answer: string;
+    testimonials: { id: string; quote: string; author: string }[];
 }
 
 export interface FaqBlock extends BaseBlock {
     type: 'faq';
-    title: string;
-    items: FaqItem[];
+    items: { id: string; question: string; answer: string }[];
 }
 
 export interface ContactBlock extends BaseBlock {
     type: 'contact';
-    title: string;
-    subtitle: string;
+    subtitle?: string;
 }
 
-export interface NewsItem {
-    id: string;
-    title: string;
-    summary: string;
-    date: string;
-}
 export interface NewsBlock extends BaseBlock {
     type: 'news';
-    title: string;
-    items: NewsItem[];
-}
-export interface AwardItem {
-    id: string;
-    title: string;
-    issuer: string;
-    year: string;
-}
-export interface AwardsBlock extends BaseBlock {
-    type: 'awards';
-    title: string;
-    awards: AwardItem[];
+    items: { id: string; title: string; summary: string; date: string }[];
 }
 
-export interface CertificateItem {
-    id: string;
-    name: string;
-    imageUrl: string;
+export interface AwardsBlock extends BaseBlock {
+    type: 'awards';
+    awards: { id: string; title: string; issuer: string; year: string }[];
 }
 
 export interface CertificatesBlock extends BaseBlock {
-    type: 'certificates',
-    title: string;
-    certificates: CertificateItem[];
-}
-
-export interface PolicyHighlightItem {
-    id: string;
-    title: string;
-    description: string;
+    type: 'certificates';
+    certificates: { id: string; name: string; imageUrl: string }[];
 }
 
 export interface PolicyHighlightsBlock extends BaseBlock {
-    type: 'policy_highlights',
-    title: string;
-    highlights: PolicyHighlightItem[];
+    type: 'policy_highlights';
+    highlights: { id: string; title: string; description: string; icon?: string }[];
 }
 
 export interface LocationBlock extends BaseBlock {
-    type: 'location',
-    title: string;
+    type: 'location';
     address: string;
     googleMapsUrl: string;
 }
 
 export interface VideoBlock extends BaseBlock {
-    type: 'video',
-    title: string;
+    type: 'video';
     youtubeVideoId: string;
-}
-export interface DownloadItem {
-    id: string;
-    title: string;
-    fileUrl: string;
 }
 
 export interface DownloadsBlock extends BaseBlock {
-    type: 'downloads',
-    title: string;
-    files: DownloadItem[];
+    type: 'downloads';
+    files: { id: string; title: string; fileUrl: string }[];
 }
 
 export type MicrositeBlock = 
-    | HeroBlock 
-    | AboutBlock 
-    | ServicesBlock 
-    | TeamBlock
-    | TestimonialsBlock 
-    | FaqBlock 
-    | ContactBlock
-    | NewsBlock
-    | AwardsBlock
-    | CertificatesBlock
-    | PolicyHighlightsBlock
-    | LocationBlock
-    | VideoBlock
-    | DownloadsBlock;
+    HeroBlock | AboutBlock | ServicesBlock | TeamBlock | TestimonialsBlock | FaqBlock | ContactBlock | 
+    NewsBlock | AwardsBlock | CertificatesBlock | PolicyHighlightsBlock | LocationBlock | VideoBlock | DownloadsBlock;
 
 export interface MicrositeConfig {
     siteTitle: string;
@@ -629,5 +447,55 @@ export interface MicrositeConfig {
         facebook: string;
         linkedin: string;
         x: string;
+    };
+}
+
+export interface GapAnalysisResult {
+    gaps: { area: string; current: string; recommended: string; reason: string }[];
+    upsell_opportunities: { product: string; recommendation: string; benefit: string }[];
+    cross_sell_opportunities: { product: string; recommendation: string; benefit: string }[];
+}
+
+export interface OnboardingProgress {
+    profileCompleted: boolean;
+    policyAnalyzed: boolean;
+    campaignCreated: boolean;
+}
+
+export interface ConditionResult {
+    condition: RuleCondition;
+    passed: boolean;
+    actualValue: any;
+}
+
+export interface SimulationResult {
+    conditionsMet: boolean;
+    conditionResults: ConditionResult[];
+}
+
+export interface AutomationChannelSettings {
+    email: {
+        isEnabled: boolean;
+        host?: string;
+        port?: number;
+        username?: string;
+        password?: string;
+        fromAddress?: string;
+    };
+    viber: {
+        isEnabled: boolean;
+        apiKey?: string;
+        senderName?: string;
+    };
+    whatsapp: {
+        isEnabled: boolean;
+        apiKey?: string;
+        phoneNumberId?: string;
+    };
+    sms: {
+        isEnabled: boolean;
+        apiKey?: string;
+        apiSecret?: string;
+        senderId?: string;
     };
 }

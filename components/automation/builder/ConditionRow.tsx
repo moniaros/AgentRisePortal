@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 import { ConditionField, ConditionOperator, LeadStatus, PolicyType } from '../../../types';
@@ -31,6 +32,7 @@ const leadStatusValues: LeadStatus[] = ['new', 'contacted', 'qualified', 'closed
 
 const VALUE_OPTIONS: Record<string, { label: string; value: string }[]> = {
     lead_status: leadStatusValues.map(s => ({label: s, value: s})),
+    // FIX: With `PolicyType` correctly defined as a string enum, this mapping now works as expected without type errors.
     policy_interest: Object.values(PolicyType).map(p => ({label: p, value: p})),
 };
 

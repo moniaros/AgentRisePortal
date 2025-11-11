@@ -1,3 +1,4 @@
+
 import { useCallback } from 'react';
 import { useOfflineSync } from './useOfflineSync';
 import { fetchTemplates } from '../services/api';
@@ -16,17 +17,14 @@ export const useTemplates = () => {
             ...template,
             id: `${template.channel}_${Date.now()}`,
         };
-        // FIX: The 'updateData' function from useOfflineSync expects the new state value directly, not a function.
         setTemplates([...templates, newTemplate]);
     }, [setTemplates, templates]);
 
     const updateTemplate = useCallback((updatedTemplate: MessageTemplate) => {
-        // FIX: The 'updateData' function from useOfflineSync expects the new state value directly, not a function.
         setTemplates(templates.map(t => t.id === updatedTemplate.id ? updatedTemplate : t));
     }, [setTemplates, templates]);
     
     const deleteTemplate = useCallback((templateId: string) => {
-        // FIX: The 'updateData' function from useOfflineSync expects the new state value directly, not a function.
         setTemplates(templates.filter(t => t.id !== templateId));
     }, [setTemplates, templates]);
 
