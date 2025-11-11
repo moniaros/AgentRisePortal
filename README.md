@@ -57,12 +57,12 @@ This section provides a clear overview of the project's current status for produ
 
 The platform is currently a high-fidelity MVP with a simulated backend. The following features are implemented and functional from a UI and front-end logic perspective.
 
-#### Comprehensive Navigation & Content Strategy
--   **Description:** The application's main navigation has been completely overhauled to create a more logical, scalable, and user-friendly structure.
--   **Sectioned Sidebar:** The main sidebar is organized into collapsible, high-level sections (`Overview`, `CRM`, `Campaigns`, `Website`, `Management`, `Settings`), decluttering the UI and grouping related features.
--   **Consolidated CRM:** The previous standalone "Leads" page has been removed. Its functionality, including advanced filtering by status, source, and name, is now fully integrated into the main `Customers & Leads` page. This creates a single, unified view for managing all contacts.
--   **Content as a Feature of Microsite:** The "News" and "Testimonials" pages are no longer primary navigation items. They are now treated as content sources that can be displayed as widgets within the `Microsite Builder`, aligning the content creation process with its public-facing purpose. The pages remain accessible via direct links.
--   **Route Redirects & Context-Aware Breadcrumbs:** Redirects ensure old bookmarks continue to work, and the breadcrumb navigation has been enhanced to reflect the new hierarchical structure (e.g., "Home / CRM / Customer Profile"), improving user orientation.
+#### Navigation & CRM Improvements
+-   **Description:** The main navigation and CRM functionalities have been restructured to create a more intuitive and efficient workflow for agents.
+-   **Centralized CRM Menu:** A new collapsible "CRM" parent menu has been added to the main sidebar, grouping all related features.
+-   **Unified "Customers & Leads" Page:** The previous standalone "Leads List" and "Micro-CRM" pages have been merged into a single, powerful `Customers & Leads` page (`/micro-crm`). This view "pins" recent, un-converted leads at the top for quick action and displays the full customer list below, all managed through a shared search filter.
+-   **Renamed AI Tool:** The "Gap Analysis" page has been renamed to `Import Policy (AI)` (`/gap-analysis`) and is now logically located within the CRM menu, clarifying its purpose as a tool for populating the CRM with policy data.
+-   **Embedded AI Analysis:** The customer detail page (`/customer/:id`) now features an "AI Policy Analysis" panel. This allows agents to upload a policy document directly for a specific customer, analyze it for cross-sell and upsell opportunities using Gemini, and automatically log the analysis results to the customer's timeline, creating a seamless workflow and a complete audit trail.
 
 #### 1. Modern Dashboard & UI
 -   **Description:** A clean, responsive user dashboard serves as the landing page post-login. It features a dynamic, time-aware greeting, the current date, and the user's agency affiliation. It also includes several key performance indicator (KPI) cards, including 'New Leads', 'Est. Monthly Revenue', and 'Total Policies in Force', which shows the current policy count with a month-over-month comparison. The entire UI is built with Tailwind CSS, supports bilingual (Greek/English) toggling, and is designed for a seamless experience on all devices.

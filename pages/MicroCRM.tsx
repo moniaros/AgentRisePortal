@@ -20,17 +20,21 @@ const MicroCRM: React.FC = () => {
     const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
 
     const filteredLeads = useMemo(() => {
-        return leads.filter(lead => {
-            const statusMatch = filters.status === 'all' || lead.status === filters.status;
-            const sourceMatch = filters.source === 'all' || lead.source === filters.source;
+        // Only show recent leads that haven't been converted to a customer yet
+        const recentLeads = leads
+            .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+            .filter(lead => !lead.customerId)
+            .slice(0, 5);
+
+        return recentLeads.filter(lead => {
             const searchLower = filters.search.toLowerCase();
             const searchMatch =
                 lead.firstName.toLowerCase().includes(searchLower) ||
                 lead.lastName.toLowerCase().includes(searchLower) ||
                 lead.email.toLowerCase().includes(searchLower);
-            return statusMatch && sourceMatch && searchMatch;
+            return searchMatch;
         });
-    }, [leads, filters]);
+    }, [leads, filters.search]);
 
     const filteredCustomers = useMemo(() => {
         const searchLower = filters.search.toLowerCase();
@@ -80,14 +84,20 @@ const MicroCRM: React.FC = () => {
             </div>
             
             <div className="mb-6">
-                 <LeadControls filters={filters} onFilterChange={setFilters} allLeads={leads} />
+                 <input
+                    type="text"
+                    placeholder={t('crm.searchAll')}
+                    value={filters.search}
+                    onChange={(e) => setFilters(prev => ({ ...prev, search: e.target.value}))}
+                    className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
+                />
             </div>
 
             {error && <ErrorMessage message={error.message} />}
 
             <div className="mb-8">
-                <h2 className="text-xl font-semibold mb-4">{t('leads.title')}</h2>
-                {isLoading ? <SkeletonLoader className="h-64 w-full" /> : <LeadsTable leads={filteredLeads} onViewDetails={handleViewLeadDetails} />}
+                <h2 className="text-xl font-semibold mb-4">{t('crm.recentLeads')}</h2>
+                {isLoading ? <SkeletonLoader className="h-48 w-full" /> : <LeadsTable leads={filteredLeads} onViewDetails={handleViewLeadDetails} />}
             </div>
 
             <div>
