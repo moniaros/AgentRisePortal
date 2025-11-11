@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useLocalization } from '../hooks/useLocalization';
 import { useTestimonialsData } from '../hooks/useTestimonialsData';
 import { useAuth } from '../hooks/useAuth';
-// FIX: Module '"../types"' has no exported member 'UserRole'. Use 'UserSystemRole' instead.
+// FIX: Module '"../types"' has no exported member 'UserRole'. Use 'UserSystemRole' instead and fix import path.
 import { UserSystemRole } from '../types';
 import ErrorMessage from '../components/ui/ErrorMessage';
 import SkeletonLoader from '../components/ui/SkeletonLoader';

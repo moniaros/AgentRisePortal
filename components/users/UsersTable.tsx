@@ -1,5 +1,5 @@
 import React from 'react';
-// FIX: Module '"../../types"' has no exported member 'UserRole'. Use 'UserSystemRole' instead.
+// FIX: Module '"../../types"' has no exported member 'UserRole'. Use 'UserSystemRole' instead and fix import path.
 import { User, UserSystemRole } from '../../types';
 import { useLocalization } from '../../hooks/useLocalization';
 import { useAuth } from '../../hooks/useAuth';

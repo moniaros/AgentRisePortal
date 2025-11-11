@@ -1,4 +1,5 @@
 import React from 'react';
+// FIX: Correct import path for types
 import { AutomationRule } from '../../types';
 import { useLocalization } from '../../hooks/useLocalization';
 import CategoryBadge from './CategoryBadge';

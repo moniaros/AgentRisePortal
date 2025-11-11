@@ -1,6 +1,7 @@
 import React from 'react';
 import { Outlet, NavLink, Navigate, useNavigate } from 'react-router-dom';
 import { useLocalization } from '../hooks/useLocalization';
+// FIX: Correct import path for types
 import { UserSystemRole } from '../types';
 import { useAuth } from '../hooks/useAuth';
 

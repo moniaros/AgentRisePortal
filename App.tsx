@@ -6,6 +6,7 @@ import { NotificationProvider } from './context/NotificationContext';
 import { ThemeProvider } from './context/ThemeContext';
 import GTMProvider from './components/GTMProvider';
 import RouteAnalyticsTracker from './components/RouteAnalyticsTracker';
+// FIX: Corrected import path for ErrorBoundary component.
 import ErrorBoundary from './components/ErrorBoundary';
 
 import Layout from './components/Layout';
@@ -14,6 +15,7 @@ import Logout from './pages/Logout';
 import Dashboard from './pages/Dashboard';
 import MicroCRM from './pages/MicroCRM';
 import CustomerProfile from './pages/CustomerMicrosite';
+// FIX: Corrected import path for GapAnalysis component.
 import GapAnalysis from './pages/GapAnalysis';
 import Onboarding from './pages/Onboarding';
 import Billing from './pages/Billing';

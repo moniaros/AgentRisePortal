@@ -1,7 +1,7 @@
 import { useMemo, useCallback } from 'react';
 import { useOfflineSync } from './useOfflineSync';
 import { fetchUsers, fetchAuditLogs } from '../services/api';
-// FIX: Module '"../types"' has no exported member 'UserRole'. Use 'UserSystemRole' instead.
+// FIX: Module '"../types"' has no exported member 'UserRole'. Use 'UserSystemRole' instead and fix import path.
 import { User, AuditLog, UserSystemRole } from '../types';
 import { useAuth } from './useAuth';
 

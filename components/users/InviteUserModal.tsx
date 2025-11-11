@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocalization } from '../../hooks/useLocalization';
-// FIX: Module '"../../types"' has no exported member 'UserRole'. Use 'UserSystemRole' instead.
+// FIX: Module '"../../types"' has no exported member 'UserRole'. Use 'UserSystemRole' instead and fix import path.
 import { UserSystemRole } from '../../types';
 
 interface InviteUserModalProps {
@@ -19,6 +19,10 @@ const InviteUserModal: React.FC<InviteUserModalProps> = ({ isOpen, onClose, onIn
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onInvite(name, email, role);
+    // Reset form on submit
+    setName('');
+    setEmail('');
+    setRole(UserSystemRole.AGENT);
   };
 
   if (!isOpen) return null;

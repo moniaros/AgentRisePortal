@@ -1,4 +1,3 @@
-
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 
 interface Props {
@@ -11,41 +10,32 @@ interface State {
 }
 
 class ErrorBoundary extends Component<Props, State> {
-  public state: State;
+  // FIX: Removed 'public' modifier.
+  state: State = {
+    hasError: false,
+  };
 
-  // FIX: The state property initializer was causing a typing issue. Replaced it with a standard constructor to ensure `this.props` is correctly initialized.
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      hasError: false,
-      error: undefined,
-    };
-  }
-
+  // FIX: Removed 'public' modifier.
   static getDerivedStateFromError(error: Error): State {
-    // Update state so the next render will show the fallback UI.
     return { hasError: true, error };
   }
 
+  // FIX: Removed 'public' modifier.
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    // You can also log the error to an error reporting service
     console.error("Uncaught error:", error, errorInfo);
   }
 
-  render() {
+  // FIX: Re-added 'public' modifier to resolve issue where 'props' was not found on the component type.
+  public render() {
     if (this.state.hasError) {
-      // You can render any custom fallback UI
       return (
-        <div className="flex flex-col items-center justify-center h-screen bg-red-50 text-red-700">
-          <h1 className="text-4xl font-bold">Oops! Something went wrong.</h1>
-          <p className="mt-4 text-lg">We're sorry for the inconvenience. Please try refreshing the page.</p>
+        <div className="flex flex-col justify-center items-center h-screen bg-red-100 text-red-700 p-4">
+          <h1 className="text-2xl font-bold mb-4">Oops! Something went wrong.</h1>
+          <p>We're sorry for the inconvenience. Please try refreshing the page.</p>
           {this.state.error && (
-            <details className="mt-6 p-4 bg-red-100 rounded-md w-full max-w-2xl text-left">
-              <summary>Error Details</summary>
-              <pre className="mt-2 text-sm whitespace-pre-wrap">
-                {this.state.error.toString()}
-              </pre>
-            </details>
+            <pre className="mt-4 text-xs bg-white p-4 rounded border border-red-200 w-full max-w-2xl overflow-auto">
+              {this.state.error.stack}
+            </pre>
           )}
         </div>
       );

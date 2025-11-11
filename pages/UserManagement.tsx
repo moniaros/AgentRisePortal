@@ -9,7 +9,7 @@ import AuditLogFilters from '../components/users/AuditLogFilters';
 import BulkActionsToolbar from '../components/users/BulkActionsToolbar';
 import ErrorMessage from '../components/ui/ErrorMessage';
 import SkeletonLoader from '../components/ui/SkeletonLoader';
-// FIX: Module '"../types"' has no exported member 'UserRole'. Use 'UserSystemRole' instead.
+// FIX: Module '"../types"' has no exported member 'UserRole'. Use 'UserSystemRole' instead and fix import path.
 import { User, UserSystemRole, AuditLog } from '../types';
 
 const UserManagement: React.FC = () => {

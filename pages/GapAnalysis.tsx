@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useLocalization } from '../hooks/useLocalization';
 import { DetailedPolicy, GapAnalysisResult } from '../types';
@@ -6,12 +5,14 @@ import FileUploader from '../components/gap-analysis/FileUploader';
 import PolicyParser from '../components/gap-analysis/PolicyParser';
 import PolicyReviewForm from '../components/gap-analysis/PolicyReviewForm';
 import GapAnalysisResults from '../components/gap-analysis/GapAnalysisResults';
-import ErrorMessage from '../components/ui/ErrorMessage';
-import { GoogleGenAI, Type } from '@google/genai';
 import { fetchParsedPolicy } from '../services/api';
+import { GoogleGenAI, Type } from "@google/genai";
+import { trackEvent } from '../services/analytics';
+import { useNotification } from '../hooks/useNotification';
 
 const GapAnalysis: React.FC = () => {
-    const { t } = useLocalization();
+    const { t, language } = useLocalization();
+    const { addNotification } = useNotification();
     const [file, setFile] = useState<File | null>(null);
     const [parsedPolicy, setParsedPolicy] = useState<DetailedPolicy | null>(null);
     const [userNeeds, setUserNeeds] = useState('');
@@ -26,15 +27,17 @@ const GapAnalysis: React.FC = () => {
         setParsedPolicy(null);
         setAnalysisResult(null);
         setIsLoading(true);
-        setLoadingStep(t('gapAnalysis.fetchingPolicy') as string);
+        setLoadingStep(t('gapAnalysis.fetchingPolicy'));
 
         try {
-            // In a real app, this would involve sending the file to a backend for parsing.
-            // Here, we simulate it and get mock data.
+            // In a real app, this would involve sending the file to a backend for OCR/parsing.
+            // Here, we simulate that process.
             const policyData = await fetchParsedPolicy();
             setParsedPolicy(policyData);
+            trackEvent('ai_tool', 'Gap Analysis', 'policy_parsed_success', undefined, language);
         } catch (err) {
-            setError(t('gapAnalysis.errors.parsingFailed') as string);
+            setError(t('gapAnalysis.errors.parsingFailed'));
+            trackEvent('ai_tool', 'Gap Analysis', 'policy_parsed_error', (err as Error).message, language);
         } finally {
             setIsLoading(false);
             setLoadingStep('');
@@ -42,25 +45,34 @@ const GapAnalysis: React.FC = () => {
     };
 
     const handleAnalyzeGaps = async () => {
-        if (!parsedPolicy || !userNeeds || !process.env.API_KEY) {
-            setError(t('gapAnalysis.errors.missingInfo') as string);
+        if (!parsedPolicy || !userNeeds) return;
+        
+        if (!process.env.API_KEY) {
+            setError(t('dashboard.errors.noApiKey'));
+            addNotification(t('dashboard.errors.noApiKey'), 'error');
             return;
         }
 
-        setError(null);
         setIsLoading(true);
-        setLoadingStep(t('gapAnalysis.analyzing') as string);
+        setLoadingStep(t('gapAnalysis.analyzing'));
+        setError(null);
+        setAnalysisResult(null);
 
         try {
             const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             const prompt = `
               Perform a gap analysis for an insurance policy.
               Current Policy Details: ${JSON.stringify(parsedPolicy)}
-              Client's Stated Needs: "${userNeeds}"
+              Customer Needs & Context: "${userNeeds}"
               
-              Identify gaps in coverage, upsell opportunities (e.g., higher limits), and cross-sell opportunities (e.g., new policy types).
+              Based on the needs and the current policy, identify:
+              1. Coverage Gaps: Areas where the current policy is insufficient.
+              2. Upsell Opportunities: Enhancements to existing coverages.
+              3. Cross-sell Opportunities: New types of policies the customer might need.
+
+              Provide a detailed reason for each finding.
             `;
-            
+
             const response = await ai.models.generateContent({
                 model: 'gemini-2.5-pro',
                 contents: prompt,
@@ -71,43 +83,46 @@ const GapAnalysis: React.FC = () => {
                         properties: {
                             gaps: {
                                 type: Type.ARRAY,
+                                description: 'List of coverage gaps identified.',
                                 items: {
                                     type: Type.OBJECT,
                                     properties: {
-                                        area: { type: Type.STRING },
-                                        current: { type: Type.STRING },
-                                        recommended: { type: Type.STRING },
-                                        reason: { type: Type.STRING },
+                                        area: { type: Type.STRING, description: 'e.g., Liability Coverage' },
+                                        current: { type: Type.STRING, description: 'e.g., €100,000' },
+                                        recommended: { type: Type.STRING, description: 'e.g., €300,000' },
+                                        reason: { type: Type.STRING, description: 'Reason for the recommendation.' },
                                     },
                                     required: ["area", "current", "recommended", "reason"],
                                 },
                             },
                             upsell_opportunities: {
                                 type: Type.ARRAY,
+                                description: 'List of potential upsell opportunities.',
                                 items: {
                                     type: Type.OBJECT,
                                     properties: {
-                                        product: { type: Type.STRING },
-                                        recommendation: { type: Type.STRING },
-                                        benefit: { type: Type.STRING },
+                                        product: { type: Type.STRING, description: 'e.g., Increased Personal Property Limit' },
+                                        recommendation: { type: Type.STRING, description: 'Specific recommendation details.' },
+                                        benefit: { type: Type.STRING, description: 'Benefit to the customer.' },
                                     },
                                     required: ["product", "recommendation", "benefit"],
                                 },
                             },
                             cross_sell_opportunities: {
                                 type: Type.ARRAY,
+                                description: 'List of potential cross-sell opportunities.',
                                 items: {
                                     type: Type.OBJECT,
                                     properties: {
-                                        product: { type: Type.STRING },
-                                        recommendation: { type: Type.STRING },
-                                        benefit: { type: Type.STRING },
+                                        product: { type: Type.STRING, description: 'e.g., Umbrella Policy' },
+                                        recommendation: { type: Type.STRING, description: 'Specific recommendation details.' },
+                                        benefit: { type: Type.STRING, description: 'Benefit to the customer.' },
                                     },
                                     required: ["product", "recommendation", "benefit"],
                                 },
                             },
                         },
-                         required: ["gaps", "upsell_opportunities", "cross_sell_opportunities"],
+                        required: ["gaps", "upsell_opportunities", "cross_sell_opportunities"],
                     }
                 }
             });
@@ -115,39 +130,65 @@ const GapAnalysis: React.FC = () => {
             const jsonStr = response.text;
             const result = JSON.parse(jsonStr) as GapAnalysisResult;
             setAnalysisResult(result);
+            trackEvent('ai_tool', 'Gap Analysis', 'analysis_success', undefined, language);
+
         } catch (err) {
-            console.error("AI analysis error:", err);
-            setError(t('gapAnalysis.errors.analysisFailed') as string);
+            console.error("Error analyzing gaps:", err);
+            setError(t('gapAnalysis.errors.analysisFailed'));
+            trackEvent('ai_tool', 'Gap Analysis', 'analysis_error', (err as Error).message, language);
         } finally {
             setIsLoading(false);
             setLoadingStep('');
         }
     };
     
+    const resetState = () => {
+        setFile(null);
+        setParsedPolicy(null);
+        setUserNeeds('');
+        setAnalysisResult(null);
+        setError(null);
+    }
+
     return (
         <div>
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">{t('gapAnalysis.title') as string}</h1>
-            <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-2xl">{t('gapAnalysis.description') as string}</p>
+            <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">{t('gapAnalysis.title')}</h1>
+            <p className="text-lg text-gray-600 dark:text-gray-400 mb-6 max-w-2xl">{t('gapAnalysis.subtitle')}</p>
 
-            <FileUploader onFileUpload={handleFileUpload} error={error} />
-            {loadingStep && (
-                <div className="text-center p-8">
-                    <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
-                    <p>{loadingStep}</p>
-                </div>
-            )}
-            
-            {error && !loadingStep && <ErrorMessage message={error} />}
+            <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
+                {error && <div className="p-3 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-md text-sm mb-4">{error}</div>}
+                
+                {!parsedPolicy && (
+                    <>
+                        <h2 className="text-2xl font-semibold mb-4">{t('gapAnalysis.step1')}</h2>
+                        <FileUploader onFileUpload={handleFileUpload} error={error} />
+                    </>
+                )}
 
-            {parsedPolicy && !analysisResult && (
-                <>
-                    <PolicyParser parsedPolicy={parsedPolicy} isLoading={isLoading} />
-                    <PolicyReviewForm userNeeds={userNeeds} setUserNeeds={setUserNeeds} onSubmit={handleAnalyzeGaps} isLoading={isLoading} />
-                </>
-            )}
-            
+                {(isLoading && loadingStep === t('gapAnalysis.fetchingPolicy')) && (
+                    <div className="text-center p-8">
+                        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
+                        <p>{loadingStep}</p>
+                    </div>
+                )}
+                
+                {parsedPolicy && !analysisResult && (
+                    <>
+                        <PolicyParser parsedPolicy={parsedPolicy} isLoading={isLoading && loadingStep === t('gapAnalysis.fetchingPolicy')} />
+                        <div className="mt-8 pt-8 border-t dark:border-gray-700">
+                             <h2 className="text-2xl font-semibold mb-4">{t('gapAnalysis.step2')}</h2>
+                             <PolicyReviewForm userNeeds={userNeeds} setUserNeeds={setUserNeeds} onSubmit={handleAnalyzeGaps} isLoading={isLoading && loadingStep === t('gapAnalysis.analyzing')} />
+                        </div>
+                    </>
+                )}
+            </div>
+
             {analysisResult && (
-                 <div className="mt-8">
+                <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md mt-8">
+                    <div className="flex justify-between items-center mb-6">
+                        <h2 className="text-2xl font-semibold">{t('gapAnalysis.resultsTitle')}</h2>
+                        <button onClick={resetState} className="text-sm text-blue-500 hover:underline">{t('gapAnalysis.startOver')}</button>
+                    </div>
                     <GapAnalysisResults result={analysisResult} />
                 </div>
             )}

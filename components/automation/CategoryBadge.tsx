@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLocalization } from '../../hooks/useLocalization';
+// FIX: Correct import path for types
 import { RuleCategory } from '../../types';
 
 interface CategoryBadgeProps {

@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useLocalization } from '../../hooks/useLocalization';
 import { useAutomationRules } from '../../hooks/useAutomationRules';
+// FIX: Correct import path for types
 import { AutomationRule, RuleCategory, UserSystemRole } from '../../types';
 import { useAuth } from '../../hooks/useAuth';
 
