@@ -156,6 +156,8 @@ export interface DetailedPolicy {
         name: string;
         address: string;
     };
+    effectiveDate?: string;
+    expirationDate?: string;
     insuredItems: Array<{
         id: string;
         description: string;

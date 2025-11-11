@@ -5,7 +5,6 @@ import FileUploader from '../components/gap-analysis/FileUploader';
 import PolicyParser from '../components/gap-analysis/PolicyParser';
 import PolicyReviewForm from '../components/gap-analysis/PolicyReviewForm';
 import GapAnalysisResults from '../components/gap-analysis/GapAnalysisResults';
-import { fetchParsedPolicy } from '../services/api';
 import { GoogleGenAI, Type } from "@google/genai";
 import { trackEvent } from '../services/analytics';
 import { useNotification } from '../hooks/useNotification';
@@ -26,16 +25,106 @@ const GapAnalysis: React.FC = () => {
         setError(null);
         setParsedPolicy(null);
         setAnalysisResult(null);
+        
+        if (!process.env.API_KEY) {
+            const errorMsg = t('dashboard.errors.noApiKey');
+            setError(errorMsg);
+            addNotification(errorMsg, 'error');
+            return;
+        }
+
         setIsLoading(true);
         setLoadingStep(t('gapAnalysis.fetchingPolicy'));
 
         try {
-            // In a real app, this would involve sending the file to a backend for OCR/parsing.
-            // Here, we simulate that process.
-            const policyData = await fetchParsedPolicy();
+            // STEP 1: In a real app, this would be OCR. We are using mocked text from the example PDF.
+            const ocrText = `
+                ΕΘΝΙΚΗ Η ΠΡΩΤΗ ΑΣΦΑΛΙΣΤΙΚΗ
+                ΠΟΛΥΑΣΦΑΛΙΣΤΗΡΙΟ ΣΥΜΒΟΛΑΙΟ ΚΛΑΔΟΥ ΑΥΤΟΚΙΝΗΤΩΝ
+                Αρ. Συμβολαίου: 63708952
+                Διάρκεια Ασφάλισης: Ετήσιο
+                Από: 23:59 της 11/07/2025 Εως: 23:59 της 11/07/2026
+                ΑΣΦΑΛΙΖΟΜΕΝΟΣ/ΛΗΠΤΗΣ ΑΣΦΑΛΙΣΗΣ
+                Επώνυμο: ΜΟΝΙΑΡΟΣ
+                Όνομα: ΙΩΑΝΝΗΣ
+                Δ/νση: ΦΟΛΕΓΑΝΔΡΟΥ 11, 16561 ΓΛΥΦΑΔΑ
+                ΣΤΟΙΧΕΙΑ ΑΣΦΑΛΙΣΜΕΝΟΥ ΟΧΗΜΑΤΟΣ
+                Μάρκα: FIAT
+                Μοντέλο: 500X (334) CROS
+                ΟΙ ΚΑΛΥΨΕΙΣ ΣΑΣ
+                [1] Σωματικές Βλάβες τρίτων (ανά άτομο) 1.300.000€
+                Υλικές Ζημιές τρίτων (ανά ατύχημα) 1.300.000€
+                Προσωπικό Ατύχημα Οδηγού 15.000€
+            `;
+            
+            // STEP 2: Use Gemini to parse the OCR text
+            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            
+            const prompt = `
+                You are an expert insurance policy parser. Analyze the following text extracted from an insurance policy document and return the data in a structured JSON format.
+                Explicitly extract the policy number, insurer name, policyholder's full name and address, the policy effective date, and the policy expiration date.
+                Also, extract the main insured item (like a vehicle or property) and list its coverages with their corresponding limits.
+                
+                Policy Text:
+                ---
+                ${ocrText}
+                ---
+            `;
+            
+            const response = await ai.models.generateContent({
+                model: 'gemini-2.5-pro',
+                contents: prompt,
+                config: {
+                    responseMimeType: 'application/json',
+                    responseSchema: {
+                        type: Type.OBJECT,
+                        properties: {
+                            policyNumber: { type: Type.STRING },
+                            insurer: { type: Type.STRING },
+                            policyholder: {
+                                type: Type.OBJECT,
+                                properties: {
+                                    name: { type: Type.STRING },
+                                    address: { type: Type.STRING },
+                                },
+                                required: ["name", "address"],
+                            },
+                            effectiveDate: { type: Type.STRING, description: "The policy start date in YYYY-MM-DD format." },
+                            expirationDate: { type: Type.STRING, description: "The policy end date in YYYY-MM-DD format." },
+                            insuredItems: {
+                                type: Type.ARRAY,
+                                items: {
+                                    type: Type.OBJECT,
+                                    properties: {
+                                        id: { type: Type.STRING },
+                                        description: { type: Type.STRING },
+                                        coverages: {
+                                            type: Type.ARRAY,
+                                            items: {
+                                                type: Type.OBJECT,
+                                                properties: {
+                                                    type: { type: Type.STRING },
+                                                    limit: { type: Type.STRING },
+                                                },
+                                                required: ["type", "limit"],
+                                            },
+                                        },
+                                    },
+                                    required: ["id", "description", "coverages"],
+                                },
+                            },
+                        },
+                        required: ["policyNumber", "insurer", "policyholder", "effectiveDate", "expirationDate", "insuredItems"],
+                    },
+                }
+            });
+            
+            const policyData = JSON.parse(response.text) as DetailedPolicy;
+            
             setParsedPolicy(policyData);
             trackEvent('ai_tool', 'Gap Analysis', 'policy_parsed_success', undefined, language);
         } catch (err) {
+            console.error("Error parsing policy:", err);
             setError(t('gapAnalysis.errors.parsingFailed'));
             trackEvent('ai_tool', 'Gap Analysis', 'policy_parsed_error', (err as Error).message, language);
         } finally {
