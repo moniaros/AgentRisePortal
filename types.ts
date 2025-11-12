@@ -513,3 +513,12 @@ export interface AutomationAnalytics {
     conversionRateAfter: number;
     messagesSentByChannel: { name: string; value: number }[];
 }
+
+// ========== Settings ==========
+export interface SocialConnection {
+    isConnected: boolean;
+    accountName?: string;
+    profileUrl?: string;
+}
+
+export type SocialConnections = Record<string, SocialConnection>;

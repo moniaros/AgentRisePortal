@@ -13,11 +13,11 @@ const SocialAuthModal: React.FC<SocialAuthModalProps> = ({ platform, onClose, on
     const scopes = t(`settings.socialConnections.platforms.${platform.key}.scopes`) as unknown as string[];
     
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex justify-center items-center p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex justify-center items-center p-4 animate-fade-in">
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-md">
                 <div className="p-6 border-b dark:border-gray-700 flex flex-col items-center text-center">
                     <div className="mb-4">
-                        {platform.icon}
+                        {React.cloneElement(platform.icon, { className: "w-12 h-12" })}
                     </div>
                     <h2 className="text-xl font-bold">{t('settings.socialConnections.modalTitle').replace('{platform}', platform.name)}</h2>
                 </div>
@@ -34,7 +34,7 @@ const SocialAuthModal: React.FC<SocialAuthModalProps> = ({ platform, onClose, on
                         ))}
                     </ul>
                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-6 text-center">
-                        By allowing, AgentOS will be able to perform these actions on your behalf. You can revoke these permissions at any time.
+                        {t('settings.socialConnections.complianceText')}
                     </p>
                 </div>
                 <div className="p-4 bg-gray-50 dark:bg-gray-900 flex justify-end gap-4 border-t dark:border-gray-700">

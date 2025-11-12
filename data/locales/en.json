@@ -405,21 +405,34 @@
       "errorApi": "An error occurred while connecting to Google's API."
     },
     "socialConnections": {
-        "platforms": {
-            "facebook": {
-                "scopes": []
-            },
-            "linkedin": {
-                "scopes": []
-            },
-            "x": {
-                "scopes": []
-            }
-        },
+        "title": "Social Media Integration",
+        "connectButton": "Connect",
+        "disconnectButton": "Disconnect",
+        "statusConnected": "Connected",
+        "statusNotConnected": "Not Connected",
         "modalTitle": "Allow AgentOS to connect to {platform}?",
         "permissionsTitle": "AgentOS will be able to:",
+        "complianceText": "By allowing, AgentOS will perform these actions on your behalf for policy marketing. Your data is used only for outbound marketing, compliant with GDPR. You can revoke these permissions at any time.",
         "cancel": "Cancel",
-        "allow": "Allow"
+        "allow": "Allow",
+        "platforms": {
+            "facebook": {
+                "tooltip": "Connect your Facebook Page to schedule insurance campaign posts, analyze engagement, and capture incoming leads.",
+                "scopes": ["Read Page content and stats", "Create and manage posts on your Page", "Manage comments and messages for Lead Generation"]
+            },
+            "instagram": {
+                "tooltip": "Connect your Instagram Business account to publish policy marketing posts and view basic analytics.",
+                "scopes": ["Publish content to your profile", "Access your profile information and media", "View content insights"]
+            },
+            "linkedin": {
+                "tooltip": "Connect your LinkedIn Page or Profile to publish professional updates and track engagement for client acquisition.",
+                "scopes": ["Create, modify, and delete posts on your behalf", "Retrieve your profile and connections", "Retrieve posts, comments, and likes"]
+            },
+            "x": {
+                "tooltip": "Connect your X (Twitter) account to post updates and monitor mentions related to your insurance services.",
+                "scopes": ["Post and delete Tweets for you", "See your profile information and account settings", "See accounts you follow, mute, and block"]
+            }
+        }
     }
   },
   "onboarding": {

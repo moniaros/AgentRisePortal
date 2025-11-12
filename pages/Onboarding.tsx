@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useLocalization } from '../hooks/useLocalization';
 import { useAuth } from '../hooks/useAuth';
 import { useOnboardingStatus } from '../hooks/useOnboardingStatus';
@@ -9,10 +9,13 @@ const Onboarding: React.FC = () => {
     const { t } = useLocalization();
     const { currentUser } = useAuth();
     const { progress, isCompleted, isSkipped, markTaskCompleted, completeOnboarding } = useOnboardingStatus();
+    const navigate = useNavigate();
 
-    if (isSkipped) {
-        return <Navigate to="/" replace />;
-    }
+    useEffect(() => {
+        if (isSkipped) {
+            navigate('/', { replace: true });
+        }
+    }, [isSkipped, navigate]);
 
     const features = [
         // Fix: Removed incorrect type assertion. The `t` function now correctly returns an object.
@@ -29,6 +32,9 @@ const Onboarding: React.FC = () => {
         { key: 'campaignCreated', text: t('onboarding.checklist.campaign'), link: '/social-composer' },
     ] as const;
 
+    if (isSkipped) {
+        return null; // The useEffect will handle the navigation
+    }
 
     return (
         <div className="max-w-4xl mx-auto py-8 px-4">

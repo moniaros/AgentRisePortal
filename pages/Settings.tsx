@@ -4,6 +4,11 @@ import { useLocalization } from '../hooks/useLocalization';
 import { useNotification } from '../hooks/useNotification';
 import { useTheme } from '../hooks/useTheme';
 import ToggleSwitch from '../components/ui/ToggleSwitch';
+import { useSocialConnections } from '../hooks/useSocialConnections';
+import SocialConnectionRow from '../components/settings/SocialConnectionRow';
+import SocialAuthModal from '../components/settings/SocialAuthModal';
+import { SOCIAL_PLATFORMS } from '../constants';
+import { SocialPlatform } from '../types';
 
 const Settings: React.FC = () => {
     const { t } = useLocalization();
@@ -13,6 +18,9 @@ const Settings: React.FC = () => {
     const [apiKey, setApiKey] = useState('');
     const [connectionStatus, setConnectionStatus] = useState(t('settings.integrations.statusNotConnected'));
     const { theme, toggleTheme } = useTheme();
+
+    const { connections, connectPlatform, disconnectPlatform } = useSocialConnections();
+    const [authModalPlatform, setAuthModalPlatform] = useState<SocialPlatform | null>(null);
 
     useEffect(() => {
         const savedClientId = localStorage.getItem('google_client_id');
@@ -141,6 +149,21 @@ const Settings: React.FC = () => {
         });
     };
 
+    const handleConnectSocial = (platform: SocialPlatform) => {
+        setAuthModalPlatform(platform);
+    };
+    
+    const handleAuthSuccess = (platformKey: string) => {
+        // In a real app, you'd get this info from the OAuth callback
+        const mockAccount = {
+            accountName: `agent_os_page_${platformKey}`,
+            profileUrl: `https://${platformKey}.com/agent_os_page`
+        };
+        connectPlatform(platformKey, mockAccount);
+        addNotification(`Successfully connected to ${authModalPlatform?.name}!`, 'success');
+        setAuthModalPlatform(null);
+    };
+
     return (
         <div className="max-w-4xl mx-auto space-y-8">
             <h1 className="text-3xl font-bold text-gray-800 dark:text-white">{t('nav.appSettings')}</h1>
@@ -196,6 +219,21 @@ const Settings: React.FC = () => {
             </div>
 
             <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 className="text-xl font-semibold mb-4">{t('settings.socialConnections.title')}</h2>
+                <div className="space-y-4">
+                    {SOCIAL_PLATFORMS.map(platform => (
+                        <SocialConnectionRow
+                            key={platform.key}
+                            platform={platform}
+                            connection={connections[platform.key]}
+                            onConnect={() => handleConnectSocial(platform)}
+                            onDisconnect={() => disconnectPlatform(platform.key)}
+                        />
+                    ))}
+                </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
                 <h2 className="text-xl font-semibold mb-4">{t('settings.integrations.title')}</h2>
                 <div className="flex items-center justify-between">
                     <div>
@@ -210,6 +248,14 @@ const Settings: React.FC = () => {
                     </button>
                 </div>
             </div>
+
+            {authModalPlatform && (
+                <SocialAuthModal
+                    platform={authModalPlatform}
+                    onClose={() => setAuthModalPlatform(null)}
+                    onSuccess={handleAuthSuccess}
+                />
+            )}
         </div>
     );
 };

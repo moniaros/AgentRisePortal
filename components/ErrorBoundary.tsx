@@ -22,8 +22,8 @@ class ErrorBoundary extends Component<Props, State> {
     console.error("Uncaught error:", error, errorInfo);
   }
 
-  // FIX: Changed `render` to a class property arrow function. This ensures `this` is correctly bound to the component instance, resolving a TypeScript type inference issue where `this.props` was not accessible.
-  render = () => {
+  // Fix: Changed `render` from a class property arrow function to a standard class method. This resolves a TypeScript type inference issue where `this.props` was not accessible.
+  render() {
     if (this.state.hasError) {
       return (
         <div className="flex flex-col justify-center items-center h-screen bg-red-100 text-red-700 p-4">

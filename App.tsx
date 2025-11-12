@@ -46,6 +46,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import GTMProvider from './components/GTMProvider';
 import RouteAnalyticsTracker from './components/RouteAnalyticsTracker';
 import { useOnboardingStatus } from './hooks/useOnboardingStatus';
+import { OnboardingProvider } from './context/OnboardingContext';
 
 // A wrapper to handle protected routes and onboarding redirection
 const ProtectedRoute: React.FC<{ children: React.ReactElement }> = ({ children }) => {
@@ -134,7 +135,9 @@ const App: React.FC = () => {
           <LanguageProvider>
             <NotificationProvider>
               <AuthProvider>
-                <AppRoutes />
+                <OnboardingProvider>
+                  <AppRoutes />
+                </OnboardingProvider>
               </AuthProvider>
             </NotificationProvider>
           </LanguageProvider>
