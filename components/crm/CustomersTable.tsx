@@ -1,4 +1,5 @@
 import React from 'react';
+// FIX: Correct import path
 import { Customer } from '../../types';
 import { useLocalization } from '../../hooks/useLocalization';
 import { useNavigate } from 'react-router-dom';

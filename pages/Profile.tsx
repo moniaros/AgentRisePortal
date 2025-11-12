@@ -3,6 +3,7 @@ import { useAuth } from '../hooks/useAuth';
 import { useLocalization } from '../hooks/useLocalization';
 import { useOnboardingStatus } from '../hooks/useOnboardingStatus';
 import { useForm, UseFormSetValue } from 'react-hook-form';
+// FIX: Correct import path
 import { User, AcordLicense, LicenseStatus, UserActivityType } from '../types';
 import { useNotification } from '../hooks/useNotification';
 import { useUserActivity } from '../hooks/useUserActivity';

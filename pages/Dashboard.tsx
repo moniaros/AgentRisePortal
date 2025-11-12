@@ -1,8 +1,10 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useLocalization } from '../hooks/useLocalization';
+// FIX: Correct import path
 import { fetchGbpData } from '../services/api';
 import ErrorMessage from '../components/ui/ErrorMessage';
 import SkeletonLoader from '../components/ui/SkeletonLoader';
+// FIX: Correct import path
 import { GbpLocationSummary, GbpReview } from '../types';
 import BusinessHeader from '../components/dashboard/BusinessHeader';
 import ReviewFeed from '../components/dashboard/ReviewFeed';
@@ -143,7 +145,7 @@ const Dashboard: React.FC = () => {
     }
     
     if (error) {
-        return <ErrorMessage message={error} />;
+        return <ErrorMessage message={error as string} />;
     }
 
     return (

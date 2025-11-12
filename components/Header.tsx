@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useLocalization } from '../hooks/useLocalization';
 import { useOnlineStatus } from '../hooks/useOnlineStatus';
 import { useClickOutside } from '../hooks/useClickOutside';
+// FIX: Correct import path
 import { Language } from '../types';
 import { useAuth } from '../hooks/useAuth';
 

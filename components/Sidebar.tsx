@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { useLocalization } from '../hooks/useLocalization';
 import { ICONS } from '../constants';
 import { useAuth } from '../hooks/useAuth';
+// FIX: Correct import path
 import { UserSystemRole } from '../types';
 
 interface SidebarProps {

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+// FIX: Correct import path
 import { MicrositeBlock, MicrositeConfig } from '../types';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';

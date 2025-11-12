@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useCampaigns } from '../hooks/useCampaigns';
 import { useCrmData } from '../hooks/useCrmData';
 import { useLocalization } from '../hooks/useLocalization';
-import { Campaign, Lead, PolicyType } from '../types';
+import { Campaign, Lead, LeadStatus, PolicyType } from '../types';
 
 
 const LeadCapturePage: React.FC = () => {
@@ -29,17 +29,17 @@ const LeadCapturePage: React.FC = () => {
         const [firstName, ...lastNameParts] = fullName.split(' ');
         const lastName = lastNameParts.join(' ');
 
-        const newLead: Omit<Lead, 'id' | 'createdAt'> = {
+        // FIX: Replaced string literal with enum member and corrected the type. The agencyId is added by the `addLead` hook.
+        const newLead: Omit<Lead, 'id' | 'createdAt' | 'agencyId'> = {
             firstName,
             lastName: lastName || '', // Handle cases with only a first name
             email: formData.get('email') as string,
             phone: formData.get('phone') as string,
             source: campaign.name,
             campaignId: campaign.id,
-            status: 'new',
+            status: LeadStatus.NEW,
             policyType: PolicyType.AUTO, // Default policy type for new leads
             potentialValue: 0,
-            agencyId: campaign.agencyId,
         };
 
         addLead(newLead);

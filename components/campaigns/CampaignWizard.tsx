@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+// FIX: Correct import path
 import { Campaign, CampaignObjective, Language } from '../../types';
 import Step1Objective from './steps/Step1_Objective';
 import Step2Audience from './steps/Step2_Audience';
@@ -7,7 +8,7 @@ import Step4Creative from './steps/Step4_Creative';
 import Step5LeadCapture from './steps/Step5_LeadCapture';
 import Step6Review from './steps/Step5_Review';
 
-const initialCampaignData: Omit<Campaign, 'id'> = {
+const initialCampaignData: Omit<Campaign, 'id' | 'agencyId'> = {
     name: '',
     objective: CampaignObjective.LEAD_GENERATION,
     network: 'facebook',
@@ -28,13 +29,12 @@ const initialCampaignData: Omit<Campaign, 'id'> = {
     leadCaptureForm: {
       fields: [{name: 'email', type: 'email', required: true}]
     },
-    agencyId: '',
 };
 
 interface CampaignWizardProps {
     isOpen: boolean;
     onClose: () => void;
-    onSave: (campaign: Omit<Campaign, 'id'>) => void;
+    onSave: (campaign: Omit<Campaign, 'id' | 'agencyId'>) => void;
 }
 
 const steps = [
@@ -43,7 +43,7 @@ const steps = [
 
 const CampaignWizard: React.FC<CampaignWizardProps> = ({ isOpen, onClose, onSave }) => {
     const [currentStep, setCurrentStep] = useState(0);
-    const [campaignData, setCampaignData] = useState<Omit<Campaign, 'id'>>(initialCampaignData);
+    const [campaignData, setCampaignData] = useState<Omit<Campaign, 'id' | 'agencyId'>>(initialCampaignData);
     
     useEffect(() => {
         if (isOpen) {
@@ -64,6 +64,7 @@ const CampaignWizard: React.FC<CampaignWizardProps> = ({ isOpen, onClose, onSave
 
     const renderStep = () => {
         switch (currentStep) {
+            // FIX: The `setData` prop expects a state setter for `Omit<Campaign, 'id' | 'agencyId'>` to match the `campaignData` state type. The step components were updated to reflect this.
             case 0: return <Step1Objective data={campaignData} setData={setCampaignData} />;
             case 1: return <Step2Audience data={campaignData} setData={setCampaignData} />;
             case 2: return <Step3Budget data={campaignData} setData={setCampaignData} />;
@@ -85,14 +86,35 @@ const CampaignWizard: React.FC<CampaignWizardProps> = ({ isOpen, onClose, onSave
                 </div>
                 <div className="p-4 bg-gray-50 dark:bg-gray-900 flex justify-between items-center border-t dark:border-gray-700">
                     <div>
-                        <button onClick={onClose} className="px-4 py-2 bg-gray-200 dark:bg-gray-600 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500">Cancel</button>
+                        <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-200 dark:bg-gray-600 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500">
+                            Close
+                        </button>
                     </div>
-                    <div className="flex gap-4">
-                        <button onClick={handleBack} disabled={currentStep === 0} className="px-4 py-2 bg-gray-300 dark:bg-gray-500 rounded disabled:opacity-50">Back</button>
+                    <div className="flex items-center gap-2">
+                        <button 
+                            type="button" 
+                            onClick={handleBack} 
+                            disabled={currentStep === 0}
+                            className="px-4 py-2 bg-gray-300 dark:bg-gray-500 rounded-md disabled:opacity-50"
+                        >
+                            Back
+                        </button>
                         {currentStep < steps.length - 1 ? (
-                            <button onClick={handleNext} className="px-4 py-2 bg-blue-600 text-white rounded">Next</button>
+                            <button 
+                                type="button" 
+                                onClick={handleNext} 
+                                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                            >
+                                Next
+                            </button>
                         ) : (
-                            <button onClick={handleSave} className="px-4 py-2 bg-green-600 text-white rounded">Save Campaign</button>
+                            <button 
+                                type="button" 
+                                onClick={handleSave}
+                                className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+                            >
+                                Save Campaign
+                            </button>
                         )}
                     </div>
                 </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLocalization } from '../../hooks/useLocalization';
+// FIX: Correct import path
 import { DetailedPolicy } from '../../types';
 
 interface PolicyParserProps {

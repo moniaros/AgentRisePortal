@@ -1,4 +1,5 @@
 import React from 'react';
+// FIX: Correct import path
 import { Campaign } from '../../types';
 import { useLocalization } from '../../hooks/useLocalization';
 

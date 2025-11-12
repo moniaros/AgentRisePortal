@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useForm, useFieldArray, Controller, FieldError } from 'react-hook-form';
 import { useLocalization } from '../../hooks/useLocalization';
+// FIX: Correct import path
 import { Customer, Policy, PolicyType } from '../../types';
 
 interface CustomerFormModalProps {

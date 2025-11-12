@@ -1,10 +1,12 @@
 
+
 import React from 'react';
 import { Campaign, LeadCaptureFormField } from '../../../types';
 
 interface StepProps {
-    data: Omit<Campaign, 'id'>;
-    setData: React.Dispatch<React.SetStateAction<Omit<Campaign, 'id'>>>;
+    // FIX: Aligned the data type with the parent wizard's state to resolve type mismatch.
+    data: Omit<Campaign, 'id' | 'agencyId'>;
+    setData: React.Dispatch<React.SetStateAction<Omit<Campaign, 'id' | 'agencyId'>>>;
 }
 
 const Step5LeadCapture: React.FC<StepProps> = ({ data, setData }) => {

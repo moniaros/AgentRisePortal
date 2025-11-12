@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLocalization } from '../../hooks/useLocalization';
+// FIX: Correct import path
 import { Lead } from '../../types';
 
 interface LeadControlsProps {

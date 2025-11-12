@@ -1,10 +1,12 @@
 
 
+
 import React, { useState } from 'react';
 import { useCampaigns } from '../hooks/useCampaigns';
 import CampaignList from '../components/campaigns/CampaignList';
 import CampaignWizard from '../components/campaigns/CampaignWizard';
 import { useLocalization } from '../hooks/useLocalization';
+// FIX: Correct import path
 import { Campaign } from '../types';
 
 const AdCampaigns: React.FC = () => {
@@ -12,7 +14,7 @@ const AdCampaigns: React.FC = () => {
     const { campaigns, addCampaign, isLoading, error } = useCampaigns();
     const [isWizardOpen, setIsWizardOpen] = useState(false);
 
-    const handleSaveCampaign = (campaign: Omit<Campaign, 'id'>) => {
+    const handleSaveCampaign = (campaign: Omit<Campaign, 'id' | 'agencyId'>) => {
       addCampaign(campaign);
     };
 

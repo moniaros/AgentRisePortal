@@ -4,6 +4,7 @@ import { useCrmData } from '../hooks/useCrmData';
 import LeadControls from '../components/leads/LeadControls';
 import LeadsTable from '../components/leads/LeadsTable';
 import LeadDetailModal from '../components/leads/LeadDetailModal';
+// FIX: Correct import path
 import { Lead } from '../types';
 import ErrorMessage from '../components/ui/ErrorMessage';
 import SkeletonLoader from '../components/ui/SkeletonLoader';

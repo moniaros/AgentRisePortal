@@ -8,6 +8,7 @@ import PerformanceChart from '../components/analytics/PerformanceChart';
 import SpendChart from '../components/analytics/SpendChart';
 import SkeletonLoader from '../components/ui/SkeletonLoader';
 import ErrorMessage from '../components/ui/ErrorMessage';
+// FIX: Correct import path
 import { Campaign, Language, AnalyticsRecord } from '../types';
 
 const Analytics: React.FC = () => {

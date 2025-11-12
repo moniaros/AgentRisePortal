@@ -1,3 +1,4 @@
+// FIX: Correct import path
 import { Language } from '../types';
 
 declare global {

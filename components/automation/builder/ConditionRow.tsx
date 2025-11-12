@@ -27,8 +27,8 @@ const OPERATORS: Record<string, { label: string; value: ConditionOperator }[]> =
     ]
 };
 
-// FIX: 'LeadStatus' is a type alias, not an enum, so it cannot be used as a value with Object.values(). This defines an array of the possible LeadStatus values to be used for generating options.
-const leadStatusValues: LeadStatus[] = ['new', 'contacted', 'qualified', 'closed', 'rejected'];
+// FIX: Used LeadStatus enum members instead of string literals to conform to the `LeadStatus[]` type.
+const leadStatusValues: LeadStatus[] = [LeadStatus.NEW, LeadStatus.CONTACTED, LeadStatus.QUALIFIED, LeadStatus.CLOSED, LeadStatus.REJECTED];
 
 const VALUE_OPTIONS: Record<string, { label: string; value: string }[]> = {
     lead_status: leadStatusValues.map(s => ({label: s, value: s})),

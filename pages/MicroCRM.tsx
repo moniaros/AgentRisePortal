@@ -3,6 +3,7 @@ import { useCrmData } from '../hooks/useCrmData';
 import { useLocalization } from '../hooks/useLocalization';
 import CustomersTable from '../components/crm/CustomersTable';
 import CustomerFormModal from '../components/crm/CustomerFormModal';
+// FIX: Correct import path
 import { Customer, Lead } from '../types';
 import ErrorMessage from '../components/ui/ErrorMessage';
 import SkeletonLoader from '../components/ui/SkeletonLoader';

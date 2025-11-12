@@ -11,7 +11,8 @@ const LeadStatusFunnel: React.FC<LeadStatusFunnelProps> = ({ leads }) => {
     const { t } = useLocalization();
 
     const data = useMemo(() => {
-        const statusOrder: LeadStatus[] = ['new', 'contacted', 'qualified', 'closed', 'rejected'];
+        // FIX: Replaced string literals with LeadStatus enum members to match the type definition.
+        const statusOrder: LeadStatus[] = [LeadStatus.NEW, LeadStatus.CONTACTED, LeadStatus.QUALIFIED, LeadStatus.CLOSED, LeadStatus.REJECTED];
         const statusCounts = leads.reduce((acc, lead) => {
             acc[lead.status] = (acc[lead.status] || 0) + 1;
             return acc;

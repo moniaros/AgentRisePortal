@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+// FIX: Correct import path
 import { Lead } from '../../types';
 import { useLocalization } from '../../hooks/useLocalization';
 

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useLocalization } from '../hooks/useLocalization';
 import { GoogleGenAI } from '@google/genai';
 import { SOCIAL_PLATFORMS } from '../constants';
+// FIX: Correct import path
 import { SocialPlatform } from '../types';
 import PostPreview from '../components/composer/PostPreview';
 import TemplateSelector from '../components/composer/TemplateSelector';

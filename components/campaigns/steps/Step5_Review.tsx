@@ -3,7 +3,8 @@ import { Campaign } from '../../../types';
 import AdPreview from '../AdPreview';
 
 interface StepProps {
-    data: Omit<Campaign, 'id'>;
+    // FIX: Aligned the data type with the parent wizard's state to resolve type mismatch.
+    data: Omit<Campaign, 'id' | 'agencyId'>;
 }
 
 const Step6Review: React.FC<StepProps> = ({ data }) => {

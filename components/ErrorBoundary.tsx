@@ -10,22 +10,19 @@ interface State {
 }
 
 class ErrorBoundary extends Component<Props, State> {
-  // FIX: Removed 'public' modifier.
   state: State = {
     hasError: false,
   };
 
-  // FIX: Removed 'public' modifier.
   static getDerivedStateFromError(error: Error): State {
     return { hasError: true, error };
   }
 
-  // FIX: Removed 'public' modifier.
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error("Uncaught error:", error, errorInfo);
   }
 
-  // FIX: Changed the `render` class property arrow function to a standard class method. This ensures that `this` is correctly typed as the component instance, resolving the error where `this.props` was not found.
+  // FIX: Changed `render` from a class property arrow function to a standard class method. This ensures `this` is correctly typed as the component instance, which makes `this.props` available and resolves the error.
   render() {
     if (this.state.hasError) {
       return (

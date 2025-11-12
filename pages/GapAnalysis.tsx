@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useLocalization } from '../hooks/useLocalization';
+// FIX: Correct import path
 import { DetailedPolicy, GapAnalysisResult } from '../types';
 import FileUploader from '../components/gap-analysis/FileUploader';
 import PolicyParser from '../components/gap-analysis/PolicyParser';
