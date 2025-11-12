@@ -22,6 +22,7 @@ import gbpRoutes from './routes/gbp.routes.js';
 import micrositeRoutes from './routes/microsite.routes.js';
 import newsRoutes from './routes/news.routes.js';
 import testimonialRoutes from './routes/testimonial.routes.js';
+import socialNetworkRoutes from './routes/socialNetwork.routes.js';
 
 dotenv.config();
 
@@ -83,6 +84,7 @@ app.use(`${API_PREFIX}/gbp`, gbpRoutes);
 app.use(`${API_PREFIX}/microsites`, micrositeRoutes);
 app.use(`${API_PREFIX}/news`, newsRoutes);
 app.use(`${API_PREFIX}/testimonials`, testimonialRoutes);
+app.use(`${API_PREFIX}/social`, socialNetworkRoutes);
 
 // 404 handler
 app.use('*', (req, res) => {

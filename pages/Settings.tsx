@@ -4,6 +4,7 @@ import { useLocalization } from '../hooks/useLocalization';
 import { useNotification } from '../hooks/useNotification';
 import { useTheme } from '../hooks/useTheme';
 import ToggleSwitch from '../components/ui/ToggleSwitch';
+import { socialNetworkService, SocialPlatform, SocialConnection } from '../services/socialNetworkService';
 
 const Settings: React.FC = () => {
     const { t } = useLocalization();
@@ -13,6 +14,20 @@ const Settings: React.FC = () => {
     const [apiKey, setApiKey] = useState('');
     const [connectionStatus, setConnectionStatus] = useState(t('settings.integrations.statusNotConnected'));
     const { theme, toggleTheme } = useTheme();
+
+    // Social network states
+    const [socialConnections, setSocialConnections] = useState<SocialConnection[]>([]);
+    const [loadingSocial, setLoadingSocial] = useState(false);
+    const [connectingPlatform, setConnectingPlatform] = useState<SocialPlatform | null>(null);
+
+    const platforms: { id: SocialPlatform; name: string; icon: string; color: string }[] = [
+        { id: 'facebook', name: 'Facebook', icon: '📘', color: 'bg-blue-600 hover:bg-blue-700' },
+        { id: 'instagram', name: 'Instagram', icon: '📷', color: 'bg-pink-600 hover:bg-pink-700' },
+        { id: 'linkedin', name: 'LinkedIn', icon: '💼', color: 'bg-blue-700 hover:bg-blue-800' },
+        { id: 'x', name: 'X (Twitter)', icon: '𝕏', color: 'bg-black hover:bg-gray-800' },
+        { id: 'tiktok', name: 'TikTok', icon: '🎵', color: 'bg-gray-900 hover:bg-black' },
+        { id: 'youtube', name: 'YouTube', icon: '▶️', color: 'bg-red-600 hover:bg-red-700' },
+    ];
 
     useEffect(() => {
         const savedClientId = localStorage.getItem('google_client_id');
@@ -26,7 +41,56 @@ const Settings: React.FC = () => {
         } else {
             setConnectionStatus(t('settings.integrations.statusNotConnected'));
         }
+
+        // Fetch social network connections
+        fetchSocialConnections();
     }, [t]);
+
+    const fetchSocialConnections = async () => {
+        try {
+            setLoadingSocial(true);
+            const connections = await socialNetworkService.getConnections();
+            setSocialConnections(connections);
+        } catch (error) {
+            console.error('Error fetching social connections:', error);
+        } finally {
+            setLoadingSocial(false);
+        }
+    };
+
+    const handleConnectSocial = async (platform: SocialPlatform) => {
+        try {
+            setConnectingPlatform(platform);
+            const success = await socialNetworkService.connectPlatform(platform);
+
+            if (success) {
+                addNotification(`Successfully connected to ${platforms.find(p => p.id === platform)?.name}`, 'success');
+                await fetchSocialConnections();
+            } else {
+                addNotification(`Failed to connect to ${platforms.find(p => p.id === platform)?.name}`, 'error');
+            }
+        } catch (error) {
+            console.error(`Error connecting to ${platform}:`, error);
+            addNotification(`Error connecting to ${platforms.find(p => p.id === platform)?.name}`, 'error');
+        } finally {
+            setConnectingPlatform(null);
+        }
+    };
+
+    const handleDisconnectSocial = async (connectionId: number, platformName: string) => {
+        try {
+            await socialNetworkService.disconnect(connectionId);
+            addNotification(`Successfully disconnected from ${platformName}`, 'success');
+            await fetchSocialConnections();
+        } catch (error) {
+            console.error(`Error disconnecting from ${platformName}:`, error);
+            addNotification(`Error disconnecting from ${platformName}`, 'error');
+        }
+    };
+
+    const getSocialConnection = (platform: SocialPlatform): SocialConnection | undefined => {
+        return socialConnections.find(conn => conn.platform === platform && conn.isActive);
+    };
 
     const handleSave = () => {
         localStorage.setItem('google_client_id', clientId);
@@ -209,6 +273,77 @@ const Settings: React.FC = () => {
                         {t('settings.integrations.connectButton')}
                     </button>
                 </div>
+            </div>
+
+            {/* Social Network Connections */}
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
+                    Social Network Connections
+                </h2>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">
+                    Connect your social media accounts to create and manage posts and ads directly from the platform.
+                </p>
+
+                {loadingSocial ? (
+                    <div className="text-center py-8">
+                        <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">Loading connections...</p>
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {platforms.map((platform) => {
+                            const connection = getSocialConnection(platform.id);
+                            const isConnected = !!connection;
+                            const isConnecting = connectingPlatform === platform.id;
+
+                            return (
+                                <div
+                                    key={platform.id}
+                                    className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 flex items-center justify-between"
+                                >
+                                    <div className="flex items-center space-x-3">
+                                        <span className="text-2xl">{platform.icon}</span>
+                                        <div>
+                                            <h3 className="font-medium text-gray-800 dark:text-white">
+                                                {platform.name}
+                                            </h3>
+                                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                                                {isConnected ? (
+                                                    <>
+                                                        <span className="text-green-600 dark:text-green-400">● Connected</span>
+                                                        {connection.accountName && ` as ${connection.accountName}`}
+                                                    </>
+                                                ) : (
+                                                    'Not connected'
+                                                )}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        {isConnected ? (
+                                            <button
+                                                onClick={() => handleDisconnectSocial(connection!.id, platform.name)}
+                                                className="px-4 py-2 bg-red-600 text-white text-sm rounded-md hover:bg-red-700 transition-colors"
+                                            >
+                                                Disconnect
+                                            </button>
+                                        ) : (
+                                            <button
+                                                onClick={() => handleConnectSocial(platform.id)}
+                                                disabled={isConnecting}
+                                                className={`px-4 py-2 text-white text-sm rounded-md transition-colors ${
+                                                    isConnecting ? 'bg-gray-400 cursor-not-allowed' : platform.color
+                                                }`}
+                                            >
+                                                {isConnecting ? 'Connecting...' : 'Connect'}
+                                            </button>
+                                        )}
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                )}
             </div>
         </div>
     );
