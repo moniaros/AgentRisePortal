@@ -10,6 +10,8 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { trackEvent } from '../services/analytics';
 import { useNotification } from '../hooks/useNotification';
 import { saveAnalysisForCustomer } from '../services/analysisStorage';
+import { mapToPolicyACORD } from '../services/acordMapper';
+import { savePolicyForCustomer } from '../services/policyStorage';
 
 const GapAnalysis: React.FC = () => {
     const { t, language } = useLocalization();
@@ -125,6 +127,18 @@ const GapAnalysis: React.FC = () => {
             
             setParsedPolicy(policyData);
             trackEvent('ai_tool', 'Gap Analysis', 'policy_parsed_success', undefined, language);
+
+            // Save to local storage for CRM sync
+            try {
+                const acordPolicy = mapToPolicyACORD(policyData);
+                // Use policyholder name as a makeshift customer ID for storage
+                const customerId = policyData.policyholder.name.replace(/\s+/g, '_').toLowerCase();
+                savePolicyForCustomer(customerId, acordPolicy);
+                addNotification('Policy data saved for CRM sync.', 'info');
+            } catch (storageError) {
+                console.error("Failed to save policy to local storage", storageError);
+                addNotification('Failed to cache policy data.', 'error');
+            }
         } catch (err) {
             console.error("Error parsing policy:", err);
             setError(t('gapAnalysis.errors.parsingFailed'));

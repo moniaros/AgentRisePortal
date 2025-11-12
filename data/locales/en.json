@@ -243,7 +243,8 @@
       "consentExpiredWarning": "Consent is outdated (granted over 6 months ago)."
     },
     "analysisFor": "Analysis for:",
-    "analysisDate": "Analyzed on {date}"
+    "analysisDate": "Analyzed on {date}",
+    "coverages": "Coverages"
   },
   "gapAnalysis": {
     "title": "AI Policy Scanner",

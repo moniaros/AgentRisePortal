@@ -1,4 +1,3 @@
-
 import { DetailedPolicy, PolicyACORD, CoverageDetailACORD, Policy, PolicyType, Coverage } from '../types';
 
 /**
@@ -18,10 +17,9 @@ export const mapToPolicyACORD = (policy: DetailedPolicy): PolicyACORD => {
         premium: cov.premium,
     }));
 
-    // Placeholder dates as they are not available in the source DetailedPolicy type.
-    // A real OCR/parsing step would extract these from the document.
-    const effectiveDate = new Date().toISOString();
-    const expirationDate = new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString();
+    // Use dates from parsed policy if available, otherwise create placeholders.
+    const effectiveDate = policy.effectiveDate ? new Date(policy.effectiveDate).toISOString() : new Date().toISOString();
+    const expirationDate = policy.expirationDate ? new Date(policy.expirationDate).toISOString() : new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString();
 
     const acordPolicy: PolicyACORD = {
         id: policy.policyNumber, // Use policy number as a unique ID for simplicity.
@@ -54,7 +52,7 @@ export const mapAcordToCrmPolicy = (acordPolicy: PolicyACORD): Policy => {
     const determinePolicyType = (coverages: CoverageDetailACORD[]): PolicyType => {
         const coverageTypes = coverages.map(c => c.type.toLowerCase());
         if (acordPolicy.vehicle) return PolicyType.AUTO;
-        if (coverageTypes.some(t => t.includes('liability') || t.includes('collision'))) {
+        if (coverageTypes.some(t => t.includes('liability') || t.includes('collision') || t.includes('σωματικές') || t.includes('υλικές'))) {
             return PolicyType.AUTO;
         }
         if (coverageTypes.some(t => t.includes('dwelling') || t.includes('property'))) {

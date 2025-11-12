@@ -243,7 +243,8 @@
             "consentExpiredWarning": "Η συναίνεση είναι παρωχημένη (παρασχέθηκε πριν από 6+ μήνες)."
         },
         "analysisFor": "Ανάλυση για:",
-        "analysisDate": "Αναλύθηκε στις {date}"
+        "analysisDate": "Αναλύθηκε στις {date}",
+        "coverages": "Καλύψεις"
     },
     "gapAnalysis": {
         "title": "AI Scanner Συμβολαίων",

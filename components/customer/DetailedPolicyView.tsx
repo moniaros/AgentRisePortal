@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Policy, InsuredPartyACORD } from '../../types';
 import { useLocalization } from '../../hooks/useLocalization';
