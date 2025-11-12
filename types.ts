@@ -239,6 +239,24 @@ export interface StoredAnalysis {
     analysisResult: GapAnalysisResult;
 }
 
+// AI Findings & Opportunities
+export type FindingStatus = 'pending_review' | 'verified' | 'dismissed';
+export type FindingType = 'gap' | 'upsell' | 'cross-sell';
+
+export interface StoredFinding {
+    id: string;
+    customerId: string;
+    agencyId: string;
+    createdAt: string;
+    type: FindingType;
+    status: FindingStatus;
+    title: string; // e.g., "Increased Liability Coverage" or "Umbrella Policy"
+    description: string; // The reason/recommendation
+    benefit?: string; // Specific customer benefit
+    originalAnalysisId: string;
+}
+
+
 // User Management & Audit
 export interface AuditLog {
     id: string;

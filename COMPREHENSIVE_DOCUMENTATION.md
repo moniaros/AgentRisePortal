@@ -12,12 +12,13 @@ This document provides a detailed technical reference for all key features of th
 5. [Settings Page & Integrations](#settings-page--integrations)
 6. [Dashboard Page](#dashboard-page)
 7. [AI Policy Scanner & Gap Analysis](#ai-policy-scanner--gap-analysis)
-8. [ACORD Data Mapping & Storage](#acord-data-mapping--storage)
-9. [Policy Data Synchronization](#policy-data-synchronization)
-10. [Detailed Policy View UI](#detailed-policy-view-ui)
-11. [Sales Pipeline](#sales-pipeline)
-12. [Analytics & GTM](#analytics--gtm)
-13. [Component Library](#component-library)
+8. [AI Findings Verification Workflow](#ai-findings-verification-workflow)
+9. [ACORD Data Mapping & Storage](#acord-data-mapping--storage)
+10. [Policy Data Synchronization](#policy-data-synchronization)
+11. [Detailed Policy View UI](#detailed-policy-view-ui)
+12. [Sales Pipeline](#sales-pipeline)
+13. [Analytics & GTM](#analytics--gtm)
+14. [Component Library](#component-library)
 
 ---
 
@@ -106,7 +107,29 @@ This feature allows users to opt-in to receiving real-time browser and sound not
     - The prompt includes both the `parsedPolicy` JSON and the `userNeeds` text provided by the user. This provides the AI with the necessary context to make relevant recommendations.
     - A `responseSchema` matching the `GapAnalysisResult` type is used to structure the output into gaps, upsell, and cross-sell opportunities.
 
-## 8. ACORD Data Mapping & Storage
+## 8. AI Findings Verification Workflow
+
+This feature introduces a "human-in-the-loop" step, ensuring AI-generated suggestions are vetted by an agent before becoming actionable items in the CRM.
+
+-   **Data Model**:
+    -   `StoredFinding`: The core data type for this feature. It includes properties like `customerId`, `type` ('gap', 'upsell', 'cross-sell'), and `status` ('pending_review', 'verified', 'dismissed').
+-   **Storage Layer**:
+    -   `services/findingsStorage.ts`: A dedicated service manages all `localStorage` operations for findings under the key `agentos_findings_[agencyId]`.
+    -   It provides functions to save new pending findings, update the status of existing findings, and retrieve all findings for a customer or all verified opportunities across the agency.
+-   **Workflow**:
+    1.  **Generation**: After a successful AI policy analysis in `GapAnalysis.tsx` or `EmbeddedGapAnalysis.tsx`, the results are transformed into `StoredFinding` objects with a `pending_review` status and saved via `findingsStorage.savePendingFindings`.
+    2.  **Review**: On the `CustomerProfile.tsx` page, the `useFindingsData` hook fetches these findings.
+        -   The `AgentReviewPanel.tsx` component is rendered if there are any pending findings.
+        -   Inside, `SuggestionCard.tsx` components display each finding with "Confirm," "Edit," and "Dismiss" actions. These actions call functions from the `useFindingsData` hook to update the finding's status in `localStorage`.
+    3.  **Action**: Once a finding's status is updated to `verified`:
+        -   If it's an 'upsell' or 'cross-sell' opportunity, it is displayed in the `ActionableOpportunities.tsx` component on the customer profile.
+        -   `ActionableOpportunityCard.tsx` provides CTAs like "Call Now" (`tel:`) and "Send Email" (`mailto:`).
+    4.  **Dashboard Aggregation**:
+        -   The main `Dashboard.tsx` uses the `useAllVerifiedOpportunities` hook to get a count of all `verified` upsell and cross-sell opportunities.
+        -   These counts are displayed in new KPI cards that link to the `OpportunitiesHub.tsx` page.
+    5.  **Hub**: The `OpportunitiesHub.tsx` page provides a centralized list of all customers who have open, verified opportunities, allowing agents to easily track and prioritize their sales activities.
+
+## 9. ACORD Data Mapping & Storage
 
 This feature provides a layer of standardization and persistence for parsed policy data.
 
@@ -117,7 +140,7 @@ This feature provides a layer of standardization and persistence for parsed poli
     - **Versioning**: Both the top-level storage object and individual policy records include versioning and `lastUpdated` timestamps. This is a forward-thinking approach that would allow for data migrations if the schema changes in the future.
     - **Error Handling**: The service includes `try...catch` blocks around `JSON.parse` and `JSON.stringify` to prevent the application from crashing if the data in `localStorage` becomes corrupted.
 
-## 9. Policy Data Synchronization
+## 10. Policy Data Synchronization
 
 This mechanism connects the offline/parsed data in `localStorage` with the main, in-memory CRM state.
 
@@ -132,7 +155,7 @@ This mechanism connects the offline/parsed data in `localStorage` with the main,
     4.  **Data Flow**: `localStorage (PolicyACORD)` -> `mapAcordToCrmPolicy()` -> `CRM State (Policy)`
 - **Purpose**: This creates a robust bridge, allowing data captured and processed offline (or through the AI scanner) to be formally integrated into the agent's primary dataset.
 
-## 10. Detailed Policy View UI
+## 11. Detailed Policy View UI
 
 On the customer profile page (`CustomerMicrosite.tsx`), each policy is displayed using a detailed, responsive component that presents the full ACORD-structured data in a user-friendly manner. This replaces the previous, simpler `PolicyCard` component.
 
@@ -150,7 +173,7 @@ On the customer profile page (`CustomerMicrosite.tsx`), each policy is displayed
     -   `EditableField.tsx`: A generic, reusable component for any simple text field that needs to be editable in place.
 -   **Mobile Usability**: The layout is fully responsive. Tables within the component are designed to be horizontally scrollable on small screens to prevent breaking the page layout, ensuring all data is accessible on any device.
 
-## 11. Sales Pipeline
+## 12. Sales Pipeline
 
 This feature provides a complete workflow for managing sales prospects from initial inquiry to a final outcome (`won` or `lost`). It is composed of three main pages and several specialized components.
 
@@ -176,7 +199,7 @@ This feature provides a complete workflow for managing sales prospects from init
     4.  When an opportunity is dragged to the "Won" column, the `usePipelineData` hook automatically generates a `Conversion` event with `kind: 'won'`, the opportunity's value, and the original attribution ID from the inquiry.
     5.  The KPIs update in real-time to reflect these changes.
 
-## 12. Analytics & GTM
+## 13. Analytics & GTM
 
 - **Implementation**: A simple analytics service (`services/analytics.ts`) provides functions to push events to the `window.dataLayer`.
 - **`GTMProvider`**: This component is responsible for injecting the Google Tag Manager script into the `<head>` of the document if a `gtmContainerId` is found in `localStorage`.
@@ -184,7 +207,7 @@ This feature provides a complete workflow for managing sales prospects from init
 - **Session Management**: A simple `initSession` function creates a unique session ID and stores it in `sessionStorage` to track user sessions.
 - **Event Structure**: All tracked events include common metadata like the current `language`, a hardcoded `user_role`, and the `session_id` for better context in analytics platforms.
 
-## 13. Component Library
+## 14. Component Library
 
 - **UI Primitives**: Reusable, low-level components like `SkeletonLoader`, `ErrorMessage`, `ConfirmationModal`, and `ToggleSwitch` are located in `components/ui/`.
 - **Feature-Specific Components**: Components are organized into directories based on the feature they belong to (e.g., `components/dashboard/`, `components/crm/`, `components/campaigns/`).

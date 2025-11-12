@@ -16,6 +16,9 @@ import StoredAnalysisCard from '../components/customer/StoredAnalysisCard';
 import { useAnalysisData } from '../hooks/useAnalysisData';
 import DetailedPolicyView from '../components/customer/DetailedPolicyView';
 import ConsentManagement from '../components/customer/ConsentManagement';
+import AgentReviewPanel from '../components/customer/review/AgentReviewPanel';
+import ActionableOpportunities from '../components/customer/opportunities/ActionableOpportunities';
+import { useFindingsData } from '../hooks/useFindingsData';
 
 const CustomerProfile: React.FC = () => {
     const { customerId } = useParams<{ customerId: string }>();
@@ -43,6 +46,13 @@ const CustomerProfile: React.FC = () => {
     }, [customers, customerId]);
 
     const { analyses, isLoading: isLoadingAnalyses } = useAnalysisData(customerId);
+    const { 
+        pendingFindings, 
+        verifiedOpportunities, 
+        updateFindingStatus, 
+        updateFindingContent,
+        isLoading: isLoadingFindings
+    } = useFindingsData(customerId);
     
     if (isLoading) {
         return <SkeletonLoader className="h-screen w-full" />;
@@ -122,6 +132,21 @@ const CustomerProfile: React.FC = () => {
             </header>
             
             <ConsentManagement customer={customer} onUpdateCustomer={updateCustomer} />
+
+            {isLoadingFindings ? <SkeletonLoader className="h-48 w-full" /> : (
+                <>
+                    {pendingFindings.length > 0 && (
+                        <AgentReviewPanel 
+                            findings={pendingFindings} 
+                            onUpdateStatus={updateFindingStatus} 
+                            onUpdateContent={updateFindingContent} 
+                        />
+                    )}
+                    {verifiedOpportunities.length > 0 && (
+                        <ActionableOpportunities opportunities={verifiedOpportunities} customer={customer} />
+                    )}
+                </>
+            )}
 
             <div className="border-b border-gray-200 dark:border-gray-700">
                 <nav className="-mb-px flex space-x-8" aria-label="Tabs">

@@ -46,7 +46,8 @@
     "salesPipeline": "Sales Pipeline",
     "leadsInbox": "Leads Inbox",
     "opportunityPipeline": "Opportunity Pipeline",
-    "myDay": "My Day"
+    "myDay": "My Day",
+    "opportunitiesHub": "Opportunities Hub"
   },
   "header": {
     "search": "Search...",
@@ -106,7 +107,10 @@
         "adPerformanceSubtitle": "{leads} leads from €{spend}",
         "activePortalUsers": "Active Portal Users",
         "activePortalUsersSubtitle": "Logged in today",
-        "followUp": "Follow-up"
+        "followUp": "Follow-up",
+        "upsellOpportunities": "Upsell Opportunities",
+        "crossSellOpportunities": "Cross-sell Opportunities",
+        "viewAll": "View All"
     }
   },
   "onboarding": {
@@ -244,7 +248,23 @@
     },
     "analysisFor": "Analysis for:",
     "analysisDate": "Analyzed on {date}",
-    "coverages": "Coverages"
+    "coverages": "Coverages",
+    "review": {
+      "title": "AI Findings for Review",
+      "description": "The AI has identified the following potential opportunities and gaps based on the recent policy analysis. Please review, edit, and confirm or dismiss each one.",
+      "noPending": "No new findings are pending review for this customer.",
+      "confirm": "Confirm",
+      "dismiss": "Dismiss",
+      "edit": "Edit",
+      "save": "Save",
+      "cancel": "Cancel"
+    },
+    "opportunities": {
+      "title": "Actionable Opportunities",
+      "callNow": "Call Now",
+      "sendEmail": "Send Email",
+      "sendOffer": "Send Offer"
+    }
   },
   "gapAnalysis": {
     "title": "AI Policy Scanner",
@@ -269,7 +289,7 @@
     "crossSellOpportunities": "Cross-sell Opportunities",
     "current": "Current",
     "recommended": "Recommended",
-    "saveSuccess": "Analysis results saved to customer profile.",
+    "saveSuccess": "Analysis findings saved for agent review.",
     "errors": {
       "parsingFailed": "Failed to parse the policy document. The format may be unsupported. Please try again or check the file.",
       "analysisFailed": "The AI analysis failed. This could be a temporary issue. Please try again."
@@ -828,6 +848,10 @@
       "overdue": "Overdue Follow-ups",
       "dueToday": "Due Today",
       "noDueDate": "No Follow-up Date"
+    },
+    "opportunitiesHub": {
+      "title": "Actionable Opportunities Hub",
+      "description": "A centralized view of all customers with verified, open sales opportunities identified by the AI."
     }
   }
 }

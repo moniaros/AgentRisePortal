@@ -9,9 +9,9 @@ import GapAnalysisResults from '../components/gap-analysis/GapAnalysisResults';
 import { GoogleGenAI, Type } from "@google/genai";
 import { trackEvent } from '../services/analytics';
 import { useNotification } from '../hooks/useNotification';
-import { saveAnalysisForCustomer } from '../services/analysisStorage';
 import { mapToPolicyACORD } from '../services/acordMapper';
 import { savePolicyForCustomer } from '../services/policyStorage';
+import { savePendingFindings } from '../services/findingsStorage';
 
 const GapAnalysis: React.FC = () => {
     const { t, language } = useLocalization();
@@ -237,13 +237,10 @@ const GapAnalysis: React.FC = () => {
             setAnalysisResult(result);
             trackEvent('ai_tool', 'Gap Analysis', 'analysis_success', undefined, language);
 
-            // Save the complete analysis to localStorage
+            // Save the findings for agent review
             const customerId = parsedPolicy.policyholder.name.replace(/\s+/g, '_').toLowerCase();
-            saveAnalysisForCustomer(customerId, {
-                fileName: file.name,
-                parsedPolicy: parsedPolicy,
-                analysisResult: result,
-            });
+            const analysisId = `analysis_${Date.now()}`;
+            savePendingFindings(customerId, analysisId, result);
             addNotification(t('gapAnalysis.saveSuccess'), 'success');
 
         } catch (err) {

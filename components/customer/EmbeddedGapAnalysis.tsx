@@ -10,6 +10,7 @@ import ErrorMessage from '../ui/ErrorMessage';
 import { mapToPolicyACORD } from '../../services/acordMapper';
 import { savePolicyForCustomer } from '../../services/policyStorage';
 import { useNotification } from '../../hooks/useNotification';
+import { savePendingFindings } from '../../services/findingsStorage';
 
 interface EmbeddedGapAnalysisProps {
     customer: Customer;
@@ -112,10 +113,15 @@ const EmbeddedGapAnalysis: React.FC<EmbeddedGapAnalysisProps> = ({ customer }) =
             const result = JSON.parse(jsonStr) as GapAnalysisResult;
             setAnalysisResult(result);
             
-            // 3. Add to timeline
+            // 3. Save findings for agent review
+            const analysisId = `analysis_${Date.now()}`;
+            savePendingFindings(customer.id, analysisId, result);
+            addNotification(t('gapAnalysis.saveSuccess'), 'success');
+
+            // 4. Add a timeline event to notify the agent
             addTimelineEvent(customer.id, {
                 type: 'system',
-                content: `AI policy analysis completed for uploaded file "${uploadedFile.name}". Found ${result.gaps.length} gaps, ${result.upsell_opportunities.length} upsell, and ${result.cross_sell_opportunities.length} cross-sell opportunities.`,
+                content: `AI policy analysis completed for "${uploadedFile.name}". New findings are available for review on the customer profile.`,
                 author: currentUser ? `${currentUser.party.partyName.firstName} ${currentUser.party.partyName.lastName}` : 'System',
             });
 
@@ -145,7 +151,7 @@ const EmbeddedGapAnalysis: React.FC<EmbeddedGapAnalysisProps> = ({ customer }) =
                     {error && <ErrorMessage message={error} />}
                     {analysisResult && (
                         <div className="text-sm text-green-700 dark:text-green-300 bg-green-50 dark:bg-green-900/20 p-3 rounded-md">
-                            Analysis saved to timeline.
+                            {t('gapAnalysis.saveSuccess')}
                         </div>
                     )}
                     <button onClick={() => setFile(null)} className="text-sm text-blue-500 hover:underline">Analyze another document</button>

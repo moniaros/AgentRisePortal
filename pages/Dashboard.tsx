@@ -18,6 +18,8 @@ import KpiCard from '../components/analytics/KpiCard';
 import { usePortalAccountsData } from '../hooks/usePortalAccountsData';
 import OnboardingWidget from '../components/dashboard/OnboardingWidget';
 import DashboardHeader from '../components/dashboard/DashboardHeader';
+import { useAllVerifiedOpportunities } from '../hooks/useAllVerifiedOpportunities';
+import { Link } from 'react-router-dom';
 
 const Dashboard: React.FC = () => {
     const { t } = useLocalization();
@@ -35,6 +37,8 @@ const Dashboard: React.FC = () => {
     const { serviceRequests, isLoading: areServiceRequestsLoading, error: serviceRequestsError } = useServiceRequestsData();
     const { performanceSamples, isLoading: isPerfLoading, error: perfError } = usePerformanceData();
     const { portalAccounts, isLoading: arePortalAccountsLoading, error: portalAccountsError } = usePortalAccountsData();
+    const { upsellCount, crossSellCount, isLoading: opportunitiesLoading } = useAllVerifiedOpportunities();
+
 
     const activePortalUsersToday = useMemo(() => {
         if (!portalAccounts) return 0;
@@ -77,6 +81,7 @@ const Dashboard: React.FC = () => {
         if (!opportunities) return 0;
         const now = new Date();
         return opportunities.filter(opp => {
+            if (!opp.nextFollowUpDate) return false;
             const followUpDate = new Date(opp.nextFollowUpDate);
             const isPast = followUpDate < now;
             const isOpen = opp.stage !== 'won' && opp.stage !== 'lost';
@@ -124,7 +129,7 @@ const Dashboard: React.FC = () => {
         loadData();
     }, [t]);
 
-    const isLoading = isGbpLoading || isInquiriesLoading || isOppsLoading || areInteractionsLoading || isFtnolLoading || areServiceRequestsLoading || isPerfLoading || arePortalAccountsLoading;
+    const isLoading = isGbpLoading || isInquiriesLoading || isOppsLoading || areInteractionsLoading || isFtnolLoading || areServiceRequestsLoading || isPerfLoading || arePortalAccountsLoading || opportunitiesLoading;
     const error = gbpError || inquiriesError?.message || oppsError?.message || interactionsError?.message || ftnolError?.message || serviceRequestsError?.message || perfError?.message || portalAccountsError?.message;
 
     if (isLoading) {
@@ -132,7 +137,7 @@ const Dashboard: React.FC = () => {
             <div className="space-y-6">
                 <DashboardHeader />
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6">
-                    {[...Array(6)].map((_, i) => <SkeletonLoader key={i} className="h-24 w-full" />)}
+                    {[...Array(8)].map((_, i) => <SkeletonLoader key={i} className="h-24 w-full" />)}
                 </div>
                 <SkeletonLoader className="h-28 w-full" />
                 <div className="flex justify-between items-center">
@@ -156,7 +161,7 @@ const Dashboard: React.FC = () => {
             <DashboardHeader />
             <OnboardingWidget />
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-8 gap-6">
                 <KpiCard 
                     title={t('dashboard.kpis.newInquiriesToday')} 
                     value={newInquiriesToday}
@@ -191,6 +196,22 @@ const Dashboard: React.FC = () => {
                     value={activePortalUsersToday}
                     subtitle={t('dashboard.kpis.activePortalUsersSubtitle')}
                 />
+                <Link to="/opportunities-hub" className="block">
+                    <KpiCard 
+                        title={t('dashboard.kpis.upsellOpportunities')} 
+                        value={upsellCount}
+                        subtitle={t('dashboard.kpis.viewAll')}
+                        variant="info"
+                    />
+                </Link>
+                <Link to="/opportunities-hub" className="block">
+                    <KpiCard 
+                        title={t('dashboard.kpis.crossSellOpportunities')} 
+                        value={crossSellCount}
+                        subtitle={t('dashboard.kpis.viewAll')}
+                        variant="info"
+                    />
+                </Link>
             </div>
             
             {summary && <BusinessHeader summary={summary} />}

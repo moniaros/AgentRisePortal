@@ -39,6 +39,7 @@ import ExecutiveDashboard from './pages/ExecutiveDashboard';
 import LeadsInbox from './pages/LeadsInbox';
 import OpportunityPipeline from './pages/OpportunityPipeline';
 import MyDayDashboard from './pages/MyDayDashboard';
+import OpportunitiesHub from './pages/OpportunitiesHub';
 
 // Contexts and Utilities
 // FIX: The useAuth hook is in its own file, not in the AuthContext file.
@@ -101,6 +102,7 @@ const AppRoutes: React.FC = () => {
                 <Route path="/pipeline/inbox" element={<LeadsInbox />} />
                 <Route path="/pipeline/board" element={<OpportunityPipeline />} />
                 <Route path="/pipeline/my-day" element={<MyDayDashboard />} />
+                <Route path="/opportunities-hub" element={<OpportunitiesHub />} />
 
                 <Route path="/micro-crm" element={<MicroCRM />} />
                 <Route path="/customer/:customerId" element={<CustomerProfile />} />
