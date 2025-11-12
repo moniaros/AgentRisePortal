@@ -6,9 +6,10 @@ interface LeadDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
   lead: Lead;
+  onConvert?: (lead: Lead) => void;
 }
 
-const LeadDetailModal: React.FC<LeadDetailModalProps> = ({ isOpen, onClose, lead }) => {
+const LeadDetailModal: React.FC<LeadDetailModalProps> = ({ isOpen, onClose, lead, onConvert }) => {
   const { t } = useLocalization();
 
   if (!isOpen) return null;
@@ -39,6 +40,11 @@ const LeadDetailModal: React.FC<LeadDetailModalProps> = ({ isOpen, onClose, lead
           </div>
         </div>
         <div className="p-4 bg-gray-50 dark:bg-gray-900 flex justify-end gap-2 border-t dark:border-gray-700">
+          {onConvert && !lead.customerId && (
+            <button type="button" onClick={() => onConvert(lead)} className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
+              {t('crm.convert')}
+            </button>
+          )}
           <button type="button" onClick={onClose} className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
             {t('common.close')}
           </button>

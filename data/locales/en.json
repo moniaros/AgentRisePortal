@@ -196,6 +196,7 @@
     "syncing": "Syncing...",
     "syncSuccess": "Sync complete! Added {syncedCustomers} new customers and {syncedPolicies} new policies.",
     "campaign": "Campaign",
+    "convert": "Convert to Customer",
     "form": {
       "firstName": "First Name",
       "lastName": "Last Name",

@@ -15,7 +15,7 @@ import { useNotification } from '../hooks/useNotification';
 
 const MicroCRM: React.FC = () => {
     const { t } = useLocalization();
-    const { customers, leads, isLoading, error, addCustomer, updateCustomer, deleteCustomer } = useCrmData();
+    const { customers, leads, isLoading, error, addCustomer, updateCustomer, deleteCustomer, convertLeadToCustomer } = useCrmData();
     const { isSyncing, syncPolicies } = usePolicySync();
     const { addNotification } = useNotification();
     
@@ -78,6 +78,11 @@ const MicroCRM: React.FC = () => {
     const handleViewLeadDetails = (lead: Lead) => {
         setSelectedLead(lead);
     };
+    
+    const handleConvertLead = (lead: Lead) => {
+        convertLeadToCustomer(lead);
+        setSelectedLead(null); // Close modal
+    };
 
     const handleSync = async () => {
         const { syncedCustomers, syncedPolicies } = await syncPolicies();
@@ -112,7 +117,7 @@ const MicroCRM: React.FC = () => {
 
             <div className="mb-8">
                 <h2 className="text-xl font-semibold mb-4">{t('crm.recentLeads')}</h2>
-                {isLoading ? <SkeletonLoader className="h-48 w-full" /> : <LeadsTable leads={filteredLeads} onViewDetails={handleViewLeadDetails} />}
+                {isLoading ? <SkeletonLoader className="h-48 w-full" /> : <LeadsTable leads={filteredLeads} onViewDetails={handleViewLeadDetails} onConvert={handleConvertLead} />}
             </div>
 
             <div>
@@ -133,6 +138,7 @@ const MicroCRM: React.FC = () => {
                     lead={selectedLead}
                     isOpen={!!selectedLead}
                     onClose={() => setSelectedLead(null)}
+                    onConvert={handleConvertLead}
                 />
             )}
         </div>

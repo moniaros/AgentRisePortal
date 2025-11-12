@@ -6,6 +6,7 @@ import { useLocalization } from '../../hooks/useLocalization';
 interface LeadsTableProps {
   leads: Lead[];
   onViewDetails: (lead: Lead) => void;
+  onConvert?: (lead: Lead) => void;
 }
 
 const getStatusColor = (status: string) => {
@@ -19,7 +20,7 @@ const getStatusColor = (status: string) => {
   }
 };
 
-const LeadsTable: React.FC<LeadsTableProps> = ({ leads, onViewDetails }) => {
+const LeadsTable: React.FC<LeadsTableProps> = ({ leads, onViewDetails, onConvert }) => {
   const { t } = useLocalization();
 
   return (
@@ -54,6 +55,11 @@ const LeadsTable: React.FC<LeadsTableProps> = ({ leads, onViewDetails }) => {
                 <button onClick={() => onViewDetails(lead)} className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-200">
                   {t('leads.viewDetails')}
                 </button>
+                 {!lead.customerId && onConvert && (
+                    <button onClick={() => onConvert(lead)} className="ml-4 text-green-600 hover:text-green-900 dark:text-green-400 dark:hover:text-green-200">
+                        {t('crm.convert')}
+                    </button>
+                )}
               </td>
             </tr>
           )) : (

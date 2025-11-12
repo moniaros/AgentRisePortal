@@ -11,7 +11,7 @@ import SkeletonLoader from '../components/ui/SkeletonLoader';
 
 const LeadGeneration: React.FC = () => {
   const { t } = useLocalization();
-  const { leads, isLoading, error } = useCrmData();
+  const { leads, isLoading, error, convertLeadToCustomer } = useCrmData();
   const [filters, setFilters] = useState({ status: 'all', source: 'all', search: '' });
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
 
@@ -36,6 +36,11 @@ const LeadGeneration: React.FC = () => {
       setSelectedLead(null);
   }
 
+  const handleConvert = (lead: Lead) => {
+    convertLeadToCustomer(lead);
+    setSelectedLead(null); // Close modal if open
+  };
+
   return (
     <div>
       <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-6">{t('nav.leadGen')}</h1>
@@ -48,7 +53,7 @@ const LeadGeneration: React.FC = () => {
         {isLoading ? (
           <SkeletonLoader className="h-64 w-full" />
         ) : (
-          <LeadsTable leads={filteredLeads} onViewDetails={handleViewDetails} />
+          <LeadsTable leads={filteredLeads} onViewDetails={handleViewDetails} onConvert={handleConvert} />
         )}
       </div>
 
@@ -57,6 +62,7 @@ const LeadGeneration: React.FC = () => {
             lead={selectedLead}
             isOpen={!!selectedLead}
             onClose={handleCloseModal}
+            onConvert={handleConvert}
           />
       )}
     </div>

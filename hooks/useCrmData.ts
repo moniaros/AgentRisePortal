@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { useOfflineSync } from './useOfflineSync';
 // FIX: Correct import path
-import { Customer, Lead, TimelineEvent, Annotation } from '../types';
+import { Customer, Lead, TimelineEvent, Annotation, LeadStatus } from '../types';
 import { useAuth } from './useAuth';
 import { MOCK_CUSTOMERS, MOCK_LEADS } from '../data/mockData';
 
@@ -64,6 +64,40 @@ export const useCrmData = () => {
         };
         setAllLeads([...allLeads, newLead]);
     }, [allLeads, setAllLeads, agencyId]);
+
+    const convertLeadToCustomer = useCallback((lead: Lead) => {
+        if (!agencyId || lead.customerId) return; // Already converted or no agency
+
+        // 1. Create new customer from lead data
+        const newCustomer: Customer = {
+            firstName: lead.firstName,
+            lastName: lead.lastName,
+            email: lead.email,
+            phone: lead.phone,
+            address: '',
+            policies: [],
+            id: `cust_${Date.now()}`,
+            timeline: [{
+                id: `evt_${Date.now()}`,
+                date: new Date().toISOString(),
+                type: 'system',
+                content: `Customer profile created from lead #${lead.id}.`,
+                author: currentUser ? `${currentUser.party.partyName.firstName} ${currentUser.party.partyName.lastName}` : 'System',
+            }],
+            agencyId,
+        };
+        // FIX: The `updateData` function from `useOfflineSync` expects the new array directly, not a callback.
+        setAllCustomers([...allCustomers, newCustomer]);
+
+        // 2. Update the lead to link to the new customer and change status
+        const updatedLead: Lead = {
+            ...lead,
+            customerId: newCustomer.id,
+            status: LeadStatus.CLOSED, // Mark as closed/converted
+        };
+        // FIX: The `updateData` function from `useOfflineSync` expects the new array directly, not a callback.
+        setAllLeads(allLeads.map(l => l.id === lead.id ? updatedLead : l));
+    }, [agencyId, currentUser, setAllCustomers, setAllLeads, allCustomers, allLeads]);
     
     const addTimelineEvent = useCallback((customerId: string, event: Omit<TimelineEvent, 'id' | 'date' | 'annotations' >) => {
         const customer = allCustomers.find(c => c.id === customerId);
@@ -142,7 +176,8 @@ export const useCrmData = () => {
         addCustomer, 
         updateCustomer, 
         deleteCustomer, 
-        addLead, 
+        addLead,
+        convertLeadToCustomer,
         addTimelineEvent,
         addAnnotationToEvent,
         updateCustomerAttentionFlag,

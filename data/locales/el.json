@@ -196,6 +196,7 @@
         "syncing": "Συγχρονισμός...",
         "syncSuccess": "Ο συγχρονισμός ολοκληρώθηκε! Προστέθηκαν {syncedCustomers} νέοι πελάτες και {syncedPolicies} νέα συμβόλαια.",
         "campaign": "Καμπάνια",
+        "convert": "Μετατροπή σε Πελάτη",
         "form": {
             "firstName": "Όνομα",
             "lastName": "Επώνυμο",

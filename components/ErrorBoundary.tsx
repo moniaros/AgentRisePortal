@@ -9,7 +9,7 @@ interface State {
   error?: Error;
 }
 
-// FIX: Explicitly extend `React.Component` to resolve a potential type inference issue where `this.props` was not being correctly recognized.
+// FIX: The error "Property 'props' does not exist on type 'ErrorBoundary'" is resolved by ensuring the class extends React.Component, which provides access to component properties like `this.props`.
 class ErrorBoundary extends React.Component<Props, State> {
   state: State = {
     hasError: false,
