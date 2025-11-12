@@ -8,7 +8,7 @@ import { ICONS } from '../constants';
 const Onboarding: React.FC = () => {
     const { t } = useLocalization();
     const { currentUser } = useAuth();
-    const { progress, isCompleted, completeOnboarding } = useOnboardingStatus();
+    const { progress, isCompleted, markTaskCompleted, completeOnboarding } = useOnboardingStatus();
 
     const features = [
         // Fix: Removed incorrect type assertion. The `t` function now correctly returns an object.
@@ -55,7 +55,13 @@ const Onboarding: React.FC = () => {
                 <ul className="space-y-4">
                     {checklistItems.map(item => (
                         <li key={item.key}>
-                            <Link to={item.link} className="flex items-center p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                            <Link
+                                to={item.link}
+                                onClick={() => {
+                                    markTaskCompleted(item.key);
+                                    completeOnboarding();
+                                }}
+                                className="flex items-center p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
                                 <div className={`w-6 h-6 rounded-full flex items-center justify-center mr-4 ${progress[item.key] ? 'bg-green-500 text-white' : 'border-2 border-gray-300'}`}>
                                     {progress[item.key] && '✔'}
                                 </div>

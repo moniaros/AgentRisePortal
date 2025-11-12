@@ -22,7 +22,7 @@ class ErrorBoundary extends Component<Props, State> {
     console.error("Uncaught error:", error, errorInfo);
   }
 
-  // FIX: Changed `render` from a class property arrow function to a standard class method. This ensures `this` is correctly typed as the component instance, which makes `this.props` available and resolves the error.
+  // FIX: Changed `render` from a class property arrow function to a standard class method. In class components, using an arrow function for `render` can lead to issues with how `this` is typed, often resulting in TypeScript not recognizing `this.props`. A standard method declaration ensures `this` is correctly bound to the component instance.
   render() {
     if (this.state.hasError) {
       return (
