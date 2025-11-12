@@ -15,6 +15,7 @@ import { useAuth } from '../hooks/useAuth';
 import EmbeddedGapAnalysis from '../components/customer/EmbeddedGapAnalysis';
 import DetailedPolicyView from '../components/customer/DetailedPolicyView';
 import ConsentManagement from '../components/customer/ConsentManagement';
+import AIPolicyAnalysis from '../components/customer/AIPolicyAnalysis';
 
 const CustomerProfile: React.FC = () => {
     const { customerId } = useParams<{ customerId: string }>();
@@ -108,6 +109,9 @@ const CustomerProfile: React.FC = () => {
                 marketingConsent={customer.marketingConsent}
                 onUpdateConsent={handleUpdateConsent}
             />
+
+            {/* AI Policy Analysis */}
+            <AIPolicyAnalysis customerId={customer.id} />
 
             {/* Policies */}
             <div>
