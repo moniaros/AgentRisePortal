@@ -6,7 +6,7 @@ export const MOCK_USERS: User[] = [
         agencyId: 'agency_1',
         party: {
             partyName: { firstName: 'John', lastName: 'Agent' },
-            contactInfo: { email: 'john.agent@agency1.com', workPhone: '555-0101' },
+            contactInfo: { email: 'moniaros@gmail.com', workPhone: '555-0101' },
             addressInfo: { fullAddress: 'Main Street Branch' },
             profilePhotoUrl: 'https://i.pravatar.cc/150?u=a042581f4e29026704d',
             signature: ''
