@@ -43,7 +43,11 @@
     "socialComposer": "Social Composer",
     "analytics": "Analytics",
     "templates": "Templates",
-    "eventLog": "Event Log"
+    "eventLog": "Event Log",
+    "salesPipeline": "Sales Pipeline",
+    "leadsInbox": "Leads Inbox",
+    "opportunityPipeline": "Opportunity Pipeline",
+    "myDay": "My Day"
   },
   "header": {
     "search": "Search...",
@@ -796,5 +800,34 @@
   "support": {
     "title": "Support Center",
     "description": "This section is under construction. It will contain help articles, FAQs, and a contact form for support inquiries."
+  },
+  "pipeline": {
+    "title": "Lead & Opportunity Pipeline",
+    "inboxTitle": "New Leads Inbox",
+    "inboxDescription": "Newly captured inquiries that need to be qualified and converted into opportunities.",
+    "kpis": {
+      "newLeads": "New Leads",
+      "proposalsSent": "Proposals Sent",
+      "wonCount": "Deals Won",
+      "wonGwp": "GWP Won",
+      "conversionRate": "Conversion Rate"
+    },
+    "stages": {
+      "new": "New",
+      "contacted": "Contacted",
+      "proposal": "Proposal",
+      "won": "Won",
+      "lost": "Lost"
+    },
+    "createOpportunity": "Create Opportunity",
+    "opportunityCreated": "Opportunity created successfully!",
+    "noNewLeads": "The leads inbox is empty. Great job!",
+    "overdue": "Overdue",
+    "myDay": {
+      "title": "My Day",
+      "overdue": "Overdue Follow-ups",
+      "dueToday": "Due Today",
+      "noDueDate": "No Follow-up Date"
+    }
   }
 }

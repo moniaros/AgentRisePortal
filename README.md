@@ -31,3 +31,14 @@ The Notification Preferences panel allows users to opt-in to receiving real-time
 - **User Interruption**: As this feature generates system-level notifications, it is designed as an opt-in to respect the user's workflow and avoid unwanted interruptions.
 - **Browser Support**: The feature relies on browser support for the Notification API. A check is in place to inform users if their browser is not supported.
 - **Future Extension**: The `notificationService.ts` is built to be extensible. New notification types for different CRM events (e.g., "New Message", "Task Assigned") can be easily added by calling the core `showBrowserNotification` and `playSound` functions with different localized content.
+
+## 4. Sales Pipeline Feature
+
+This feature introduces a comprehensive workflow for managing leads and sales opportunities.
+
+-   **Data Models**: The feature uses several new data entities, including `TransactionInquiry` (for new leads), `Opportunity__EXT` (for sales deals), `Prospect`, and `Interaction` (for communication logs). All data is simulated via mock JSON files.
+-   **Leads Inbox**: A new page (`/pipeline/inbox`) lists all incoming `TransactionInquiry` records that haven't been converted into an opportunity. This is the agent's first point of contact with a new prospect.
+-   **Opportunity Kanban Board**: The main interface (`/pipeline/board`) is a drag-and-drop Kanban board that visualizes opportunities across stages: New, Contacted, Proposal, Won, and Lost. Agents can move cards between stages to update the opportunity's status.
+-   **My Day Dashboard**: A personalized dashboard (`/pipeline/my-day`) helps agents prioritize their daily tasks by showing opportunities that are overdue, due today, or have no follow-up date set.
+-   **Analytics**: When an opportunity is moved to the 'Won' stage, a `Conversion` event is logged. KPIs such as total leads, conversion rate, and gross written premium (GWP) won are displayed to track performance.
+-   **Data & State Management**: A new hook, `usePipelineData`, is responsible for fetching and managing all state related to the sales pipeline, ensuring tenant isolation by filtering all data by the logged-in agent's `agencyId`.

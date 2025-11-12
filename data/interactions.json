@@ -1,52 +1,43 @@
+
 [
   {
     "id": "int_1",
+    "opportunityId": "opp_2",
+    "agentId": "user_1",
     "agencyId": "agency_1",
-    "customerId": "cust_1",
-    "channel": "chat",
-    "direction": "inbound",
-    "content": "Hi, I have a question about my auto policy renewal.",
-    "createdAt": "2024-10-27T14:00:00.000Z",
-    "read": false
+    "channel": "call",
+    "direction": "outbound",
+    "content": "Initial call with prospect. Discussed basic needs for homeowners insurance. Sent follow-up email with preliminary info. Scheduled follow-up for next week.",
+    "createdAt": "2024-10-26T14:35:00Z"
   },
   {
     "id": "int_2",
+    "opportunityId": "opp_3",
+    "agentId": "user_1",
     "agencyId": "agency_1",
-    "customerId": "cust_2",
     "channel": "email",
-    "direction": "inbound",
-    "content": "Following up on the quote you sent me last week.",
-    "createdAt": "2024-10-27T13:30:00.000Z",
-    "read": false
+    "direction": "outbound",
+    "content": "Sent proposal document for Term Life Insurance policy.",
+    "createdAt": "2024-10-27T16:00:00Z"
   },
   {
     "id": "int_3",
+    "opportunityId": "opp_3",
+    "agentId": "user_1",
     "agencyId": "agency_1",
-    "customerId": "cust_1",
-    "channel": "chat",
-    "direction": "outbound",
-    "content": "Hello! I can certainly help with that. What is your question?",
-    "createdAt": "2024-10-27T14:01:00.000Z",
-    "read": true
+    "channel": "email",
+    "direction": "inbound",
+    "content": "Prospect replied: 'Thanks, reviewing this with my spouse tonight. Will get back to you by Tuesday.'",
+    "createdAt": "2024-10-27T17:30:00Z"
   },
   {
     "id": "int_4",
+    "opportunityId": "opp_4",
+    "agentId": "user_2",
     "agencyId": "agency_1",
-    "customerId": "cust_2",
-    "channel": "email",
-    "direction": "inbound",
-    "content": "Can you check the status of my claim #CLM-5678?",
-    "createdAt": "2024-10-26T18:00:00.000Z",
-    "read": true
-  },
-  {
-    "id": "int_5",
-    "agencyId": "agency_2",
-    "customerId": "cust_3",
-    "channel": "sms",
-    "direction": "inbound",
-    "content": "Is my payment due this week?",
-    "createdAt": "2024-10-27T14:15:00.000Z",
-    "read": false
+    "channel": "note",
+    "direction": "outbound",
+    "content": "Finalized deal. Contract signed. Marked as WON.",
+    "createdAt": "2024-10-20T17:00:00Z"
   }
 ]

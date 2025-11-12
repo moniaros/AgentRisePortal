@@ -1,0 +1,80 @@
+[
+  {
+    "id": "opp_1",
+    "title": "New Auto Policy for A. Stefanou",
+    "value": 750,
+    "prospectId": "prospect_3",
+    "stage": "new",
+    "nextFollowUpDate": null,
+    "agentId": "user_1",
+    "agencyId": "agency_1",
+    "inquiryId": "inq_3",
+    "createdAt": "2024-10-28T12:00:00Z",
+    "updatedAt": "2024-10-28T12:00:00Z"
+  },
+  {
+    "id": "opp_2",
+    "title": "Homeowners Insurance Quote",
+    "value": 1200,
+    "prospectId": "prospect_4",
+    "stage": "contacted",
+    "nextFollowUpDate": "2024-10-25T10:00:00Z",
+    "agentId": "user_1",
+    "agencyId": "agency_1",
+    "inquiryId": "inq_x",
+    "createdAt": "2024-10-24T11:00:00Z",
+    "updatedAt": "2024-10-26T14:30:00Z"
+  },
+  {
+    "id": "opp_3",
+    "title": "Life Insurance Proposal",
+    "value": 2500,
+    "prospectId": "prospect_5",
+    "stage": "proposal",
+    "nextFollowUpDate": "2024-10-29T10:00:00Z",
+    "agentId": "user_1",
+    "agencyId": "agency_1",
+    "inquiryId": "inq_y",
+    "createdAt": "2024-10-22T09:00:00Z",
+    "updatedAt": "2024-10-27T16:00:00Z"
+  },
+  {
+    "id": "opp_4",
+    "title": "Won Deal: Commercial Auto Fleet",
+    "value": 15000,
+    "prospectId": "prospect_6",
+    "stage": "won",
+    "nextFollowUpDate": null,
+    "agentId": "user_2",
+    "agencyId": "agency_1",
+    "inquiryId": "inq_z",
+    "createdAt": "2024-09-15T10:00:00Z",
+    "updatedAt": "2024-10-20T17:00:00Z"
+  },
+  {
+    "id": "opp_5",
+    "title": "Lost Deal: Health Insurance",
+    "value": 3200,
+    "prospectId": "prospect_7",
+    "stage": "lost",
+    "nextFollowUpDate": null,
+    "agentId": "user_1",
+    "agencyId": "agency_1",
+    "inquiryId": "inq_a",
+    "createdAt": "2024-10-01T10:00:00Z",
+    "updatedAt": "2024-10-15T12:00:00Z"
+  },
+  {
+    "id": "opp_6",
+    "title": "New Inquiry - No Follow up",
+    "value": 500,
+    "prospectId": "prospect_8",
+    "stage": "contacted",
+    "nextFollowUpDate": null,
+    "agentId": "user_1",
+    "agencyId": "agency_1",
+    "inquiryId": "inq_b",
+    "createdAt": "2024-10-27T14:00:00Z",
+    "updatedAt": "2024-10-27T14:00:00Z"
+  }
+]

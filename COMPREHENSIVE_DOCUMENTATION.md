@@ -1,4 +1,5 @@
 
+
 # AgentRise: Comprehensive Application Documentation
 
 This document provides a detailed technical reference for all key features of the AgentRise web application.
@@ -14,8 +15,9 @@ This document provides a detailed technical reference for all key features of th
 8. [ACORD Data Mapping & Storage](#acord-data-mapping--storage)
 9. [Policy Data Synchronization](#policy-data-synchronization)
 10. [Detailed Policy View UI](#detailed-policy-view-ui)
-11. [Analytics & GTM](#analytics--gtm)
-12. [Component Library](#component-library)
+11. [Sales Pipeline](#sales-pipeline)
+12. [Analytics & GTM](#analytics--gtm)
+13. [Component Library](#component-library)
 
 ---
 
@@ -148,7 +150,33 @@ On the customer profile page (`CustomerMicrosite.tsx`), each policy is displayed
     -   `EditableField.tsx`: A generic, reusable component for any simple text field that needs to be editable in place.
 -   **Mobile Usability**: The layout is fully responsive. Tables within the component are designed to be horizontally scrollable on small screens to prevent breaking the page layout, ensuring all data is accessible on any device.
 
-## 11. Analytics & GTM
+## 11. Sales Pipeline
+
+This feature provides a complete workflow for managing sales prospects from initial inquiry to a final outcome (`won` or `lost`). It is composed of three main pages and several specialized components.
+
+-   **Data Models**:
+    -   `TransactionInquiry`: Represents a new lead, typically from a web form. Contains contact info, consent, and attribution data.
+    -   `Opportunity__EXT`: The central entity representing a sales deal. It is linked to an inquiry and a prospect and tracks value, stage, and follow-up dates.
+    -   `Interaction`: A log of any communication (email, call, etc.) related to an opportunity.
+    -   `Prospect`: A simple record of a potential customer's contact details.
+-   **`usePipelineData` Hook**: This dedicated hook is the single source of truth for all pipeline-related data. It fetches mock data from new JSON files (`transaction_inquiries.json`, `opportunities_ext.json`, etc.), provides functions to mutate state (e.g., `createOpportunity`, `updateOpportunityStage`), and handles filtering by the current agent/agency.
+
+-   **Key Components & Pages**:
+    -   **Leads Inbox (`/pipeline/inbox`)**: Displays a list of `TransactionInquiry` records that have not yet been converted into an opportunity. This is the first step in the sales process. Agents can review incoming leads and click "Create Opportunity" to formally add them to the pipeline.
+    -   **Opportunity Pipeline (`/pipeline/board`)**: A Kanban-style board visualizing all opportunities, organized into columns by their `stage` ('new', 'contacted', 'proposal', 'won', 'lost').
+        -   **Drag & Drop**: Built using `react-dnd`, it allows agents to intuitively move opportunities between the 'new', 'contacted', and 'proposal' stages. Dragging to 'won' or 'lost' moves them to a terminal state.
+        -   **Opportunity Card**: Each card displays the opportunity title, value, prospect name, and next follow-up date. Overdue tasks are visually highlighted in red.
+    -   **My Day Dashboard (`/pipeline/my-day`)**: An agent-specific view designed for daily planning. It automatically organizes an agent's assigned opportunities into three lists: "Overdue," "Due Today," and "No Follow-up Date," enabling them to prioritize their work effectively.
+    -   **KPI Bar**: A summary component displayed on the pipeline pages, showing key metrics like new leads, conversion rate, and total premium value won.
+
+-   **Workflow & Analytics**:
+    1.  A new lead appears in the **Leads Inbox**.
+    2.  An agent converts the lead into an opportunity, which appears in the "New" column of the **Kanban board**.
+    3.  The agent works the opportunity, moving it through the "Contacted" and "Proposal" stages, logging all communications as `Interaction` records.
+    4.  When an opportunity is dragged to the "Won" column, the `usePipelineData` hook automatically generates a `Conversion` event with `kind: 'won'`, the opportunity's value, and the original attribution ID from the inquiry.
+    5.  The KPIs update in real-time to reflect these changes.
+
+## 12. Analytics & GTM
 
 - **Implementation**: A simple analytics service (`services/analytics.ts`) provides functions to push events to the `window.dataLayer`.
 - **`GTMProvider`**: This component is responsible for injecting the Google Tag Manager script into the `<head>` of the document if a `gtmContainerId` is found in `localStorage`.
@@ -156,7 +184,7 @@ On the customer profile page (`CustomerMicrosite.tsx`), each policy is displayed
 - **Session Management**: A simple `initSession` function creates a unique session ID and stores it in `sessionStorage` to track user sessions.
 - **Event Structure**: All tracked events include common metadata like the current `language`, a hardcoded `user_role`, and the `session_id` for better context in analytics platforms.
 
-## 12. Component Library
+## 13. Component Library
 
 - **UI Primitives**: Reusable, low-level components like `SkeletonLoader`, `ErrorMessage`, `ConfirmationModal`, and `ToggleSwitch` are located in `components/ui/`.
 - **Feature-Specific Components**: Components are organized into directories based on the feature they belong to (e.g., `components/dashboard/`, `components/crm/`, `components/campaigns/`).

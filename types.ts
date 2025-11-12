@@ -353,9 +353,11 @@ export interface KPISnapshot {
 }
 export interface Conversion {
     date: string;
-    kind: 'lead' | 'sale';
-    utm_source: string;
-    utm_campaign: string;
+    kind: 'lead' | 'sale' | 'won'; // Added 'won' for pipeline
+    utm_source?: string;
+    utm_campaign?: string;
+    attributionId?: string;
+    value?: number;
 }
 
 export interface FunnelRun {
@@ -499,9 +501,8 @@ export interface SimulationResult {
     conditionResults: ConditionResult[];
 }
 // Other Dashboard Data
-export interface TransactionInquiry { id: string; agencyId: string; createdAt: string; }
-export interface Opportunity__EXT { id: string; agencyId: string; nextFollowUpDate: string; stage: 'contacted' | 'qualified' | 'won' | 'lost'; value: number; }
-export interface Interaction { id: string; agencyId: string; direction: 'inbound' | 'outbound'; read: boolean; }
+// FIX: Removed duplicate/conflicting interface definitions for TransactionInquiry, Opportunity__EXT, and Interaction.
+// The more detailed definitions are kept below.
 export interface FirstNoticeOfLoss { id: string; agencyId: string; createdAt: string; }
 export interface ServiceRequest { id: string; agencyId: string; createdAt: string; }
 export interface PerfSample { date: string; agencyId: string; spend: number; conversions: { lead: number } }
@@ -522,3 +523,70 @@ export interface SocialConnection {
 }
 
 export type SocialConnections = Record<'facebook' | 'instagram' | 'linkedin' | 'x', SocialConnection>;
+
+// Sales Pipeline Types
+export interface Prospect {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    agencyId: string;
+}
+
+export interface TransactionInquiry {
+    id: string;
+    agencyId: string;
+    createdAt: string;
+    contact: {
+        firstName: string;
+        lastName: string;
+        email: string;
+        phone: string;
+    };
+    consentGDPR: boolean;
+    source: string;
+    purpose: 'general' | 'quote_request';
+    attribution: {
+        utm_source?: string;
+        utm_medium?: string;
+        utm_campaign?: string;
+    };
+    attributionId: string;
+}
+
+export interface TransactionQuoteRequest {
+    id: string;
+    inquiryId: string;
+    policyType: PolicyType;
+    details: string;
+}
+
+export type OpportunityStage = 'new' | 'contacted' | 'proposal' | 'won' | 'lost';
+
+export interface Opportunity__EXT {
+    id: string;
+    title: string;
+    value: number; // premium
+    prospectId: string;
+    stage: OpportunityStage;
+    nextFollowUpDate: string | null;
+    agentId: string;
+    agencyId: string;
+    inquiryId: string; // link to original inquiry
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface Interaction {
+    id: string;
+    opportunityId: string;
+    agentId: string;
+    agencyId: string;
+    channel: 'email' | 'sms' | 'viber' | 'call' | 'note';
+    direction: 'inbound' | 'outbound';
+    content: string;
+    createdAt: string;
+    // FIX: Added optional 'read' property to track message status.
+    read?: boolean;
+}

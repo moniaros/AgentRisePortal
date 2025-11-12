@@ -1,4 +1,5 @@
 
+
 import React from 'react';
 import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
@@ -35,6 +36,9 @@ import Support from './pages/Support';
 import Sitemap from './pages/Sitemap';
 import LeadCapturePage from './pages/LeadCapturePage';
 import ExecutiveDashboard from './pages/ExecutiveDashboard';
+import LeadsInbox from './pages/LeadsInbox';
+import OpportunityPipeline from './pages/OpportunityPipeline';
+import MyDayDashboard from './pages/MyDayDashboard';
 
 // Contexts and Utilities
 // FIX: The useAuth hook is in its own file, not in the AuthContext file.
@@ -92,6 +96,12 @@ const AppRoutes: React.FC = () => {
                 <Route path="/executive-dashboard" element={<ExecutiveDashboard />} />
                 <Route path="/leads-dashboard" element={<LeadsDashboard />} />
                 <Route path="/lead-gen" element={<LeadGeneration />} />
+
+                {/* Sales Pipeline */}
+                <Route path="/pipeline/inbox" element={<LeadsInbox />} />
+                <Route path="/pipeline/board" element={<OpportunityPipeline />} />
+                <Route path="/pipeline/my-day" element={<MyDayDashboard />} />
+
                 <Route path="/micro-crm" element={<MicroCRM />} />
                 <Route path="/customer/:customerId" element={<CustomerProfile />} />
                 <Route path="/gap-analysis" element={<GapAnalysis />} />

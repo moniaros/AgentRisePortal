@@ -1,0 +1,14 @@
+[
+  {
+    "id": "qreq_1",
+    "inquiryId": "inq_1",
+    "policyType": "auto",
+    "details": "Requesting a quote for a 2024 Toyota Yaris. Primary driver, 10,000km/year."
+  },
+  {
+    "id": "qreq_2",
+    "inquiryId": "inq_4",
+    "policyType": "home",
+    "details": "Need a quote for a 120sqm apartment in Athens, built in 2010. Interested in theft and fire coverage."
+  }
+]

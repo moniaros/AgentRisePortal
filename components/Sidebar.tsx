@@ -17,6 +17,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
     // State for collapsible menus, default to open
     const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({
         overview: true,
+        pipeline: true,
         crm: true,
         campaigns: true,
         website: true,
@@ -36,6 +37,15 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                 { path: '/', label: t('nav.dashboard'), icon: 'dashboard' },
                 { path: '/executive-dashboard', label: t('nav.executiveAnalytics'), icon: 'analytics' },
             ] 
+        },
+        {
+            key: 'pipeline',
+            label: t('nav.salesPipeline'),
+            links: [
+                { path: '/pipeline/inbox', label: t('nav.leadsInbox'), icon: 'pipeline' },
+                { path: '/pipeline/board', label: t('nav.opportunityPipeline'), icon: 'pipeline' },
+                { path: '/pipeline/my-day', label: t('nav.myDay'), icon: 'pipeline' },
+            ]
         },
         { 
             key: 'crm', 

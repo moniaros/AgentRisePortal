@@ -1,0 +1,76 @@
+[
+  {
+    "id": "inq_1",
+    "agencyId": "agency_1",
+    "createdAt": "2024-10-28T10:00:00.000Z",
+    "contact": {
+      "firstName": "George",
+      "lastName": "Marinis",
+      "email": "g.marinis@example.com",
+      "phone": "6971112233"
+    },
+    "consentGDPR": true,
+    "source": "Microsite",
+    "purpose": "quote_request",
+    "attribution": {
+      "utm_source": "facebook",
+      "utm_medium": "cpc",
+      "utm_campaign": "fall_auto_promo"
+    },
+    "attributionId": "attr_123"
+  },
+  {
+    "id": "inq_2",
+    "agencyId": "agency_1",
+    "createdAt": "2024-10-28T09:30:00.000Z",
+    "contact": {
+      "firstName": "Emily",
+      "lastName": "Carter",
+      "email": "em.carter@example.com",
+      "phone": "555-0101"
+    },
+    "consentGDPR": true,
+    "source": "Microsite",
+    "purpose": "general",
+    "attribution": {
+      "utm_source": "google",
+      "utm_medium": "organic"
+    },
+    "attributionId": "attr_124"
+  },
+  {
+    "id": "inq_3",
+    "agencyId": "agency_1",
+    "createdAt": "2024-10-27T18:00:00.000Z",
+    "contact": {
+      "firstName": "Anna",
+      "lastName": "Stefanou",
+      "email": "anna.s@example.com",
+      "phone": "6982223344"
+    },
+    "consentGDPR": false,
+    "source": "Referral",
+    "purpose": "general",
+    "attribution": {},
+    "attributionId": "attr_125"
+  },
+  {
+    "id": "inq_4",
+    "agencyId": "agency_2",
+    "createdAt": "2024-10-28T11:00:00.000Z",
+    "contact": {
+      "firstName": "David",
+      "lastName": "Chen",
+      "email": "d.chen@example.com",
+      "phone": "555-0102"
+    },
+    "consentGDPR": true,
+    "source": "Microsite",
+    "purpose": "quote_request",
+    "attribution": {
+      "utm_source": "linkedin",
+      "utm_campaign": "b2b_liability"
+    },
+    "attributionId": "attr_126"
+  }
+]

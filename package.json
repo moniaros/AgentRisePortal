@@ -19,7 +19,9 @@
     "@jest/globals": "^30.2.0",
     "@google/genai": "^1.29.0",
     "react-dnd-html5-backend": "^16.0.1",
-    "react-dnd": "^16.0.1"
+    "react-dnd-touch-backend": "^16.0.1",
+    "react-dnd": "^16.0.1",
+    "date-fns": "^4.1.0"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
