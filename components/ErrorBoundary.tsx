@@ -1,4 +1,4 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import React, { ErrorInfo, ReactNode } from 'react';
 
 interface Props {
   children: ReactNode;
@@ -9,7 +9,8 @@ interface State {
   error?: Error;
 }
 
-class ErrorBoundary extends Component<Props, State> {
+// FIX: Explicitly extend `React.Component` to resolve a potential type inference issue where `this.props` was not being correctly recognized.
+class ErrorBoundary extends React.Component<Props, State> {
   state: State = {
     hasError: false,
   };
@@ -22,7 +23,6 @@ class ErrorBoundary extends Component<Props, State> {
     console.error("Uncaught error:", error, errorInfo);
   }
 
-  // Fix: Changed `render` from a class property arrow function to a standard class method. This resolves a TypeScript type inference issue where `this.props` was not accessible.
   render() {
     if (this.state.hasError) {
       return (

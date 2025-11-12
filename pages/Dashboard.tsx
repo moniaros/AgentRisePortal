@@ -17,6 +17,7 @@ import { usePerformanceData } from '../hooks/usePerformanceData';
 import KpiCard from '../components/analytics/KpiCard';
 import { usePortalAccountsData } from '../hooks/usePortalAccountsData';
 import OnboardingWidget from '../components/dashboard/OnboardingWidget';
+import DashboardHeader from '../components/dashboard/DashboardHeader';
 
 const Dashboard: React.FC = () => {
     const { t } = useLocalization();
@@ -129,6 +130,7 @@ const Dashboard: React.FC = () => {
     if (isLoading) {
         return (
             <div className="space-y-6">
+                <DashboardHeader />
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6">
                     {[...Array(6)].map((_, i) => <SkeletonLoader key={i} className="h-24 w-full" />)}
                 </div>
@@ -151,6 +153,7 @@ const Dashboard: React.FC = () => {
 
     return (
         <div className="space-y-6">
+            <DashboardHeader />
             <OnboardingWidget />
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
