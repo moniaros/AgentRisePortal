@@ -209,7 +209,9 @@
             "premium": "Ασφάλιστρο",
             "addPolicy": "Προσθήκη Συμβολαίου",
             "noPolicies": "Δεν έχουν προστεθεί ακόμη συμβόλαια.",
-            "communicationPreferences": "Προτιμήσεις Επικοινωνίας"
+            "communicationPreferences": "Προτιμήσεις Επικοινωνίας",
+            "startDate": "Ημερομηνία Έναρξης",
+            "endDate": "Ημερομηνία Λήξης"
         }
     },
     "customer": {

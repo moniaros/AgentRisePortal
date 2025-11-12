@@ -209,7 +209,9 @@
       "premium": "Premium",
       "addPolicy": "Add Policy",
       "noPolicies": "No policies added yet.",
-      "communicationPreferences": "Communication Preferences"
+      "communicationPreferences": "Communication Preferences",
+      "startDate": "Start Date",
+      "endDate": "End Date"
     }
   },
   "customer": {
