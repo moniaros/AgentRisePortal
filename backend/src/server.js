@@ -23,6 +23,9 @@ import micrositeRoutes from './routes/microsite.routes.js';
 import newsRoutes from './routes/news.routes.js';
 import testimonialRoutes from './routes/testimonial.routes.js';
 import socialNetworkRoutes from './routes/socialNetwork.routes.js';
+import inquiryRoutes from './routes/inquiry.routes.js';
+import opportunityRoutes from './routes/opportunity.routes.js';
+import interactionRoutes from './routes/interaction.routes.js';
 
 dotenv.config();
 
@@ -85,6 +88,9 @@ app.use(`${API_PREFIX}/microsites`, micrositeRoutes);
 app.use(`${API_PREFIX}/news`, newsRoutes);
 app.use(`${API_PREFIX}/testimonials`, testimonialRoutes);
 app.use(`${API_PREFIX}/social`, socialNetworkRoutes);
+app.use(`${API_PREFIX}/inquiries`, inquiryRoutes);
+app.use(`${API_PREFIX}/opportunities`, opportunityRoutes);
+app.use(`${API_PREFIX}/opportunities`, interactionRoutes);
 
 // 404 handler
 app.use('*', (req, res) => {

@@ -542,3 +542,162 @@ export interface PolicyACORD {
         vin: string;
     };
 }
+
+// Lead & Opportunity Pipeline
+
+export type InquiryType = 'general' | 'quote_request' | 'policy_question' | 'claim' | 'other';
+export type InquiryStatus = 'new' | 'reviewed' | 'converted' | 'spam' | 'duplicate';
+
+export interface Inquiry {
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone?: string;
+    inquiryType: InquiryType;
+    policyInterest?: string;
+    message?: string;
+    source?: string;
+    medium?: string;
+    campaign?: string;
+    utmSource?: string;
+    utmMedium?: string;
+    utmCampaign?: string;
+    utmTerm?: string;
+    utmContent?: string;
+    referrerUrl?: string;
+    landingPageUrl?: string;
+    gdprConsentProvided: boolean;
+    gdprConsentDate?: string;
+    marketingConsentProvided: boolean;
+    marketingConsentDate?: string;
+    status: InquiryStatus;
+    hasQuoteRequest: boolean;
+    quoteRequest?: QuoteRequest;
+    assignedAgent?: {
+        id: number;
+        firstName: string;
+        lastName: string;
+    };
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface QuoteRequest {
+    id: number;
+    policyType: PolicyType;
+    coverageAmount?: number;
+    requestedStartDate?: string;
+    vehicleMake?: string;
+    vehicleModel?: string;
+    vehicleYear?: number;
+    vehicleVin?: string;
+    propertyAddress?: string;
+    propertyValue?: number;
+    propertyType?: string;
+    dateOfBirth?: string;
+    smoker?: boolean;
+    healthConditions?: string;
+    currentInsurer?: string;
+    currentPremium?: number;
+    notes?: string;
+}
+
+export type OpportunityStage = 'new' | 'contacted' | 'proposal' | 'won' | 'lost';
+export type ProspectType = 'customer' | 'inquiry';
+
+export interface Opportunity {
+    id: number;
+    title: string;
+    description?: string;
+    prospectName: string;
+    prospectEmail?: string;
+    prospectPhone?: string;
+    prospectType: ProspectType;
+    prospectId?: number;
+    estimatedValue: number;
+    probability: number;
+    stage: OpportunityStage;
+    stageChangedAt: string;
+    previousStage?: OpportunityStage;
+    nextFollowUpDate?: string;
+    lastContactDate?: string;
+    isOverdue?: boolean;
+    wonDate?: string;
+    lostDate?: string;
+    lostReason?: string;
+    policyType?: string;
+    policyId?: number;
+    actualPremium?: number;
+    sourceInquiryId?: number;
+    sourceCampaignId?: number;
+    sourceInquiry?: {
+        id: number;
+        firstName: string;
+        lastName: string;
+        email: string;
+    };
+    assignedAgent: {
+        id: number;
+        firstName: string;
+        lastName: string;
+        email?: string;
+    };
+    interactionCount?: number;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export type InteractionType = 'email' | 'sms' | 'phone' | 'meeting' | 'viber' | 'whatsapp' | 'note';
+export type InteractionDirection = 'inbound' | 'outbound';
+export type DeliveryStatus = 'pending' | 'sent' | 'delivered' | 'failed' | 'bounced';
+
+export interface Interaction {
+    id: number;
+    interactionType: InteractionType;
+    direction: InteractionDirection;
+    subject?: string;
+    content?: string;
+    recipient?: string;
+    sentVia?: string;
+    deliveryStatus: DeliveryStatus;
+    scheduledAt?: string;
+    completedAt?: string;
+    attachments?: Array<{
+        name: string;
+        url: string;
+        size: number;
+    }>;
+    user: {
+        id: number;
+        firstName: string;
+        lastName: string;
+        email: string;
+    };
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface MyDayOpportunities {
+    overdue: Opportunity[];
+    today: Opportunity[];
+    noDate: Opportunity[];
+    future: Opportunity[];
+}
+
+export interface KanbanBoard {
+    new: Opportunity[];
+    contacted: Opportunity[];
+    proposal: Opportunity[];
+}
+
+export interface PipelineStatistics {
+    totalLeads: number;
+    convertedLeads: number;
+    totalOpportunities: number;
+    pipelineValue: number;
+    wonValue: number;
+    lostValue: number;
+    conversionRate: number;
+    winRate: number;
+}
