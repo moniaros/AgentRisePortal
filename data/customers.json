@@ -46,7 +46,19 @@
         "content": "Emailed quotes for three different home insurance packages.",
         "author": "Agent Smith"
       }
-    ]
+    ],
+    "consent": {
+      "gdpr": {
+        "isGiven": true,
+        "dateGranted": "2024-02-28",
+        "channel": "web_form"
+      },
+      "marketing": {
+        "isGiven": true,
+        "dateGranted": "2024-08-15",
+        "channel": "email"
+      }
+    }
   },
   {
     "id": "cust2",
@@ -87,6 +99,18 @@
         "content": "Reviewed life and health policies. No changes requested.",
         "author": "Agent Smith"
       }
-    ]
+    ],
+    "consent": {
+      "gdpr": {
+        "isGiven": true,
+        "dateGranted": "2024-09-01",
+        "channel": "in_person"
+      },
+      "marketing": {
+        "isGiven": false,
+        "dateGranted": null,
+        "channel": null
+      }
+    }
   }
 ]

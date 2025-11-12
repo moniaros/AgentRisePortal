@@ -130,6 +130,12 @@ export interface TimelineEvent {
   isFlagged?: boolean;
 }
 
+export interface ConsentInfo {
+  isGiven: boolean;
+  dateGranted: string | null; // ISO Date string yyyy-mm-dd
+  channel: 'email' | 'sms' | 'phone' | 'web_form' | 'in_person' | null;
+}
+
 export interface Customer {
   id: string;
   agencyId: string;
@@ -143,6 +149,10 @@ export interface Customer {
   timeline: TimelineEvent[];
   attentionFlag?: string;
   communicationPreferences?: ('email' | 'sms')[];
+  consent?: {
+    gdpr: ConsentInfo;
+    marketing: ConsentInfo;
+  };
 }
 
 export interface Lead {

@@ -1,4 +1,3 @@
-
 {
   "common": {
     "loading": "Loading...",
@@ -229,19 +228,19 @@
     "unflagEvent": "Unflag Event",
     "sms": "SMS",
     "consent": {
-        "title": "Consent Management",
-        "marketingEmail": {
-            "title": "Marketing Emails",
-            "description": "Allow sending promotional offers and newsletters."
-        },
-        "policyRemindersSms": {
-            "title": "Policy Reminders (SMS)",
-            "description": "Allow sending renewal and payment reminders via SMS."
-        },
-        "dataSharing": {
-            "title": "Third-Party Data Sharing",
-            "description": "Allow sharing data with trusted partners for better offers."
-        }
+      "title": "Consent Management",
+      "gdprConsent": "GDPR Consent Provided",
+      "marketingConsent": "Marketing Consent Provided",
+      "dateGranted": "Date Granted",
+      "channel": "Channel",
+      "channelOptions": {
+        "email": "Email",
+        "sms": "SMS",
+        "phone": "Phone",
+        "web_form": "Web Form",
+        "in_person": "In Person"
+      },
+      "consentExpiredWarning": "Consent is outdated (granted over 6 months ago)."
     },
     "analysisFor": "Analysis for:",
     "analysisDate": "Analyzed on {date}"

@@ -1,4 +1,3 @@
-
 {
     "common": {
         "loading": "Φόρτωση...",
@@ -230,18 +229,18 @@
         "sms": "SMS",
         "consent": {
             "title": "Διαχείριση Συναίνεσης",
-            "marketingEmail": {
-                "title": "Email Μάρκετινγκ",
-                "description": "Επιτρέψτε την αποστολή προωθητικών προσφορών και ενημερωτικών δελτίων."
+            "gdprConsent": "Παρασχέθηκε Συναίνεση GDPR",
+            "marketingConsent": "Παρασχέθηκε Συναίνεση Marketing",
+            "dateGranted": "Ημερομηνία Παροχής",
+            "channel": "Κανάλι",
+            "channelOptions": {
+              "email": "Email",
+              "sms": "SMS",
+              "phone": "Τηλέφωνο",
+              "web_form": "Φόρμα Ιστοσελίδας",
+              "in_person": "Δια ζώσης"
             },
-            "policyRemindersSms": {
-                "title": "Υπενθυμίσεις Συμβολαίου (SMS)",
-                "description": "Επιτρέψτε την αποστολή υπενθυμίσεων ανανέωσης και πληρωμής μέσω SMS."
-            },
-            "dataSharing": {
-                "title": "Κοινοποίηση Δεδομένων σε Τρίτους",
-                "description": "Επιτρέψτε την κοινοποίηση δεδομένων με έμπιστους συνεργάτες για καλύτερες προσφορές."
-            }
+            "consentExpiredWarning": "Η συναίνεση είναι παρωχημένη (παρασχέθηκε πριν από 6+ μήνες)."
         },
         "analysisFor": "Ανάλυση για:",
         "analysisDate": "Αναλύθηκε στις {date}"
