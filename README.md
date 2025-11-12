@@ -42,3 +42,34 @@ This feature introduces a comprehensive workflow for managing leads and sales op
 -   **My Day Dashboard**: A personalized dashboard (`/pipeline/my-day`) helps agents prioritize their daily tasks by showing opportunities that are overdue, due today, or have no follow-up date set.
 -   **Analytics**: When an opportunity is moved to the 'Won' stage, a `Conversion` event is logged. KPIs such as total leads, conversion rate, and gross written premium (GWP) won are displayed to track performance.
 -   **Data & State Management**: A new hook, `usePipelineData`, is responsible for fetching and managing all state related to the sales pipeline, ensuring tenant isolation by filtering all data by the logged-in agent's `agencyId`.
+
+## 5. Policy Data Review Modal
+
+After a policy document is uploaded and parsed by the AI on the **AI Policy Scanner** page, this modal workflow allows the agent to review, edit, and approve the extracted data before it is saved to the CRM.
+
+### 5.1 UI & Editing
+
+-   **Trigger**: The modal automatically opens after the AI successfully extracts data from an uploaded policy document.
+-   **Layout**: The modal is organized into logical, collapsible sections: Policyholder Info, Policy Details, Coverages, and Beneficiaries.
+-   **Editing**: All extracted fields are presented in editable form controls. Agents can correct any parsing errors or add missing information.
+-   **Dynamic Fields**: The "Coverages" and "Beneficiaries" sections allow agents to dynamically add or remove rows, providing full control over list-based data.
+-   **Validation**: Real-time validation (using `react-hook-form`) is implemented for required fields like Policy Number and Policyholder Name to ensure data integrity.
+
+### 5.2 "Approve & Save" Logic
+
+Clicking "Approve & Save" triggers a comprehensive synchronization process managed by the `usePolicyCrmSync` hook:
+
+1.  **Customer Matching**: The system checks if a customer with the same first and last name as the policyholder already exists in the CRM.
+2.  **New Customer Creation**: If no match is found, a new customer record is created in the CRM using the validated data from the modal.
+3.  **Existing Customer Update**: If a match is found, the existing customer's record is updated.
+4.  **Policy Handling**:
+    -   The system checks if a policy with the same policy number already exists for that customer.
+    -   If it exists, it's updated with the new details from the modal.
+    -   If it's a new policy, it's added to the customer's list of policies.
+5.  **Beneficiary Management**: Each beneficiary in the modal is checked. If they are not already linked to the policy, they are added.
+6.  **Feedback**: Upon successful completion, a success notification is displayed, the modal closes, and the user can proceed with the gap analysis using the now-verified data.
+
+### 5.3 Error Handling
+
+-   If the user tries to save with invalid or missing required data, the modal remains open, and error messages are displayed next to the relevant fields.
+-   If the save process fails for any other reason (simulated API error), an error notification is shown, and the user can retry the operation.

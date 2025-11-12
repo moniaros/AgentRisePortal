@@ -3,20 +3,20 @@ import { useLocalization } from '../hooks/useLocalization';
 // FIX: Correct import path
 import { DetailedPolicy, GapAnalysisResult } from '../types';
 import FileUploader from '../components/gap-analysis/FileUploader';
-import PolicyParser from '../components/gap-analysis/PolicyParser';
 import PolicyReviewForm from '../components/gap-analysis/PolicyReviewForm';
 import GapAnalysisResults from '../components/gap-analysis/GapAnalysisResults';
 import { GoogleGenAI, Type } from "@google/genai";
 import { trackEvent } from '../services/analytics';
 import { useNotification } from '../hooks/useNotification';
-import { mapToPolicyACORD } from '../services/acordMapper';
-import { savePolicyForCustomer } from '../services/policyStorage';
 import { savePendingFindings } from '../services/findingsStorage';
+import DataReviewModal from '../components/gap-analysis/DataReviewModal';
 
 const GapAnalysis: React.FC = () => {
     const { t, language } = useLocalization();
     const { addNotification } = useNotification();
     const [file, setFile] = useState<File | null>(null);
+    const [dataForReview, setDataForReview] = useState<DetailedPolicy | null>(null);
+    const [isReviewModalOpen, setReviewModalOpen] = useState(false);
     const [parsedPolicy, setParsedPolicy] = useState<DetailedPolicy | null>(null);
     const [userNeeds, setUserNeeds] = useState('');
     const [analysisResult, setAnalysisResult] = useState<GapAnalysisResult | null>(null);
@@ -29,6 +29,7 @@ const GapAnalysis: React.FC = () => {
         setError(null);
         setParsedPolicy(null);
         setAnalysisResult(null);
+        setDataForReview(null);
         
         if (!process.env.API_KEY) {
             const errorMsg = t('dashboard.errors.noApiKey');
@@ -125,20 +126,11 @@ const GapAnalysis: React.FC = () => {
             
             const policyData = JSON.parse(response.text) as DetailedPolicy;
             
-            setParsedPolicy(policyData);
+            // Open the review modal instead of setting the policy directly
+            setDataForReview(policyData);
+            setReviewModalOpen(true);
             trackEvent('ai_tool', 'Gap Analysis', 'policy_parsed_success', undefined, language);
 
-            // Save to local storage for CRM sync
-            try {
-                const acordPolicy = mapToPolicyACORD(policyData);
-                // Use policyholder name as a makeshift customer ID for storage
-                const customerId = policyData.policyholder.name.replace(/\s+/g, '_').toLowerCase();
-                savePolicyForCustomer(customerId, acordPolicy);
-                addNotification('Policy data saved for CRM sync.', 'info');
-            } catch (storageError) {
-                console.error("Failed to save policy to local storage", storageError);
-                addNotification('Failed to cache policy data.', 'error');
-            }
         } catch (err) {
             console.error("Error parsing policy:", err);
             setError(t('gapAnalysis.errors.parsingFailed'));
@@ -147,6 +139,11 @@ const GapAnalysis: React.FC = () => {
             setIsLoading(false);
             setLoadingStep('');
         }
+    };
+
+    const handleReviewApproved = (approvedPolicy: DetailedPolicy) => {
+        setParsedPolicy(approvedPolicy);
+        setReviewModalOpen(false);
     };
 
     const handleAnalyzeGaps = async () => {
@@ -259,6 +256,7 @@ const GapAnalysis: React.FC = () => {
         setUserNeeds('');
         setAnalysisResult(null);
         setError(null);
+        setDataForReview(null);
     }
 
     return (
@@ -269,7 +267,7 @@ const GapAnalysis: React.FC = () => {
             <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md">
                 {error && <div className="p-3 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-md text-sm mb-4">{error}</div>}
                 
-                {!parsedPolicy && (
+                {!file && !isLoading && (
                     <>
                         <h2 className="text-2xl font-semibold mb-4">{t('gapAnalysis.step1')}</h2>
                         <FileUploader onFileUpload={handleFileUpload} error={error} />
@@ -284,13 +282,10 @@ const GapAnalysis: React.FC = () => {
                 )}
                 
                 {parsedPolicy && !analysisResult && (
-                    <>
-                        <PolicyParser parsedPolicy={parsedPolicy} isLoading={isLoading && loadingStep === t('gapAnalysis.fetchingPolicy')} />
-                        <div className="mt-8 pt-8 border-t dark:border-gray-700">
-                             <h2 className="text-2xl font-semibold mb-4">{t('gapAnalysis.step2')}</h2>
-                             <PolicyReviewForm userNeeds={userNeeds} setUserNeeds={setUserNeeds} onSubmit={handleAnalyzeGaps} isLoading={isLoading && loadingStep === t('gapAnalysis.analyzing')} />
-                        </div>
-                    </>
+                    <div className="mt-8 pt-8 border-t dark:border-gray-700">
+                         <h2 className="text-2xl font-semibold mb-4">{t('gapAnalysis.step2')}</h2>
+                         <PolicyReviewForm userNeeds={userNeeds} setUserNeeds={setUserNeeds} onSubmit={handleAnalyzeGaps} isLoading={isLoading && loadingStep === t('gapAnalysis.analyzing')} />
+                    </div>
                 )}
             </div>
 
@@ -302,6 +297,15 @@ const GapAnalysis: React.FC = () => {
                     </div>
                     <GapAnalysisResults result={analysisResult} />
                 </div>
+            )}
+
+            {isReviewModalOpen && dataForReview && (
+                <DataReviewModal
+                    isOpen={isReviewModalOpen}
+                    onClose={() => setReviewModalOpen(false)}
+                    policyData={dataForReview}
+                    onApprove={handleReviewApproved}
+                />
             )}
         </div>
     );

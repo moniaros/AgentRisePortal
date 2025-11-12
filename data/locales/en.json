@@ -292,6 +292,32 @@
     "current": "Current",
     "recommended": "Recommended",
     "saveSuccess": "Analysis findings saved for agent review.",
+    "dataReviewModal": {
+      "title": "Review Extracted Policy Data",
+      "description": "Please review and correct the data extracted by the AI before saving it to the CRM. All fields are editable.",
+      "approveAndSave": "Approve & Save to CRM",
+      "saveSuccess": "Policy data successfully synced to CRM!",
+      "saveError": "Failed to sync policy data. Please try again.",
+      "sections": {
+        "policyholder": "Policyholder Information",
+        "policyDetails": "Policy Details",
+        "coverages": "Coverages",
+        "beneficiaries": "Beneficiaries"
+      },
+      "fields": {
+        "policyholderName": "Policyholder Name",
+        "address": "Address",
+        "policyNumber": "Policy Number",
+        "insurer": "Insurer",
+        "effectiveDate": "Effective Date",
+        "expirationDate": "Expiration Date",
+        "coverageType": "Type",
+        "coverageLimit": "Limit",
+        "beneficiaryName": "Beneficiary Name",
+        "addCoverage": "Add Coverage",
+        "addBeneficiary": "Add Beneficiary"
+      }
+    },
     "errors": {
       "parsingFailed": "Failed to parse the policy document. The format may be unsupported. Please try again or check the file.",
       "analysisFailed": "The AI analysis failed. This could be a temporary issue. Please try again."

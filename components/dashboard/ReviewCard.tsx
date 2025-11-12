@@ -44,7 +44,6 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, onReplyPosted }) => {
         }
 
         try {
-            console.log("Building prompt for Gemini...");
             const tone = "You are a helpful and friendly manager for an insurance agency. Your goal is to respond to customer reviews in a professional and appreciative manner.";
             let criteria = '';
             if (rating >= 4) {
@@ -54,18 +53,13 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, onReplyPosted }) => {
             }
             const fullPrompt = `${tone}\n\n${criteria}\n\nHere is the review:\nStar Rating: ${rating}/5\nReviewer Name: ${review.reviewer.displayName}\nReview Text: "${review.comment}"`;
             
-            // Simulate network delay for AI generation
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            // Simulate potential error
-            if (Math.random() < 0.2) { // 20% chance of failure
-                throw new Error("Simulated AI API failure.");
-            }
-            
-            const dummyResponse = rating >= 4
-                ? `Thank you so much, ${review.reviewer.displayName}! We're thrilled to hear you had a seamless and professional experience. We appreciate your recommendation and look forward to working with you again.`
-                : `Thank you for your feedback, ${review.reviewer.displayName}. We're sorry to hear that your experience did not meet your expectations. We pride ourselves on great service and would like to learn more and make things right. Please contact us at your convenience at contact@agency.com.`;
+            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            const response = await ai.models.generateContent({
+                model: 'gemini-2.5-flash',
+                contents: fullPrompt,
+            });
 
-            setReplyContent(dummyResponse);
+            setReplyContent(response.text);
             setIsReplying(true);
         } catch (error) {
             console.error("AI Generation Error:", error);
@@ -120,64 +114,73 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, onReplyPosted }) => {
 
             {/* Review Comment */}
             <p className="text-gray-700 dark:text-gray-300 text-sm mb-4">&ldquo;{review.comment}&rdquo;</p>
+            
+            {review.reply && (
+                <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                    <p className="text-sm font-semibold text-gray-600 dark:text-gray-300">Your reply:</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 italic mt-1">&ldquo;{review.reply.comment}&rdquo;</p>
+                </div>
+            )}
 
             {/* Reply Section */}
-            <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 space-y-4">
-                {isPosted ? (
-                     <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 rounded-md">
-                        <p className="font-semibold">{t('dashboard.replyPosted')}</p>
-                    </div>
-                ) : (
-                    <>
-                        <div className="flex justify-end items-center gap-4">
-                            {aiError && (
-                                 <div className="text-sm text-red-500 flex-grow">
-                                    {aiError}
-                                </div>
-                            )}
-                            <button
-                                onClick={handleGenerateReply}
-                                disabled={isGenerating || isPosting}
-                                className="px-4 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition disabled:bg-gray-400 disabled:cursor-wait"
-                                aria-label={`Generate AI reply for ${review.reviewer.displayName}'s review`}
-                            >
-                                {isGenerating ? t('dashboard.generatingReply') : (aiError ? t('dashboard.retry') : t('dashboard.generateAiReply'))}
-                            </button>
+            {!review.reply && (
+                <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 space-y-4">
+                    {isPosted ? (
+                        <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 rounded-md">
+                            <p className="font-semibold">{t('dashboard.replyPosted')}</p>
                         </div>
-                        
-                        {isReplying && (
-                            <>
-                                <div>
-                                    <label htmlFor={`reply-${review.name}`} className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                        {t('dashboard.yourReply')}
-                                    </label>
-                                    <textarea
-                                        id={`reply-${review.name}`}
-                                        rows={3}
-                                        className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 text-sm disabled:text-gray-500 dark:disabled:text-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700/50"
-                                        placeholder="AI-generated reply will appear here..."
-                                        value={replyContent}
-                                        onChange={(e) => setReplyContent(e.target.value)}
-                                        disabled={!isReplying || isPosting}
-                                    />
-                                </div>
-                                <div className="flex justify-end items-center gap-4">
-                                     {postError && (
-                                        <p className="text-sm text-red-500">{postError}</p>
-                                    )}
-                                    <button
-                                        onClick={handlePostReply}
-                                        className="px-4 py-2 text-sm bg-green-600 text-white rounded-md hover:bg-green-700 transition disabled:bg-gray-400 disabled:cursor-wait"
-                                        disabled={!isReplying || !replyContent || isPosting}
-                                    >
-                                        {isPosting ? `${t('common.loading')}...` : t('dashboard.postReply')}
-                                    </button>
-                                </div>
-                            </>
-                        )}
-                    </>
-                )}
-            </div>
+                    ) : (
+                        <>
+                            <div className="flex justify-end items-center gap-4">
+                                {aiError && (
+                                    <div className="text-sm text-red-500 flex-grow">
+                                        {aiError}
+                                    </div>
+                                )}
+                                <button
+                                    onClick={handleGenerateReply}
+                                    disabled={isGenerating || isPosting}
+                                    className="px-4 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition disabled:bg-gray-400 disabled:cursor-wait"
+                                    aria-label={`Generate AI reply for ${review.reviewer.displayName}'s review`}
+                                >
+                                    {isGenerating ? t('dashboard.generatingReply') : (aiError ? t('common.retry') : t('dashboard.generateAiReply'))}
+                                </button>
+                            </div>
+                            
+                            {isReplying && (
+                                <>
+                                    <div>
+                                        <label htmlFor={`reply-${review.name}`} className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                            {t('dashboard.yourReply')}
+                                        </label>
+                                        <textarea
+                                            id={`reply-${review.name}`}
+                                            rows={3}
+                                            className="w-full p-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 text-sm disabled:text-gray-500 dark:disabled:text-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-700/50"
+                                            placeholder="AI-generated reply will appear here..."
+                                            value={replyContent}
+                                            onChange={(e) => setReplyContent(e.target.value)}
+                                            disabled={!isReplying || isPosting}
+                                        />
+                                    </div>
+                                    <div className="flex justify-end items-center gap-4">
+                                        {postError && (
+                                            <p className="text-sm text-red-500">{postError}</p>
+                                        )}
+                                        <button
+                                            onClick={handlePostReply}
+                                            className="px-4 py-2 text-sm bg-green-600 text-white rounded-md hover:bg-green-700 transition disabled:bg-gray-400 disabled:cursor-wait"
+                                            disabled={!isReplying || !replyContent || isPosting}
+                                        >
+                                            {isPosting ? `${t('common.loading')}...` : t('dashboard.postReply')}
+                                        </button>
+                                    </div>
+                                </>
+                            )}
+                        </>
+                    )}
+                </div>
+            )}
         </div>
     );
 };
