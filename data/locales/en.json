@@ -1,3 +1,4 @@
+
 {
   "common": {
     "loading": "Loading...",
@@ -516,6 +517,91 @@
                 "scopes": ["See Tweets from your timeline", "Post and delete Tweets for you", "See your profile information"]
             }
         }
+    },
+    "notifications": {
+      "title": "Notification Preferences",
+      "description": "Control how you receive real-time alerts for important events.",
+      "enableLabel": "Enable Notifications",
+      "previewLink": "Preview Demo Notification",
+      "permissionDenied": "Notification permission was denied. You can change this in your browser settings.",
+      "enabledSuccess": "Real-time notifications enabled!",
+      "demo": {
+        "title": "New Lead Received",
+        "body": "John Doe - Click for details!"
+      },
+      "permissionDeniedWarning": {
+        "title": "Notification Permissions Required",
+        "description": "To receive real-time alerts, you need to allow notifications for this site in your browser settings. Please follow the instructions for your browser below.",
+        "chrome": "Google Chrome",
+        "chromeSteps": "1. Click the lock icon (🔒) in the address bar.\n2. Next to 'Notifications', select 'Allow'.\n3. Reload the page.",
+        "safari": "Apple Safari",
+        "safariSteps": "1. Go to Safari > Settings (or Preferences).\n2. Click on the 'Websites' tab.\n3. Select 'Notifications' from the sidebar.\n4. Find this site in the list and select 'Allow'.",
+        "edge": "Microsoft Edge",
+        "edgeSteps": "1. Click the lock icon (🔒) in the address bar.\n2. Under 'Permissions for this site', set 'Notifications' to 'Allow'.\n3. Reload the page.",
+        "learnMore": "Learn more at official browser support pages."
+      },
+      "eventGroups": {
+        "important": "Important Notifications",
+        "optional": "Optional Notifications"
+      },
+      "events": {
+        "new_lead": {
+          "label": "New Lead Arrives",
+          "description": "When a new lead is captured from any source."
+        },
+        "quote_request": {
+          "label": "Quote Request Submitted",
+          "description": "When a customer or lead submits a request for a quote."
+        },
+        "follow_up_due": {
+          "label": "Next Follow-Up Due",
+          "description": "Reminder that a scheduled follow-up with a lead is due today."
+        },
+        "overdue_action": {
+          "label": "Overdue Action/Reminder",
+          "description": "When a task or follow-up becomes overdue."
+        },
+        "customer_reply": {
+          "label": "Customer Replies to Email",
+          "description": "When an email is received from a tracked customer."
+        },
+        "policy_renewal": {
+          "label": "Policy Renewal Approaching",
+          "description": "Get an alert 30, 15, and 7 days before a policy expires."
+        },
+        "claim_submitted": {
+          "label": "Claim (FNOL) Submitted",
+          "description": "A new First Notice of Loss has been submitted."
+        },
+        "new_message": {
+          "label": "New Message Received",
+          "description": "From the customer portal, chat, or tracked inbox."
+        },
+        "task_upcoming": {
+          "label": "Task/Appointment Coming Up",
+          "description": "A reminder for a task or calendar event that is about to start."
+        },
+        "opportunity_flagged": {
+          "label": "Cross-sell/Upsell Opportunity Flagged",
+          "description": "When the AI flags a new sales opportunity."
+        },
+        "system_announcement": {
+          "label": "Broadcast/System Announcement",
+          "description": "Important announcements about the AgentOS platform."
+        },
+        "client_birthday": {
+          "label": "Client Birthday/Anniversary",
+          "description": "A reminder of a client's special day."
+        },
+        "first_login_of_day": {
+          "label": "First Log-in of the Day",
+          "description": "Receive a morning summary notification."
+        },
+        "campaign_results": {
+          "label": "Marketing Campaign Results",
+          "description": "When a scheduled marketing campaign concludes."
+        }
+      }
     }
   },
   "leadsDashboard": {

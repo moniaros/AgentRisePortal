@@ -61,6 +61,25 @@ This document provides a detailed technical reference for all key features of th
     - Once the user authenticates, the application uses `gapi.client.mybusinessbusinessinformation` to make API calls to list accounts and locations.
     - **Security Note**: Storing API keys and client IDs in `localStorage` is acceptable for a demo application but is **not secure** for a production environment. In a real-world scenario, the backend would manage these keys, and the frontend would authenticate with the backend, which would then make secure API calls.
 
+### 5.1 Notification Preferences
+
+This feature allows users to opt-in to receiving real-time browser and sound notifications for critical CRM events.
+
+- **Implementation**: The user's preference is managed by the `useNotificationPreferences` hook, which persists the boolean state to `localStorage` under the key `notification_preferences_enabled`.
+
+- **Permissions**:
+    - The feature utilizes the standard browser [Notification API](https://developer.mozilla.org/en-US/docs/Web/API/notification).
+    - When a user enables the toggle for the first time, the application calls `Notification.requestPermission()`. The preference is only saved if the user grants permission.
+    - If permission is denied, a warning notification is displayed, and the toggle remains off. The user must manually change the permission in their browser's site settings to re-enable it.
+
+- **Sound Alerts**:
+    - A simple, non-intrusive sound alert is played alongside the browser notification.
+    - The sound is an embedded Base64 WAV data URI located in `constants/sounds.ts` to avoid external file dependencies. It is played using the `Audio` constructor.
+
+- **Demo Functionality**:
+    - To provide immediate feedback, a demo notification (both visual and audible) is triggered immediately after the user grants permission.
+    - A "Preview Demo Notification" link is also available, allowing users to test the notification's appearance and sound at any time. The content of this demo notification is fully localized.
+
 ## 6. Dashboard Page
 
 - **Data Fetching**: The dashboard relies on a successful GBP connection. It retrieves the stored `gbp_location_name` from `localStorage` to make its API calls.
