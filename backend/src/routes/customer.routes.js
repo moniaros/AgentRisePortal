@@ -8,6 +8,7 @@ import {
   deleteCustomer,
   addTimelineEntry
 } from '../controllers/customer.controller.js';
+import { getCustomerPolicies } from '../controllers/policy.controller.js';
 import { authenticate, authorize } from '../middleware/auth.js';
 import validate from '../middleware/validate.js';
 
@@ -117,6 +118,20 @@ router.post(
     validate
   ],
   addTimelineEntry
+);
+
+/**
+ * @route   GET /api/v1/customers/:customerId/policies
+ * @desc    Get all policies for a customer
+ * @access  Private
+ */
+router.get(
+  '/:customerId/policies',
+  [
+    param('customerId').isInt().withMessage('Customer ID must be an integer'),
+    validate
+  ],
+  getCustomerPolicies
 );
 
 export default router;

@@ -701,3 +701,211 @@ export interface PipelineStatistics {
     conversionRate: number;
     winRate: number;
 }
+
+// Policy Document Extraction - ACORD Aligned Types
+export type PolicyTypeExtended = 'auto' | 'home' | 'life' | 'health' | 'commercial' | 'umbrella' | 'renters' | 'disability' | 'long_term_care' | 'other';
+export type PolicyStatus = 'active' | 'pending' | 'expired' | 'cancelled';
+export type PremiumFrequency = 'monthly' | 'quarterly' | 'semi-annual' | 'annual';
+export type BeneficiaryType = 'primary' | 'contingent';
+export type ContactType = 'beneficiary' | 'dependent' | 'emergency' | 'other';
+export type DocumentExtractionStatus = 'pending' | 'processing' | 'completed' | 'failed';
+
+export interface Address {
+    street?: string;
+    city?: string;
+    state?: string;
+    zip?: string;
+    country?: string;
+}
+
+export interface PolicyHolder {
+    firstName: string;
+    lastName: string;
+    middleName?: string;
+    dateOfBirth?: string;
+    ssnLastFour?: string;
+    email?: string;
+    phone?: string;
+    address?: Address;
+    occupation?: string;
+    maritalStatus?: string;
+}
+
+export interface PolicyData {
+    policyNumber: string;
+    insurer: string;
+    policyType: PolicyTypeExtended;
+    status: PolicyStatus;
+    effectiveDate: string;
+    expirationDate: string;
+    issueDate?: string;
+    premiumAmount: number;
+    premiumFrequency: PremiumFrequency;
+    deductible: number;
+    coverageAmount: number;
+    policyTerm?: string;
+    notes?: string;
+}
+
+export interface PolicyCoverage {
+    coverageType: string;
+    coverageCode?: string;
+    coverageLimit: number;
+    deductible: number;
+    premiumAmount?: number;
+    description?: string;
+}
+
+export interface Beneficiary {
+    firstName: string;
+    lastName: string;
+    relationship: string;
+    beneficiaryType: BeneficiaryType;
+    allocationPercentage: number;
+    dateOfBirth?: string;
+    ssnLastFour?: string;
+    email?: string;
+    phone?: string;
+    address?: Address;
+    isRevocable: boolean;
+}
+
+export interface Contact {
+    id: number;
+    customerId: number;
+    firstName: string;
+    lastName: string;
+    relationship: string;
+    email?: string;
+    phone?: string;
+    dateOfBirth?: string;
+    ssnLastFour?: string;
+    addressStreet?: string;
+    addressCity?: string;
+    addressState?: string;
+    addressZip?: string;
+    contactType: ContactType;
+    notes?: string;
+    linkedPolicies?: PolicyBeneficiaryLink[];
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface PolicyBeneficiaryLink {
+    id: number;
+    policyId: number;
+    contactId: number;
+    beneficiaryType: BeneficiaryType;
+    allocationPercentage: number;
+    relationship: string;
+    isRevocable: boolean;
+    notes?: string;
+    policyNumber?: string;
+    policyType?: string;
+    insurer?: string;
+    createdAt?: string;
+    updatedAt?: string;
+}
+
+export interface VehicleInfo {
+    make: string;
+    model: string;
+    year: number;
+    vin: string;
+    usage?: string;
+}
+
+export interface PropertyInfo {
+    propertyType: string;
+    yearBuilt?: number;
+    squareFootage?: number;
+    constructionType?: string;
+    roofType?: string;
+    numStories?: number;
+    protectionClass?: string;
+    distanceToFireStation?: string;
+}
+
+export interface LifeInsuranceInfo {
+    faceAmount: number;
+    cashValue?: number;
+    policyType: string;
+    termLength?: string;
+    riders?: string[];
+}
+
+export interface AcordData {
+    formNumbers: string[];
+    endorsements: string[];
+    exclusions: string[];
+}
+
+export interface ExtractionMetadata {
+    fileName: string;
+    fileSize: number;
+    mimeType: string;
+    extractedAt: string;
+    extractionVersion: string;
+}
+
+export interface ExtractedPolicyData {
+    extractionMetadata: ExtractionMetadata;
+    policyHolder: PolicyHolder;
+    policy: PolicyData;
+    beneficiaries: Beneficiary[];
+    coverages: PolicyCoverage[];
+    vehicle?: VehicleInfo;
+    property?: PropertyInfo;
+    lifeInsurance?: LifeInsuranceInfo;
+    acordData: AcordData;
+}
+
+export interface DocumentRecord {
+    fileName: string;
+    filePath: string;
+    fileSize: number;
+    mimeType: string;
+    extractionStatus: DocumentExtractionStatus;
+    extractionData: string;
+}
+
+export interface PolicyExtractionResponse {
+    extractedData: ExtractedPolicyData;
+    documentRecord: DocumentRecord;
+}
+
+export interface PolicySyncRequest {
+    extractedData: ExtractedPolicyData;
+    documentRecord?: DocumentRecord;
+}
+
+export interface PolicySyncResponse {
+    customerId: number;
+    policyId: number;
+    policy: PolicyWithDetails;
+}
+
+export interface PolicyWithDetails {
+    id: number;
+    customerId: number;
+    policyNumber: string;
+    policyType: PolicyTypeExtended;
+    insurer: string;
+    status: PolicyStatus;
+    effectiveDate: string;
+    expirationDate: string;
+    premiumAmount: number;
+    premiumFrequency: PremiumFrequency;
+    coverageAmount: number;
+    deductible: number;
+    policyDetails?: any;
+    acordData?: any;
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    phone?: string;
+    coverages: PolicyCoverage[];
+    beneficiaries: Array<Contact & PolicyBeneficiaryLink>;
+    createdAt: string;
+    updatedAt: string;
+}

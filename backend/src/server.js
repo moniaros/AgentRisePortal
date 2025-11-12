@@ -26,6 +26,7 @@ import socialNetworkRoutes from './routes/socialNetwork.routes.js';
 import inquiryRoutes from './routes/inquiry.routes.js';
 import opportunityRoutes from './routes/opportunity.routes.js';
 import interactionRoutes from './routes/interaction.routes.js';
+import beneficiaryRoutes from './routes/beneficiary.routes.js';
 
 dotenv.config();
 
@@ -91,6 +92,7 @@ app.use(`${API_PREFIX}/social`, socialNetworkRoutes);
 app.use(`${API_PREFIX}/inquiries`, inquiryRoutes);
 app.use(`${API_PREFIX}/opportunities`, opportunityRoutes);
 app.use(`${API_PREFIX}/opportunities`, interactionRoutes);
+app.use(`${API_PREFIX}`, beneficiaryRoutes);
 
 // 404 handler
 app.use('*', (req, res) => {

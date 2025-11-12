@@ -1,12 +1,34 @@
 import express from 'express';
 import { body, param } from 'express-validator';
-import { getPolicies, getPolicyById, createPolicy, updatePolicy, deletePolicy } from '../controllers/policy.controller.js';
+import {
+  getPolicies,
+  getPolicyById,
+  createPolicy,
+  updatePolicy,
+  deletePolicy,
+  uploadHandler,
+  uploadAndExtractPolicy,
+  syncPolicyToCRM,
+  getCustomerPolicies
+} from '../controllers/policy.controller.js';
 import { authenticate, authorize } from '../middleware/auth.js';
 import validate from '../middleware/validate.js';
 
 const router = express.Router();
 router.use(authenticate);
 
+// Policy document upload and AI extraction
+router.post('/upload', uploadHandler, uploadAndExtractPolicy);
+
+// Sync extracted data to CRM
+router.post('/sync', [
+  body('extractedData').isObject(),
+  body('extractedData.policy').isObject(),
+  body('extractedData.policyHolder').isObject(),
+  validate
+], syncPolicyToCRM);
+
+// Standard policy CRUD
 router.get('/', getPolicies);
 router.get('/:id', [param('id').isInt(), validate], getPolicyById);
 router.post('/', [
