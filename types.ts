@@ -172,6 +172,22 @@ export interface Lead {
   score?: number;
 }
 
+export interface Task {
+  id: string;
+  agencyId: string;
+  agentId: string;
+  title: string;
+  dueDate: string | null;
+  isCompleted: boolean;
+  completedAt: string | null;
+  createdAt: string;
+  relatedTo?: {
+    type: 'customer' | 'opportunity';
+    id: string;
+    name: string;
+  };
+}
+
 // GBP types
 export type GbpStarRating = 'STAR_RATING_UNSPECIFIED' | 'ONE' | 'TWO' | 'THREE' | 'FOUR' | 'FIVE';
 

@@ -1,7 +1,7 @@
 // This file mocks API calls to fetch data.
 // In a real application, these would be `fetch` calls to a backend.
 import { MOCK_USERS, MOCK_LEADS, MOCK_CUSTOMERS, MOCK_AUDIT_LOGS, MOCK_ANALYTICS_DATA, MOCK_EXECUTIVE_DATA, MOCK_NEWS_ARTICLES, MOCK_TESTIMONIALS, MOCK_USER_ACTIVITY } from '../data/mockData';
-import { GbpLocationSummary, GbpReview, User, AuditLog, AnalyticsData, Campaign, ExecutiveData, NewsArticle, Testimonial, UserActivityEvent, AutomationRule, MessageTemplate, TransactionInquiry, Opportunity__EXT, Interaction, FirstNoticeOfLoss, ServiceRequest, PerfSample, PortalAccount__EXT, KPISnapshot, Lead, Conversion, FunnelRun, DetailedPolicy, AutomationChannelSettings, AutomationEvent, AutomationAnalytics, TransactionQuoteRequest, Prospect } from '../types';
+import { GbpLocationSummary, GbpReview, User, AuditLog, AnalyticsData, Campaign, ExecutiveData, NewsArticle, Testimonial, UserActivityEvent, AutomationRule, MessageTemplate, TransactionInquiry, Opportunity__EXT, Interaction, FirstNoticeOfLoss, ServiceRequest, PerfSample, PortalAccount__EXT, KPISnapshot, Lead, Conversion, FunnelRun, DetailedPolicy, AutomationChannelSettings, AutomationEvent, AutomationAnalytics, TransactionQuoteRequest, Prospect, Task } from '../types';
 
 const simulateDelay = <T,>(data: T, delay: number = 500): Promise<T> => {
     return new Promise(resolve => setTimeout(() => resolve(JSON.parse(JSON.stringify(data))), delay));
@@ -179,3 +179,4 @@ export const fetchOpportunitiesExt = (): Promise<Opportunity__EXT[]> => fetchJso
 export const fetchProspects = (): Promise<Prospect[]> => fetchJsonData('/data/prospects.json');
 export const fetchPipelineInteractions = (): Promise<Interaction[]> => fetchJsonData('/data/interactions.json');
 export const fetchPipelineConversions = (): Promise<Conversion[]> => fetchJsonData('/data/conversions_pipeline.json');
+export const fetchTasks = (): Promise<Task[]> => fetchJsonData('/data/tasks.json');

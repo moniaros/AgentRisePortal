@@ -5,17 +5,25 @@ import { useAuth } from '../hooks/useAuth';
 import SkeletonLoader from '../components/ui/SkeletonLoader';
 import ErrorMessage from '../components/ui/ErrorMessage';
 import MyDayList from '../components/pipeline/MyDay/MyDayList';
+import MyDayTasks from '../components/pipeline/MyDay/MyDayTasks';
 import { isToday, isPast, parseISO } from 'date-fns';
+import { useTasks } from '../hooks/useTasks';
 
 const MyDayDashboard: React.FC = () => {
     const { t } = useLocalization();
     const { currentUser } = useAuth();
-    const { opportunities, prospects, isLoading, error, updateOpportunityStage } = usePipelineData();
+    const { opportunities, prospects, isLoading: isLoadingOpps, error: errorOpps, updateOpportunityStage } = usePipelineData();
+    const { tasks, isLoading: isLoadingTasks, error: errorTasks, toggleTaskCompletion } = useTasks();
 
     const agentOpportunities = useMemo(() => {
         if (!currentUser) return [];
         return opportunities.filter(opp => opp.agentId === currentUser.id);
     }, [opportunities, currentUser]);
+
+    const agentTasks = useMemo(() => {
+        if (!currentUser) return [];
+        return tasks.filter(task => task.agentId === currentUser.id && !task.isCompleted);
+    }, [tasks, currentUser]);
 
     const categorizedOpps = useMemo(() => {
         const overdue: typeof agentOpportunities = [];
@@ -26,11 +34,15 @@ const MyDayDashboard: React.FC = () => {
             if (opp.stage === 'won' || opp.stage === 'lost') return;
 
             if (opp.nextFollowUpDate) {
-                const followUpDate = parseISO(opp.nextFollowUpDate);
-                if (isPast(followUpDate) && !isToday(followUpDate)) {
-                    overdue.push(opp);
-                } else if (isToday(followUpDate)) {
-                    dueToday.push(opp);
+                try {
+                    const followUpDate = parseISO(opp.nextFollowUpDate);
+                    if (isPast(followUpDate) && !isToday(followUpDate)) {
+                        overdue.push(opp);
+                    } else if (isToday(followUpDate)) {
+                        dueToday.push(opp);
+                    }
+                } catch (e) {
+                    console.error("Invalid date for opportunity:", opp.id, opp.nextFollowUpDate);
                 }
             } else {
                 noDueDate.push(opp);
@@ -39,6 +51,22 @@ const MyDayDashboard: React.FC = () => {
 
         return { overdue, dueToday, noDueDate };
     }, [agentOpportunities]);
+
+    const tasksForToday = useMemo(() => {
+        return agentTasks.filter(task => {
+            if (!task.dueDate) return false;
+            try {
+                const dueDate = parseISO(task.dueDate);
+                return isToday(dueDate) || isPast(dueDate);
+            } catch(e) {
+                 console.error("Invalid date for task:", task.id, task.dueDate);
+                 return false;
+            }
+        });
+    }, [agentTasks]);
+    
+    const isLoading = isLoadingOpps || isLoadingTasks;
+    const error = errorOpps || errorTasks;
 
     if (error) {
         return <ErrorMessage message={error.message} />;
@@ -58,6 +86,11 @@ const MyDayDashboard: React.FC = () => {
                 </div>
             ) : (
                 <div className="space-y-8">
+                    <MyDayTasks
+                        title={t('pipeline.myDay.tasksToday')}
+                        tasks={tasksForToday}
+                        onToggleComplete={toggleTaskCompletion}
+                    />
                     <MyDayList
                         title={t('pipeline.myDay.overdue')}
                         opportunities={categorizedOpps.overdue}

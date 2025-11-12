@@ -45,6 +45,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen }) => {
                 { path: '/pipeline/inbox', label: t('nav.leadsInbox'), icon: 'pipeline' },
                 { path: '/pipeline/board', label: t('nav.opportunityPipeline'), icon: 'pipeline' },
                 { path: '/pipeline/my-day', label: t('nav.myDay'), icon: 'pipeline' },
+                { path: '/tasks', label: t('nav.tasks'), icon: 'tasks' },
                 { path: '/opportunities-hub', label: t('nav.opportunitiesHub'), icon: 'magic' },
             ]
         },

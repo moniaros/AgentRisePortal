@@ -47,6 +47,7 @@
     "leadsInbox": "Leads Inbox",
     "opportunityPipeline": "Opportunity Pipeline",
     "myDay": "My Day",
+    "tasks": "My Tasks",
     "opportunitiesHub": "Opportunities Hub"
   },
   "header": {
@@ -876,11 +877,31 @@
       "title": "My Day",
       "overdue": "Overdue Follow-ups",
       "dueToday": "Due Today",
-      "noDueDate": "No Follow-up Date"
+      "noDueDate": "No Follow-up Date",
+      "tasksToday": "Tasks for Today"
     },
     "opportunitiesHub": {
       "title": "Actionable Opportunities Hub",
       "description": "A centralized view of all customers with verified, open sales opportunities identified by the AI."
     }
+  },
+  "tasks": {
+    "title": "My Tasks",
+    "addTask": "Add Task",
+    "addTaskTitle": "Create New Task",
+    "taskTitle": "Task Title",
+    "taskTitlePlaceholder": "e.g., Follow up with John Smith",
+    "dueDate": "Due Date",
+    "filters": {
+      "all": "All Tasks",
+      "incomplete": "Incomplete",
+      "completed": "Completed"
+    },
+    "sections": {
+      "todo": "To Do",
+      "completed": "Completed"
+    },
+    "noTasks": "No tasks here. Great job!",
+    "noCompletedTasks": "No tasks have been completed yet."
   }
 }

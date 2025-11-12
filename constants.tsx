@@ -52,6 +52,12 @@ const PipelineIcon = (props: React.SVGProps<SVGSVGElement>) => (
     </svg>
 );
 
+const TasksIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+);
+
 
 export const ICONS: { [key: string]: React.ReactElement<React.SVGProps<SVGSVGElement>> } = {
   dashboard: <PlaceholderIcon />,
@@ -73,6 +79,7 @@ export const ICONS: { [key: string]: React.ReactElement<React.SVGProps<SVGSVGEle
   support: <SupportIcon />,
   profile: <ProfileIcon />,
   pipeline: <PipelineIcon />,
+  tasks: <TasksIcon />,
 };
 
 

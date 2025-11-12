@@ -1,0 +1,72 @@
+[
+  {
+    "id": "task_1",
+    "agencyId": "agency_1",
+    "agentId": "user_1",
+    "title": "Follow up with Alice Smith regarding auto policy",
+    "dueDate": "2024-10-28",
+    "isCompleted": false,
+    "completedAt": null,
+    "createdAt": "2024-10-26T10:05:00Z",
+    "relatedTo": {
+      "type": "lead",
+      "id": "lead_1",
+      "name": "Alice Smith"
+    }
+  },
+  {
+    "id": "task_2",
+    "agencyId": "agency_1",
+    "agentId": "user_1",
+    "title": "Prepare proposal for Charlie Brown's new home policy",
+    "dueDate": null,
+    "isCompleted": false,
+    "completedAt": null,
+    "createdAt": "2024-10-27T11:00:00Z",
+    "relatedTo": {
+      "type": "customer",
+      "id": "cust_1",
+      "name": "Charlie Brown"
+    }
+  },
+  {
+    "id": "task_3",
+    "agencyId": "agency_1",
+    "agentId": "user_1",
+    "title": "Finalize Q3 performance report",
+    "dueDate": "2024-09-30",
+    "isCompleted": true,
+    "completedAt": "2024-09-29T16:00:00Z",
+    "createdAt": "2024-09-25T09:00:00Z"
+  },
+  {
+    "id": "task_4",
+    "agencyId": "agency_2",
+    "agentId": "user_x",
+    "title": "Contact David Chen about Facebook inquiry",
+    "dueDate": "2024-10-28",
+    "isCompleted": false,
+    "completedAt": null,
+    "createdAt": "2024-10-27T14:00:00Z",
+    "relatedTo": {
+      "type": "lead",
+      "id": "soc4",
+      "name": "David Chen"
+    }
+  },
+    {
+    "id": "task_5",
+    "agencyId": "agency_1",
+    "agentId": "user_1",
+    "title": "Schedule annual review with Jane Doe",
+    "dueDate": "2024-10-29",
+    "isCompleted": false,
+    "completedAt": null,
+    "createdAt": "2024-10-20T15:00:00Z",
+     "relatedTo": {
+      "type": "customer",
+      "id": "cust_2",
+      "name": "Jane Doe"
+    }
+  }
+]
