@@ -325,6 +325,65 @@ Planned improvements for the consent management system:
 - Digital signature collection
 - Consent reminder scheduling
 
+## Policy Document Upload & CRM Integration
+
+### Overview
+
+The Policy Document Upload & CRM Integration feature enables agents to upload insurance policy documents (PDF, images), have AI extract structured data aligned with ACORD standards, review and edit the extraction, and sync verified data to the CRM system. This streamlines policy onboarding and eliminates manual data entry.
+
+### Key Capabilities
+
+- **AI-Powered Extraction**: Upload policy documents → Google Gemini extracts structured data
+- **ACORD Alignment**: Extracts Policy Holder, Policy Details, Beneficiaries, Coverages per ACORD standards
+- **Customer Matching**: Automatically finds existing customers or creates new ones
+- **Beneficiary Management**: Links beneficiaries to policies with allocation percentages
+- **Coverage Tracking**: Detailed coverage breakdowns with ACORD codes
+- **Review & Edit**: Agents verify and correct extracted data before syncing
+- **CRM Sync**: Atomic transaction ensures data consistency across all tables
+- **Audit Trail**: Timeline entries track all policy changes
+
+### Supported Formats
+
+- PDF documents
+- Images: PNG, JPG, TIFF, WEBP
+
+### Workflow
+
+1. Agent uploads policy document on `/gap-analysis` page
+2. AI extracts structured data (30-120 seconds)
+3. Agent reviews and edits extracted information
+4. Validation checks required fields and beneficiary allocations
+5. Agent syncs to CRM → Creates/updates customer, policy, beneficiaries, coverages
+6. Success confirmation with links to customer profile
+
+### Documentation
+
+See [POLICY_DOCUMENT_WORKFLOW.md](./POLICY_DOCUMENT_WORKFLOW.md) for complete documentation including:
+- Architecture diagrams
+- Database schema
+- API endpoints
+- Frontend services
+- ACORD mappings
+- Testing guide
+- Troubleshooting
+
+### API Endpoints
+
+- `POST /api/v1/policies/upload` - Upload and extract policy document
+- `POST /api/v1/policies/sync` - Sync extracted data to CRM
+- `GET /api/v1/customers/:customerId/policies` - Get customer policies
+- `POST /api/v1/customers/:customerId/beneficiaries` - Create beneficiary
+- `GET /api/v1/policies/:policyId/beneficiaries` - Get policy beneficiaries
+
+### Database Tables
+
+- `contacts` - Beneficiaries, dependents, emergency contacts
+- `policy_beneficiaries` - Links policies to beneficiaries with allocation percentages
+- `policy_documents` - Tracks uploaded documents and extraction metadata
+- `policy_coverages` - Enhanced with ACORD coverage codes
+
+---
+
 ## AI Policy Analysis Display
 
 ### Overview
