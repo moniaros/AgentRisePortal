@@ -24,6 +24,16 @@ export interface UpdateCustomerData extends Partial<CreateCustomerData> {
   status?: 'active' | 'inactive' | 'pending';
   attentionFlag?: boolean;
   attentionReason?: string;
+  gdprConsent?: {
+    provided?: boolean;
+    date?: string | null;
+    channel?: 'email' | 'sms' | 'phone' | 'web_form' | 'in_person' | 'other' | null;
+  };
+  marketingConsent?: {
+    provided?: boolean;
+    date?: string | null;
+    channel?: 'email' | 'sms' | 'phone' | 'web_form' | 'in_person' | 'other' | null;
+  };
 }
 
 export interface CustomerFilters {

@@ -92,6 +92,16 @@ export const getCustomers = async (req, res, next) => {
       attentionReason: customer.attention_reason,
       tags: customer.tags ? JSON.parse(customer.tags) : [],
       customFields: customer.custom_fields ? JSON.parse(customer.custom_fields) : {},
+      gdprConsent: {
+        provided: Boolean(customer.gdpr_consent_provided),
+        date: customer.gdpr_consent_date,
+        channel: customer.gdpr_consent_channel
+      },
+      marketingConsent: {
+        provided: Boolean(customer.marketing_consent_provided),
+        date: customer.marketing_consent_date,
+        channel: customer.marketing_consent_channel
+      },
       createdAt: customer.created_at,
       updatedAt: customer.updated_at
     }));
@@ -191,6 +201,16 @@ export const getCustomerById = async (req, res, next) => {
         attentionReason: customer.attention_reason,
         tags: customer.tags ? JSON.parse(customer.tags) : [],
         customFields: customer.custom_fields ? JSON.parse(customer.custom_fields) : {},
+        gdprConsent: {
+          provided: Boolean(customer.gdpr_consent_provided),
+          date: customer.gdpr_consent_date,
+          channel: customer.gdpr_consent_channel
+        },
+        marketingConsent: {
+          provided: Boolean(customer.marketing_consent_provided),
+          date: customer.marketing_consent_date,
+          channel: customer.marketing_consent_channel
+        },
         policies: policies.map(p => ({
           id: p.id,
           policyNumber: p.policy_number,
@@ -309,7 +329,13 @@ export const updateCustomer = async (req, res, next) => {
       attentionFlag: 'attention_flag',
       attentionReason: 'attention_reason',
       tags: 'tags',
-      customFields: 'custom_fields'
+      customFields: 'custom_fields',
+      gdprConsentProvided: 'gdpr_consent_provided',
+      gdprConsentDate: 'gdpr_consent_date',
+      gdprConsentChannel: 'gdpr_consent_channel',
+      marketingConsentProvided: 'marketing_consent_provided',
+      marketingConsentDate: 'marketing_consent_date',
+      marketingConsentChannel: 'marketing_consent_channel'
     };
 
     Object.keys(req.body).forEach(key => {
@@ -340,6 +366,38 @@ export const updateCustomer = async (req, res, next) => {
       if (req.body.address.zip !== undefined) {
         updates.push('address_zip = ?');
         values.push(req.body.address.zip);
+      }
+    }
+
+    // Handle GDPR consent fields
+    if (req.body.gdprConsent) {
+      if (req.body.gdprConsent.provided !== undefined) {
+        updates.push('gdpr_consent_provided = ?');
+        values.push(req.body.gdprConsent.provided);
+      }
+      if (req.body.gdprConsent.date !== undefined) {
+        updates.push('gdpr_consent_date = ?');
+        values.push(req.body.gdprConsent.date);
+      }
+      if (req.body.gdprConsent.channel !== undefined) {
+        updates.push('gdpr_consent_channel = ?');
+        values.push(req.body.gdprConsent.channel);
+      }
+    }
+
+    // Handle marketing consent fields
+    if (req.body.marketingConsent) {
+      if (req.body.marketingConsent.provided !== undefined) {
+        updates.push('marketing_consent_provided = ?');
+        values.push(req.body.marketingConsent.provided);
+      }
+      if (req.body.marketingConsent.date !== undefined) {
+        updates.push('marketing_consent_date = ?');
+        values.push(req.body.marketingConsent.date);
+      }
+      if (req.body.marketingConsent.channel !== undefined) {
+        updates.push('marketing_consent_channel = ?');
+        values.push(req.body.marketingConsent.channel);
       }
     }
 

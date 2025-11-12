@@ -127,6 +127,16 @@ export interface Customer {
     timeline: TimelineEvent[];
     communicationPreferences?: Array<'email' | 'sms'>;
     attentionFlag?: string;
+    gdprConsent?: {
+        provided: boolean;
+        date: string | null;
+        channel: 'email' | 'sms' | 'phone' | 'web_form' | 'in_person' | 'other' | null;
+    };
+    marketingConsent?: {
+        provided: boolean;
+        date: string | null;
+        channel: 'email' | 'sms' | 'phone' | 'web_form' | 'in_person' | 'other' | null;
+    };
 }
 
 export type LeadStatus = 'new' | 'contacted' | 'qualified' | 'closed' | 'rejected';

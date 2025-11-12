@@ -14,6 +14,7 @@ import EditProfileModal from '../components/customer/EditProfileModal';
 import { useAuth } from '../hooks/useAuth';
 import EmbeddedGapAnalysis from '../components/customer/EmbeddedGapAnalysis';
 import DetailedPolicyView from '../components/customer/DetailedPolicyView';
+import ConsentManagement from '../components/customer/ConsentManagement';
 
 const CustomerProfile: React.FC = () => {
     const { customerId } = useParams<{ customerId: string }>();
@@ -60,6 +61,19 @@ const CustomerProfile: React.FC = () => {
         setEditProfileModalOpen(false);
     };
 
+    const handleUpdateConsent = (gdprConsent: any, marketingConsent: any) => {
+        updateCustomer({
+            ...customer,
+            gdprConsent,
+            marketingConsent
+        });
+        addTimelineEvent(customer.id, {
+            type: 'system',
+            content: `Consent status updated - GDPR: ${gdprConsent.provided ? 'Granted' : 'Not granted'}, Marketing: ${marketingConsent.provided ? 'Granted' : 'Not granted'}`,
+            author: currentUser ? `${currentUser.party.partyName.firstName} ${currentUser.party.partyName.lastName}` : 'System',
+        });
+    };
+
     return (
         <div className="space-y-8">
             {/* Header */}
@@ -87,6 +101,13 @@ const CustomerProfile: React.FC = () => {
                     </div>
                 )}
             </div>
+
+            {/* GDPR & Marketing Consent */}
+            <ConsentManagement
+                gdprConsent={customer.gdprConsent}
+                marketingConsent={customer.marketingConsent}
+                onUpdateConsent={handleUpdateConsent}
+            />
 
             {/* Policies */}
             <div>

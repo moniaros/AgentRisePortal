@@ -80,6 +80,12 @@ CREATE TABLE customers (
     attention_reason VARCHAR(500),
     tags JSON,
     custom_fields JSON,
+    gdpr_consent_provided BOOLEAN DEFAULT FALSE,
+    gdpr_consent_date TIMESTAMP NULL,
+    gdpr_consent_channel ENUM('email', 'sms', 'phone', 'web_form', 'in_person', 'other') NULL,
+    marketing_consent_provided BOOLEAN DEFAULT FALSE,
+    marketing_consent_date TIMESTAMP NULL,
+    marketing_consent_channel ENUM('email', 'sms', 'phone', 'web_form', 'in_person', 'other') NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (assigned_agent_id) REFERENCES users(id) ON DELETE SET NULL,
@@ -87,7 +93,9 @@ CREATE TABLE customers (
     INDEX idx_phone (phone),
     INDEX idx_status (status),
     INDEX idx_assigned_agent (assigned_agent_id),
-    INDEX idx_customer_since (customer_since)
+    INDEX idx_customer_since (customer_since),
+    INDEX idx_customers_gdpr_consent (gdpr_consent_provided, gdpr_consent_date),
+    INDEX idx_customers_marketing_consent (marketing_consent_provided, marketing_consent_date)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Leads table
