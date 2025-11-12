@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useLocalization } from '../hooks/useLocalization';
 import { useAuth } from '../hooks/useAuth';
 import { useOnboardingStatus } from '../hooks/useOnboardingStatus';
@@ -8,7 +8,11 @@ import { ICONS } from '../constants';
 const Onboarding: React.FC = () => {
     const { t } = useLocalization();
     const { currentUser } = useAuth();
-    const { progress, isCompleted, markTaskCompleted, completeOnboarding } = useOnboardingStatus();
+    const { progress, isCompleted, isSkipped, markTaskCompleted, completeOnboarding } = useOnboardingStatus();
+
+    if (isSkipped) {
+        return <Navigate to="/" replace />;
+    }
 
     const features = [
         // Fix: Removed incorrect type assertion. The `t` function now correctly returns an object.
@@ -79,9 +83,9 @@ const Onboarding: React.FC = () => {
                     </div>
                 )}
                  <div className="text-center mt-8">
-                     <Link to="/" onClick={completeOnboarding} className="px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition shadow-md">
+                     <button onClick={completeOnboarding} className="px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition shadow-md">
                         {t('onboarding.checklist.getStarted')}
-                    </Link>
+                    </button>
                  </div>
             </div>
         </div>
