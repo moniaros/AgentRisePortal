@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
@@ -77,6 +78,7 @@ const AppRoutes: React.FC = () => {
         <Route path="/sitemap" element={<Sitemap />} />
         <Route path="/campaign/lead/:campaignId" element={<LeadCapturePage />} />
         
+        {/* FIX: This route should only be available if the user is logged in AND hasn't skipped onboarding. */}
         {!isSkipped && currentUser && (
           <Route path="/onboarding" element={<Onboarding />} />
         )}

@@ -77,7 +77,7 @@ const ConditionRow: React.FC<ConditionRowProps> = ({ control, index, onRemove })
                     control={control}
                     render={({ field }) => (
                          <select {...field} className="p-2 border rounded dark:bg-gray-700 dark:border-gray-600 w-full capitalize">
-                            {VALUE_OPTIONS[selectedField?.value as string]?.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+                            {(VALUE_OPTIONS[selectedField?.value as string] || []).map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
                         </select>
                     )}
                 />

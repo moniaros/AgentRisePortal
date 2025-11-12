@@ -1,43 +1,48 @@
-import React, { useState, useMemo } from 'react';
-import { useParams, Navigate, Link } from 'react-router-dom';
+import React, { useMemo, useState } from 'react';
+import { useParams, Navigate } from 'react-router-dom';
 import { useCrmData } from '../hooks/useCrmData';
 import { useLocalization } from '../hooks/useLocalization';
 import { useAuth } from '../hooks/useAuth';
-import { useNotification } from '../hooks/useNotification';
-import { useAnalysisData } from '../hooks/useAnalysisData';
+import { Customer, TimelineEvent, Policy } from '../types';
 import ErrorMessage from '../components/ui/ErrorMessage';
 import SkeletonLoader from '../components/ui/SkeletonLoader';
-import { Customer, Policy, TimelineEvent } from '../types';
-
-// Import child components
 import CustomerTimeline from '../components/customer/CustomerTimeline';
 import AddTimelineEventModal from '../components/customer/AddTimelineEventModal';
 import AttentionFlagModal from '../components/customer/AttentionFlagModal';
-import EditProfileModal from '../components/customer/EditProfileModal';
 import AddressChangeModal from '../components/customer/AddressChangeModal';
+import EditProfileModal from '../components/customer/EditProfileModal';
 import EmbeddedGapAnalysis from '../components/customer/EmbeddedGapAnalysis';
 import StoredAnalysisCard from '../components/customer/StoredAnalysisCard';
+import { useAnalysisData } from '../hooks/useAnalysisData';
 import DetailedPolicyView from '../components/customer/DetailedPolicyView';
 
 const CustomerProfile: React.FC = () => {
     const { customerId } = useParams<{ customerId: string }>();
     const { t } = useLocalization();
     const { currentUser } = useAuth();
-    const { addNotification } = useNotification();
+    const {
+        customers,
+        isLoading,
+        error,
+        addTimelineEvent,
+        addAnnotationToEvent,
+        updateCustomer,
+        updateCustomerAttentionFlag,
+        toggleTimelineEventFlag,
+    } = useCrmData();
 
-    const { customers, isLoading, error, updateCustomer, addTimelineEvent, addAnnotationToEvent, updateCustomerAttentionFlag, toggleTimelineEventFlag } = useCrmData();
-    const { analyses: storedAnalyses, isLoading: isLoadingAnalyses } = useAnalysisData(customerId);
-
-    const [isTimelineModalOpen, setTimelineModalOpen] = useState(false);
+    const [activeTab, setActiveTab] = useState<'timeline' | 'policies' | 'analysis'>('timeline');
+    const [isAddEventModalOpen, setAddEventModalOpen] = useState(false);
     const [isAttentionModalOpen, setAttentionModalOpen] = useState(false);
-    const [isEditProfileModalOpen, setEditProfileModalOpen] = useState(false);
     const [isAddressModalOpen, setAddressModalOpen] = useState(false);
+    const [isEditProfileModalOpen, setEditProfileModalOpen] = useState(false);
     
     const customer = useMemo(() => {
-        if (!customerId || isLoading) return null;
         return customers.find(c => c.id === customerId);
-    }, [customerId, customers, isLoading]);
+    }, [customers, customerId]);
 
+    const { analyses, isLoading: isLoadingAnalyses } = useAnalysisData(customerId);
+    
     if (isLoading) {
         return <SkeletonLoader className="h-screen w-full" />;
     }
@@ -45,127 +50,115 @@ const CustomerProfile: React.FC = () => {
     if (error) {
         return <ErrorMessage message={error.message} />;
     }
-    
+
     if (!customer) {
         return <Navigate to="/micro-crm" replace />;
     }
-    
-    const handleAddTimelineEvent = (eventData: Omit<TimelineEvent, 'id' | 'date' | 'author' | 'annotations'>) => {
-        const author = currentUser ? `${currentUser.party.partyName.firstName} ${currentUser.party.partyName.lastName}` : 'System';
-        addTimelineEvent(customer.id, { ...eventData, author });
-        setTimelineModalOpen(false);
-        addNotification(t('customer.eventAdded'), 'success');
+
+    const handleAddTimelineEvent = (data: Omit<TimelineEvent, 'id' | 'date' | 'author' | 'annotations' >) => {
+        addTimelineEvent(customer.id, {
+            ...data,
+            author: currentUser ? `${currentUser.party.partyName.firstName} ${currentUser.party.partyName.lastName}` : 'System',
+        });
+        setAddEventModalOpen(false);
     };
 
     const handleAddAnnotation = (eventId: string, content: string) => {
-        const author = currentUser ? `${currentUser.party.partyName.firstName} ${currentUser.party.partyName.lastName}` : 'System';
-        addAnnotationToEvent(customer.id, eventId, { author, content });
+        addAnnotationToEvent(customer.id, eventId, {
+            author: currentUser ? `${currentUser.party.partyName.firstName} ${currentUser.party.partyName.lastName}` : 'System',
+            content,
+        });
     };
-    
-    const handleUpdateAttentionFlag = (reason: string) => {
+
+    const handleAttentionFlagSubmit = (reason: string) => {
         updateCustomerAttentionFlag(customer.id, reason);
         setAttentionModalOpen(false);
     };
-
-    const handleUpdateProfile = (customerData: Customer) => {
-        updateCustomer(customerData);
-        setEditProfileModalOpen(false);
+    
+    const handleClearAttentionFlag = () => {
+        updateCustomerAttentionFlag(customer.id, null);
     };
-
-    const handleUpdateAddress = (newAddress: string) => {
+    
+    const handleAddressChange = (newAddress: string) => {
         updateCustomer({ ...customer, address: newAddress });
-        addTimelineEvent(customer.id, {
-            type: 'system',
-            content: `Address updated to: ${newAddress}`,
-            author: 'System',
-        });
         setAddressModalOpen(false);
     };
 
-    const handleUpdatePolicy = (updatedPolicy: Policy) => {
+    const handleProfileUpdate = (updatedCustomer: Customer) => {
+        updateCustomer(updatedCustomer);
+        setEditProfileModalOpen(false);
+    };
+    
+    const handlePolicyUpdate = (updatedPolicy: Policy) => {
         const updatedPolicies = customer.policies.map(p => p.id === updatedPolicy.id ? updatedPolicy : p);
         updateCustomer({ ...customer, policies: updatedPolicies });
     };
 
     return (
         <div className="space-y-6">
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md relative">
+            <header className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
                 {customer.attentionFlag && (
-                    <div className="absolute top-0 right-0 p-4">
-                        <span className="flex h-3 w-3 relative">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-3 w-3 bg-yellow-500"></span>
-                        </span>
+                    <div className="p-3 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 rounded-md text-sm mb-4 flex justify-between items-center">
+                        <div><strong>Attention:</strong> {customer.attentionFlag}</div>
+                        <button onClick={handleClearAttentionFlag} className="text-xs font-semibold hover:underline">Clear</button>
                     </div>
                 )}
-                <div className="flex flex-col sm:flex-row items-start gap-6">
+                <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
                     <div>
                         <h1 className="text-3xl font-bold">{customer.firstName} {customer.lastName}</h1>
                         <p className="text-gray-500 dark:text-gray-400">{customer.email}</p>
                     </div>
-                </div>
-                {customer.attentionFlag && (
-                    <div className="mt-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-200 border border-yellow-200 dark:border-yellow-700 rounded-md text-sm">
-                       <strong>{t('customer.attentionFlag')}:</strong> {customer.attentionFlag}
-                    </div>
-                )}
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className="lg:col-span-2 space-y-6">
-                    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-                        <div className="flex justify-between items-center mb-4">
-                            <h2 className="text-xl font-semibold">{t('crm.form.policies')}</h2>
-                        </div>
-                        <div className="space-y-4">
-                            {customer.policies.map(policy => (
-                                <DetailedPolicyView key={policy.id} policy={policy} onUpdatePolicy={handleUpdatePolicy} />
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-                        <div className="flex justify-between items-center mb-4">
-                            <h2 className="text-xl font-semibold">{t('customer.timeline')}</h2>
-                            <button onClick={() => setTimelineModalOpen(true)} className="px-3 py-1 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700">
-                                {t('customer.addEvent')}
-                            </button>
-                        </div>
-                        <CustomerTimeline timeline={customer.timeline} onAddAnnotation={handleAddAnnotation} onFlagEvent={(eventId) => toggleTimelineEventFlag(customer.id, eventId)} />
+                    <div className="flex-shrink-0 flex items-center gap-2">
+                        <button onClick={() => setAttentionModalOpen(true)} className="px-3 py-1.5 text-sm bg-yellow-400 text-yellow-900 rounded hover:bg-yellow-500">Set Attention</button>
+                        <button onClick={() => setEditProfileModalOpen(true)} className="px-3 py-1.5 text-sm bg-blue-500 text-white rounded hover:bg-blue-600">Edit Profile</button>
                     </div>
                 </div>
-
-                <div className="space-y-6">
-                    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
-                        <h3 className="font-semibold mb-3">{t('common.actions')}</h3>
-                        <div className="space-y-2">
-                           <button onClick={() => setEditProfileModalOpen(true)} className="w-full text-left p-2 text-sm rounded hover:bg-gray-100 dark:hover:bg-gray-700">✏️ {t('customer.editProfile')}</button>
-                           <button onClick={() => setAddressModalOpen(true)} className="w-full text-left p-2 text-sm rounded hover:bg-gray-100 dark:hover:bg-gray-700">📍 {t('customer.changeAddress')}</button>
-                           <button onClick={() => setAttentionModalOpen(true)} className="w-full text-left p-2 text-sm rounded hover:bg-gray-100 dark:hover:bg-gray-700">⚠️ {customer.attentionFlag ? t('customer.editAttentionFlag') : t('customer.setAttentionFlag')}</button>
-                           {customer.attentionFlag && <button onClick={() => updateCustomerAttentionFlag(customer.id, null)} className="w-full text-left p-2 text-sm rounded hover:bg-gray-100 dark:hover:bg-gray-700">🗑️ {t('customer.clearAttentionFlag')}</button>}
-                        </div>
-                    </div>
-                     <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
-                        <h3 className="font-semibold mb-3">AI Gap Analysis</h3>
-                        <EmbeddedGapAnalysis customer={customer} />
-                    </div>
-                    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
-                        <h3 className="font-semibold mb-3">Analysis History</h3>
-                        {isLoadingAnalyses ? <SkeletonLoader className="h-24 w-full"/> : (
-                            <div className="space-y-3">
-                                {storedAnalyses.length > 0 ? storedAnalyses.map(analysis => (
-                                    <StoredAnalysisCard key={analysis.id} analysis={analysis} />
-                                )) : <p className="text-xs text-gray-500">No past analyses found for this customer.</p>}
-                            </div>
-                        )}
-                    </div>
+                <div className="mt-4 pt-4 border-t dark:border-gray-700 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                    <div><strong className="text-gray-500 block">Phone</strong> {customer.phone || 'N/A'}</div>
+                    <div><strong className="text-gray-500 block">Address</strong> {customer.address || 'N/A'} <button onClick={() => setAddressModalOpen(true)} className="text-blue-500 text-xs ml-1">Edit</button></div>
+                    <div><strong className="text-gray-500 block">Policies</strong> {customer.policies.length}</div>
                 </div>
-            </div>
+            </header>
             
-            <AddTimelineEventModal isOpen={isTimelineModalOpen} onClose={() => setTimelineModalOpen(false)} onSubmit={handleAddTimelineEvent} />
-            <AttentionFlagModal isOpen={isAttentionModalOpen} onClose={() => setAttentionModalOpen(false)} onSubmit={handleUpdateAttentionFlag} currentReason={customer.attentionFlag} />
-            {isEditProfileModalOpen && <EditProfileModal isOpen={isEditProfileModalOpen} onClose={() => setEditProfileModalOpen(false)} onSubmit={handleUpdateProfile} customer={customer} />}
-            {isAddressModalOpen && <AddressChangeModal isOpen={isAddressModalOpen} onClose={() => setAddressModalOpen(false)} onSubmit={handleUpdateAddress} currentAddress={customer.address || ''} />}
+            <div className="border-b border-gray-200 dark:border-gray-700">
+                <nav className="-mb-px flex space-x-8" aria-label="Tabs">
+                    <button onClick={() => setActiveTab('timeline')} className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ${activeTab === 'timeline' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500'}`}>Timeline</button>
+                    <button onClick={() => setActiveTab('policies')} className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ${activeTab === 'policies' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500'}`}>Policies</button>
+                    <button onClick={() => setActiveTab('analysis')} className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ${activeTab === 'analysis' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500'}`}>AI Gap Analysis</button>
+                </nav>
+            </div>
+
+            {activeTab === 'timeline' && (
+                <div>
+                    <div className="flex justify-end mb-4">
+                        <button onClick={() => setAddEventModalOpen(true)} className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">Add Timeline Event</button>
+                    </div>
+                    <CustomerTimeline timeline={customer.timeline} onAddAnnotation={handleAddAnnotation} onFlagEvent={(eventId) => toggleTimelineEventFlag(customer.id, eventId)} />
+                </div>
+            )}
+            
+             {activeTab === 'policies' && (
+                <div className="space-y-4">
+                    {customer.policies.length > 0 ? (
+                        customer.policies.map(policy => <DetailedPolicyView key={policy.id} policy={policy} onUpdatePolicy={handlePolicyUpdate} />)
+                    ) : <p>No policies found.</p>}
+                </div>
+            )}
+            
+            {activeTab === 'analysis' && (
+                <div className="space-y-4">
+                    <h2 className="text-xl font-semibold">New Policy Analysis</h2>
+                    <EmbeddedGapAnalysis customer={customer} />
+                    <h2 className="text-xl font-semibold pt-4 border-t dark:border-gray-700">Past Analyses</h2>
+                    {isLoadingAnalyses && <SkeletonLoader className="h-32 w-full"/>}
+                    {analyses.map(analysis => <StoredAnalysisCard key={analysis.id} analysis={analysis} />)}
+                </div>
+            )}
+
+            <AddTimelineEventModal isOpen={isAddEventModalOpen} onClose={() => setAddEventModalOpen(false)} onSubmit={handleAddTimelineEvent} />
+            <AttentionFlagModal isOpen={isAttentionModalOpen} onClose={() => setAttentionModalOpen(false)} onSubmit={handleAttentionFlagSubmit} currentReason={customer.attentionFlag} />
+            <AddressChangeModal isOpen={isAddressModalOpen} onClose={() => setAddressModalOpen(false)} onSubmit={handleAddressChange} currentAddress={customer.address || ''} />
+            <EditProfileModal isOpen={isEditProfileModalOpen} onClose={() => setEditProfileModalOpen(false)} onSubmit={handleProfileUpdate} customer={customer} />
         </div>
     );
 };

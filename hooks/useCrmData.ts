@@ -65,7 +65,7 @@ export const useCrmData = () => {
         setAllLeads([...allLeads, newLead]);
     }, [allLeads, setAllLeads, agencyId]);
     
-    const addTimelineEvent = useCallback((customerId: string, event: Omit<TimelineEvent, 'id' | 'date'>) => {
+    const addTimelineEvent = useCallback((customerId: string, event: Omit<TimelineEvent, 'id' | 'date' | 'annotations' >) => {
         const customer = allCustomers.find(c => c.id === customerId);
         if (!customer) return;
 

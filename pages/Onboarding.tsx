@@ -69,7 +69,6 @@ const Onboarding: React.FC = () => {
                                 to={item.link}
                                 onClick={() => {
                                     markTaskCompleted(item.key);
-                                    completeOnboarding();
                                 }}
                                 className="flex items-center p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
                                 <div className={`w-6 h-6 rounded-full flex items-center justify-center mr-4 ${progress[item.key] ? 'bg-green-500 text-white' : 'border-2 border-gray-300'}`}>

@@ -12,8 +12,9 @@ interface CustomerFormModalProps {
   mode: 'add' | 'edit';
 }
 
-const emptyCustomer: Omit<Customer, 'id' | 'timeline'> = {
-  firstName: '', lastName: '', email: '', phone: '', address: '', dateOfBirth: '', policies: [], agencyId: '', communicationPreferences: []
+// FIX: Removed 'agencyId' which is omitted from the type definition.
+const emptyCustomer: Omit<Customer, 'id' | 'timeline' | 'agencyId'> = {
+  firstName: '', lastName: '', email: '', phone: '', address: '', dateOfBirth: '', policies: [], communicationPreferences: []
 };
 
 const CustomerFormModal: React.FC<CustomerFormModalProps> = ({ isOpen, onClose, onSubmit, customer, mode }) => {
