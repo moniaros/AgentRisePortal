@@ -1,6 +1,5 @@
-
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 // FIX: Corrected import path for App component. The '.tsx' extension is not needed.
 import App from './App';
 
@@ -9,7 +8,7 @@ if (!rootElement) {
   throw new Error("Could not find root element to mount to");
 }
 
-const root = ReactDOM.createRoot(rootElement);
+const root = createRoot(rootElement);
 root.render(
   <React.StrictMode>
     <App />
