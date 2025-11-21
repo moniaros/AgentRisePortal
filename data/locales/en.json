@@ -37,7 +37,7 @@
     "management": "Agency Management",
     "userManagement": "User Access",
     "billing": "Billing & Plans",
-    "support": "Support Center",
+    "support": "Brand Academy",
     "settings": "Settings",
     "profile": "My Profile",
     "appSettings": "System Config",
@@ -855,47 +855,52 @@
     }
   },
   "support": {
-    "title": "Support Center",
-    "description": "Access help, guides, and resources to maximize your AgentOS experience.",
+    "title": "Digital Brand Academy",
+    "description": "Master the art of digital presence. Tools and training to turn your agency into a trusted brand.",
+    "photoTool": {
+        "title": "AI Headshot Studio",
+        "description": "Upload a casual selfie and let our AI transform it into a professional corporate headshot.",
+        "upload": "Upload Selfie",
+        "generate": "Generate Headshot",
+        "download": "Download",
+        "styles": {
+            "corporate": "Corporate Executive",
+            "modern": "Modern Agent",
+            "friendly": "Friendly Advisor"
+        }
+    },
     "socialGuide": {
-        "title": "Building Your Digital Brand",
-        "intro": "A professional social media presence is your 24/7 business card. Follow these platform-specific guides to establish trust and attract leads.",
+        "title": "Brand Building Curriculum",
         "platforms": {
             "linkedin": {
-                "title": "LinkedIn: The Professional Standard",
+                "title": "LinkedIn Authority",
                 "checklist": [
-                    "Profile Photo: Professional attire, plain background, genuine smile.",
-                    "Headline: Use 'Insurance Advisor helping families protect their future' instead of just 'Agent'.",
-                    "About Section: Tell your story. Why did you become an advisor? How do you help clients?",
-                    "Experience: List your agency, years of experience, and any specialized certifications.",
-                    "Featured: Pin your top articles or a link to your AgentOS microsite."
+                    "Professional Headline: Use keywords like 'Insurance Advisor' not just 'Agent'.",
+                    "About Section: Tell a story about why you protect families.",
+                    "Featured Section: Pin your best client case studies."
                 ]
             },
             "instagram": {
-                "title": "Instagram: Visual Storytelling",
+                "title": "Instagram Visuals",
                 "checklist": [
-                    "Bio: 'Protecting [Your City] 🏠🚗 | Dad of 2 👨‍👩‍👦 | DM for Quotes 📩'. Include your microsite link.",
-                    "Content Mix: Follow the 80/20 rule: 80% professional value (tips, success stories), 20% personal/human side.",
-                    "Highlights: Create albums for 'Reviews', 'About Me', 'Q&A', and 'Services'.",
-                    "Stories: Use daily stories to show behind-the-scenes office life."
+                    "Bio Link: Use a Linktree to your Quote Page and WhatsApp.",
+                    "Stories: Share daily 'Behind the Scenes' at the office.",
+                    "Reels: Post 15s tips on insurance savings."
                 ]
             },
             "facebook": {
-                "title": "Facebook: Community Connection",
+                "title": "Facebook Community",
                 "checklist": [
-                    "Cover Photo: High-quality branded image with your contact details overlay.",
-                    "Reviews: Enable the 'Reviews' tab and actively ask happy clients to post feedback.",
-                    "About: Fill in every field, especially your website, hours, and 'Our Story'.",
-                    "Pinned Post: Pin a welcome video or your current best offer to the top of your feed."
+                    "Cover Photo: Showcase your team or local office.",
+                    "Reviews: Actively request reviews after every policy signed.",
+                    "Groups: Join local community groups to offer helpful advice."
                 ]
             },
             "x": {
-                "title": "X (Twitter): Real-Time Engagement",
+                "title": "X (Twitter) Real-time",
                 "checklist": [
-                    "Pinned Tweet: Your best value proposition or a limited-time offer link.",
-                    "Bio: Short, punchy description with relevant hashtags (e.g., #Insurance #[City]).",
-                    "Engagement: Follow local businesses, news outlets, and community leaders.",
-                    "Visuals: Attach an image or video to every tweet to increase engagement by 150%."
+                    "Pinned Tweet: Your current best offer or introduction.",
+                    "Engagement: Reply to local news about weather/traffic with safety tips."
                 ]
             }
         }
@@ -932,7 +937,24 @@
     },
     "opportunitiesHub": {
       "title": "Actionable Opportunities Hub",
-      "description": "A centralized view of all customers with verified, open sales opportunities identified by the AI."
+      "description": "A centralized view of all customers with verified, open sales opportunities identified by the AI.",
+      "pipelineValue": "Pipeline Value",
+      "opportunities": "Opportunities",
+      "noOpportunities": "No opportunities found.",
+      "noOpportunitiesSub": "Try running the AI Policy Scanner to find new upsell potential.",
+      "goToScanner": "Go to Policy Scanner",
+      "pitchTitle": "AI Sales Pitch Generator",
+      "pitchSubtitle": "Recommended Script",
+      "generating": "Crafting persuasive message...",
+      "close": "Close",
+      "copy": "Copy Text",
+      "aiPitch": "Generate Pitch",
+      "marketHook": {
+          "home": "Highlight the 10% ENFIA tax reduction.",
+          "health": "Emphasize bypassing public hospital wait times.",
+          "auto": "Focus on comprehensive roadside assistance and value."
+      },
+      "errorGenerating": "Could not generate pitch. Please check your connection."
     }
   },
   "tasks": {
