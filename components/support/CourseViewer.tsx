@@ -7,6 +7,11 @@ interface CourseSection {
     body: string;
 }
 
+interface CourseResource {
+    title: string;
+    type: 'pdf' | 'template' | 'video';
+}
+
 interface CourseData {
     id: string;
     title: string;
@@ -14,6 +19,7 @@ interface CourseData {
     tag: string;
     duration: string;
     sections: CourseSection[];
+    resources?: CourseResource[];
 }
 
 interface CourseViewerProps {
@@ -22,109 +28,182 @@ interface CourseViewerProps {
 }
 
 const CourseViewer: React.FC<CourseViewerProps> = ({ course, onClose }) => {
-    const { t } = useLocalization();
+    const { t, language } = useLocalization();
     const [activeSection, setActiveSection] = useState(0);
+    const [activeTab, setActiveTab] = useState<'content' | 'resources'>('content');
     const [isCompleted, setIsCompleted] = useState(false);
-
-    const progress = Math.round(((activeSection + (isCompleted ? 1 : 0)) / course.sections.length) * 100);
 
     const handleNext = () => {
         if (activeSection < course.sections.length - 1) {
             setActiveSection(prev => prev + 1);
-            // Scroll top of content
             document.getElementById('course-content')?.scrollTo(0, 0);
         } else {
             setIsCompleted(true);
         }
     };
 
+    const getResourceIcon = (type: string) => {
+        switch(type) {
+            case 'pdf': return '📄';
+            case 'template': return '📝';
+            case 'video': return '🎥';
+            default: return '📎';
+        }
+    };
+
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-            <div className="bg-white dark:bg-gray-900 w-full max-w-5xl h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden border dark:border-gray-700 animate-fade-in">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-fade-in">
+            <div className="bg-white dark:bg-gray-900 w-full max-w-6xl h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden border dark:border-gray-700">
                 
                 {/* Header */}
-                <div className="flex justify-between items-center p-6 border-b dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
+                <div className="flex justify-between items-center p-6 border-b dark:border-gray-700 bg-gradient-to-r from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
                     <div>
-                        <div className="flex items-center gap-2 mb-2">
-                            <span className="px-2 py-1 text-xs font-bold uppercase bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 rounded-md">
+                        <div className="flex items-center gap-3 mb-2">
+                            <span className="px-2.5 py-0.5 text-xs font-bold uppercase bg-blue-600 text-white rounded shadow-sm tracking-wider">
                                 {course.tag}
                             </span>
-                            <span className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
-                                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <span className="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1 font-medium">
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                                 {course.duration}
                             </span>
                         </div>
-                        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{course.title}</h2>
+                        <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">{course.title}</h2>
                     </div>
-                    <button onClick={onClose} className="p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full transition">
-                        <svg className="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                    <button onClick={onClose} className="p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full transition text-gray-500">
+                        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                     </button>
                 </div>
 
                 <div className="flex flex-grow overflow-hidden">
-                    {/* Sidebar - Table of Contents */}
-                    <div className="w-1/3 border-r dark:border-gray-700 overflow-y-auto bg-gray-50 dark:bg-gray-900 hidden md:block">
-                        <div className="p-6">
-                            <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">Course Content</h3>
-                            <div className="space-y-2">
-                                {course.sections.map((section, idx) => (
-                                    <button
-                                        key={idx}
-                                        onClick={() => setActiveSection(idx)}
-                                        className={`w-full text-left p-3 rounded-lg text-sm font-medium transition flex items-center gap-3 ${
-                                            activeSection === idx 
-                                            ? 'bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-300 border border-blue-100 dark:border-blue-800' 
-                                            : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'
-                                        }`}
-                                    >
-                                        <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs flex-shrink-0 ${
-                                            activeSection === idx ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700'
-                                        }`}>
-                                            {idx + 1}
-                                        </div>
-                                        <span className="truncate">{section.title}</span>
-                                        {idx < activeSection && (
-                                            <svg className="w-4 h-4 text-green-500 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                                        )}
-                                    </button>
-                                ))}
+                    {/* Sidebar - Modules */}
+                    <div className="w-80 border-r dark:border-gray-700 bg-gray-50 dark:bg-gray-900 flex-shrink-0 flex flex-col hidden md:flex">
+                        <div className="p-6 border-b dark:border-gray-700">
+                            <div className="flex space-x-1 bg-gray-200 dark:bg-gray-800 p-1 rounded-lg">
+                                <button 
+                                    onClick={() => setActiveTab('content')}
+                                    className={`flex-1 py-1.5 text-sm font-bold rounded-md transition ${activeTab === 'content' ? 'bg-white dark:bg-gray-700 shadow text-blue-600' : 'text-gray-500'}`}
+                                >
+                                    Modules
+                                </button>
+                                <button 
+                                    onClick={() => setActiveTab('resources')}
+                                    className={`flex-1 py-1.5 text-sm font-bold rounded-md transition ${activeTab === 'resources' ? 'bg-white dark:bg-gray-700 shadow text-blue-600' : 'text-gray-500'}`}
+                                >
+                                    Resources
+                                </button>
                             </div>
+                        </div>
+
+                        <div className="overflow-y-auto flex-grow p-4">
+                            {activeTab === 'content' ? (
+                                <div className="space-y-2">
+                                    {course.sections.map((section, idx) => (
+                                        <button
+                                            key={idx}
+                                            onClick={() => setActiveSection(idx)}
+                                            className={`w-full text-left p-4 rounded-xl text-sm font-medium transition-all flex items-start gap-3 group ${
+                                                activeSection === idx 
+                                                ? 'bg-blue-600 text-white shadow-lg shadow-blue-200 dark:shadow-none' 
+                                                : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 border border-gray-100 dark:border-gray-700'
+                                            }`}
+                                        >
+                                            <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5 ${
+                                                activeSection === idx ? 'bg-white text-blue-600' : 'bg-gray-100 dark:bg-gray-700'
+                                            }`}>
+                                                {idx + 1}
+                                            </div>
+                                            <div className="flex-grow">
+                                                <span className="block leading-snug">{section.title}</span>
+                                                <span className={`text-xs mt-1 block ${activeSection === idx ? 'text-blue-100' : 'text-gray-400'}`}>
+                                                    {Math.ceil(section.body.length / 300)} min read
+                                                </span>
+                                            </div>
+                                            {idx < activeSection && (
+                                                <svg className={`w-5 h-5 ${activeSection === idx ? 'text-blue-200' : 'text-green-500'}`} fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
+                                            )}
+                                        </button>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="space-y-3">
+                                    {course.resources && course.resources.length > 0 ? (
+                                        course.resources.map((res, idx) => (
+                                            <a 
+                                                key={idx} 
+                                                href="#" 
+                                                className="block p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl hover:border-blue-400 transition group"
+                                            >
+                                                <div className="flex items-center gap-3">
+                                                    <span className="text-2xl">{getResourceIcon(res.type)}</span>
+                                                    <div>
+                                                        <p className="font-bold text-gray-800 dark:text-gray-200 text-sm group-hover:text-blue-600">{res.title}</p>
+                                                        <p className="text-xs text-gray-500 uppercase mt-1">{res.type}</p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        ))
+                                    ) : (
+                                        <p className="text-sm text-center text-gray-500 mt-10">No additional resources.</p>
+                                    )}
+                                </div>
+                            )}
                         </div>
                     </div>
 
                     {/* Main Content */}
-                    <div id="course-content" className="flex-1 overflow-y-auto p-8 md:p-12 relative bg-white dark:bg-gray-900">
-                        <div className="max-w-3xl mx-auto">
-                            <span className="text-sm font-mono text-blue-600 dark:text-blue-400 mb-2 block">
-                                Module {activeSection + 1} of {course.sections.length}
+                    <div id="course-content" className="flex-1 overflow-y-auto bg-white dark:bg-gray-900 relative scroll-smooth">
+                        <div className="max-w-4xl mx-auto p-8 md:p-12">
+                            <span className="inline-block mb-4 text-xs font-bold tracking-widest text-blue-600 dark:text-blue-400 uppercase">
+                                Lesson {activeSection + 1} of {course.sections.length}
                             </span>
-                            <h3 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-8">
+                            <h3 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-8 leading-tight border-b pb-6 dark:border-gray-800">
                                 {course.sections[activeSection].title}
                             </h3>
                             
-                            <div className="prose dark:prose-invert max-w-none text-lg leading-relaxed text-gray-700 dark:text-gray-300">
-                                {course.sections[activeSection].body.split('\n').map((paragraph, i) => (
-                                    <p key={i} className="mb-4">{paragraph}</p>
-                                ))}
+                            <div className="prose dark:prose-invert prose-lg max-w-none text-gray-700 dark:text-gray-300">
+                                {course.sections[activeSection].body.split('\n').map((paragraph, i) => {
+                                    // Detect scripts/quotes for special styling
+                                    if (paragraph.trim().startsWith('"') || paragraph.trim().startsWith('Script:') || paragraph.trim().startsWith('Template:')) {
+                                        return (
+                                            <div key={i} className="my-6 p-6 bg-gray-50 dark:bg-gray-800/50 border-l-4 border-blue-500 rounded-r-lg italic text-gray-800 dark:text-gray-200 font-medium">
+                                                {paragraph.replace(/^(Script:|Template:)/, '')}
+                                            </div>
+                                        );
+                                    }
+                                    // Detect lists
+                                    if (paragraph.trim().startsWith('- ') || paragraph.trim().match(/^\d\./)) {
+                                        return <li key={i} className="ml-4 mb-2 list-none">{paragraph}</li>
+                                    }
+                                    return <p key={i} className="mb-6 leading-8">{paragraph}</p>;
+                                })}
                             </div>
 
-                            {/* Navigation Footer inside content */}
-                            <div className="mt-12 pt-8 border-t dark:border-gray-700 flex justify-between items-center">
+                            {/* Navigation Footer */}
+                            <div className="mt-16 flex items-center justify-between pt-8 border-t border-gray-100 dark:border-gray-800">
                                 <button 
                                     onClick={() => setActiveSection(Math.max(0, activeSection - 1))}
                                     disabled={activeSection === 0}
-                                    className="text-gray-500 hover:text-gray-900 dark:hover:text-white disabled:opacity-30 font-medium"
+                                    className={`flex items-center gap-2 text-sm font-bold px-4 py-2 rounded-lg transition ${
+                                        activeSection === 0 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800'
+                                    }`}
                                 >
-                                    &larr; Previous
+                                    &larr; Previous Lesson
                                 </button>
                                 
                                 <button 
                                     onClick={handleNext}
-                                    className={`px-8 py-3 rounded-lg font-bold text-white shadow-lg transition transform hover:-translate-y-0.5 ${
+                                    className={`px-8 py-4 rounded-xl font-bold text-white shadow-xl transition-all transform hover:-translate-y-1 flex items-center gap-2 ${
                                         isCompleted ? 'bg-green-600 hover:bg-green-700' : 'bg-blue-600 hover:bg-blue-700'
                                     }`}
                                 >
-                                    {isCompleted ? 'Course Completed 🎓' : (activeSection === course.sections.length - 1 ? 'Finish Course' : 'Next Lesson &rarr;')}
+                                    {isCompleted ? (
+                                        <>Course Completed <span className="text-xl">🎓</span></>
+                                    ) : (
+                                        <>
+                                            {activeSection === course.sections.length - 1 ? 'Finish Course' : 'Next Lesson'} 
+                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                                        </>
+                                    )}
                                 </button>
                             </div>
                         </div>
@@ -132,9 +211,9 @@ const CourseViewer: React.FC<CourseViewerProps> = ({ course, onClose }) => {
                 </div>
                 
                 {/* Progress Bar */}
-                <div className="h-1 bg-gray-100 dark:bg-gray-800 w-full">
+                <div className="h-1.5 bg-gray-100 dark:bg-gray-800 w-full">
                     <div 
-                        className="h-full bg-blue-600 transition-all duration-500" 
+                        className="h-full bg-gradient-to-r from-blue-500 to-purple-600 transition-all duration-500 ease-out" 
                         style={{ width: `${isCompleted ? 100 : ((activeSection + 1) / course.sections.length) * 100}%` }}
                     ></div>
                 </div>

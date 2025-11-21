@@ -870,7 +870,7 @@
     "courses": {
         "c1": { 
             "title": "Mastering LinkedIn for Insurance", 
-            "desc": "Optimize your profile to attract high-value commercial clients.", 
+            "desc": "Optimize your profile to attract high-value commercial clients and network effectively.", 
             "tag": "Social Selling", 
             "duration": "15m",
             "sections": [
@@ -880,12 +880,20 @@
                 },
                 {
                     "title": "Profile Optimization Checklist",
-                    "body": "1. Headline: Don't just say 'Insurance Agent'. Use 'Risk Advisor for SMBs' or 'Protecting Families'.\n2. Photo: Use the AI Headshot tool in this dashboard to get a professional look.\n3. About Section: Write in the first person. Tell a story about *why* you help people, not just *what* you sell.\n4. Featured Section: Upload case studies or client testimonials."
+                    "body": "1. Headline: Don't just say 'Insurance Agent'. Use 'Risk Advisor for SMBs' or 'Protecting Families from Financial Ruin'.\n2. Photo: Use the AI Headshot tool in this dashboard to get a professional look.\n3. About Section: Write in the first person. Tell a story about *why* you help people, not just *what* you sell.\n4. Featured Section: Upload case studies or client testimonials."
                 },
                 {
                     "title": "Engagement Strategy",
                     "body": "Spend 10 minutes a day commenting on posts by your target prospects. Do not pitch immediately. Add value to the conversation. \n\nExample: If a business owner posts about expansion, comment 'Congratulations! Exciting growth. Hope the new premises serves you well.'."
+                },
+                {
+                    "title": "Template: Connection Request for CEO",
+                    "body": "Template: 'Hi [Name], I saw your recent post about [Topic]. I specialize in risk management for companies in your sector and would love to connect. No pitch, just networking.'"
                 }
+            ],
+            "resources": [
+                { "title": "LinkedIn Profile Audit Checklist", "type": "pdf" },
+                { "title": "5 Connection Request Templates", "type": "template" }
             ]
         },
         "c2": { 
@@ -905,7 +913,15 @@
                 {
                     "title": "Multi-Channel Approach",
                     "body": "Don't rely on just one channel. If they don't answer the phone, they might reply to a WhatsApp. Mix your methods to find their preferred communication style."
+                },
+                {
+                    "title": "Template: The 'Breakup' Email",
+                    "body": "Template: 'Hi [Name], I haven't heard back, so I assume you've found coverage elsewhere or this isn't a priority right now. I'll close your file to stop bothering you. If you need me in the future, I'm here.'"
                 }
+            ],
+            "resources": [
+                { "title": "7-Day Follow-up Cadence Calendar", "type": "pdf" },
+                { "title": "Email Scripts for Unresponsive Leads", "type": "template" }
             ]
         },
         "c3": { 
@@ -925,7 +941,15 @@
                 {
                     "title": "Technical Basics",
                     "body": "You don't need a studio. \n- Good lighting (face a window).\n- Clear audio (use headphones with a mic).\n- Stable camera (prop up your phone).\n\n Authenticity wins over production value."
+                },
+                {
+                    "title": "Script: 30-Second Educational Reel",
+                    "body": "Script: 'Does your home insurance cover water damage from a burst pipe? Many don't! Check your policy for 'Water Backup' coverage today. DM me for a free review.'"
                 }
+            ],
+            "resources": [
+                { "title": "Video Script Planner", "type": "pdf" },
+                { "title": "Top 10 Video Hooks for Insurance", "type": "template" }
             ]
         },
         "c4": { 
@@ -946,6 +970,9 @@
                     "title": "Data Privacy",
                     "body": "Never share client names or identifiable details in social posts without explicit written consent. Even 'My client John from Athens' can be too revealing."
                 }
+            ],
+            "resources": [
+                { "title": "Social Media Compliance Checklist", "type": "pdf" }
             ]
         },
         "c5": { 
@@ -961,7 +988,15 @@
                 {
                     "title": "Lead Magnets",
                     "body": "Create a simple PDF checklist (e.g., 'Home Safety Checklist'). Offer it for free in exchange for an email address. \n\nUse the Microsite Builder to create a landing page for this."
+                },
+                {
+                    "title": "Pro Tip: The 'Double Opt-In'",
+                    "body": "When someone comments 'Info', reply publicly 'Sent you a DM!' and then message them. This boosts the post's algorithm ranking."
                 }
+            ],
+            "resources": [
+                { "title": "DM Scripts for New Followers", "type": "template" },
+                { "title": "Lead Magnet Ideas List", "type": "pdf" }
             ]
         },
         "c6": { 
@@ -977,7 +1012,14 @@
                 {
                     "title": "Visual Consistency",
                     "body": "Use the same headshot across LinkedIn, WhatsApp, and email. Use consistent colors in your posts. This builds subconscious recognition."
+                },
+                {
+                    "title": "Building Authority",
+                    "body": "Publish articles on local news sites or LinkedIn Pulse about local risks (e.g., flood zones in your city). Position yourself as the local expert."
                 }
+            ],
+            "resources": [
+                { "title": "Brand Voice Worksheet", "type": "pdf" }
             ]
         },
         "c7": { 
@@ -994,6 +1036,9 @@
                     "title": "Using AgentOS Tools",
                     "body": "Use the Social Composer in this dashboard. It has pre-built AI prompts tuned for insurance compliance and engagement. \n\nAlways review AI output before posting."
                 }
+            ],
+            "resources": [
+                { "title": "20 Copy-Paste AI Prompts for Agents", "type": "pdf" }
             ]
         },
         "c8": { 
@@ -1009,7 +1054,14 @@
                 {
                     "title": "The Value Pivot",
                     "body": "Shift the conversation from Cost to Value. \n\n'For only €5 more per month, you get a dedicated agent (me) who will handle the paperwork if you crash. Is your time worth more than €5?'"
+                },
+                {
+                    "title": "Script: The 'Protection' Rebuttal",
+                    "body": "Script: 'I understand price is important. But insurance isn't about the lowest price today, it's about the check you receive on your worst day. Let's make sure that check is big enough.'"
                 }
+            ],
+            "resources": [
+                { "title": "Objection Handling Cheat Sheet", "type": "pdf" }
             ]
         },
         "c9": { 
@@ -1025,7 +1077,15 @@
                 {
                     "title": "Trigger Events",
                     "body": "Set up automation rules: \n- 3 months after Auto policy start: Send 'Home Insurance Discount' email.\n- Client birthday: Send greeting + 'Life Insurance Review' offer."
+                },
+                {
+                    "title": "The Annual Review",
+                    "body": "Automate a 'Policy Review' email 45 days before renewal. This isn't just about retention; it's a prime cross-sell opportunity."
                 }
+            ],
+            "resources": [
+                { "title": "Cross-Sell Email Templates", "type": "template" },
+                { "title": "Automation Logic Flowchart", "type": "pdf" }
             ]
         },
         "c10": { 
@@ -1046,6 +1106,10 @@
                     "title": "Local Keywords",
                     "body": "In your website bio, mention your city and neighborhood. 'Insurance Agent in Glyfada' helps you rank when locals search 'insurance near me'."
                 }
+            ],
+            "resources": [
+                { "title": "Google Business Profile Setup Guide", "type": "pdf" },
+                { "title": "Review Request Email Template", "type": "template" }
             ]
         }
     },
