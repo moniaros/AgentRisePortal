@@ -1,9 +1,12 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { useLocalization } from '../../hooks/useLocalization';
-import { BlockType } from '../../types';
+import { BlockType, MicrositeBlock } from '../../types';
+import GenerateSiteModal from './GenerateSiteModal';
 
 interface BuilderControlsProps {
     onOpenSettings: () => void;
+    onSetBlocks: (blocks: MicrositeBlock[]) => void;
     // onAddBlock: (type: BlockType) => void;
 }
 
@@ -24,11 +27,24 @@ const blockTypes: { type: BlockType, label: string }[] = [
     { type: 'downloads', label: 'Downloads' },
 ];
 
-const BuilderControls: React.FC<BuilderControlsProps> = ({ onOpenSettings }) => {
+const BuilderControls: React.FC<BuilderControlsProps> = ({ onOpenSettings, onSetBlocks }) => {
     const { t } = useLocalization();
+    const [isAIModalOpen, setIsAIModalOpen] = useState(false);
 
     return (
         <div className="space-y-6">
+            {/* AI Generator Banner */}
+            <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-4 rounded-lg shadow-md text-white text-center">
+                <h3 className="font-bold text-sm mb-1">Start with AI</h3>
+                <p className="text-xs text-blue-100 mb-3">Generate a complete site in seconds.</p>
+                <button 
+                    onClick={() => setIsAIModalOpen(true)}
+                    className="w-full py-2 px-3 bg-white text-blue-600 text-xs font-bold rounded hover:bg-blue-50 transition flex items-center justify-center gap-2"
+                >
+                    <span>🪄</span> Generate Site
+                </button>
+            </div>
+
             <div>
                 <h3 className="text-lg font-semibold mb-2">{t('micrositeBuilder.siteSettings')}</h3>
                 <button 
@@ -53,6 +69,12 @@ const BuilderControls: React.FC<BuilderControlsProps> = ({ onOpenSettings }) => 
                     ))}
                 </div>
             </div>
+
+            <GenerateSiteModal 
+                isOpen={isAIModalOpen} 
+                onClose={() => setIsAIModalOpen(false)} 
+                onGenerate={onSetBlocks} 
+            />
         </div>
     );
 };

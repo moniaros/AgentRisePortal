@@ -70,6 +70,7 @@ export const usePipelineData = () => {
         // If stage is 'won', log a conversion event
         if (newStage === 'won' && updatedOpportunity) {
             const newConversion: Conversion = {
+                id: `conv_${Date.now()}`,
                 date: new Date().toISOString(),
                 kind: 'won',
                 value: updatedOpportunity.value,

@@ -1,4 +1,3 @@
-
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 
 interface Props {
@@ -10,7 +9,6 @@ interface State {
   error?: Error;
 }
 
-// FIX: The class must extend React.Component to be a valid class component and have access to `this.props`.
 class ErrorBoundary extends Component<Props, State> {
   state: State = {
     hasError: false,
