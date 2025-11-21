@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useLocalization } from '../../hooks/useLocalization';
 import { GoogleGenAI } from '@google/genai';
@@ -95,14 +94,19 @@ Tone: Trustworthy, Professional, Community-Oriented, and Responsive.`;
 
             const response = await ai.models.generateContent({
                 model: 'gemini-2.5-flash',
-                contents: prompt,
+                contents: [{ parts: [{ text: prompt }] }],
                 config: {
                     systemInstruction: systemInstruction,
                     responseMimeType: 'application/json',
                 }
             });
 
-            const jsonStr = response.text;
+            let jsonStr = response.text;
+            // Sanitize JSON if the model returns markdown blocks
+            if (jsonStr) {
+                jsonStr = jsonStr.replace(/^```json\s*/, '').replace(/^```\s*/, '').replace(/\s*```$/, '');
+            }
+
             const blocks = JSON.parse(jsonStr || '[]');
             
             // Ensure unique IDs
@@ -114,9 +118,23 @@ Tone: Trustworthy, Professional, Community-Oriented, and Responsive.`;
             onGenerate(validBlocks);
             onClose();
 
-        } catch (err) {
+        } catch (err: any) {
             console.error("Site generation failed:", err);
-            setError("Failed to generate site. Please try again.");
+            let errorMessage = "Failed to generate site. Please try again.";
+            
+            // Robust check for Quota Exceeded / 429 Resource Exhausted
+            if (
+                err.status === 429 || 
+                err.response?.status === 429 || 
+                err.error?.code === 429 ||
+                err.message?.includes('429') || 
+                err.message?.includes('RESOURCE_EXHAUSTED') ||
+                err.message?.includes('quota')
+            ) {
+                errorMessage = "AI Usage Limit Reached (Quota Exceeded). Please try again later.";
+            }
+            
+            setError(errorMessage);
         } finally {
             setIsGenerating(false);
         }
@@ -142,7 +160,7 @@ Tone: Trustworthy, Professional, Community-Oriented, and Responsive.`;
                         className="w-full p-3 border rounded-md dark:bg-gray-700 dark:border-gray-600 h-64 focus:ring-2 focus:ring-blue-500 text-sm leading-relaxed font-mono"
                         placeholder="Describe your agency..."
                     />
-                    {error && <p className="text-red-500 text-sm">{error}</p>}
+                    {error && <p className="text-red-500 text-sm font-medium">{error}</p>}
                 </div>
                 <div className="p-4 bg-gray-50 dark:bg-gray-900 flex justify-end gap-2 border-t dark:border-gray-700">
                     <button onClick={onClose} disabled={isGenerating} className="px-4 py-2 bg-gray-200 dark:bg-gray-600 rounded-md hover:bg-gray-300">
