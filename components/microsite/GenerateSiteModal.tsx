@@ -122,15 +122,18 @@ Tone: Trustworthy, Professional, Community-Oriented, and Responsive.`;
             console.error("Site generation failed:", err);
             let errorMessage = "Failed to generate site. Please try again.";
             
-            // Robust check for Quota Exceeded / 429 Resource Exhausted
-            if (
-                err.status === 429 || 
-                err.response?.status === 429 || 
-                err.error?.code === 429 ||
-                err.message?.includes('429') || 
-                err.message?.includes('RESOURCE_EXHAUSTED') ||
-                err.message?.includes('quota')
-            ) {
+            // Check for Quota Exceeded / 429 Resource Exhausted
+            const errorStr = JSON.stringify(err);
+            const isQuotaError = 
+                err?.status === 429 || 
+                err?.response?.status === 429 || 
+                err?.error?.code === 429 || 
+                err?.message?.includes('429') || 
+                err?.message?.includes('RESOURCE_EXHAUSTED') ||
+                errorStr.includes('RESOURCE_EXHAUSTED') ||
+                errorStr.includes('"code":429');
+
+            if (isQuotaError) {
                 errorMessage = "AI Usage Limit Reached (Quota Exceeded). Please try again later.";
             }
             
