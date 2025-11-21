@@ -72,102 +72,93 @@
     },
     "courses": {
       "c1": {
-        "title": "Mastering LinkedIn for Insurance",
-        "desc": "Optimize your profile to attract high-value commercial clients and network effectively.",
+        "title": "LinkedIn: The Modern Cold Call",
+        "desc": "Move beyond the digital resume. Learn to use Boolean search to find high-value commercial leads and optimizing your profile for conversion.",
         "tag": "Social Selling",
-        "duration": "15m",
+        "duration": "25m",
         "sections": [
           {
-            "title": "The Power of a Personal Brand",
-            "body": "LinkedIn is the premier B2B networking tool. For insurance agents, it is not a resume; it is a landing page. Your profile must answer one question for the prospect immediately: 'Can this person solve my risk problems?'"
+            "title": "The Profile Funnel",
+            "body": "Your profile is not a resume; it is a landing page. The banner image is your billboard—use it to state your value proposition, not just a generic cityscape. Your headline must answer 'What problem do I solve?'\n\nPro Tip: Change your 'Connect' button to 'Follow' to build an audience without hitting connection limits."
           },
           {
-            "title": "Optimizing Your Headline",
-            "body": "Avoid generic titles like 'Insurance Agent at XYZ'. Instead, focus on the value you provide. \n\nTemplate: [Role] | Helping [Target Audience] with [Specific Result]. \n\nExample: 'Risk Advisor | Helping Manufacturing Businesses Reduce Liability & Premium Costs'."
+            "title": "Advanced Lead Finding",
+            "body": "Stop scrolling and start searching. Use Boolean logic to find decision-makers.\n\nTry this search string in LinkedIn:\nTemplate: (Owner OR Founder OR CEO) AND (Construction OR Manufacturing) AND 'Athens' NOT 'Assistant'\n\nThis filters out gatekeepers and targets the check-writers directly."
           },
           {
-            "title": "The Connection Strategy",
-            "body": "Never send a connection request without a note. Never pitch in the first message. Your goal is to start a conversation, not close a sale immediately."
-          },
-          {
-            "title": "Script: The 'No-Pitch' Connection",
-            "body": "Script: Hi [Name], I've been following [Company Name]'s growth in the [Industry] sector. I share insights on risk management for businesses like yours and would love to connect. No sales pitch, just networking."
+            "title": "The Connection Request",
+            "body": "Generic requests get ignored. Contextual requests get accepted. Never pitch in the invite.\n\nScript: Hi [Name], I noticed we're both connected to [Mutual Contact] and I've been following [Company]'s recent expansion in [Location]. I share insights on risk management for growing construction firms and would love to connect. No sales pitch."
           }
         ],
         "resources": [
-          { "title": "LinkedIn Profile Audit Checklist", "type": "pdf" },
-          { "title": "5 Connection Request Templates", "type": "template" }
+          { "title": "Profile Optimization Checklist", "type": "pdf" },
+          { "title": "Boolean Search Cheat Sheet", "type": "pdf" }
         ]
       },
       "c2": {
-        "title": "The Art of Digital Follow-up",
-        "desc": "Perfecting your email and SMS cadence to convert leads without spamming.",
+        "title": "The Perfect Follow-up Cadence",
+        "desc": "Stop 'checking in'. Learn the 7-touch value-add cadence that doubles conversion rates without annoying prospects.",
         "tag": "Sales Ops",
-        "duration": "12m",
-        "sections": [
-          {
-            "title": "The Rule of 5",
-            "body": "80% of sales require 5 follow-up calls after the meeting. 44% of sales people give up after one follow-up. Persistence wins."
-          },
-          {
-            "title": "Omnichannel Cadence",
-            "body": "Don't just call. Mix your methods. Day 1: Call + Email. Day 2: SMS. Day 4: Email (Value Add). Day 7: Call + Voicemail."
-          },
-          {
-            "title": "Script: The Value-Add Email",
-            "body": "Template: Hi [Name], I saw this article about [Industry Trend] and thought of our conversation regarding your liability coverage. Worth a read: [Link]. Let me know if you have questions."
-          },
-          {
-            "title": "Script: The 'Breakup' Email",
-            "body": "Template: Hi [Name], I haven't heard back, so I assume you've found coverage elsewhere or this isn't a priority right now. I'll close your file to stop bothering you. If you need me in the future, I'm here."
-          }
-        ],
-        "resources": [
-          { "title": "7-Day Follow-up Cadence Calendar", "type": "pdf" },
-          { "title": "Email Scripts for Unresponsive Leads", "type": "template" }
-        ]
-      },
-      "c3": {
-        "title": "Video Marketing 101",
-        "desc": "Build trust instantly using short-form video on Instagram and TikTok.",
-        "tag": "Marketing",
         "duration": "20m",
         "sections": [
           {
-            "title": "Why Video Works",
-            "body": "Video builds trust at scale. People buy from people. A 60-second video explaining a policy exclusion does more for your credibility than 10 text posts."
+            "title": "The Philosophy of Value",
+            "body": "Every touchpoint must 'deposit' value before you 'withdraw' a request for a meeting. If you are just 'checking in', you are checking out."
           },
           {
-            "title": "Simple Setup",
-            "body": "You do not need a studio. You need: \n1. Natural lighting (face a window). \n2. Decent audio (use earbuds with a mic). \n3. A steady hand (prop your phone up)."
+            "title": "The 14-Day Loop",
+            "body": "Day 1: Call + Email (The Hook).\nDay 3: LinkedIn Message (The Context).\nDay 5: Email (The Asset - send a relevant article/PDF).\nDay 8: Call (No Voicemail).\nDay 10: Video Message (The Personal Touch).\nDay 14: The Breakup Email."
           },
           {
-            "title": "Script: The 'Did You Know?' Reel",
-            "body": "Script: Did you know your standard home policy usually DOESN'T cover water backup from sewers? One storm could cost you $20k. Check your policy for 'Water Backup' coverage today. DM me for a free review."
+            "title": "The 'Buried Email' Tactic",
+            "body": "When a prospect goes ghost after a quote:\n\nScript: Subject: Buried?\nHi [Name], I haven't heard back so I'm assuming this isn't a priority right now or my previous email got buried. Should I close your file for this month?"
           }
         ],
         "resources": [
-          { "title": "Video Script Planner", "type": "pdf" },
-          { "title": "10 Viral Hooks for Insurance", "type": "template" }
+          { "title": "Cadence Calendar Template", "type": "template" },
+          { "title": "5 Email Scripts that Convert", "type": "pdf" }
+        ]
+      },
+      "c3": {
+        "title": "Video Prospecting Mastery",
+        "desc": "Break through the noise. How to record and send 1:1 personalized videos that get 3x higher response rates.",
+        "tag": "Marketing",
+        "duration": "18m",
+        "sections": [
+          {
+            "title": "Why Video Works",
+            "body": "Text is easily ignored. A human face is not. Video establishes trust before the first handshake. It proves you are real, local, and professional."
+          },
+          {
+            "title": "The 30-Second Structure",
+            "body": "1. The Hook (0-5s): Use a whiteboard with their name or mention a specific problem they have.\n2. The Value (5-20s): 'I noticed your fleet has expanded, which usually impacts premiums by...'\n3. The Ask (20-30s): 'I have an idea to mitigate this. Open to a 5-min chat?'"
+          },
+          {
+            "title": "Tools & Setup",
+            "body": "You don't need a studio. Good lighting (window facing you) and decent audio (airpods) are sufficient. Use tools like Loom or Vidyard."
+          }
+        ],
+        "resources": [
+          { "title": "Video Script Planner", "type": "pdf" }
         ]
       },
       "c4": {
-        "title": "Digital Compliance Essentials",
-        "desc": "Navigating regulatory requirements when posting online.",
+        "title": "Digital Compliance & Ethics",
+        "desc": "Protect your license. What you can and cannot say on social media regarding premiums, guarantees, and claims.",
         "tag": "Compliance",
-        "duration": "10m",
+        "duration": "15m",
         "sections": [
           {
-            "title": "No Guarantees",
-            "body": "Never use absolute words like 'Best', 'Cheapest', 'Guaranteed Returns', or 'Always covers'. Insurance is conditional."
+            "title": "The 'Two-Click' Rule",
+            "body": "In many jurisdictions, your license number and official business name must be visible within 'two clicks' of any post. Ideally, put them in your bio."
           },
           {
-            "title": "Privacy First",
-            "body": "Never share client names, policy numbers, or identifiable claim details in 'success stories' without explicit written consent."
+            "title": "Forbidden Words",
+            "body": "Avoid absolutes. Never use: 'Best price', 'Guaranteed coverage', 'Free', or 'All-inclusive'.\n\nInstead use: 'Competitive rates', 'Comprehensive options', 'Quote at no cost'."
           },
           {
-            "title": "Disclaimers",
-            "body": "Always have a link in your bio to your official privacy policy and licensing information."
+            "title": "Client Privacy",
+            "body": "Never post photos of a client's car accident or house fire without explicit, written permission, even if you blur the license plate. It creates a perception of exploiting tragedy."
           }
         ],
         "resources": [
@@ -175,42 +166,41 @@
         ]
       },
       "c5": {
-        "title": "From Like to Lead",
-        "desc": "Strategies to turn social media engagement into bindable quotes.",
-        "tag": "Conversion",
-        "duration": "15m",
+        "title": "Community Engagement Strategy",
+        "desc": "Don't just post—engage. The '5-3-1' rule for building a local digital reputation.",
+        "tag": "Branding",
+        "duration": "20m",
         "sections": [
           {
-            "title": "The DM Strategy",
-            "body": "If someone likes your post about 'New Parent Life Insurance', don't just ignore it. Engage."
+            "title": "The Algorithm Loves Comments",
+            "body": "Posting content is only 20% of the job. Commenting on others' posts is 80%. It puts your name in front of their audience."
           },
           {
-            "title": "Script: The Soft DM",
-            "body": "Script: Thanks for the love on the life insurance post! Are you exploring options for your family, or just browsing? No pressure."
-          },
-          {
-            "title": "The Double Opt-In",
-            "body": "When someone comments 'Info', reply publicly: 'Sent you a DM!' Then send the DM. This boosts algorithm visibility."
+            "title": "The 5-3-1 Rule",
+            "body": "Every day:\n- Like 5 posts from local businesses/prospects.\n- Comment meaningfully on 3 posts (more than just 'Great!').\n- Share 1 post relevant to your niche.\n\nPro Tip: Join local 'Moms' or 'Neighborhood' groups. Don't sell. Just answer questions about safety or local events."
           }
         ],
         "resources": [
-          { "title": "DM Scripts for New Followers", "type": "template" },
-          { "title": "Lead Magnet Ideas List", "type": "pdf" }
+          { "title": "Daily Engagement Tracker", "type": "template" }
         ]
       },
       "c6": {
-        "title": "Personal Branding for Agents",
-        "desc": "How to differentiate yourself from direct writers and aggregators.",
+        "title": "Defining Your Agent Persona",
+        "desc": "Are you the 'Cheapest Price' agent or the 'Trusted Advisor'? How to position yourself for high-value clients.",
         "tag": "Branding",
-        "duration": "18m",
+        "duration": "22m",
         "sections": [
           {
-            "title": "Your USP",
-            "body": "You are not selling a policy. You are selling advocacy. Why should they choose YOU over a website? Because you are there when the house burns down."
+            "title": "The Race to the Bottom",
+            "body": "If you market on price ('I can save you money'), you will lose clients on price next year. You become a commodity."
+          },
+          {
+            "title": "The Trusted Advisor",
+            "body": "Position yourself as a Risk Manager. Talk about protection, assets, and legacy. This attracts clients who value coverage over saving €5/month."
           },
           {
             "title": "Visual Identity",
-            "body": "Use the same professional headshot on LinkedIn, WhatsApp, and Email. Use consistent colors. This builds subconscious trust."
+            "body": "Consistency builds trust. Use the same headshot across LinkedIn, WhatsApp, and Email. Use a consistent color palette. Blue conveys trust; Red conveys urgency/alert."
           }
         ],
         "resources": [
@@ -218,84 +208,91 @@
         ]
       },
       "c7": {
-        "title": "AI for Content Creation",
-        "desc": "Leveraging GenAI to write posts, emails, and scripts 10x faster.",
+        "title": "AI for Insurance Underwriting",
+        "desc": "Using GenAI to summarize risk reports and explain complex exclusions to clients simply.",
         "tag": "Productivity",
         "duration": "15m",
         "sections": [
           {
-            "title": "Prompt Engineering",
-            "body": "Garbage in, garbage out. Be specific. 'Write a post about auto insurance' is bad. 'Write a funny, empathetic post about a flat tire in the rain emphasizing Roadside Assistance' is good."
+            "title": "Simplifying Legalese",
+            "body": "Clients don't read 50-page policies. Use AI to summarize them.\n\nPrompt: 'Act as an insurance expert. Summarize the exclusions in this text for a homeowner in simple language. Highlight water damage and earthquake specifics.'"
           },
           {
-            "title": "Prompt: Educational Post",
-            "body": "Prompt: Act as an insurance expert. Explain 'Umbrella Insurance' to a 5th grader. Use a metaphor about rain. Keep it under 200 words."
+            "title": "Drafting Explanations",
+            "body": "Use AI to draft email responses to complex questions like 'Why did my premium go up?'.\n\nPrompt: 'Explain insurance inflation and increased cost of materials to a client whose home premium increased by 15%, maintaining an empathetic but professional tone.'"
           }
         ],
         "resources": [
-          { "title": "20 Copy-Paste AI Prompts for Agents", "type": "pdf" }
+          { "title": "20 AI Prompts for Agents", "type": "pdf" }
         ]
       },
       "c8": {
-        "title": "Handling Price Objections",
-        "desc": "Scripts and techniques for value-based selling in chat/messenger.",
+        "title": "Overcoming Price Objections",
+        "desc": "Master the 'Value vs. Cost' conversation. Scripts to save the deal when you aren't the cheapest option.",
         "tag": "Sales Skills",
-        "duration": "14m",
+        "duration": "25m",
         "sections": [
           {
-            "title": "Apples to Apples",
-            "body": "When a client says 'I found it cheaper online', asking 'Does that quote include glass breakage and legal protection? Let's compare the fine print.' shifts the focus from price to coverage."
+            "title": "The 'Apples to Oranges' Trap",
+            "body": "Competitors often strip coverage to lower price. Your job is to find what's missing."
           },
           {
-            "title": "Script: The 'Protection' Rebuttal",
-            "body": "Script: I understand price is key. But insurance isn't about the lowest monthly cost; it's about the check you receive on your worst day. Let's make sure that check is big enough."
+            "title": "The Feel-Felt-Found Method",
+            "body": "Script: 'I understand you feel the premium is higher than expected. Many of my long-term clients felt the same way initially. However, they found that when they actually had a claim, the €10 difference per month saved them €5,000 in deductibles.'"
+          },
+          {
+            "title": "Reframing to Daily Cost",
+            "body": "Break the difference down. 'The difference is €100 a year. That is 27 cents a day. Is it worth risking your assets for less than the cost of a coffee?'"
           }
         ],
         "resources": [
-          { "title": "Objection Handling Cheat Sheet", "type": "pdf" }
+          { "title": "Objection Handling Battlecard", "type": "pdf" }
         ]
       },
       "c9": {
-        "title": "Automated Cross-Selling",
-        "desc": "Setting up email workflows to round out accounts automatically.",
+        "title": "The Lifecycle Cross-Sell",
+        "desc": "Don't just sell a policy; insure a life. How to pivot from Auto to Life, and Home to Umbrella.",
         "tag": "Retention",
-        "duration": "12m",
-        "sections": [
-          {
-            "title": "The Pivot",
-            "body": "Every auto client lives somewhere. Every home client drives. The easiest sale is the current client."
-          },
-          {
-            "title": "Trigger Events",
-            "body": "Set up automations: 3 months after Auto policy start -> Send 'Home Insurance Discount' email. Birthday -> Send 'Life Insurance Review' offer."
-          }
-        ],
-        "resources": [
-          { "title": "Cross-Sell Email Templates", "type": "template" },
-          { "title": "Automation Logic Flowchart", "type": "pdf" }
-        ]
-      },
-      "c10": {
-        "title": "Local SEO Mastery",
-        "desc": "Dominating Google Maps to drive local foot traffic and calls.",
-        "tag": "SEO",
         "duration": "20m",
         "sections": [
           {
-            "title": "Google Business Profile",
-            "body": "Claim it. Verify it. Fill out every field. Upload photos of your team and office."
+            "title": "Trigger Events",
+            "body": "Don't cross-sell randomly. Wait for triggers: Marriage, New Child, New Home, New Job."
           },
           {
-            "title": "The Review Engine",
-            "body": "Reviews are the #1 ranking factor. Ask every happy client for a review immediately after binding the policy."
+            "title": "The 'Gap' Pivot",
+            "body": "When reviewing an auto policy: 'I see you have high liability limits here, which is smart. But have you considered an Umbrella policy? It protects your future earnings for less than the cost of a pizza.'"
           },
           {
-            "title": "Script: Review Request",
-            "body": "Script: It was a pleasure helping you today! If you're happy with my service, a quick 5-star review helps my small business grow. Here is the link: [Link]"
+            "title": "Script: The Annual Review",
+            "body": "Script: 'We haven't reviewed your coverage in 12 months. Inflation has changed rebuilding costs. Let's make sure you aren't underinsured. It will take 10 minutes.'"
           }
         ],
         "resources": [
-          { "title": "Google Business Profile Setup Guide", "type": "pdf" }
+          { "title": "Cross-Sell Email Templates", "type": "template" }
+        ]
+      },
+      "c10": {
+        "title": "Dominate Local SEO",
+        "desc": "Get found on Google Maps. Strategies to generate 5-star reviews on autopilot.",
+        "tag": "SEO",
+        "duration": "25m",
+        "sections": [
+          {
+            "title": "Google Business Profile",
+            "body": "This is your most important digital asset. Fill it out completely. Add photos of your team, your office, and even your parking lot. Post weekly updates."
+          },
+          {
+            "title": "The Review Ask",
+            "body": "The best time to ask for a review is the moment you solve a problem or save them money.\n\nScript: 'I'm glad we could sort this out! It helps my small business a lot if you could share this experience on Google. I'll text you the link now.'"
+          },
+          {
+            "title": "Replying to Reviews",
+            "body": "Reply to every review. For positive ones, say thanks. For negative ones, take it offline immediately. 'I'm sorry to hear this. Please call me directly at [Number] so I can fix it.' This shows prospects you care."
+          }
+        ],
+        "resources": [
+          { "title": "Google Business Setup Guide", "type": "pdf" }
         ]
       }
     },
@@ -317,9 +314,9 @@
         "linkedin": {
           "title": "LinkedIn Authority",
           "checklist": [
-            "Professional Headline: Use keywords like 'Insurance Advisor' not just 'Agent'.",
+            "Headline: Use keywords like 'Risk Advisor' not just 'Agent'.",
             "About Section: Tell a story about why you protect families.",
-            "Featured Section: Pin your best client case studies."
+            "Featured: Pin your best client case studies or articles."
           ]
         },
         "instagram": {

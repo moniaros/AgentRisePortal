@@ -88,7 +88,7 @@ const CourseViewer: React.FC<CourseViewerProps> = ({ course, onClose }) => {
                                     onClick={() => setActiveTab('content')}
                                     className={`flex-1 py-1.5 text-sm font-bold rounded-md transition ${activeTab === 'content' ? 'bg-white dark:bg-gray-700 shadow text-blue-600' : 'text-gray-500'}`}
                                 >
-                                    Curriculum
+                                    {t('support.academy.modules')}
                                 </button>
                                 <button 
                                     onClick={() => setActiveTab('resources')}
@@ -170,17 +170,19 @@ const CourseViewer: React.FC<CourseViewerProps> = ({ course, onClose }) => {
                             
                             <div className="prose dark:prose-invert prose-lg max-w-none text-gray-700 dark:text-gray-300">
                                 {course.sections[activeSection].body.split('\n').map((paragraph, i) => {
-                                    // Detect scripts/quotes for special styling
-                                    if (paragraph.trim().startsWith('Script:') || paragraph.trim().startsWith('Template:') || paragraph.trim().startsWith('Prompt:')) {
-                                        const content = paragraph.replace(/^(Script:|Template:|Prompt:)\s*/i, '');
-                                        const label = paragraph.match(/^(Script|Template|Prompt):/i)?.[0] || 'Copy';
+                                    const cleanParagraph = paragraph.trim();
+                                    
+                                    // Scripts / Templates
+                                    if (cleanParagraph.startsWith('Script:') || cleanParagraph.startsWith('Template:') || cleanParagraph.startsWith('Prompt:')) {
+                                        const content = cleanParagraph.replace(/^(Script:|Template:|Prompt:)\s*/i, '');
+                                        const label = cleanParagraph.match(/^(Script|Template|Prompt):/i)?.[0] || 'Copy';
                                         
                                         return (
                                             <div key={i} className="my-8 relative group">
                                                 <div className="absolute -top-3 left-4 px-2 py-0.5 bg-blue-600 text-white text-xs font-bold uppercase rounded shadow-sm z-10">
                                                     {label.replace(':', '')}
                                                 </div>
-                                                <div className="p-6 bg-slate-50 dark:bg-slate-800/50 border-l-4 border-blue-600 rounded-r-lg text-slate-800 dark:text-slate-200 font-mono text-sm relative">
+                                                <div className="p-6 bg-slate-50 dark:bg-slate-800/50 border-l-4 border-blue-600 rounded-r-lg text-slate-800 dark:text-slate-200 font-mono text-sm relative shadow-inner">
                                                     {content}
                                                     <button 
                                                         onClick={() => handleCopy(content)}
@@ -193,16 +195,49 @@ const CourseViewer: React.FC<CourseViewerProps> = ({ course, onClose }) => {
                                             </div>
                                         );
                                     }
-                                    // Detect lists
-                                    if (paragraph.trim().startsWith('- ') || paragraph.trim().match(/^\d\./)) {
-                                        return <li key={i} className="ml-4 mb-2 list-none pl-2 border-l-2 border-gray-200 dark:border-gray-700">{paragraph}</li>
-                                    }
-                                    // Detect subheaders (simple heuristic)
-                                    if (paragraph.length < 60 && paragraph.endsWith(':')) {
-                                        return <h4 key={i} className="text-xl font-bold mt-8 mb-4 text-gray-900 dark:text-white">{paragraph}</h4>
+
+                                    // Pro Tips
+                                    if (cleanParagraph.startsWith('Pro Tip:') || cleanParagraph.startsWith('Tip:')) {
+                                        const content = cleanParagraph.replace(/^(Pro Tip:|Tip:)\s*/i, '');
+                                        return (
+                                            <div key={i} className="my-6 p-4 bg-yellow-50 dark:bg-yellow-900/10 border border-yellow-200 dark:border-yellow-800 rounded-lg flex gap-3">
+                                                <span className="text-2xl">💡</span>
+                                                <div>
+                                                    <strong className="block text-yellow-800 dark:text-yellow-200 text-sm uppercase tracking-wide mb-1">Pro Tip</strong>
+                                                    <p className="text-yellow-900 dark:text-yellow-100 text-base m-0">{content}</p>
+                                                </div>
+                                            </div>
+                                        );
                                     }
 
-                                    return <p key={i} className="mb-6 leading-8">{paragraph}</p>;
+                                    // Lists
+                                    if (cleanParagraph.startsWith('- ') || cleanParagraph.startsWith('• ')) {
+                                        return (
+                                            <div key={i} className="flex gap-3 ml-2 mb-3 items-start">
+                                                <span className="text-blue-500 mt-1.5 text-xs">●</span>
+                                                <span className="leading-7">{cleanParagraph.replace(/^[-•]\s*/, '')}</span>
+                                            </div>
+                                        )
+                                    }
+                                    
+                                    // Numbered Lists
+                                    if (cleanParagraph.match(/^\d+\./)) {
+                                         return (
+                                            <div key={i} className="flex gap-3 ml-2 mb-3 items-start">
+                                                <span className="font-bold text-blue-600 min-w-[1.5rem]">{cleanParagraph.split('.')[0]}.</span>
+                                                <span className="leading-7">{cleanParagraph.replace(/^\d+\.\s*/, '')}</span>
+                                            </div>
+                                        )
+                                    }
+
+                                    // Subheaders
+                                    if (cleanParagraph.length < 80 && cleanParagraph.endsWith(':') && !cleanParagraph.includes('Script')) {
+                                        return <h4 key={i} className="text-xl font-bold mt-10 mb-4 text-gray-900 dark:text-white flex items-center gap-2">{cleanParagraph}</h4>
+                                    }
+
+                                    if (!cleanParagraph) return <br key={i} />;
+
+                                    return <p key={i} className="mb-6 leading-8 text-lg">{cleanParagraph}</p>;
                                 })}
                             </div>
 
