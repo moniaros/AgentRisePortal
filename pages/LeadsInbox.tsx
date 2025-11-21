@@ -1,16 +1,20 @@
-import React, { useMemo } from 'react';
+
+import React, { useMemo, useState } from 'react';
 import { usePipelineData } from '../hooks/usePipelineData';
 import { useLocalization } from '../hooks/useLocalization';
 import { useNotification } from '../hooks/useNotification';
 import SkeletonLoader from '../components/ui/SkeletonLoader';
 import ErrorMessage from '../components/ui/ErrorMessage';
 import LeadRow from '../components/pipeline/LeadsInbox/LeadRow';
+import LeadQuickView from '../components/pipeline/LeadsInbox/LeadQuickView';
 import { TransactionInquiry } from '../types';
 
 const LeadsInbox: React.FC = () => {
     const { t } = useLocalization();
     const { addNotification } = useNotification();
     const { inquiries, opportunities, isLoading, error, createOpportunity } = usePipelineData();
+    
+    const [selectedInquiry, setSelectedInquiry] = useState<TransactionInquiry | null>(null);
 
     const unassignedInquiries = useMemo(() => {
         if (isLoading || !inquiries || !opportunities) return [];
@@ -23,6 +27,7 @@ const LeadsInbox: React.FC = () => {
     const handleCreateOpportunity = (inquiry: TransactionInquiry) => {
         createOpportunity(inquiry);
         addNotification(t('pipeline.opportunityCreated'), 'success');
+        setSelectedInquiry(null); // Close drawer if open
     };
 
     const renderContent = () => {
@@ -52,7 +57,8 @@ const LeadsInbox: React.FC = () => {
                     <LeadRow 
                         key={inquiry.id} 
                         inquiry={inquiry} 
-                        onCreateOpportunity={handleCreateOpportunity} 
+                        onCreateOpportunity={handleCreateOpportunity}
+                        onViewDetails={() => setSelectedInquiry(inquiry)}
                     />
                 ))}
             </div>
@@ -60,12 +66,19 @@ const LeadsInbox: React.FC = () => {
     };
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 relative">
             <div>
                 <h1 className="text-3xl font-bold text-gray-800 dark:text-white">{t('pipeline.inboxTitle')}</h1>
                 <p className="text-gray-600 dark:text-gray-400 mt-1 max-w-2xl">{t('pipeline.inboxDescription')}</p>
             </div>
             {renderContent()}
+
+            <LeadQuickView 
+                inquiry={selectedInquiry} 
+                isOpen={!!selectedInquiry} 
+                onClose={() => setSelectedInquiry(null)} 
+                onCreateOpportunity={handleCreateOpportunity} 
+            />
         </div>
     );
 };

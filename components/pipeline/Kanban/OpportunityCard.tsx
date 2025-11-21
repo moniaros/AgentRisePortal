@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useDrag } from 'react-dnd';
 import { Opportunity__EXT, Prospect } from '../../../types';
@@ -8,9 +9,10 @@ import { usePrevious } from '../../../hooks/usePrevious';
 interface OpportunityCardProps {
     opportunity: Opportunity__EXT;
     prospect?: Prospect;
+    probability?: number;
 }
 
-const OpportunityCard: React.FC<OpportunityCardProps> = ({ opportunity, prospect }) => {
+const OpportunityCard: React.FC<OpportunityCardProps> = ({ opportunity, prospect, probability = 0 }) => {
     const { t } = useLocalization();
     const [isJustUpdated, setIsJustUpdated] = useState(false);
     const prevUpdatedAt = usePrevious(opportunity.updatedAt);
@@ -53,16 +55,29 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ opportunity, prospect
             ref={drag}
             className={`p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md border-l-4 transition-all duration-300 ${borderColor} ${dynamicClasses}`}
         >
-            <h4 className="font-bold">{opportunity.title}</h4>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <h4 className="font-bold text-gray-900 dark:text-white leading-tight">{opportunity.title}</h4>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                 {prospect ? `${prospect.firstName} ${prospect.lastName}` : '...'}
             </p>
-            <p className="font-semibold text-lg my-2">€{opportunity.value.toLocaleString()}</p>
+            
+            <div className="flex justify-between items-center my-3">
+                <p className="font-semibold text-lg text-gray-800 dark:text-gray-100">€{opportunity.value.toLocaleString()}</p>
+                {probability > 0 && (
+                    <div className="flex items-center gap-1" title={`Deal Probability: ${(probability * 100).toFixed(0)}%`}>
+                        <div className="w-10 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                            <div className={`h-full ${probability > 0.5 ? 'bg-green-500' : 'bg-blue-500'}`} style={{ width: `${probability * 100}%` }}></div>
+                        </div>
+                        <span className="text-[10px] font-medium text-gray-500">{(probability * 100).toFixed(0)}%</span>
+                    </div>
+                )}
+            </div>
+
             {opportunity.nextFollowUpDate && (
-                 <p className={`text-xs font-medium ${isOverdue ? 'text-red-500' : 'text-gray-500 dark:text-gray-400'}`}>
-                    {isOverdue && <span className="font-bold">({t('pipeline.overdue')}) </span>}
-                    Follow-up: {new Date(opportunity.nextFollowUpDate).toLocaleDateString()}
-                </p>
+                 <div className={`text-xs font-medium p-1.5 rounded bg-gray-50 dark:bg-gray-700/50 flex items-center gap-2 ${isOverdue ? 'text-red-600 bg-red-50 dark:bg-red-900/20' : 'text-gray-500 dark:text-gray-400'}`}>
+                    <span>📅</span>
+                    {isOverdue && <span className="font-bold uppercase">Overdue</span>}
+                    <span>{new Date(opportunity.nextFollowUpDate).toLocaleDateString()}</span>
+                </div>
             )}
         </div>
     );
