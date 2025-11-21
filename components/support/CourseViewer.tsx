@@ -28,7 +28,7 @@ interface CourseViewerProps {
 }
 
 const CourseViewer: React.FC<CourseViewerProps> = ({ course, onClose }) => {
-    const { t, language } = useLocalization();
+    const { t } = useLocalization();
     const [activeSection, setActiveSection] = useState(0);
     const [activeTab, setActiveTab] = useState<'content' | 'resources'>('content');
     const [isCompleted, setIsCompleted] = useState(false);
@@ -49,6 +49,11 @@ const CourseViewer: React.FC<CourseViewerProps> = ({ course, onClose }) => {
             case 'video': return '🎥';
             default: return '📎';
         }
+    };
+
+    const handleCopy = (text: string) => {
+        navigator.clipboard.writeText(text);
+        // Could add a toast notification here
     };
 
     return (
@@ -83,7 +88,7 @@ const CourseViewer: React.FC<CourseViewerProps> = ({ course, onClose }) => {
                                     onClick={() => setActiveTab('content')}
                                     className={`flex-1 py-1.5 text-sm font-bold rounded-md transition ${activeTab === 'content' ? 'bg-white dark:bg-gray-700 shadow text-blue-600' : 'text-gray-500'}`}
                                 >
-                                    Modules
+                                    Curriculum
                                 </button>
                                 <button 
                                     onClick={() => setActiveTab('resources')}
@@ -94,7 +99,7 @@ const CourseViewer: React.FC<CourseViewerProps> = ({ course, onClose }) => {
                             </div>
                         </div>
 
-                        <div className="overflow-y-auto flex-grow p-4">
+                        <div className="overflow-y-auto flex-grow p-4 custom-scrollbar">
                             {activeTab === 'content' ? (
                                 <div className="space-y-2">
                                     {course.sections.map((section, idx) => (
@@ -143,7 +148,10 @@ const CourseViewer: React.FC<CourseViewerProps> = ({ course, onClose }) => {
                                             </a>
                                         ))
                                     ) : (
-                                        <p className="text-sm text-center text-gray-500 mt-10">No additional resources.</p>
+                                        <div className="text-center py-10">
+                                            <p className="text-4xl mb-2">📂</p>
+                                            <p className="text-sm text-gray-500">No additional resources available for this module.</p>
+                                        </div>
                                     )}
                                 </div>
                             )}
@@ -163,17 +171,37 @@ const CourseViewer: React.FC<CourseViewerProps> = ({ course, onClose }) => {
                             <div className="prose dark:prose-invert prose-lg max-w-none text-gray-700 dark:text-gray-300">
                                 {course.sections[activeSection].body.split('\n').map((paragraph, i) => {
                                     // Detect scripts/quotes for special styling
-                                    if (paragraph.trim().startsWith('"') || paragraph.trim().startsWith('Script:') || paragraph.trim().startsWith('Template:')) {
+                                    if (paragraph.trim().startsWith('Script:') || paragraph.trim().startsWith('Template:') || paragraph.trim().startsWith('Prompt:')) {
+                                        const content = paragraph.replace(/^(Script:|Template:|Prompt:)\s*/i, '');
+                                        const label = paragraph.match(/^(Script|Template|Prompt):/i)?.[0] || 'Copy';
+                                        
                                         return (
-                                            <div key={i} className="my-6 p-6 bg-gray-50 dark:bg-gray-800/50 border-l-4 border-blue-500 rounded-r-lg italic text-gray-800 dark:text-gray-200 font-medium">
-                                                {paragraph.replace(/^(Script:|Template:)/, '')}
+                                            <div key={i} className="my-8 relative group">
+                                                <div className="absolute -top-3 left-4 px-2 py-0.5 bg-blue-600 text-white text-xs font-bold uppercase rounded shadow-sm z-10">
+                                                    {label.replace(':', '')}
+                                                </div>
+                                                <div className="p-6 bg-slate-50 dark:bg-slate-800/50 border-l-4 border-blue-600 rounded-r-lg text-slate-800 dark:text-slate-200 font-mono text-sm relative">
+                                                    {content}
+                                                    <button 
+                                                        onClick={() => handleCopy(content)}
+                                                        className="absolute top-4 right-4 p-2 bg-white dark:bg-gray-700 rounded-md shadow-sm opacity-0 group-hover:opacity-100 transition hover:text-blue-600"
+                                                        title="Copy to clipboard"
+                                                    >
+                                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>
+                                                    </button>
+                                                </div>
                                             </div>
                                         );
                                     }
                                     // Detect lists
                                     if (paragraph.trim().startsWith('- ') || paragraph.trim().match(/^\d\./)) {
-                                        return <li key={i} className="ml-4 mb-2 list-none">{paragraph}</li>
+                                        return <li key={i} className="ml-4 mb-2 list-none pl-2 border-l-2 border-gray-200 dark:border-gray-700">{paragraph}</li>
                                     }
+                                    // Detect subheaders (simple heuristic)
+                                    if (paragraph.length < 60 && paragraph.endsWith(':')) {
+                                        return <h4 key={i} className="text-xl font-bold mt-8 mb-4 text-gray-900 dark:text-white">{paragraph}</h4>
+                                    }
+
                                     return <p key={i} className="mb-6 leading-8">{paragraph}</p>;
                                 })}
                             </div>
