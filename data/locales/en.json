@@ -1,3 +1,4 @@
+
 {
   "common": {
     "loading": "Loading...",
@@ -857,6 +858,197 @@
   "support": {
     "title": "Digital Brand Academy",
     "description": "Master the art of digital presence. Tools and training to turn your agency into a trusted brand.",
+    "academy": {
+      "title": "Digital Sales Academy",
+      "subtitle": "Level up your agency with enterprise-grade digital sales training.",
+      "modules": "Training Modules",
+      "tools": "Digital Tools",
+      "startCourse": "Start Course",
+      "readArticle": "Read Article",
+      "duration": "{minutes} min read"
+    },
+    "courses": {
+        "c1": { 
+            "title": "Mastering LinkedIn for Insurance", 
+            "desc": "Optimize your profile to attract high-value commercial clients.", 
+            "tag": "Social Selling", 
+            "duration": "15m",
+            "sections": [
+                {
+                    "title": "Why LinkedIn Matters",
+                    "body": "LinkedIn is not just a CV repository; it is the #1 B2B lead generation platform. For insurance agents, it offers a unique opportunity to connect with business owners and decision-makers. \n\nA professional presence here signals authority and trust before you even send a message."
+                },
+                {
+                    "title": "Profile Optimization Checklist",
+                    "body": "1. Headline: Don't just say 'Insurance Agent'. Use 'Risk Advisor for SMBs' or 'Protecting Families'.\n2. Photo: Use the AI Headshot tool in this dashboard to get a professional look.\n3. About Section: Write in the first person. Tell a story about *why* you help people, not just *what* you sell.\n4. Featured Section: Upload case studies or client testimonials."
+                },
+                {
+                    "title": "Engagement Strategy",
+                    "body": "Spend 10 minutes a day commenting on posts by your target prospects. Do not pitch immediately. Add value to the conversation. \n\nExample: If a business owner posts about expansion, comment 'Congratulations! Exciting growth. Hope the new premises serves you well.'."
+                }
+            ]
+        },
+        "c2": { 
+            "title": "The Art of Digital Follow-up", 
+            "desc": "Perfecting your email and SMS cadence to convert leads without spamming.", 
+            "tag": "Sales Ops",
+            "duration": "12m",
+            "sections": [
+                {
+                    "title": "The Speed to Lead",
+                    "body": "Statistics show that contacting a lead within 5 minutes increases conversion rates by 900%. \n\nUse the automation rules in AgentOS to send an immediate SMS acknowledgement while you prepare to call."
+                },
+                {
+                    "title": "The 5-Touch Rule",
+                    "body": "Most sales happen after the 5th follow-up. \n\nDay 1: Call + SMS + Email.\nDay 2: Email (Value add, e.g., an article).\nDay 3: Call (Leave voicemail).\nDay 5: SMS (Soft check-in).\nDay 7: Breakup Email ('Should I close this file?')."
+                },
+                {
+                    "title": "Multi-Channel Approach",
+                    "body": "Don't rely on just one channel. If they don't answer the phone, they might reply to a WhatsApp. Mix your methods to find their preferred communication style."
+                }
+            ]
+        },
+        "c3": { 
+            "title": "Video Marketing 101", 
+            "desc": "Build trust instantly using short-form video on Instagram and TikTok.", 
+            "tag": "Marketing",
+            "duration": "20m",
+            "sections": [
+                {
+                    "title": "Why Video?",
+                    "body": "Video builds trust faster than text. People buy from people they feel they know. A 30-second video explaining a policy clause can save hours of explaining later."
+                },
+                {
+                    "title": "Simple Content Ideas",
+                    "body": "1. 'Did you know?' series: Quick facts about coverage.\n2. 'Day in the life': Show the human side of your agency.\n3. Client Success Stories (with permission): How a claim was handled smoothly."
+                },
+                {
+                    "title": "Technical Basics",
+                    "body": "You don't need a studio. \n- Good lighting (face a window).\n- Clear audio (use headphones with a mic).\n- Stable camera (prop up your phone).\n\n Authenticity wins over production value."
+                }
+            ]
+        },
+        "c4": { 
+            "title": "Digital Compliance Essentials", 
+            "desc": "Navigating regulatory requirements when posting online.", 
+            "tag": "Compliance",
+            "duration": "10m",
+            "sections": [
+                {
+                    "title": "The Golden Rule",
+                    "body": "Never promise outcomes you cannot guarantee. Avoid words like 'Always', 'Cheapest', 'Best', or 'Guaranteed Returns'."
+                },
+                {
+                    "title": "Disclaimers",
+                    "body": "Always include a link to your official privacy policy and terms of service in your bio or post footer. \n\nWhen discussing investment-linked products, standard risk warnings are mandatory."
+                },
+                {
+                    "title": "Data Privacy",
+                    "body": "Never share client names or identifiable details in social posts without explicit written consent. Even 'My client John from Athens' can be too revealing."
+                }
+            ]
+        },
+        "c5": { 
+            "title": "From Like to Lead", 
+            "desc": "Strategies to turn social media engagement into bindable quotes.", 
+            "tag": "Conversion",
+            "duration": "15m",
+            "sections": [
+                {
+                    "title": "The Direct Message (DM) Strategy",
+                    "body": "If someone likes your post about 'New Parent Life Insurance', don't just leave it. \n\nSend a DM: 'Thanks for the love on the post! Are you exploring options for your family, or just browsing?' \nKeep it low pressure."
+                },
+                {
+                    "title": "Lead Magnets",
+                    "body": "Create a simple PDF checklist (e.g., 'Home Safety Checklist'). Offer it for free in exchange for an email address. \n\nUse the Microsite Builder to create a landing page for this."
+                }
+            ]
+        },
+        "c6": { 
+            "title": "Personal Branding for Agents", 
+            "desc": "How to differentiate yourself from direct writers and aggregators.", 
+            "tag": "Branding",
+            "duration": "18m",
+            "sections": [
+                {
+                    "title": "Your Unique Value Proposition",
+                    "body": "You are not selling a policy; you are selling peace of mind and your expertise. \n\nWhy should they choose YOU over a faceless website? \nAnswer: You advocate for them during a claim."
+                },
+                {
+                    "title": "Visual Consistency",
+                    "body": "Use the same headshot across LinkedIn, WhatsApp, and email. Use consistent colors in your posts. This builds subconscious recognition."
+                }
+            ]
+        },
+        "c7": { 
+            "title": "AI for Content Creation", 
+            "desc": "Leveraging GenAI to write posts, emails, and scripts 10x faster.", 
+            "tag": "Productivity",
+            "duration": "15m",
+            "sections": [
+                {
+                    "title": "Prompt Engineering Basics",
+                    "body": "Be specific. Instead of 'Write a post about car insurance', try: \n'Write a funny, empathetic Instagram caption about a flat tire on a rainy Tuesday, reminding people about Roadside Assistance coverage.'"
+                },
+                {
+                    "title": "Using AgentOS Tools",
+                    "body": "Use the Social Composer in this dashboard. It has pre-built AI prompts tuned for insurance compliance and engagement. \n\nAlways review AI output before posting."
+                }
+            ]
+        },
+        "c8": { 
+            "title": "Handling Price Objections", 
+            "desc": "Scripts and techniques for value-based selling in chat/messenger.", 
+            "tag": "Sales Skills",
+            "duration": "14m",
+            "sections": [
+                {
+                    "title": "The 'Apples to Apples' Trap",
+                    "body": "When a client says 'I found it cheaper online', do not drop your price immediately. \n\nAsk: 'Does that cheaper quote include glass breakage and legal protection? Let's compare the fine print so you know what you are *not* getting.'"
+                },
+                {
+                    "title": "The Value Pivot",
+                    "body": "Shift the conversation from Cost to Value. \n\n'For only €5 more per month, you get a dedicated agent (me) who will handle the paperwork if you crash. Is your time worth more than €5?'"
+                }
+            ]
+        },
+        "c9": { 
+            "title": "Automated Cross-Selling", 
+            "desc": "Setting up email workflows to round out accounts automatically.", 
+            "tag": "Retention",
+            "duration": "12m",
+            "sections": [
+                {
+                    "title": "The Best Lead is a Current Client",
+                    "body": "It is 5x cheaper to retain a client than get a new one. \n\nIf they have Auto, they likely rent or own a home. If they have a business, they have liability needs."
+                },
+                {
+                    "title": "Trigger Events",
+                    "body": "Set up automation rules: \n- 3 months after Auto policy start: Send 'Home Insurance Discount' email.\n- Client birthday: Send greeting + 'Life Insurance Review' offer."
+                }
+            ]
+        },
+        "c10": { 
+            "title": "Local SEO Mastery", 
+            "desc": "Dominating Google Maps to drive local foot traffic and calls.", 
+            "tag": "SEO",
+            "duration": "20m",
+            "sections": [
+                {
+                    "title": "Google Business Profile",
+                    "body": "This is your digital storefront. Ensure your hours are correct. Upload photos of your office and team. \n\nRespond to EVERY review, positive or negative."
+                },
+                {
+                    "title": "Getting Reviews",
+                    "body": "After every policy issuance, ask: 'If you were happy with my service, would you mind leaving a 5-star review? It helps my small business grow.' \n\nSend the direct link."
+                },
+                {
+                    "title": "Local Keywords",
+                    "body": "In your website bio, mention your city and neighborhood. 'Insurance Agent in Glyfada' helps you rank when locals search 'insurance near me'."
+                }
+            ]
+        }
+    },
     "photoTool": {
         "title": "AI Headshot Studio",
         "description": "Upload a casual selfie and let our AI transform it into a professional corporate headshot.",
@@ -904,6 +1096,17 @@
                 ]
             }
         }
+    },
+    "articles": {
+      "title": "Knowledge Base",
+      "content1": {
+        "title": "Digital Content Mastery",
+        "desc": "How to create compliant, engaging posts for LinkedIn and Facebook."
+      },
+      "lead1": {
+        "title": "Lead Management Protocols",
+        "desc": "Standard operating procedures for handling new internet leads."
+      }
     }
   },
   "pipeline": {
