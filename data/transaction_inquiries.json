@@ -5,20 +5,20 @@
     "agencyId": "agency_1",
     "createdAt": "2024-10-28T10:00:00.000Z",
     "contact": {
-      "firstName": "George",
-      "lastName": "Marinis",
-      "email": "g.marinis@example.com",
-      "phone": "6971112233"
+      "firstName": "Giorgos",
+      "lastName": "Papadimitriou",
+      "email": "g.papadim@example.com",
+      "phone": "6971234567"
     },
     "consentGDPR": true,
     "source": "Microsite",
-    "policyType": "auto",
+    "policyType": "home",
     "purpose": "quote_request",
-    "details": "Requesting a quote for a new 2024 Toyota Yaris Cross Hybrid. Interested in full coverage including theft and fire.",
+    "details": "Interested in home insurance for tax reduction (ENFIA). Apartment in Marousi, 110sqm, built 2010.",
     "attribution": {
       "utm_source": "facebook",
       "utm_medium": "cpc",
-      "utm_campaign": "fall_auto_promo"
+      "utm_campaign": "enfia_tax_break"
     },
     "attributionId": "attr_123"
   },
@@ -27,19 +27,19 @@
     "agencyId": "agency_1",
     "createdAt": "2024-10-28T09:30:00.000Z",
     "contact": {
-      "firstName": "Emily",
-      "lastName": "Carter",
-      "email": "em.carter@example.com",
-      "phone": "555-0101"
+      "firstName": "Eleni",
+      "lastName": "Vasileiou",
+      "email": "eleni.v@example.com",
+      "phone": "6989998877"
     },
     "consentGDPR": true,
-    "source": "Microsite",
-    "policyType": "home",
+    "source": "Referral",
+    "policyType": "life",
     "purpose": "general",
-    "details": "Looking for home insurance for a 110sqm apartment in Marousi, Athens. Built in 2010. Want to know about ENFIA reduction.",
+    "details": "Referred by Maria K. Has a mortgage with Eurobank and thinks she is obligated to use their insurance. Wants to compare costs.",
     "attribution": {
-      "utm_source": "google",
-      "utm_medium": "organic"
+      "utm_source": "referral",
+      "utm_medium": "agent"
     },
     "attributionId": "attr_124"
   },
@@ -48,16 +48,16 @@
     "agencyId": "agency_1",
     "createdAt": "2024-10-27T18:00:00.000Z",
     "contact": {
-      "firstName": "Anna",
-      "lastName": "Stefanou",
-      "email": "anna.s@example.com",
-      "phone": "6982223344"
+      "firstName": "Dimitris",
+      "lastName": "Alexiou",
+      "email": "d.alexiou@example.com",
+      "phone": "6945556677"
     },
     "consentGDPR": false,
-    "source": "Referral",
-    "policyType": "life",
-    "purpose": "general",
-    "details": "Referred by John Papadopoulos. Interested in family protection plan and savings for children.",
+    "source": "Microsite",
+    "policyType": "auto",
+    "purpose": "quote_request",
+    "details": "Looking for basic coverage for a 2018 Nissan Qashqai. Current premium is €180/6months, looking for cheaper.",
     "attribution": {},
     "attributionId": "attr_125"
   },

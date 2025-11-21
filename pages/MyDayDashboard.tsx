@@ -1,3 +1,4 @@
+
 import React, { useMemo } from 'react';
 import { usePipelineData } from '../hooks/usePipelineData';
 import { useLocalization } from '../hooks/useLocalization';

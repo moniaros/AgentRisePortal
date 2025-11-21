@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { TransactionInquiry, Language } from '../../../types';
 import { useLocalization } from '../../../hooks/useLocalization';
