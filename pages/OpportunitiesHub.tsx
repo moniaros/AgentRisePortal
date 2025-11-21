@@ -33,7 +33,7 @@ const PitchGeneratorModal: React.FC<{
     onClose: () => void; 
     opportunity: EnrichedOpportunity; 
 }> = ({ isOpen, onClose, opportunity }) => {
-    const { language } = useLocalization();
+    const { t, language } = useLocalization();
     const [script, setScript] = useState('');
     const [isGenerating, setIsGenerating] = useState(false);
 
@@ -47,11 +47,11 @@ const PitchGeneratorModal: React.FC<{
             let marketHook = "";
             const lowerTitle = opportunity.title.toLowerCase();
             if (lowerTitle.includes('home') || lowerTitle.includes('fire')) {
-                marketHook = "Mention the 10% ENFIA (Property Tax) reduction in Greece for insured homes.";
+                marketHook = t('pipeline.opportunitiesHub.marketHook.home');
             } else if (lowerTitle.includes('health')) {
-                marketHook = "Mention avoiding long wait times in public hospitals (ESY) and access to top private clinics.";
+                marketHook = t('pipeline.opportunitiesHub.marketHook.health');
             } else if (lowerTitle.includes('auto')) {
-                marketHook = "Mention our premium Roadside Assistance and 'Thrafsi Krystallon' (Glass Breakage).";
+                marketHook = t('pipeline.opportunitiesHub.marketHook.auto');
             }
 
             const prompt = `
@@ -77,7 +77,7 @@ const PitchGeneratorModal: React.FC<{
             setScript(response.text?.trim() || '');
         } catch (e) {
             console.error(e);
-            setScript("Error generating script. Please try again.");
+            setScript(t('pipeline.opportunitiesHub.errorGenerating'));
         } finally {
             setIsGenerating(false);
         }
@@ -93,16 +93,16 @@ const PitchGeneratorModal: React.FC<{
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-black/50 z-50 flex justify-center items-center p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center p-4">
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-lg overflow-hidden">
                 <div className="bg-gradient-to-r from-purple-600 to-blue-600 p-4">
                     <h3 className="text-white font-bold flex items-center gap-2">
-                        <span>✨</span> AI Smart Pitch
-                    </h2>
+                        <span>✨</span> {t('pipeline.opportunitiesHub.pitchTitle')}
+                    </h3>
                 </div>
                 <div className="p-6">
                     <div className="mb-4">
-                        <p className="text-xs text-gray-500 uppercase font-bold">Selling Opportunity</p>
+                        <p className="text-xs text-gray-500 uppercase font-bold">{t('pipeline.opportunitiesHub.pitchSubtitle')}</p>
                         <p className="font-medium text-gray-900 dark:text-white">{opportunity.title}</p>
                     </div>
                     
@@ -110,7 +110,7 @@ const PitchGeneratorModal: React.FC<{
                         {isGenerating ? (
                             <div className="h-32 flex flex-col items-center justify-center text-purple-600 bg-purple-50 rounded-lg">
                                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-current mb-2"></div>
-                                <span className="text-xs font-semibold animate-pulse">Crafting the perfect pitch...</span>
+                                <span className="text-xs font-semibold animate-pulse">{t('pipeline.opportunitiesHub.generating')}</span>
                             </div>
                         ) : (
                             <textarea 
@@ -123,13 +123,13 @@ const PitchGeneratorModal: React.FC<{
 
                     <div className="mt-4 flex justify-end gap-2">
                         <button onClick={onClose} className="px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-md transition">
-                            Close
+                            {t('pipeline.opportunitiesHub.close')}
                         </button>
                         <button 
                             onClick={() => navigator.clipboard.writeText(script)}
                             className="px-4 py-2 text-sm bg-purple-600 hover:bg-purple-700 text-white rounded-md transition flex items-center gap-2"
                         >
-                            <span>📋</span> Copy
+                            <span>📋</span> {t('pipeline.opportunitiesHub.copy')}
                         </button>
                         {opportunity.customer?.phone && (
                              <a 
@@ -154,6 +154,9 @@ const OpportunityCard: React.FC<{ item: EnrichedOpportunity, onPitch: (item: Enr
     const isHot = item.estimatedValue > 500;
     const typeColor = item.type === 'upsell' ? 'border-blue-500' : 'border-purple-500';
     const bgBadge = item.type === 'upsell' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800';
+
+    const emailSubject = `Important: ${item.title}`;
+    const emailBody = `Hi ${item.customer?.firstName},\n\nI was reviewing your policy and noticed...`;
 
     return (
         <div className={`bg-white dark:bg-gray-800 rounded-xl shadow-sm border-l-4 ${typeColor} p-5 hover:shadow-md transition-all duration-200 relative group`}>
@@ -193,7 +196,7 @@ const OpportunityCard: React.FC<{ item: EnrichedOpportunity, onPitch: (item: Enr
                     onClick={() => onPitch(item)}
                     className="col-span-2 flex items-center justify-center gap-2 py-2 px-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-xs font-bold rounded-md hover:opacity-90 transition"
                 >
-                    <span>✨</span> AI Pitch
+                    <span>✨</span> {t('pipeline.opportunitiesHub.aiPitch')}
                 </button>
                 
                 <a 
@@ -204,7 +207,7 @@ const OpportunityCard: React.FC<{ item: EnrichedOpportunity, onPitch: (item: Enr
                     📞
                 </a>
                 <a 
-                    href={`mailto:${item.customer?.email}`}
+                    href={`mailto:${item.customer?.email}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`}
                     className="flex items-center justify-center py-2 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-md hover:bg-blue-100 hover:text-blue-700 transition"
                     title="Email"
                 >
@@ -273,16 +276,16 @@ const OpportunitiesHub: React.FC = () => {
                     <div>
                         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('pipeline.opportunitiesHub.title')}</h1>
                         <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
-                            AI-Verified Upsell & Cross-sell Opportunities ready for action.
+                            {t('pipeline.opportunitiesHub.description')}
                         </p>
                     </div>
                     <div className="flex gap-8 text-center">
                         <div>
-                            <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">Opportunities</p>
+                            <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">{t('pipeline.opportunitiesHub.opportunities')}</p>
                             <p className="text-3xl font-bold text-gray-900 dark:text-white">{opportunities.length}</p>
                         </div>
                         <div className="pl-8 border-l dark:border-gray-700">
-                            <p className="text-xs font-bold text-green-600 dark:text-green-400 uppercase tracking-wider">Pipeline Value</p>
+                            <p className="text-xs font-bold text-green-600 dark:text-green-400 uppercase tracking-wider">{t('pipeline.opportunitiesHub.pipelineValue')}</p>
                             <p className="text-3xl font-bold text-green-600 dark:text-green-400">
                                 €{totalPipelineValue.toLocaleString()}
                             </p>
@@ -305,10 +308,10 @@ const OpportunitiesHub: React.FC = () => {
             ) : (
                 <div className="text-center py-20 bg-white dark:bg-gray-800 rounded-xl border border-dashed border-gray-300 dark:border-gray-700">
                     <div className="text-6xl mb-4">🔍</div>
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">No Opportunities Found</h3>
-                    <p className="text-gray-500 mt-2">Run the AI Policy Scanner on more customers to generate leads.</p>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">{t('pipeline.opportunitiesHub.noOpportunities')}</h3>
+                    <p className="text-gray-500 mt-2">{t('pipeline.opportunitiesHub.noOpportunitiesSub')}</p>
                     <Link to="/gap-analysis" className="inline-block mt-4 px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-                        Go to Policy Scanner
+                        {t('pipeline.opportunitiesHub.goToScanner')}
                     </Link>
                 </div>
             )}
