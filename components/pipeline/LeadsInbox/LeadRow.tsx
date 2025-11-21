@@ -1,8 +1,8 @@
-
 import React, { useState, useMemo, useEffect } from 'react';
 import { TransactionInquiry, Language } from '../../../types';
 import { useLocalization } from '../../../hooks/useLocalization';
 import { GoogleGenAI } from '@google/genai';
+import { useCrmData } from '../../../hooks/useCrmData';
 
 interface LeadRowProps {
     inquiry: TransactionInquiry;
@@ -12,6 +12,7 @@ interface LeadRowProps {
 
 const LeadRow: React.FC<LeadRowProps> = ({ inquiry, onCreateOpportunity, onViewDetails }) => {
     const { t, language } = useLocalization();
+    const { customers } = useCrmData();
     const [isExpanded, setIsExpanded] = useState(false);
     const [aiScript, setAiScript] = useState<string | null>(null);
     const [isThinking, setIsThinking] = useState(false);
@@ -45,13 +46,13 @@ const LeadRow: React.FC<LeadRowProps> = ({ inquiry, onCreateOpportunity, onViewD
     }, [inquiry]);
 
     const isFamilyBundle = useMemo(() => {
-        // Simple check for demo purposes - usually this checks DB
-        return inquiry.details?.toLowerCase().includes('brother') || inquiry.details?.toLowerCase().includes('family') || inquiry.source === 'Referral';
-    }, [inquiry]);
+        // Check if surname exists in current customer base
+        const match = customers.some(c => c.lastName.toLowerCase() === inquiry.contact.lastName.toLowerCase());
+        return match || inquiry.details?.toLowerCase().includes('brother') || inquiry.details?.toLowerCase().includes('family');
+    }, [inquiry, customers]);
 
     // Mock potential value estimation if not present
     const estimatedValue = useMemo(() => {
-        // Use dummy logic to assign values for visuals
         if (inquiry.policyType === 'life') return 2500;
         if (inquiry.policyType === 'home') return 600;
         if (inquiry.policyType === 'auto') return 300;
@@ -98,9 +99,9 @@ const LeadRow: React.FC<LeadRowProps> = ({ inquiry, onCreateOpportunity, onViewD
 
     const getSourceIcon = (source: string) => {
         const s = source.toLowerCase();
-        if (s.includes('facebook')) return '🔵'; // Facebook Blue
-        if (s.includes('instagram')) return '🟣'; // Insta gradient-ish
-        if (s.includes('linkedin')) return '🟦'; // LinkedIn Blue
+        if (s.includes('facebook')) return '🔵';
+        if (s.includes('instagram')) return '🟣';
+        if (s.includes('linkedin')) return '🟦';
         if (s.includes('referral')) return '🤝';
         return '🌐';
     };
@@ -125,7 +126,7 @@ const LeadRow: React.FC<LeadRowProps> = ({ inquiry, onCreateOpportunity, onViewD
                                 {leadScore}
                             </span>
                             {isFamilyBundle && (
-                                <span className="text-[10px] px-1.5 py-0.5 bg-pink-100 text-pink-800 border border-pink-200 rounded uppercase font-bold flex items-center gap-1">
+                                <span className="text-[10px] px-1.5 py-0.5 bg-pink-100 text-pink-800 border border-pink-200 rounded uppercase font-bold flex items-center gap-1 animate-pulse">
                                     👨‍👩‍👧‍👦 {t('pipeline.familyBundle')}
                                 </span>
                             )}
@@ -138,7 +139,7 @@ const LeadRow: React.FC<LeadRowProps> = ({ inquiry, onCreateOpportunity, onViewD
                         <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2 mt-0.5">
                             <span className="capitalize font-medium text-blue-600 dark:text-blue-400">{inquiry.policyType}</span>
                             <span>•</span>
-                            <span className="flex items-center gap-1">
+                            <span className="flex items-center gap-1 font-medium text-gray-700 dark:text-gray-300">
                                 {getSourceIcon(inquiry.source)} {inquiry.source}
                             </span>
                             {inquiry.attribution?.utm_campaign && (
@@ -168,7 +169,7 @@ const LeadRow: React.FC<LeadRowProps> = ({ inquiry, onCreateOpportunity, onViewD
                         className="p-2 text-purple-600 bg-purple-100 hover:bg-purple-200 rounded-full transition"
                         title="Viber"
                     >
-                        {/* Viber Icon Placeholder */}
+                        {/* Viber Icon */}
                         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M21.62 16.59c-.67-.24-2.32-.94-2.69-1.05-.45-.13-.93-.02-1.29.34l-1.61 1.6c-.26.26-.63.31-.96.14-3.35-1.72-5.55-3.93-7.27-7.27-.17-.33-.12-.71.14-.96l1.6-1.61c.36-.36.47-.84.34-1.29-.11-.38-.81-2.03-1.05-2.69-.31-.85-1.18-1.18-1.91-1.18h-1.6c-.88 0-1.73.53-2.03 1.35-.37 1.01-.59 2.66-.59 2.66 0 7.38 6 13.38 13.38 13.38 0 0 1.65-.22 2.66-.59.82-.3 1.35-1.15 1.35-2.03v-1.6c0-.73-.33-1.6-1.18-1.91zM4.31 6.03c.06-.17.16-.27.27-.27h1.6c.11 0 .22.05.27.17.05.13.68 1.58.77 1.83.02.06.02.13-.02.18l-1.41 1.41-.49-.49c.16-.41.78-2.06 1.05-2.69zm13.65 13.65c.12.05.17.16.17.27v1.6c0 .11-.1.21-.27.27-.63.27-2.28.89-2.69 1.05-.42.16-2.07.78-2.69 1.05l-.49-.49 1.41-1.41c.05-.04.12-.04.18-.02.25.09 1.7.72 1.83.77z"/></svg>
                     </a>
                     <a 
