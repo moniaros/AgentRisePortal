@@ -1,3 +1,4 @@
+
 [
   {
     "id": "inq_1",
@@ -11,7 +12,9 @@
     },
     "consentGDPR": true,
     "source": "Microsite",
+    "policyType": "auto",
     "purpose": "quote_request",
+    "details": "Requesting a quote for a new 2024 Toyota Yaris Cross Hybrid. Interested in full coverage including theft and fire.",
     "attribution": {
       "utm_source": "facebook",
       "utm_medium": "cpc",
@@ -31,7 +34,9 @@
     },
     "consentGDPR": true,
     "source": "Microsite",
+    "policyType": "home",
     "purpose": "general",
+    "details": "Looking for home insurance for a 110sqm apartment in Marousi, Athens. Built in 2010. Want to know about ENFIA reduction.",
     "attribution": {
       "utm_source": "google",
       "utm_medium": "organic"
@@ -50,7 +55,9 @@
     },
     "consentGDPR": false,
     "source": "Referral",
+    "policyType": "life",
     "purpose": "general",
+    "details": "Referred by John Papadopoulos. Interested in family protection plan and savings for children.",
     "attribution": {},
     "attributionId": "attr_125"
   },
@@ -66,7 +73,9 @@
     },
     "consentGDPR": true,
     "source": "Microsite",
+    "policyType": "auto",
     "purpose": "quote_request",
+    "details": "Quote for commercial van.",
     "attribution": {
       "utm_source": "linkedin",
       "utm_campaign": "b2b_liability"

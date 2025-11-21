@@ -17,7 +17,6 @@ const LeadRow: React.FC<LeadRowProps> = ({ inquiry, onCreateOpportunity, onViewD
     const [isThinking, setIsThinking] = useState(false);
     const [timeAgo, setTimeAgo] = useState('');
 
-    // 1. The "Golden Minute" Timer Logic
     useEffect(() => {
         const calculateTimeAgo = () => {
             const diff = Date.now() - new Date(inquiry.createdAt).getTime();
@@ -35,9 +34,8 @@ const LeadRow: React.FC<LeadRowProps> = ({ inquiry, onCreateOpportunity, onViewD
         return () => clearInterval(interval);
     }, [inquiry.createdAt, language]);
 
-    // 2. Lead Scoring Logic (Mock Algorithm)
     const leadScore = useMemo(() => {
-        let score = 50; // Base score
+        let score = 50;
         if (inquiry.source === 'Referral') score += 30;
         if (inquiry.source === 'Microsite') score += 20;
         if (inquiry.policyType === 'life' || inquiry.policyType === 'business') score += 15;
@@ -46,13 +44,23 @@ const LeadRow: React.FC<LeadRowProps> = ({ inquiry, onCreateOpportunity, onViewD
         return Math.min(score, 100);
     }, [inquiry]);
 
+    // Mock potential value estimation if not present
+    const estimatedValue = useMemo(() => {
+        // Use dummy logic to assign values for visuals
+        if (inquiry.policyType === 'life') return 2500;
+        if (inquiry.policyType === 'home') return 600;
+        if (inquiry.policyType === 'auto') return 300;
+        return 400;
+    }, [inquiry]);
+
+    const isHighValue = estimatedValue >= 1000;
+
     const getScoreColor = (s: number) => {
         if (s >= 80) return 'bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-300';
         if (s >= 60) return 'bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-300';
         return 'bg-gray-100 text-gray-800 border-gray-200 dark:bg-gray-800 dark:text-gray-300';
     };
 
-    // 3. AI Ice-Breaker Generator
     const generateIceBreaker = async () => {
         if (!process.env.API_KEY) return;
         setIsThinking(true);
@@ -81,12 +89,20 @@ const LeadRow: React.FC<LeadRowProps> = ({ inquiry, onCreateOpportunity, onViewD
         }
     };
 
-    const isFresh = (Date.now() - new Date(inquiry.createdAt).getTime()) < 1000 * 60 * 60; // Under 1 hour
+    const isFresh = (Date.now() - new Date(inquiry.createdAt).getTime()) < 1000 * 60 * 60; 
+
+    const getSourceIcon = (source: string) => {
+        const s = source.toLowerCase();
+        if (s.includes('facebook')) return '🔵'; // Facebook Blue
+        if (s.includes('instagram')) return '🟣'; // Insta gradient-ish
+        if (s.includes('linkedin')) return '🟦'; // LinkedIn Blue
+        if (s.includes('referral')) return '🤝';
+        return '🌐';
+    };
 
     return (
         <div className={`p-4 border-l-4 transition-all duration-200 hover:shadow-md ${isFresh ? 'border-green-500 bg-green-50/30 dark:bg-green-900/10' : 'border-gray-300 dark:border-gray-600'}`}>
             
-            {/* Top Row: Header Info */}
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div className="flex items-center gap-3 flex-grow cursor-pointer" onClick={onViewDetails}>
                     {/* Freshness Badge */}
@@ -103,13 +119,25 @@ const LeadRow: React.FC<LeadRowProps> = ({ inquiry, onCreateOpportunity, onViewD
                             <span className={`text-xs px-2 py-0.5 rounded-full border font-bold ${getScoreColor(leadScore)}`}>
                                 {leadScore}
                             </span>
+                            {isHighValue && (
+                                <span className="text-[10px] px-1.5 py-0.5 bg-amber-100 text-amber-800 border border-amber-200 rounded uppercase font-bold flex items-center gap-1">
+                                    💎 High Value
+                                </span>
+                            )}
+                            {inquiry.purpose === 'quote_request' && (
+                                <span className="text-[10px] px-1.5 py-0.5 bg-purple-100 text-purple-800 rounded uppercase font-bold">
+                                    Quote Req
+                                </span>
+                            )}
                         </div>
                         <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2 mt-0.5">
                             <span className="capitalize font-medium text-blue-600 dark:text-blue-400">{inquiry.policyType}</span>
                             <span>•</span>
-                            <span>{inquiry.source}</span>
+                            <span className="flex items-center gap-1">
+                                {getSourceIcon(inquiry.source)} {inquiry.source}
+                            </span>
                             {inquiry.attribution?.utm_campaign && (
-                                <span className="text-xs bg-gray-100 dark:bg-gray-700 px-1.5 rounded text-gray-500">
+                                <span className="text-xs bg-gray-100 dark:bg-gray-700 px-1.5 rounded text-gray-500 hidden sm:inline-block">
                                     #{inquiry.attribution.utm_campaign}
                                 </span>
                             )}
@@ -156,7 +184,7 @@ const LeadRow: React.FC<LeadRowProps> = ({ inquiry, onCreateOpportunity, onViewD
                                 className="text-xs font-semibold text-purple-600 flex items-center gap-1 hover:underline"
                             >
                                 <span>✨</span>
-                                {language === Language.EL ? 'Δημιουργία Μηνύματος (AI)' : 'Generate Ice-Breaker (AI)'}
+                                {language === Language.EL ? 'Δημιουργία Ice-Breaker (AI)' : 'Generate Ice-Breaker (AI)'}
                             </button>
                             {onViewDetails && (
                                 <button 
