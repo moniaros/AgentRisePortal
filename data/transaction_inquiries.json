@@ -6,19 +6,18 @@
     "createdAt": "2024-10-28T10:00:00.000Z",
     "contact": {
       "firstName": "Giorgos",
-      "lastName": "Papadimitriou",
-      "email": "g.papadim@example.com",
+      "lastName": "Papageorgiou",
+      "email": "g.papag@example.com",
       "phone": "6971234567"
     },
     "consentGDPR": true,
-    "source": "Microsite",
+    "source": "Referral",
     "policyType": "home",
     "purpose": "quote_request",
-    "details": "Interested in home insurance for tax reduction (ENFIA). Apartment in Marousi, 110sqm, built 2010.",
+    "details": "Referral from Alexandros Papageorgiou (Brother). Interested in home insurance for tax reduction (ENFIA). Apartment in Marousi.",
     "attribution": {
-      "utm_source": "facebook",
-      "utm_medium": "cpc",
-      "utm_campaign": "enfia_tax_break"
+      "utm_source": "referral",
+      "utm_medium": "agent"
     },
     "attributionId": "attr_123"
   },
@@ -57,7 +56,7 @@
     "source": "Microsite",
     "policyType": "auto",
     "purpose": "quote_request",
-    "details": "Looking for basic coverage for a 2018 Nissan Qashqai. Current premium is €180/6months, looking for cheaper.",
+    "details": "Looking for basic coverage for a 2018 Nissan Qashqai. KTEO is due next month. Current premium is €180/6months.",
     "attribution": {},
     "attributionId": "attr_125"
   },

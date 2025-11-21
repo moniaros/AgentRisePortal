@@ -156,7 +156,7 @@ const OpportunityCard: React.FC<{ item: EnrichedOpportunity, onPitch: (item: Enr
     const bgBadge = item.type === 'upsell' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800';
 
     const emailSubject = `Important: ${item.title}`;
-    const emailBody = `Hi ${item.customer?.firstName},\n\nI was reviewing your policy and noticed...`;
+    const emailBody = `Hi ${item.customer?.firstName},\n\nI was reviewing your current policies and identified a potential opportunity that might benefit you: ${item.title}.\n\n${item.description}\n\nWould you be open to a quick chat about this?\n\nBest,`;
 
     return (
         <div className={`bg-white dark:bg-gray-800 rounded-xl shadow-sm border-l-4 ${typeColor} p-5 hover:shadow-md transition-all duration-200 relative group`}>
