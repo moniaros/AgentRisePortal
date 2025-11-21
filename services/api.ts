@@ -1,182 +1,292 @@
-// This file mocks API calls to fetch data.
-// In a real application, these would be `fetch` calls to a backend.
-import { MOCK_USERS, MOCK_LEADS, MOCK_CUSTOMERS, MOCK_AUDIT_LOGS, MOCK_ANALYTICS_DATA, MOCK_EXECUTIVE_DATA, MOCK_NEWS_ARTICLES, MOCK_TESTIMONIALS, MOCK_USER_ACTIVITY } from '../data/mockData';
-import { GbpLocationSummary, GbpReview, User, AuditLog, AnalyticsData, Campaign, ExecutiveData, NewsArticle, Testimonial, UserActivityEvent, AutomationRule, MessageTemplate, TransactionInquiry, Opportunity__EXT, Interaction, FirstNoticeOfLoss, ServiceRequest, PerfSample, PortalAccount__EXT, KPISnapshot, Lead, Conversion, FunnelRun, DetailedPolicy, AutomationChannelSettings, AutomationEvent, AutomationAnalytics, TransactionQuoteRequest, Prospect, Task } from '../types';
 
-const simulateDelay = <T,>(data: T, delay: number = 500): Promise<T> => {
-    return new Promise(resolve => setTimeout(() => resolve(JSON.parse(JSON.stringify(data))), delay));
-};
+import { 
+    MOCK_USERS, MOCK_LEADS, MOCK_CUSTOMERS, MOCK_AUDIT_LOGS, 
+    MOCK_ANALYTICS_DATA, MOCK_EXECUTIVE_DATA, MOCK_NEWS_ARTICLES, 
+    MOCK_TESTIMONIALS, MOCK_USER_ACTIVITY 
+} from '../data/mockData';
+import { 
+    GbpLocationSummary, GbpReview, User, AuditLog, AnalyticsData, Campaign, 
+    ExecutiveData, NewsArticle, Testimonial, UserActivityEvent, AutomationRule, 
+    MessageTemplate, TransactionInquiry, Opportunity__EXT, Interaction, 
+    FirstNoticeOfLoss, ServiceRequest, PerfSample, PortalAccount__EXT, 
+    KPISnapshot, Lead, Conversion, FunnelRun, DetailedPolicy, 
+    AutomationChannelSettings, AutomationEvent, AutomationAnalytics, 
+    TransactionQuoteRequest, Prospect, Task, Customer 
+} from '../types';
+import { generateId, delay } from './utils';
 
-// Generic fetcher for new JSON files
-const fetchJsonData = async <T,>(path: string): Promise<T> => {
-    const response = await fetch(path);
-    if (!response.ok) {
-        throw new Error(`Failed to fetch ${path}`);
+// --- MOCK BACKEND REPOSITORY ---
+
+class MockRepository<T extends { id: string }> {
+    private storageKey: string;
+    private initialDataOrUrl: T[] | string;
+    private initialized: boolean = false;
+
+    constructor(key: string, initialDataOrUrl: T[] | string) {
+        this.storageKey = `agentos_db_${key}`;
+        this.initialDataOrUrl = initialDataOrUrl;
     }
-    return response.json();
+
+    private async loadData(): Promise<T[]> {
+        // 1. Try LocalStorage
+        const stored = localStorage.getItem(this.storageKey);
+        if (stored) {
+            try {
+                return JSON.parse(stored);
+            } catch (e) {
+                console.error(`Corrupted data for ${this.storageKey}, resetting.`);
+                localStorage.removeItem(this.storageKey);
+            }
+        }
+
+        // 2. If empty, load initial data
+        let data: T[] = [];
+        if (Array.isArray(this.initialDataOrUrl)) {
+            data = JSON.parse(JSON.stringify(this.initialDataOrUrl)); // Deep copy
+        } else {
+            // It's a URL
+            try {
+                const response = await fetch(this.initialDataOrUrl);
+                if (!response.ok) throw new Error(`Failed to fetch ${this.initialDataOrUrl}`);
+                data = await response.json();
+            } catch (e) {
+                console.error(`Failed to load initial data for ${this.storageKey}`, e);
+                data = [];
+            }
+        }
+
+        // 3. Save to Storage
+        this.saveData(data);
+        return data;
+    }
+
+    private saveData(data: T[]) {
+        localStorage.setItem(this.storageKey, JSON.stringify(data));
+    }
+
+    private async ensureInitialized() {
+        if (!this.initialized) {
+            // Pre-load checking? For now we just rely on getALL to load.
+            // Actually, let's just let methods call loadData internally which handles caching.
+        }
+    }
+
+    // --- CRUD Operations ---
+
+    async getAll(): Promise<T[]> {
+        await delay();
+        return this.loadData();
+    }
+
+    async getById(id: string): Promise<T | undefined> {
+        await delay();
+        const all = await this.loadData();
+        return all.find(item => item.id === id);
+    }
+
+    async create(item: Omit<T, 'id'> & { id?: string }): Promise<T> {
+        await delay();
+        const all = await this.loadData();
+        const newItem = { ...item, id: item.id || generateId() } as T;
+        all.push(newItem);
+        this.saveData(all);
+        return newItem;
+    }
+
+    async update(id: string, updates: Partial<T>): Promise<T> {
+        await delay();
+        const all = await this.loadData();
+        const index = all.findIndex(item => item.id === id);
+        if (index === -1) throw new Error(`Item with id ${id} not found`);
+        
+        const updatedItem = { ...all[index], ...updates };
+        all[index] = updatedItem;
+        this.saveData(all);
+        return updatedItem;
+    }
+
+    async delete(id: string): Promise<void> {
+        await delay();
+        const all = await this.loadData();
+        const filtered = all.filter(item => item.id !== id);
+        this.saveData(filtered);
+    }
+    
+    // Helper for query filtering (backend simulation)
+    async find(predicate: (item: T) => boolean): Promise<T[]> {
+        await delay();
+        const all = await this.loadData();
+        return all.filter(predicate);
+    }
+}
+
+// --- SERVICE INSTANCES ---
+
+export const userService = new MockRepository<User>('users', MOCK_USERS);
+export const leadService = new MockRepository<Lead>('leads', '/data/allLeads.json'); // Using the larger dataset
+export const customerService = new MockRepository<Customer>('customers', MOCK_CUSTOMERS);
+export const auditLogService = new MockRepository<AuditLog>('audit_logs', MOCK_AUDIT_LOGS);
+export const analyticsService = new MockRepository<any>('analytics', MOCK_ANALYTICS_DATA); // Using any for simpler transition if type mismatches
+export const campaignService = new MockRepository<Campaign>('campaigns', [
+    // Mock campaigns directly here as they were in the hook previously
+    {
+        id: 'camp_1',
+        name: 'Summer Auto Insurance Promo',
+        objective: 'lead_conversion' as any,
+        network: 'facebook',
+        language: 'en' as any,
+        audience: { ageRange: [25, 55], interests: ['cars', 'driving'] },
+        budget: 500,
+        startDate: '2024-07-01',
+        endDate: '2024-07-31',
+        creative: { headline: 'Save Big on Car Insurance This Summer!', body: 'Get a free quote today and see how much you can save.', image: 'https://via.placeholder.com/1200x628.png?text=Summer+Car+Insurance' },
+        status: 'active',
+        agencyId: 'agency_1',
+    },
+    {
+        id: 'camp_2',
+        name: 'Προσφορά Ασφάλειας Κατοικίας',
+        objective: 'brand_awareness' as any,
+        network: 'instagram',
+        language: 'el' as any,
+        audience: { ageRange: [30, 65], interests: ['home improvement', 'real estate'] },
+        budget: 750,
+        startDate: '2024-08-01',
+        endDate: '2024-08-31',
+        creative: { headline: 'Προστατέψτε το Σπίτι σας!', body: 'Ασφάλεια κατοικίας με κορυφαίες καλύψεις. Ζητήστε προσφορά.', image: 'https://via.placeholder.com/1080x1080.png?text=Home+Insurance' },
+        status: 'active',
+        agencyId: 'agency_1',
+    },
+    {
+        id: 'camp_3',
+        name: 'Beta Brokers Brand Campaign',
+        objective: 'brand_awareness' as any,
+        network: 'linkedin',
+        language: 'en' as any,
+        audience: { ageRange: [35, 60], interests: ['business', 'finance'] },
+        budget: 1200,
+        startDate: '2024-09-01',
+        endDate: '2024-09-30',
+        creative: { headline: 'Professional Insurance Solutions', body: 'Trust Beta Brokers for all your commercial insurance needs.', image: '' },
+        status: 'draft',
+        agencyId: 'agency_2'
+    }
+]);
+export const newsService = new MockRepository<NewsArticle>('news', MOCK_NEWS_ARTICLES);
+export const testimonialService = new MockRepository<Testimonial>('testimonials', MOCK_TESTIMONIALS);
+export const automationRuleService = new MockRepository<AutomationRule>('automation_rules', '/data/rules/automation_rules.json');
+export const automationEventService = new MockRepository<AutomationEvent>('automation_events', '/data/analytics/automation_events.json');
+export const templateService = new MockRepository<MessageTemplate>('templates', [
+    { id: 'tmpl_1', name: 'Welcome Email', channel: 'email', content: 'Welcome to our agency, {{Lead.FirstName}}! We are excited to help you.' },
+    { id: 'tmpl_2', name: 'Policy Renewal Reminder', channel: 'email', content: 'Dear {{Lead.FirstName}}, your policy is due for renewal soon.' },
+    { id: 'tmpl_3', name: 'Meeting Reminder', channel: 'sms', content: 'Hi {{Lead.FirstName}}, just a reminder about our meeting tomorrow.' },
+    { id: 'tmpl_4', name: 'Special Offer', channel: 'viber', content: 'Check out our exclusive offer for you, {{Lead.FirstName}}!' },
+    { id: 'tmpl_5', name: 'Document Request', channel: 'whatsapp', content: 'Hello {{Lead.FirstName}}, could you please send over the requested documents?' }
+]);
+
+// Pipeline Services
+export const inquiryService = new MockRepository<TransactionInquiry>('inquiries', '/data/transaction_inquiries.json');
+export const opportunityService = new MockRepository<Opportunity__EXT>('opportunities', '/data/opportunities_ext.json');
+export const prospectService = new MockRepository<Prospect>('prospects', '/data/prospects.json');
+export const interactionService = new MockRepository<Interaction>('interactions', '/data/interactions.json');
+export const taskService = new MockRepository<Task>('tasks', '/data/tasks.json');
+export const conversionService = new MockRepository<Conversion>('conversions', '/data/allConversions.json');
+export const quoteRequestService = new MockRepository<TransactionQuoteRequest>('quote_requests', '/data/transaction_quoterequests.json');
+
+// Executive / Dashboard Data 
+// (Some of these are read-only aggregates in a real app, but we treat them as repositories for the mock)
+export const kpiService = new MockRepository<KPISnapshot>('kpi_snapshots', '/data/allKpiSnapshots.json');
+export const performanceService = new MockRepository<PerfSample>('performance', '/data/allPerformanceSamples.json');
+export const funnelService = new MockRepository<FunnelRun>('funnel_runs', '/data/allFunnelRuns.json');
+export const ftnolService = new MockRepository<FirstNoticeOfLoss>('ftnol', '/data/firstNoticeOfLoss.json');
+export const serviceRequestService = new MockRepository<ServiceRequest>('service_requests', '/data/serviceRequests.json');
+export const portalAccountService = new MockRepository<PortalAccount__EXT>('portal_accounts', '/data/portalAccounts.json');
+
+
+// --- LEGACY API FUNCTIONS (Wrappers) ---
+// These allow the existing application to function while we migrate to using the services directly.
+
+export const fetchUsers = () => userService.getAll();
+export const fetchAuditLogs = () => auditLogService.getAll();
+export const fetchAnalyticsData = () => analyticsService.getAll();
+export const fetchNewsArticles = () => newsService.getAll();
+export const fetchTestimonials = () => testimonialService.getAll();
+export const fetchAutomationRules = () => automationRuleService.getAll();
+export const fetchAutomationEvents = () => automationEventService.getAll();
+export const fetchTemplates = () => templateService.getAll();
+
+export const fetchTransactionInquiries = () => inquiryService.getAll();
+export const fetchTransactionQuoteRequests = () => quoteRequestService.getAll();
+export const fetchOpportunitiesExt = () => opportunityService.getAll();
+export const fetchProspects = () => prospectService.getAll();
+export const fetchPipelineInteractions = () => interactionService.getAll();
+export const fetchPipelineConversions = () => conversionService.getAll();
+export const fetchTasks = () => taskService.getAll();
+
+export const fetchFirstNoticeOfLoss = () => ftnolService.getAll();
+export const fetchServiceRequests = () => serviceRequestService.getAll();
+export const fetchPerformanceSamples = () => performanceService.getAll();
+export const fetchPortalAccounts = () => portalAccountService.getAll();
+
+export const fetchKpiSnapshots = () => kpiService.getAll();
+export const fetchAllLeads = () => leadService.getAll();
+export const fetchAllKpiSnapshots = () => kpiService.getAll();
+export const fetchAllPerformanceSamples = () => performanceService.getAll();
+export const fetchAllFunnelRuns = () => funnelService.getAll();
+export const fetchAllOpportunities = () => opportunityService.getAll();
+export const fetchAllConversions = () => conversionService.getAll();
+
+export const fetchUserActivity = async (userId: string): Promise<UserActivityEvent[]> => {
+    await delay();
+    return MOCK_USER_ACTIVITY.filter(act => act.userId === userId);
 };
 
+// These use constants directly for now as they are single objects or complex aggregates
+export const fetchExecutiveData = async (): Promise<ExecutiveData> => {
+    await delay();
+    return MOCK_EXECUTIVE_DATA;
+};
 
 export const fetchGbpData = async (locationName: string): Promise<{ summary: GbpLocationSummary, reviews: GbpReview[] }> => {
+    // This simulates an external API call that doesn't persist to our "DB" in the same way
+    await delay();
     const summary: GbpLocationSummary = {
         title: 'Alpha Omega Insurance',
         averageRating: 4.8,
         totalReviewCount: 134,
     };
-    const reviews: GbpReview[] = [
-        { name: 'reviews/1', reviewer: { displayName: 'John S.' }, starRating: 'FIVE', comment: 'Great service, very professional.', createTime: '2023-10-26T10:00:00Z', updateTime: '2023-10-26T10:00:00Z' },
-        { name: 'reviews/2', reviewer: { displayName: 'Maria P.' }, starRating: 'FOUR', comment: 'Helpful staff, but the process was a bit slow.', createTime: '2023-10-25T14:30:00Z', updateTime: '2023-10-25T14:30:00Z' }
-    ];
-    return simulateDelay({ summary, reviews });
+    const reviewsJson = await import('../data/gbp_reviews.json');
+    return { summary, reviews: reviewsJson.reviews as any };
 };
 
-export const fetchUsers = (): Promise<User[]> => simulateDelay(MOCK_USERS);
-export const fetchAuditLogs = (): Promise<AuditLog[]> => simulateDelay(MOCK_AUDIT_LOGS);
-export const fetchAnalyticsData = (): Promise<AnalyticsData> => simulateDelay(MOCK_ANALYTICS_DATA);
-export const fetchExecutiveData = (): Promise<ExecutiveData> => simulateDelay(MOCK_EXECUTIVE_DATA);
-export const fetchNewsArticles = (): Promise<NewsArticle[]> => simulateDelay(MOCK_NEWS_ARTICLES);
-export const fetchTestimonials = (): Promise<Testimonial[]> => simulateDelay(MOCK_TESTIMONIALS);
-export const fetchUserActivity = (userId: string): Promise<UserActivityEvent[]> => {
-    const activity = MOCK_USER_ACTIVITY.filter(act => act.userId === userId);
-    return simulateDelay(activity);
+export const fetchParsedPolicy = async (): Promise<DetailedPolicy> => {
+    await delay();
+    const policy = await import('../data/parsedPolicy.json');
+    return policy as unknown as DetailedPolicy;
 };
 
-export const fetchAutomationRules = (): Promise<AutomationRule[]> => {
-    // Mock data, in a real app would come from a DB
-    const rules: AutomationRule[] = [
-        { id: '1', agencyId: 'agency_1', name: 'Follow up on New Auto Leads', description: 'Sends a welcome email to new leads interested in auto insurance.', category: 'lead_conversion', triggerType: 'on_lead_creation', conditions: [{ id: 'c1', field: 'policy_interest', operator: 'is', value: 'auto' }], actions: [{id: 'a1', type: 'send_email', templateId: 'email_1'}], isEnabled: true, lastExecuted: '2023-10-26T11:00:00Z', successRate: 0.98 },
-        { id: '2', agencyId: 'agency_1', name: 'Nurture High-Score Leads', description: 'Sends an SMS to leads with a score over 90.', category: 'communication_automation', triggerType: 'on_lead_creation', conditions: [{id: 'c2', field: 'lead_score', operator: 'greater_than', value: 90}], actions: [{id: 'a2', type: 'send_sms', templateId: 'sms_1'}], isEnabled: false, lastExecuted: '2023-10-25T09:00:00Z', successRate: 1.0 },
-    ];
-    return simulateDelay(rules);
-};
-
-export const fetchTemplates = (): Promise<MessageTemplate[]> => {
-    const templates: MessageTemplate[] = [
-        { id: 'email_1', name: 'Welcome Email - Auto', channel: 'email', content: 'Hi {{Lead.FirstName}},\n\nThanks for your interest in our auto insurance! Our agent, {{Agent.FirstName}}, will be in touch shortly.\n\nBest,\nThe Team' },
-        { id: 'sms_1', name: 'High-Score Lead SMS', channel: 'sms', content: 'Hi {{Lead.FirstName}}! This is {{Agent.FirstName}}. I saw you were interested in our policies and wanted to reach out.' },
-    ];
-    return simulateDelay(templates);
-};
-
-
-// Dashboard data
-// FIX: Update mock data to match the full TransactionInquiry type.
-export const fetchInquiries = (): Promise<TransactionInquiry[]> => simulateDelay([
-    {
-      id: 'inq_dash_1',
-      agencyId: 'agency_1',
-      createdAt: new Date().toISOString(),
-      contact: {
-        firstName: 'Dashboard',
-        lastName: 'Inquiry',
-        email: 'dash.inquiry@example.com',
-        phone: '555-1111',
-      },
-      consentGDPR: true,
-      source: 'Dashboard Widget',
-      purpose: 'general',
-      attribution: {},
-      attributionId: 'attr_dash_1'
-    }
-]);
-// FIX: Update mock data to match the full Opportunity__EXT type.
-export const fetchOpportunities = (): Promise<Opportunity__EXT[]> => simulateDelay([
-    {
-        id: 'opp_dash_1',
-        title: 'Overdue Follow Up',
-        value: 1200,
-        prospectId: 'prospect_dash_1',
-        stage: 'contacted',
-        nextFollowUpDate: new Date(Date.now() - 86400000).toISOString(),
-        agentId: 'user_1',
-        agencyId: 'agency_1',
-        inquiryId: 'inq_dash_1',
-        createdAt: new Date(Date.now() - 2 * 86400000).toISOString(),
-        updatedAt: new Date(Date.now() - 2 * 86400000).toISOString(),
-    }
-]);
-// FIX: Update mock data to match the full Interaction type.
-export const fetchInteractions = (): Promise<Interaction[]> => simulateDelay([
-    {
-        id: 'int_dash_1',
-        opportunityId: 'opp_dash_1',
-        agentId: 'user_1',
-        agencyId: 'agency_1',
-        channel: 'email',
-        direction: 'inbound',
-        content: 'Unread email from prospect.',
-        createdAt: new Date().toISOString(),
-        // FIX: Add 'read' property to align with the updated Interaction type and dashboard logic.
-        read: false,
-    }
-]);
-export const fetchFirstNoticeOfLoss = (): Promise<FirstNoticeOfLoss[]> => simulateDelay([{ id: '1', agencyId: 'agency_1', createdAt: new Date().toISOString() }]);
-export const fetchServiceRequests = (): Promise<ServiceRequest[]> => simulateDelay([]);
-export const fetchPerformanceSamples = (): Promise<PerfSample[]> => simulateDelay([{ date: new Date().toISOString(), agencyId: 'agency_1', spend: 60, conversions: { lead: 1 } }]);
-export const fetchPortalAccounts = (): Promise<PortalAccount__EXT[]> => simulateDelay([{ id: '1', agencyId: 'agency_1', lastLoginAt: new Date().toISOString() }]);
-
-// Executive Dashboard Data
-export const fetchKpiSnapshots = (): Promise<KPISnapshot[]> => simulateDelay([]);
-export const fetchAllLeads = (): Promise<Lead[]> => simulateDelay(MOCK_LEADS);
-export const fetchAllKpiSnapshots = (): Promise<KPISnapshot[]> => simulateDelay([{ date: new Date().toISOString(), agencyId: 'agency_1', source: 'Platform Marketing Leads', won: { count: 1, gwp: 1500 }, avgTimeToFirstReplyH: 2.5 }]);
-export const fetchAllPerformanceSamples = (): Promise<PerfSample[]> => simulateDelay([{ date: new Date().toISOString(), agencyId: 'agency_1', spend: 60, conversions: { lead: 1 } }]);
-export const fetchAllFunnelRuns = (): Promise<FunnelRun[]> => simulateDelay([{ date: new Date().toISOString(), pageviews: 100, leads: 5 }]);
-// FIX: Update mock data to match the full Opportunity__EXT type.
-export const fetchAllOpportunities = (): Promise<Opportunity__EXT[]> => simulateDelay([
-    {
-        id: 'opp_all_1',
-        agencyId: 'agency_1',
-        title: 'Exec Dash - Follow Up',
-        value: 1200,
-        prospectId: 'prospect_all_1',
-        stage: 'contacted',
-        nextFollowUpDate: new Date(Date.now() - 86400000).toISOString(),
-        agentId: 'user_1',
-        inquiryId: 'inq_all_1',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-    }
-]);
-export const fetchAllConversions = (): Promise<Conversion[]> => simulateDelay([{ date: new Date().toISOString(), kind: 'lead', utm_source: 'email', utm_campaign: 'cross-sell-2024' }]);
-
-// Gap analysis mock
-export const fetchParsedPolicy = (): Promise<DetailedPolicy> => simulateDelay({
-    policyNumber: '63708952',
-    insurer: 'ΕΘΝΙΚΗ Η ΠΡΩΤΗ ΑΣΦΑΛΙΣΤΙΚΗ',
-    policyholder: { name: 'ΜΟΝΙΑΡΟΣ ΙΩΑΝΝΗΣ', address: 'ΦΟΛΕΓΑΝΔΡΟΥ 11, 16561 ΓΛΥΦΑΔΑ' },
-    insuredItems: [{ id: '1', description: 'FIAT 500X (334) CROS', coverages: [{type: 'Σωματικές Βλάβες τρίτων', limit: '1.300.000€'}, {type: 'Υλικές Ζημιές τρίτων', limit: '1.300.000€'}, {type: 'Προσωπικό Ατύχημα Οδηγού', limit: '15.000€'}] }]
-});
-
-// Automation Settings
 export const fetchAutomationSettings = async (): Promise<AutomationChannelSettings> => {
-    // In a real app this would fetch from a database. Here we can use local storage or just mock it.
-    const defaultSettings: AutomationChannelSettings = {
-        email: { isEnabled: true, host: 'smtp.example.com', port: 587, username: 'user', password: 'password', fromAddress: 'no-reply@example.com' },
-        viber: { isEnabled: false },
-        whatsapp: { isEnabled: false },
-        sms: { isEnabled: false },
-    };
-    return simulateDelay(defaultSettings);
-}
-
-export const fetchAutomationEvents = async (): Promise<AutomationEvent[]> => {
-    return simulateDelay([
-        { id: 'evt1', agencyId: 'agency_1', timestamp: new Date().toISOString(), ruleId: '1', ruleName: 'Follow up on New Auto Leads', status: 'success', details: 'Email sent to new lead john@doe.com', impact: 'Lead status changed to "contacted"', channel: 'email' }
-    ]);
+    // Settings are unique, usually a singleton. We can use local storage directly or a repo.
+    await delay();
+    const stored = localStorage.getItem('agentos_settings_automation');
+    if (stored) return JSON.parse(stored);
+    
+    const defaults = await import('../data/settings/automation.json');
+    return defaults as unknown as AutomationChannelSettings;
 };
+
+export const saveAutomationSettings = async (settings: AutomationChannelSettings): Promise<void> => {
+    await delay();
+    localStorage.setItem('agentos_settings_automation', JSON.stringify(settings));
+};
+
 export const fetchAutomationAnalytics = async (): Promise<AutomationAnalytics> => {
-     return simulateDelay({
-        conversionRateBefore: 12.5,
-        conversionRateAfter: 18.2,
-        messagesSentByChannel: [],
-    });
+    await delay();
+    const data = await import('../data/analytics/automation_summary.json');
+    return data as unknown as AutomationAnalytics;
 };
 
-// Sales Pipeline Data
-export const fetchTransactionInquiries = (): Promise<TransactionInquiry[]> => fetchJsonData('/data/transaction_inquiries.json');
-export const fetchTransactionQuoteRequests = (): Promise<TransactionQuoteRequest[]> => fetchJsonData('/data/transaction_quoterequests.json');
-export const fetchOpportunitiesExt = (): Promise<Opportunity__EXT[]> => fetchJsonData('/data/opportunities_ext.json');
-export const fetchProspects = (): Promise<Prospect[]> => fetchJsonData('/data/prospects.json');
-export const fetchPipelineInteractions = (): Promise<Interaction[]> => fetchJsonData('/data/interactions.json');
-export const fetchPipelineConversions = (): Promise<Conversion[]> => fetchJsonData('/data/conversions_pipeline.json');
-export const fetchTasks = (): Promise<Task[]> => fetchJsonData('/data/tasks.json');
+// Dashboard Dashboard specific subsets (simulated by filtering the main repos)
+export const fetchInquiries = () => inquiryService.getAll(); // Already fetched by main repo
+export const fetchOpportunities = () => opportunityService.getAll(); // Already fetched by main repo
+export const fetchInteractions = () => interactionService.getAll(); // Already fetched by main repo

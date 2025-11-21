@@ -1,3 +1,4 @@
+
 // FIX: Import React to resolve 'Cannot find namespace React' error.
 import React from 'react';
 
@@ -386,6 +387,7 @@ export interface Testimonial {
 }
 
 export interface KPISnapshot {
+  id: string;
   date: string;
   agencyId: string;
   source: string;
@@ -396,6 +398,7 @@ export interface KPISnapshot {
   avgTimeToFirstReplyH?: number;
 }
 export interface Conversion {
+    id: string;
     date: string;
     kind: 'lead' | 'sale' | 'won'; // Added 'won' for pipeline
     utm_source?: string;
@@ -405,6 +408,7 @@ export interface Conversion {
 }
 
 export interface FunnelRun {
+    id: string;
     date: string;
     pageviews: number;
     leads: number;
@@ -549,7 +553,7 @@ export interface SimulationResult {
 // The more detailed definitions are kept below.
 export interface FirstNoticeOfLoss { id: string; agencyId: string; createdAt: string; }
 export interface ServiceRequest { id: string; agencyId: string; createdAt: string; }
-export interface PerfSample { date: string; agencyId: string; spend: number; conversions: { lead: number } }
+export interface PerfSample { id: string; date: string; agencyId: string; spend: number; conversions: { lead: number } }
 export interface PortalAccount__EXT { id: string; agencyId: string; lastLoginAt: string; }
 
 // Onboarding
