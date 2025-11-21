@@ -856,7 +856,50 @@
   },
   "support": {
     "title": "Support Center",
-    "description": "This section is under construction. It will contain help articles, FAQs, and a contact form for support inquiries."
+    "description": "Access help, guides, and resources to maximize your AgentOS experience.",
+    "socialGuide": {
+        "title": "Building Your Digital Brand",
+        "intro": "A professional social media presence is your 24/7 business card. Follow these platform-specific guides to establish trust and attract leads.",
+        "platforms": {
+            "linkedin": {
+                "title": "LinkedIn: The Professional Standard",
+                "checklist": [
+                    "Profile Photo: Professional attire, plain background, genuine smile.",
+                    "Headline: Use 'Insurance Advisor helping families protect their future' instead of just 'Agent'.",
+                    "About Section: Tell your story. Why did you become an advisor? How do you help clients?",
+                    "Experience: List your agency, years of experience, and any specialized certifications.",
+                    "Featured: Pin your top articles or a link to your AgentOS microsite."
+                ]
+            },
+            "instagram": {
+                "title": "Instagram: Visual Storytelling",
+                "checklist": [
+                    "Bio: 'Protecting [Your City] 🏠🚗 | Dad of 2 👨‍👩‍👦 | DM for Quotes 📩'. Include your microsite link.",
+                    "Content Mix: Follow the 80/20 rule: 80% professional value (tips, success stories), 20% personal/human side.",
+                    "Highlights: Create albums for 'Reviews', 'About Me', 'Q&A', and 'Services'.",
+                    "Stories: Use daily stories to show behind-the-scenes office life."
+                ]
+            },
+            "facebook": {
+                "title": "Facebook: Community Connection",
+                "checklist": [
+                    "Cover Photo: High-quality branded image with your contact details overlay.",
+                    "Reviews: Enable the 'Reviews' tab and actively ask happy clients to post feedback.",
+                    "About: Fill in every field, especially your website, hours, and 'Our Story'.",
+                    "Pinned Post: Pin a welcome video or your current best offer to the top of your feed."
+                ]
+            },
+            "x": {
+                "title": "X (Twitter): Real-Time Engagement",
+                "checklist": [
+                    "Pinned Tweet: Your best value proposition or a limited-time offer link.",
+                    "Bio: Short, punchy description with relevant hashtags (e.g., #Insurance #[City]).",
+                    "Engagement: Follow local businesses, news outlets, and community leaders.",
+                    "Visuals: Attach an image or video to every tweet to increase engagement by 150%."
+                ]
+            }
+        }
+    }
   },
   "pipeline": {
     "title": "Lead & Opportunity Pipeline",
