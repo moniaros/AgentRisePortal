@@ -190,14 +190,14 @@ const MicroCRM: React.FC = () => {
     const modalMode = editingCustomer && 'id' in editingCustomer ? 'edit' : 'add';
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-6 md:space-y-8">
             {/* Header */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{t('nav.customersAndLeads')}</h1>
-                    <p className="text-gray-500 dark:text-gray-400 mt-1">Manage your client relationships and growth opportunities.</p>
+                    <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">{t('nav.customersAndLeads')}</h1>
+                    <p className="text-sm md:text-base text-gray-500 dark:text-gray-400 mt-1">Manage your client relationships and growth opportunities.</p>
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex flex-col sm:flex-row w-full md:w-auto gap-3">
                     <input 
                         type="file" 
                         ref={fileInputRef} 
@@ -208,7 +208,7 @@ const MicroCRM: React.FC = () => {
                     <button 
                         onClick={handleSmartImportClick} 
                         disabled={isImporting}
-                        className="flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition shadow-sm disabled:opacity-50"
+                        className="flex items-center justify-center gap-2 px-4 py-3 md:py-2.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition shadow-sm disabled:opacity-50 w-full sm:w-auto"
                     >
                         {isImporting ? (
                             <>
@@ -224,7 +224,7 @@ const MicroCRM: React.FC = () => {
                     </button>
                     <button 
                         onClick={handleAddCustomer} 
-                        className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition shadow-lg shadow-blue-500/30"
+                        className="flex items-center justify-center gap-2 px-5 py-3 md:py-2.5 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition shadow-lg shadow-blue-500/30 w-full sm:w-auto"
                     >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
                         {t('crm.addCustomer')}
@@ -233,8 +233,8 @@ const MicroCRM: React.FC = () => {
             </div>
             
             {/* Filters & Search */}
-            <div className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 flex gap-4">
-                 <div className="relative flex-grow max-w-md">
+            <div className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 flex flex-col md:flex-row gap-4">
+                 <div className="relative flex-grow w-full">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                     </div>
@@ -243,7 +243,7 @@ const MicroCRM: React.FC = () => {
                         placeholder={t('crm.searchAll') as string}
                         value={filters.search}
                         onChange={(e) => setFilters(prev => ({ ...prev, search: e.target.value}))}
-                        className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg leading-5 bg-white dark:bg-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out sm:text-sm"
+                        className="block w-full pl-10 pr-3 py-3 md:py-2 border border-gray-300 dark:border-gray-600 rounded-lg leading-5 bg-white dark:bg-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out text-base md:text-sm"
                     />
                 </div>
             </div>
@@ -251,8 +251,8 @@ const MicroCRM: React.FC = () => {
             {error && <ErrorMessage message={error.message} />}
 
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-                {/* Recent Leads Sidebar */}
-                <div className="xl:col-span-1 space-y-4">
+                {/* Recent Leads Sidebar (On mobile this will stack below or above based on order, here stacking above main list for visibility is optional but usually sidebar is secondary) */}
+                <div className="xl:col-span-1 space-y-4 order-2 xl:order-1">
                     <h2 className="text-lg font-bold text-gray-800 dark:text-white flex items-center gap-2">
                         <span className="w-2 h-6 bg-orange-500 rounded-full"></span>
                         {t('crm.recentLeads')}
@@ -261,7 +261,7 @@ const MicroCRM: React.FC = () => {
                 </div>
 
                 {/* Main Customer List */}
-                <div className="xl:col-span-2 space-y-4">
+                <div className="xl:col-span-2 space-y-4 order-1 xl:order-2">
                     <h2 className="text-lg font-bold text-gray-800 dark:text-white flex items-center gap-2">
                         <span className="w-2 h-6 bg-blue-500 rounded-full"></span>
                         {t('crm.customers')} ({filteredCustomers.length})
