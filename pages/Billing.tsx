@@ -1,17 +1,34 @@
 
 import React, { useState } from 'react';
 import { useLocalization } from '../hooks/useLocalization';
-import { ICONS } from '../constants';
+import { BillingUsage } from '../types';
+import CreditUsageCard from '../components/billing/CreditUsageCard';
 
 const Billing: React.FC = () => {
     const { t } = useLocalization();
     const [activeTab, setActiveTab] = useState<'overview' | 'plans' | 'history'>('overview');
 
-    // Mock data simulating backend response
-    const usageData = {
-        aiCredits: { used: 450, limit: 1000, percent: 45 },
+    // Mock data simulating backend response with local state for interactivity
+    const [usageData, setUsageData] = useState<BillingUsage>({
+        aiCredits: { used: 4500, limit: 5000, percent: 90 },
         seats: { used: 2, limit: 5, percent: 40 },
-        storage: { used: 1.2, limit: 10, unit: 'GB', percent: 12 }
+        storage: { used: 1.2, limit: 10, unit: 'GB', percent: 12 },
+        overage: {
+            isEnabled: false,
+            monthlyBudgetCap: 50.00,
+            currentUsageCost: 0
+        }
+    });
+
+    const handleUpdateOverage = (enabled: boolean, cap: number) => {
+        setUsageData(prev => ({
+            ...prev,
+            overage: {
+                ...prev.overage,
+                isEnabled: enabled,
+                monthlyBudgetCap: cap
+            }
+        }));
     };
 
     const plans = [
@@ -76,19 +93,13 @@ const Billing: React.FC = () => {
                 </div>
             </div>
 
-            {/* Usage Stats */}
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border dark:border-gray-700 lg:col-span-2">
-                <h3 className="text-gray-500 dark:text-gray-400 text-sm font-medium uppercase tracking-wider mb-6">{t('billing.overview.usage')}</h3>
-                
-                <div className="space-y-6">
-                    <div>
-                        <div className="flex justify-between text-sm font-medium mb-1">
-                            <span className="text-gray-700 dark:text-gray-200">{t('billing.overview.aiCredits')}</span>
-                            <span className="text-gray-500">{usageData.aiCredits.used} / {usageData.aiCredits.limit}</span>
-                        </div>
-                        <ProgressBar percent={usageData.aiCredits.percent} colorClass="bg-purple-600" />
-                    </div>
+            {/* Usage Stats - Including New Credit Usage Card */}
+            <CreditUsageCard usage={usageData} onUpdateOverage={handleUpdateOverage} />
 
+            {/* Other Resources Usage */}
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border dark:border-gray-700 lg:col-span-2">
+                <h3 className="text-gray-500 dark:text-gray-400 text-sm font-medium uppercase tracking-wider mb-6">Platform Resources</h3>
+                <div className="space-y-6">
                     <div>
                         <div className="flex justify-between text-sm font-medium mb-1">
                             <span className="text-gray-700 dark:text-gray-200">{t('billing.overview.seats')}</span>
@@ -108,7 +119,7 @@ const Billing: React.FC = () => {
             </div>
 
             {/* Payment Method (Mock) */}
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border dark:border-gray-700 lg:col-span-3">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border dark:border-gray-700 lg:col-span-1">
                 <div className="flex justify-between items-center">
                     <div>
                         <h3 className="text-gray-500 dark:text-gray-400 text-sm font-medium uppercase tracking-wider mb-1">{t('billing.overview.paymentMethod')}</h3>

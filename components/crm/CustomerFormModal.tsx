@@ -84,7 +84,7 @@ const CustomerFormModal: React.FC<CustomerFormModalProps> = ({ isOpen, onClose, 
           </div>
           
           {/* Scrollable Content */}
-          <div className="p-6 sm:p-8 overflow-y-auto flex-grow space-y-8">
+          <div className="p-6 sm:p-8 overflow-y-auto flex-grow space-y-8 pb-24 sm:pb-8">
             
             {/* Personal Information */}
             <section>
@@ -109,7 +109,7 @@ const CustomerFormModal: React.FC<CustomerFormModalProps> = ({ isOpen, onClose, 
 
             {/* Contact Information */}
             <section>
-                <SectionHeader title="Στοιχεία Επικοινωνίας" />
+                <SectionHeader title={t('gapAnalysis.dataReviewModal.sections.policyholder') as string} />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('crm.form.email') as string}</label>
@@ -191,7 +191,7 @@ const CustomerFormModal: React.FC<CustomerFormModalProps> = ({ isOpen, onClose, 
                 {fields.length === 0 && (
                     <div className="text-center p-6 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-800/50">
                         <p className="text-sm text-gray-500">{t('crm.form.noPolicies') as string}</p>
-                        <button type="button" onClick={addPolicy} className="mt-2 text-blue-600 text-sm font-medium hover:underline">Add the first policy</button>
+                        <button type="button" onClick={addPolicy} className="mt-2 text-blue-600 text-sm font-medium hover:underline">{t('crm.form.addPolicy') as string}</button>
                     </div>
                 )}
             </section>
@@ -199,7 +199,7 @@ const CustomerFormModal: React.FC<CustomerFormModalProps> = ({ isOpen, onClose, 
           </div>
 
           {/* Footer */}
-          <div className="p-6 bg-white dark:bg-gray-800 border-t dark:border-gray-700 flex justify-end gap-3 flex-shrink-0 pb-8 sm:pb-6">
+          <div className="p-6 bg-white dark:bg-gray-800 border-t dark:border-gray-700 flex justify-end gap-3 flex-shrink-0 pb-8 sm:pb-6 absolute bottom-0 w-full sm:static">
             <button type="button" onClick={onClose} className="flex-1 sm:flex-none px-6 py-3 sm:py-2.5 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 font-medium transition text-center">
                 {t('crm.cancel') as string}
             </button>

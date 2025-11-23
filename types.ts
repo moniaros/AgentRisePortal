@@ -660,3 +660,31 @@ export interface Interaction {
     // FIX: Added optional 'read' property to track message status.
     read?: boolean;
 }
+
+// Billing & Credits
+export interface OverageSettings {
+    isEnabled: boolean;
+    monthlyBudgetCap: number;
+    currentUsageCost: number;
+    thresholdReached?: boolean;
+}
+
+export interface BillingUsage {
+    aiCredits: {
+        used: number;
+        limit: number;
+        percent: number;
+    };
+    seats: {
+        used: number;
+        limit: number;
+        percent: number;
+    };
+    storage: {
+        used: number;
+        limit: number;
+        unit: string;
+        percent: number;
+    };
+    overage: OverageSettings;
+}

@@ -308,6 +308,15 @@
       "cardEnding": "Visa ending in {last4}",
       "expires": "Expires {date}"
     },
+    "flexBudget": {
+        "title": "Flex-Budget Overage",
+        "description": "Allow AI services to continue running after plan limits are reached.",
+        "enable": "Enable Flex-Budget",
+        "budgetCap": "Monthly Safety Cap",
+        "budgetCapDesc": "Maximum amount you are willing to spend on extra credits.",
+        "currentUsage": "Current Overage Usage",
+        "alert": "Alert: You have reached {percent}% of your overage budget."
+    },
     "plans": {
       "current": "Current Plan",
       "upgrade": "Upgrade",

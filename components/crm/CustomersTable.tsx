@@ -50,7 +50,7 @@ const CustomersTable: React.FC<CustomersTableProps> = ({ customers, onEdit, onDe
                               {customer.firstName} {customer.lastName}
                           </div>
                           <div className="text-xs text-slate-500 dark:text-slate-400">
-                              {customer.policies.length} Policies
+                              {customer.policies.length} {t('crm.form.policies')}
                           </div>
                       </div>
                   </div>
@@ -71,20 +71,25 @@ const CustomersTable: React.FC<CustomersTableProps> = ({ customers, onEdit, onDe
               <div className="flex justify-between gap-2 pt-3 border-t dark:border-gray-700">
                   <button 
                       onClick={() => navigate(`/customer/${customer.id}`)}
-                      className="flex-1 py-2 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-md text-sm font-semibold text-center"
+                      className="flex-1 py-3 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-lg text-sm font-semibold text-center active:bg-blue-100 transition-colors"
                   >
                       {t('crm.viewProfile')}
                   </button>
                   <div className="flex gap-2">
+                      {customer.phone && (
+                          <a href={`tel:${customer.phone}`} className="p-3 text-green-600 bg-green-50 dark:bg-green-900/20 rounded-lg active:bg-green-100">
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+                          </a>
+                      )}
                       <button 
                           onClick={() => onEdit(customer)}
-                          className="p-2 text-indigo-600 bg-indigo-50 dark:bg-indigo-900/20 rounded-md"
+                          className="p-3 text-indigo-600 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg active:bg-indigo-100"
                       >
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
                       </button>
                       <button 
                           onClick={() => onDelete(customer.id)}
-                          className="p-2 text-red-600 bg-red-50 dark:bg-red-900/20 rounded-md"
+                          className="p-3 text-red-600 bg-red-50 dark:bg-red-900/20 rounded-lg active:bg-red-100"
                       >
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                       </button>
@@ -159,7 +164,7 @@ const CustomersTable: React.FC<CustomersTableProps> = ({ customers, onEdit, onDe
                       <StatusBadge status={status} />
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-300">
-                      {customer.policies.length} {customer.policies.length === 1 ? 'Policy' : 'Policies'}
+                      {customer.policies.length} {customer.policies.length === 1 ? 'Policy' : t('crm.form.policies')}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <div className="flex items-center justify-end gap-3 opacity-60 group-hover:opacity-100 transition-opacity">

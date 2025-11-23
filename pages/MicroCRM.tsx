@@ -190,7 +190,7 @@ const MicroCRM: React.FC = () => {
     const modalMode = editingCustomer && 'id' in editingCustomer ? 'edit' : 'add';
 
     return (
-        <div className="space-y-6 md:space-y-8">
+        <div className="space-y-6 md:space-y-8 pb-20 md:pb-0">
             {/* Header */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
@@ -208,7 +208,7 @@ const MicroCRM: React.FC = () => {
                     <button 
                         onClick={handleSmartImportClick} 
                         disabled={isImporting}
-                        className="flex items-center justify-center gap-2 px-4 py-3 md:py-2.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition shadow-sm disabled:opacity-50 w-full sm:w-auto"
+                        className="flex items-center justify-center gap-2 px-4 py-3 md:py-2.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition shadow-sm disabled:opacity-50 w-full sm:w-auto touch-manipulation"
                     >
                         {isImporting ? (
                             <>
@@ -224,7 +224,7 @@ const MicroCRM: React.FC = () => {
                     </button>
                     <button 
                         onClick={handleAddCustomer} 
-                        className="flex items-center justify-center gap-2 px-5 py-3 md:py-2.5 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition shadow-lg shadow-blue-500/30 w-full sm:w-auto"
+                        className="flex items-center justify-center gap-2 px-5 py-3 md:py-2.5 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition shadow-lg shadow-blue-500/30 w-full sm:w-auto touch-manipulation"
                     >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
                         {t('crm.addCustomer')}
@@ -243,7 +243,7 @@ const MicroCRM: React.FC = () => {
                         placeholder={t('crm.searchAll') as string}
                         value={filters.search}
                         onChange={(e) => setFilters(prev => ({ ...prev, search: e.target.value}))}
-                        className="block w-full pl-10 pr-3 py-3 md:py-2 border border-gray-300 dark:border-gray-600 rounded-lg leading-5 bg-white dark:bg-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out text-base md:text-sm"
+                        className="block w-full pl-10 pr-3 py-3 md:py-2 border border-gray-300 dark:border-gray-600 rounded-lg leading-5 bg-white dark:bg-gray-700 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out text-base md:text-sm appearance-none"
                     />
                 </div>
             </div>
@@ -251,7 +251,7 @@ const MicroCRM: React.FC = () => {
             {error && <ErrorMessage message={error.message} />}
 
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-                {/* Recent Leads Sidebar (On mobile this will stack below or above based on order, here stacking above main list for visibility is optional but usually sidebar is secondary) */}
+                {/* Recent Leads Sidebar (Stacked on mobile) */}
                 <div className="xl:col-span-1 space-y-4 order-2 xl:order-1">
                     <h2 className="text-lg font-bold text-gray-800 dark:text-white flex items-center gap-2">
                         <span className="w-2 h-6 bg-orange-500 rounded-full"></span>
