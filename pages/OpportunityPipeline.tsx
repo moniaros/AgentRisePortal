@@ -13,7 +13,7 @@ const STAGES: OpportunityStage[] = ['new', 'contacted', 'proposal', 'won', 'lost
 
 const OpportunityPipeline: React.FC = () => {
     const { t } = useLocalization();
-    const { opportunities, prospects, isLoading, error, updateOpportunityStage, inquiries, conversions } = usePipelineData();
+    const { opportunities, prospects, inquiries, isLoading, error, updateOpportunityStage, conversions } = usePipelineData();
 
     const opportunitiesByStage = useMemo(() => {
         const grouped: Record<OpportunityStage, Opportunity__EXT[]> = {
@@ -66,6 +66,7 @@ const OpportunityPipeline: React.FC = () => {
                                 stage={stage}
                                 opportunities={opportunitiesByStage[stage]}
                                 prospects={prospects}
+                                inquiries={inquiries}
                                 onDrop={handleDrop}
                             />
                         ))

@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { useDrop } from 'react-dnd';
-import { OpportunityStage, Opportunity__EXT, Prospect } from '../../../types';
+import { OpportunityStage, Opportunity__EXT, Prospect, TransactionInquiry } from '../../../types';
 import { useLocalization } from '../../../hooks/useLocalization';
 import OpportunityCard from './OpportunityCard';
 
@@ -9,6 +8,7 @@ interface PipelineColumnProps {
     stage: OpportunityStage;
     opportunities: Opportunity__EXT[];
     prospects: Prospect[];
+    inquiries: TransactionInquiry[];
     onDrop: (opportunityId: string, newStage: OpportunityStage) => void;
 }
 
@@ -20,7 +20,7 @@ const STAGE_PROBABILITY: Record<OpportunityStage, number> = {
     lost: 0.0
 };
 
-const PipelineColumn: React.FC<PipelineColumnProps> = ({ stage, opportunities, prospects, onDrop }) => {
+const PipelineColumn: React.FC<PipelineColumnProps> = ({ stage, opportunities, prospects, inquiries, onDrop }) => {
     const { t } = useLocalization();
 
     const [{ isOver, canDrop }, drop] = useDrop(() => ({
@@ -64,11 +64,13 @@ const PipelineColumn: React.FC<PipelineColumnProps> = ({ stage, opportunities, p
             <div className="space-y-3 h-full overflow-y-auto min-h-[200px]">
                 {opportunities.map(opp => {
                     const prospect = prospects.find(p => p.id === opp.prospectId);
+                    const inquiry = inquiries.find(i => i.id === opp.inquiryId);
                     return (
                         <OpportunityCard 
                             key={opp.id} 
                             opportunity={opp} 
                             prospect={prospect}
+                            inquiry={inquiry}
                             probability={STAGE_PROBABILITY[stage]}
                         />
                     );

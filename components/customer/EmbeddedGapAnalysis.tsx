@@ -1,10 +1,9 @@
 
 import React, { useState } from 'react';
 import { useLocalization } from '../../hooks/useLocalization';
-import { Customer, GapAnalysisResult } from '../../types';
+import { Customer, GapAnalysisResult, DetailedPolicy } from '../../types';
 import FileUploader from '../gap-analysis/FileUploader';
 import { GoogleGenAI, Type } from '@google/genai';
-import { fetchParsedPolicy } from '../../services/api';
 import { useCrmData } from '../../hooks/useCrmData';
 import { useAuth } from '../../hooks/useAuth';
 import ErrorMessage from '../ui/ErrorMessage';
@@ -14,6 +13,9 @@ import { useNotification } from '../../hooks/useNotification';
 import { savePendingFindings } from '../../services/findingsStorage';
 import { saveAnalysisForCustomer } from '../../services/analysisStorage';
 import GapAnalysisResults from '../gap-analysis/GapAnalysisResults';
+import DataReviewModal from '../gap-analysis/DataReviewModal';
+import { logAuditEvent } from '../../services/auditLog';
+import { fileToBase64 } from '../../services/utils';
 
 interface EmbeddedGapAnalysisProps {
     customer: Customer;
@@ -30,11 +32,15 @@ const EmbeddedGapAnalysis: React.FC<EmbeddedGapAnalysisProps> = ({ customer }) =
     const [loadingStep, setLoadingStep] = useState('');
     const [error, setError] = useState<string | null>(null);
     const [analysisResult, setAnalysisResult] = useState<GapAnalysisResult | null>(null);
+    
+    const [dataForReview, setDataForReview] = useState<DetailedPolicy | null>(null);
+    const [isReviewModalOpen, setReviewModalOpen] = useState(false);
 
     const handleFileUpload = async (uploadedFile: File) => {
         setFile(uploadedFile);
         setError(null);
         setAnalysisResult(null);
+        setDataForReview(null);
 
         if (!process.env.API_KEY) {
             setError("API Key not configured.");
@@ -43,14 +49,112 @@ const EmbeddedGapAnalysis: React.FC<EmbeddedGapAnalysisProps> = ({ customer }) =
 
         setIsLoading(true);
         try {
-            // 1. "Parse" the policy
+            // 1. "Parse" the policy using Gemini
             setLoadingStep(t('gapAnalysis.fetchingPolicy'));
-            const policyData = await fetchParsedPolicy();
             
-            // Map and save the parsed policy to localStorage
-            const acordPolicy = mapToPolicyACORD(policyData);
+            const base64Data = await fileToBase64(uploadedFile);
+            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            
+            const prompt = `
+                You are an expert insurance policy parser. Analyze the provided document (image or PDF) and extract the policy details into a structured JSON format.
+                
+                Extract the following fields accurately:
+                - Policy Number
+                - Insurer Name
+                - Policyholder Name and Address
+                - Effective Date and Expiration Date (Format: YYYY-MM-DD)
+                - Insured Items (e.g., Vehicle description, Property address)
+                - Coverages (Type, Limit, Deductible, Premium if available)
+                
+                If specific values are missing, use null or an empty string.
+            `;
+
+            const response = await ai.models.generateContent({
+                model: 'gemini-2.5-flash',
+                contents: {
+                    parts: [
+                        {
+                            inlineData: {
+                                mimeType: uploadedFile.type,
+                                data: base64Data
+                            }
+                        },
+                        { text: prompt }
+                    ]
+                },
+                config: {
+                    responseMimeType: 'application/json',
+                    responseSchema: {
+                        type: Type.OBJECT,
+                        properties: {
+                            policyNumber: { type: Type.STRING },
+                            insurer: { type: Type.STRING },
+                            policyholder: {
+                                type: Type.OBJECT,
+                                properties: {
+                                    name: { type: Type.STRING },
+                                    address: { type: Type.STRING },
+                                },
+                                required: ["name", "address"],
+                            },
+                            effectiveDate: { type: Type.STRING },
+                            expirationDate: { type: Type.STRING },
+                            insuredItems: {
+                                type: Type.ARRAY,
+                                items: {
+                                    type: Type.OBJECT,
+                                    properties: {
+                                        id: { type: Type.STRING },
+                                        description: { type: Type.STRING },
+                                        coverages: {
+                                            type: Type.ARRAY,
+                                            items: {
+                                                type: Type.OBJECT,
+                                                properties: {
+                                                    type: { type: Type.STRING },
+                                                    limit: { type: Type.STRING },
+                                                    deductible: { type: Type.STRING },
+                                                    premium: { type: Type.NUMBER },
+                                                },
+                                                required: ["type", "limit"],
+                                            },
+                                        },
+                                    },
+                                    required: ["id", "description", "coverages"],
+                                },
+                            },
+                        },
+                        required: ["policyNumber", "insurer", "policyholder", "effectiveDate", "expirationDate", "insuredItems"],
+                    },
+                }
+            });
+
+            const jsonStr = response.text;
+            if (!jsonStr) throw new Error("No data returned from AI");
+            const policyData = JSON.parse(jsonStr) as DetailedPolicy;
+            
+            // Pause for review
+            setDataForReview(policyData);
+            setReviewModalOpen(true);
+            setIsLoading(false); // Stop loading while user reviews
+
+        } catch (err) {
+            console.error("Error in embedded analysis:", err);
+            setError("Failed to extract policy data. Please try again.");
+            setIsLoading(false);
+        }
+    };
+
+    const handleReviewApproved = async (approvedData: DetailedPolicy) => {
+        setReviewModalOpen(false);
+        setIsLoading(true); // Resume loading
+        
+        try {
+            // Map and save the approved policy to localStorage
+            const acordPolicy = mapToPolicyACORD(approvedData);
             savePolicyForCustomer(customer.id, acordPolicy);
-            addNotification('Policy data saved to local storage.', 'info');
+            addNotification('Policy data verified and saved.', 'info');
+            logAuditEvent('policy_sync', approvedData.policyNumber, `Synced to customer ${customer.id} from Embedded Scanner`);
 
             // 2. Analyze for gaps using Risk Intelligence Prompt
             setLoadingStep(t('gapAnalysis.analyzing'));
@@ -62,7 +166,7 @@ const EmbeddedGapAnalysis: React.FC<EmbeddedGapAnalysisProps> = ({ customer }) =
               Task: Perform a rigorous Risk Gap Analysis on the provided insurance policy for existing customer: ${customer.firstName} ${customer.lastName}.
               
               Input Data:
-              - Policy Details: ${JSON.stringify(policyData)}
+              - Policy Details: ${JSON.stringify(approvedData)}
               - Customer Profile: ${JSON.stringify({ age: customer.dateOfBirth, address: customer.address, policies: customer.policies.map(p => p.type) })}
               
               Output Requirements (${targetLang}):
@@ -83,7 +187,7 @@ const EmbeddedGapAnalysis: React.FC<EmbeddedGapAnalysisProps> = ({ customer }) =
             `;
 
             const response = await ai.models.generateContent({
-                model: 'gemini-2.5-pro',
+                model: 'gemini-3-pro-preview',
                 contents: prompt,
                 config: {
                     responseMimeType: 'application/json',
@@ -101,7 +205,7 @@ const EmbeddedGapAnalysis: React.FC<EmbeddedGapAnalysisProps> = ({ customer }) =
                                         current: { type: Type.STRING },
                                         recommended: { type: Type.STRING },
                                         reason: { type: Type.STRING },
-                                        priority: { type: Type.STRING, enum: ["Critical", "High", "Medium"] },
+                                        priority: { type: Type.STRING, enum: ["Critical", "High", "Medium", "Low"] },
                                         financialImpact: { type: Type.STRING },
                                         costOfImplementation: { type: Type.STRING },
                                         costOfInaction: { type: Type.STRING },
@@ -162,8 +266,8 @@ const EmbeddedGapAnalysis: React.FC<EmbeddedGapAnalysisProps> = ({ customer }) =
             savePendingFindings(customer.id, analysisId, result);
             
             saveAnalysisForCustomer(customer.id, {
-                fileName: uploadedFile.name,
-                parsedPolicy: policyData,
+                fileName: file?.name || 'Scanned Policy',
+                parsedPolicy: approvedData,
                 analysisResult: result,
             });
 
@@ -172,7 +276,7 @@ const EmbeddedGapAnalysis: React.FC<EmbeddedGapAnalysisProps> = ({ customer }) =
             // 4. Add a timeline event to notify the agent
             addTimelineEvent(customer.id, {
                 type: 'system',
-                content: `AI Risk Intelligence Scan completed for "${uploadedFile.name}". Risk Score: ${result.riskScore}/100.`,
+                content: `AI Risk Intelligence Scan completed for "${file?.name}". Risk Score: ${result.riskScore}/100.`,
                 author: currentUser ? `${currentUser.party.partyName.firstName} ${currentUser.party.partyName.lastName}` : 'System',
             });
 
@@ -183,7 +287,7 @@ const EmbeddedGapAnalysis: React.FC<EmbeddedGapAnalysisProps> = ({ customer }) =
             setIsLoading(false);
             setLoadingStep('');
         }
-    };
+    }
 
     return (
         <div className="border dark:border-gray-700 rounded-lg p-4 bg-white dark:bg-gray-800">
@@ -200,11 +304,11 @@ const EmbeddedGapAnalysis: React.FC<EmbeddedGapAnalysisProps> = ({ customer }) =
                 </div>
             )}
             
-            {!isLoading && file && (
+            {!isLoading && file && !isReviewModalOpen && (
                 <div className="space-y-4 animate-fade-in">
                     <div className="flex justify-between items-center bg-gray-50 dark:bg-gray-700 p-3 rounded-md">
                         <p className="text-sm font-semibold">Analysis for: <strong>{file.name}</strong></p>
-                        <button onClick={() => setFile(null)} className="text-sm text-blue-600 hover:underline">Scan New Document</button>
+                        <button onClick={() => { setFile(null); setAnalysisResult(null); }} className="text-sm text-blue-600 hover:underline">Scan New Document</button>
                     </div>
                     
                     {error && <ErrorMessage message={error} />}
@@ -218,6 +322,15 @@ const EmbeddedGapAnalysis: React.FC<EmbeddedGapAnalysisProps> = ({ customer }) =
                         </div>
                     )}
                 </div>
+            )}
+
+            {isReviewModalOpen && dataForReview && (
+                <DataReviewModal
+                    isOpen={isReviewModalOpen}
+                    onClose={() => setReviewModalOpen(false)}
+                    policyData={dataForReview}
+                    onApprove={handleReviewApproved}
+                />
             )}
 
         </div>

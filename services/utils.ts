@@ -17,3 +17,20 @@ export const generateId = (): string => {
 export const delay = (ms: number = 500): Promise<void> => {
     return new Promise(resolve => setTimeout(resolve, ms));
 };
+
+/**
+ * Converts a File object to a Base64 string (without data URI prefix).
+ * @param file The file to convert
+ */
+export const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+            const result = reader.result as string;
+            const base64 = result.split(',')[1];
+            resolve(base64);
+        };
+        reader.onerror = error => reject(error);
+    });
+};

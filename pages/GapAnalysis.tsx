@@ -11,6 +11,8 @@ import { trackEvent } from '../services/analytics';
 import { useNotification } from '../hooks/useNotification';
 import { savePendingFindings } from '../services/findingsStorage';
 import DataReviewModal from '../components/gap-analysis/DataReviewModal';
+import { logAuditEvent } from '../services/auditLog';
+import { fileToBase64 } from '../services/utils';
 
 const GapAnalysis: React.FC = () => {
     const { t, language } = useLocalization();
@@ -43,43 +45,39 @@ const GapAnalysis: React.FC = () => {
         setLoadingStep(t('gapAnalysis.fetchingPolicy'));
 
         try {
-            // STEP 1: In a real app, this would be OCR. We are using mocked text from the example PDF.
-            const ocrText = `
-                ΕΘΝΙΚΗ Η ΠΡΩΤΗ ΑΣΦΑΛΙΣΤΙΚΗ
-                ΠΟΛΥΑΣΦΑΛΙΣΤΗΡΙΟ ΣΥΜΒΟΛΑΙΟ ΚΛΑΔΟΥ ΑΥΤΟΚΙΝΗΤΩΝ
-                Αρ. Συμβολαίου: 63708952
-                Διάρκεια Ασφάλισης: Ετήσιο
-                Από: 23:59 της 11/07/2025 Εως: 23:59 της 11/07/2026
-                ΑΣΦΑΛΙΖΟΜΕΝΟΣ/ΛΗΠΤΗΣ ΑΣΦΑΛΙΣΗΣ
-                Επώνυμο: ΜΟΝΙΑΡΟΣ
-                Όνομα: ΙΩΑΝΝΗΣ
-                Δ/νση: ΦΟΛΕΓΑΝΔΡΟΥ 11, 16561 ΓΛΥΦΑΔΑ
-                ΣΤΟΙΧΕΙΑ ΑΣΦΑΛΙΣΜΕΝΟΥ ΟΧΗΜΑΤΟΣ
-                Μάρκα: FIAT
-                Μοντέλο: 500X (334) CROS
-                ΟΙ ΚΑΛΥΨΕΙΣ ΣΑΣ
-                [1] Σωματικές Βλάβες τρίτων (ανά άτομο) 1.300.000€
-                Υλικές Ζημιές τρίτων (ανά ατύχημα) 1.300.000€
-                Προσωπικό Ατύχημα Οδηγού 15.000€
-            `;
+            // Convert file to base64 for Gemini
+            const base64Data = await fileToBase64(uploadedFile);
             
-            // STEP 2: Use Gemini to parse the OCR text
+            // STEP 1: Use Gemini to parse the document (Multimodal)
             const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             
             const prompt = `
-                You are an expert insurance policy parser. Analyze the following text extracted from an insurance policy document and return the data in a structured JSON format.
-                Explicitly extract the policy number, insurer name, policyholder's full name and address, the policy effective date, and the policy expiration date.
-                Also, extract the main insured item (like a vehicle or property) and list its coverages with their corresponding limits.
+                You are an expert insurance policy parser. Analyze the provided document (image or PDF) and extract the policy details into a structured JSON format.
                 
-                Policy Text:
-                ---
-                ${ocrText}
-                ---
+                Extract the following fields accurately:
+                - Policy Number
+                - Insurer Name
+                - Policyholder Name and Address
+                - Effective Date and Expiration Date (Format: YYYY-MM-DD)
+                - Insured Items (e.g., Vehicle description, Property address)
+                - Coverages (Type, Limit, Deductible, Premium if available)
+                
+                If specific values are missing, use null or an empty string. Do not hallucinate data.
             `;
             
             const response = await ai.models.generateContent({
-                model: 'gemini-2.5-pro',
-                contents: prompt,
+                model: 'gemini-2.5-flash',
+                contents: {
+                    parts: [
+                        {
+                            inlineData: {
+                                mimeType: uploadedFile.type,
+                                data: base64Data
+                            }
+                        },
+                        { text: prompt }
+                    ]
+                },
                 config: {
                     responseMimeType: 'application/json',
                     responseSchema: {
@@ -111,6 +109,8 @@ const GapAnalysis: React.FC = () => {
                                                 properties: {
                                                     type: { type: Type.STRING },
                                                     limit: { type: Type.STRING },
+                                                    deductible: { type: Type.STRING },
+                                                    premium: { type: Type.NUMBER },
                                                 },
                                                 required: ["type", "limit"],
                                             },
@@ -133,6 +133,8 @@ const GapAnalysis: React.FC = () => {
             setDataForReview(policyData);
             setReviewModalOpen(true);
             trackEvent('ai_tool', 'Gap Analysis', 'policy_parsed_success', undefined, language);
+            
+            logAuditEvent('policy_parse', uploadedFile.name, 'Successfully extracted data from document.');
 
         } catch (err) {
             console.error("Error parsing policy:", err);
@@ -147,6 +149,7 @@ const GapAnalysis: React.FC = () => {
     const handleReviewApproved = (approvedPolicy: DetailedPolicy) => {
         setParsedPolicy(approvedPolicy);
         setReviewModalOpen(false);
+        logAuditEvent('policy_review_approved', approvedPolicy.policyNumber, 'User verified and approved extracted policy data.');
     };
 
     const handleAnalyzeGaps = async () => {
@@ -200,7 +203,7 @@ const GapAnalysis: React.FC = () => {
             `;
 
             const response = await ai.models.generateContent({
-                model: 'gemini-2.5-pro',
+                model: 'gemini-3-pro-preview', // Use Pro model for complex reasoning
                 contents: prompt,
                 config: {
                     responseMimeType: 'application/json',
@@ -218,7 +221,7 @@ const GapAnalysis: React.FC = () => {
                                         current: { type: Type.STRING },
                                         recommended: { type: Type.STRING },
                                         reason: { type: Type.STRING },
-                                        priority: { type: Type.STRING, enum: ["Critical", "High", "Medium"] },
+                                        priority: { type: Type.STRING, enum: ["Critical", "High", "Medium", "Low"] },
                                         financialImpact: { type: Type.STRING, description: "E.g., Potential €30k cost" },
                                         costOfImplementation: { type: Type.STRING, description: "E.g., €200/year" },
                                         costOfInaction: { type: Type.STRING },
@@ -268,7 +271,6 @@ const GapAnalysis: React.FC = () => {
             let jsonStr = response.text;
             if (!jsonStr) throw new Error("No response from AI");
             
-            // Sanitize JSON if the model returns markdown blocks
             if (jsonStr.includes('```json')) {
                 jsonStr = jsonStr.replace(/^```json\s*/, '').replace(/^```\s*/, '').replace(/\s*```$/, '');
             }
@@ -277,11 +279,12 @@ const GapAnalysis: React.FC = () => {
             setAnalysisResult(result);
             trackEvent('ai_tool', 'Gap Analysis', 'analysis_success', undefined, language);
 
-            // Save the findings for agent review
             const customerId = parsedPolicy.policyholder.name.replace(/\s+/g, '_').toLowerCase();
             const analysisId = `analysis_${Date.now()}`;
             savePendingFindings(customerId, analysisId, result);
             addNotification(t('gapAnalysis.saveSuccess'), 'success');
+            
+            logAuditEvent('gap_analysis_run', parsedPolicy.policyNumber, `Risk Score: ${result.riskScore}`);
 
         } catch (err) {
             console.error("Error analyzing gaps:", err);
