@@ -230,21 +230,33 @@ export interface DetailedPolicy {
 }
 
 export interface GapAnalysisResult {
+    riskScore: number; // 0-100, where 100 is high risk
+    summary: string;
     gaps: {
         area: string;
         current: string;
         recommended: string;
         reason: string;
+        priority: 'Critical' | 'High' | 'Medium';
+        financialImpact: string; // e.g., "Potential €50k loss"
+        costOfInaction: string; // e.g., "Risk of bankruptcy"
+        salesScript: string; // e.g., "Mr. Smith, if this happens..."
     }[];
     upsell_opportunities: {
         product: string;
         recommendation: string;
         benefit: string;
+        priority: 'High' | 'Medium' | 'Low';
+        financialImpact: string;
+        salesScript: string;
     }[];
     cross_sell_opportunities: {
         product: string;
         recommendation: string;
         benefit: string;
+        priority: 'High' | 'Medium' | 'Low';
+        financialImpact: string;
+        salesScript: string;
     }[];
 }
 

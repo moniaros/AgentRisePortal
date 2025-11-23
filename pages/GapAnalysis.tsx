@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useLocalization } from '../hooks/useLocalization';
 // FIX: Correct import path
@@ -124,7 +125,9 @@ const GapAnalysis: React.FC = () => {
                 }
             });
             
-            const policyData = JSON.parse(response.text) as DetailedPolicy;
+            const jsonStr = response.text;
+            if (!jsonStr) throw new Error("No data returned from AI");
+            const policyData = JSON.parse(jsonStr) as DetailedPolicy;
             
             // Open the review modal instead of setting the policy directly
             setDataForReview(policyData);
@@ -162,17 +165,27 @@ const GapAnalysis: React.FC = () => {
 
         try {
             const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-            const prompt = `
-              Perform a gap analysis for an insurance policy.
-              Current Policy Details: ${JSON.stringify(parsedPolicy)}
-              Customer Needs & Context: "${userNeeds}"
-              
-              Based on the needs and the current policy, identify:
-              1. Coverage Gaps: Areas where the current policy is insufficient.
-              2. Upsell Opportunities: Enhancements to existing coverages.
-              3. Cross-sell Opportunities: New types of policies the customer might need.
+            
+            // Determine prompt language
+            const targetLang = language === 'el' ? 'Greek' : 'English';
 
-              Provide a detailed reason for each finding.
+            const prompt = `
+              Role: You are a World-Class Senior Underwriter and High-Performance Sales Coach.
+              Task: Perform a rigorous Risk Gap Analysis on the provided insurance policy.
+              
+              Input Data:
+              - Policy Details: ${JSON.stringify(parsedPolicy)}
+              - Client Context & Goals: "${userNeeds}"
+              
+              Output Requirements (${targetLang}):
+              1. Risk Score (0-100): Calculate a risk score where 100 is High Risk/Dangerous and 0 is Fully Protected. Based on coverage gaps vs needs.
+              2. Executive Summary: A punchy, 2-sentence overview of their risk profile.
+              3. Coverage Gaps: Identify specific dangers. For each, estimate the 'Financial Impact' (e.g., '€50,000 potential loss') and the 'Cost of Inaction'.
+              4. Opportunities (Upsell/Cross-sell): Suggest products.
+              5. Sales Scripts: Write a specific, psychological script for the agent to say to the client to close the gap. Use fear of loss or peace of mind logic.
+              6. Priority: Tag each finding as 'Critical', 'High', or 'Medium'.
+
+              Ensure the tone is professional, authoritative, yet persuasive.
             `;
 
             const response = await ai.models.generateContent({
@@ -183,53 +196,69 @@ const GapAnalysis: React.FC = () => {
                     responseSchema: {
                         type: Type.OBJECT,
                         properties: {
+                            riskScore: { type: Type.NUMBER, description: "A score from 0 (safe) to 100 (risky)." },
+                            summary: { type: Type.STRING },
                             gaps: {
                                 type: Type.ARRAY,
-                                description: 'List of coverage gaps identified.',
                                 items: {
                                     type: Type.OBJECT,
                                     properties: {
-                                        area: { type: Type.STRING, description: 'e.g., Liability Coverage' },
-                                        current: { type: Type.STRING, description: 'e.g., €100,000' },
-                                        recommended: { type: Type.STRING, description: 'e.g., €300,000' },
-                                        reason: { type: Type.STRING, description: 'Reason for the recommendation.' },
+                                        area: { type: Type.STRING },
+                                        current: { type: Type.STRING },
+                                        recommended: { type: Type.STRING },
+                                        reason: { type: Type.STRING },
+                                        priority: { type: Type.STRING, enum: ["Critical", "High", "Medium"] },
+                                        financialImpact: { type: Type.STRING, description: "E.g., Potential €30k cost" },
+                                        costOfInaction: { type: Type.STRING },
+                                        salesScript: { type: Type.STRING, description: "Direct speech script for agent" },
                                     },
-                                    required: ["area", "current", "recommended", "reason"],
+                                    required: ["area", "current", "recommended", "reason", "priority", "financialImpact", "salesScript"],
                                 },
                             },
                             upsell_opportunities: {
                                 type: Type.ARRAY,
-                                description: 'List of potential upsell opportunities.',
                                 items: {
                                     type: Type.OBJECT,
                                     properties: {
-                                        product: { type: Type.STRING, description: 'e.g., Increased Personal Property Limit' },
-                                        recommendation: { type: Type.STRING, description: 'Specific recommendation details.' },
-                                        benefit: { type: Type.STRING, description: 'Benefit to the customer.' },
+                                        product: { type: Type.STRING },
+                                        recommendation: { type: Type.STRING },
+                                        benefit: { type: Type.STRING },
+                                        priority: { type: Type.STRING, enum: ["High", "Medium", "Low"] },
+                                        financialImpact: { type: Type.STRING },
+                                        salesScript: { type: Type.STRING },
                                     },
-                                    required: ["product", "recommendation", "benefit"],
+                                    required: ["product", "recommendation", "benefit", "salesScript"],
                                 },
                             },
                             cross_sell_opportunities: {
                                 type: Type.ARRAY,
-                                description: 'List of potential cross-sell opportunities.',
                                 items: {
                                     type: Type.OBJECT,
                                     properties: {
-                                        product: { type: Type.STRING, description: 'e.g., Umbrella Policy' },
-                                        recommendation: { type: Type.STRING, description: 'Specific recommendation details.' },
-                                        benefit: { type: Type.STRING, description: 'Benefit to the customer.' },
+                                        product: { type: Type.STRING },
+                                        recommendation: { type: Type.STRING },
+                                        benefit: { type: Type.STRING },
+                                        priority: { type: Type.STRING, enum: ["High", "Medium", "Low"] },
+                                        financialImpact: { type: Type.STRING },
+                                        salesScript: { type: Type.STRING },
                                     },
-                                    required: ["product", "recommendation", "benefit"],
+                                    required: ["product", "recommendation", "benefit", "salesScript"],
                                 },
                             },
                         },
-                        required: ["gaps", "upsell_opportunities", "cross_sell_opportunities"],
+                        required: ["riskScore", "summary", "gaps", "upsell_opportunities", "cross_sell_opportunities"],
                     }
                 }
             });
 
-            const jsonStr = response.text;
+            let jsonStr = response.text;
+            if (!jsonStr) throw new Error("No response from AI");
+            
+            // Sanitize JSON if the model returns markdown blocks
+            if (jsonStr.includes('```json')) {
+                jsonStr = jsonStr.replace(/^```json\s*/, '').replace(/^```\s*/, '').replace(/\s*```$/, '');
+            }
+            
             const result = JSON.parse(jsonStr) as GapAnalysisResult;
             setAnalysisResult(result);
             trackEvent('ai_tool', 'Gap Analysis', 'analysis_success', undefined, language);
@@ -290,7 +319,7 @@ const GapAnalysis: React.FC = () => {
             </div>
 
             {analysisResult && (
-                <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md mt-8">
+                <div className="mt-8">
                     <div className="flex justify-between items-center mb-6">
                         <h2 className="text-2xl font-semibold">{t('gapAnalysis.resultsTitle')}</h2>
                         <button onClick={resetState} className="text-sm text-blue-500 hover:underline">{t('gapAnalysis.startOver')}</button>

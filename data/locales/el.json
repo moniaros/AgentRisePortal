@@ -11,7 +11,9 @@
     "all": "Όλα",
     "active": "Ενεργό",
     "inactive": "Ανενεργό",
-    "retry": "Προσπαθήστε Ξανά"
+    "retry": "Προσπαθήστε Ξανά",
+    "download": "Λήψη",
+    "copy": "Αντιγραφή"
   },
   "nav": {
     "overview": "Cockpit",
@@ -57,6 +59,67 @@
     "myDay": "Η Μέρα μου",
     "tasks": "Διαχείριση Εργασιών",
     "opportunitiesHub": "Κέντρο Ευκαιριών"
+  },
+  "billing": {
+    "title": "Συνδρομές & Χρεώσεις",
+    "subtitle": "Διαχειριστείτε το πακέτο σας, τις μεθόδους πληρωμής και δείτε το ιστορικό τιμολογίων.",
+    "tabs": {
+      "overview": "Επισκόπηση",
+      "plans": "Διαθέσιμα Πακέτα",
+      "history": "Ιστορικό Πληρωμών"
+    },
+    "overview": {
+      "currentPlan": "Τρέχον Πακέτο",
+      "status": "Κατάσταση",
+      "renewalDate": "Επόμενη Χρέωση",
+      "paymentMethod": "Μέθοδος Πληρωμής",
+      "usage": "Χρήση Πόρων",
+      "aiCredits": "Μονάδες AI Generation",
+      "seats": "Θέσεις Χρηστών",
+      "storage": "Αποθηκευτικός Χώρος Cloud",
+      "manageSubscription": "Διαχείριση Συνδρομής",
+      "updatePayment": "Ενημέρωση Πληρωμών",
+      "planActive": "Ενεργό",
+      "cardEnding": "Visa που λήγει σε {last4}",
+      "expires": "Λήγει {date}"
+    },
+    "plans": {
+      "current": "Τρέχον",
+      "upgrade": "Αναβάθμιση",
+      "contactSales": "Επικοινωνία",
+      "monthly": "/ μήνα",
+      "starter": {
+        "name": "Starter",
+        "desc": "Βασικά εργαλεία για μεμονωμένους πράκτορες."
+      },
+      "pro": {
+        "name": "Professional",
+        "desc": "Ενισχύστε το γραφείο σας με AI & Αυτοματισμούς."
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "desc": "Λύσεις για μεγάλα δίκτυα και εταιρείες."
+      },
+      "features": {
+        "crm": "Βασικό CRM",
+        "leads": "Διαχείριση Leads",
+        "ai": "AI Ανάλυση Συμβολαίων",
+        "social": "Αυτοματισμός Social Media",
+        "users": "{count} Θέσεις Χρηστών",
+        "support": "Προτεραιότητα στην Υποστήριξη",
+        "api": "Πρόσβαση στο API",
+        "custom": "Custom Integrations"
+      }
+    },
+    "history": {
+      "invoice": "Τιμολόγιο",
+      "date": "Ημερομηνία",
+      "amount": "Ποσό",
+      "status": "Κατάσταση",
+      "paid": "Εξοφλήθη",
+      "pending": "Εκκρεμεί",
+      "noInvoices": "Δεν βρέθηκαν τιμολόγια."
+    }
   },
   "support": {
     "title": "Ακαδημία Ψηφιακού Brand",
@@ -354,6 +417,213 @@
         "title": "Πρωτόκολλα Διαχείρισης Leads",
         "desc": "Τυποποιημένες διαδικασίες για τη διαχείριση νέων διαδικτυακών υποψηφίων."
       }
+    },
+    "settings": {
+      "title": "Ρυθμίσεις",
+      "nav": {
+        "general": "Γενικά",
+        "security": "Ασφάλεια",
+        "notifications": "Ειδοποιήσεις",
+        "integrations": "Συνδέσεις",
+        "audit": "Αρχεία Καταγραφής"
+      },
+      "general": {
+        "title": "Γενικές Προτιμήσεις",
+        "description": "Διαχειριστείτε τις προσωπικές και τοπικές ρυθμίσεις σας.",
+        "timezone": "Ζώνη Ώρας",
+        "dateFormat": "Μορφή Ημερομηνίας",
+        "language": "Γλώσσα"
+      },
+      "security": {
+        "title": "Ασφάλεια & Σύνδεση",
+        "description": "Προστατέψτε τον λογαριασμό σας με 2FA και ισχυρούς κωδικούς.",
+        "changePassword": "Αλλαγή Κωδικού",
+        "twoFactor": "Έλεγχος Ταυτότητας Δύο Παραγόντων (2FA)",
+        "twoFactorDesc": "Προσθέστε ένα επιπλέον επίπεδο ασφαλείας στον λογαριασμό σας.",
+        "enable2FA": "Ενεργοποίηση 2FA",
+        "lastLogin": "Τελευταία σύνδεση: {date}"
+      },
+      "audit": {
+        "title": "Αρχεία Συστήματος",
+        "description": "Δείτε αρχεία ασφαλείας και πρόσβασης για το γραφείο σας.",
+        "viewFullLog": "Προβολή Πλήρους Αρχείου"
+      },
+      "notifications": {
+        "title": "Προτιμήσεις Ειδοποιήσεων",
+        "description": "Διαχειριστείτε πώς λαμβάνετε ειδοποιήσεις για σημαντικές ενημερώσεις.",
+        "enableLabel": "Ενεργοποίηση Ειδοποιήσεων Browser",
+        "previewLink": "Προεπισκόπηση Δοκιμαστικής Ειδοποίησης",
+        "permissionDenied": "Η άδεια ειδοποιήσεων απορρίφθηκε. Παρακαλώ ενεργοποιήστε την στις ρυθμίσεις του browser σας.",
+        "enabledSuccess": "Οι ειδοποιήσεις ενεργοποιήθηκαν επιτυχώς!",
+        "demo": {
+          "title": "Νέο Lead!",
+          "body": "Ο Γιάννης Παπαδόπουλος ζήτησε μόλις προσφορά."
+        },
+        "eventGroups": {
+          "important": "Σημαντικές Ειδοποιήσεις",
+          "optional": "Προαιρετικές Ενημερώσεις"
+        },
+        "events": {
+          "new_lead": { "label": "Νέο Lead", "description": "Όταν δημιουργείται ή σας ανατίθεται ένα νέο lead." },
+          "quote_request": { "label": "Αίτημα Προσφοράς", "description": "Όταν ένας πελάτης ζητά προσφορά μέσω του microsite." },
+          "follow_up_due": { "label": "Οφειλόμενο Follow-up", "description": "Όταν φτάσει η ημερομηνία follow-up μιας ευκαιρίας." },
+          "overdue_action": { "label": "Εκπρόθεσμες Ενέργειες", "description": "Όταν μια εργασία ή ευκαιρία είναι εκπρόθεσμη." },
+          "customer_reply": { "label": "Απάντηση Πελάτη", "description": "Όταν ένας πελάτης απαντά σε email ή μήνυμα." },
+          "policy_renewal": { "label": "Ανανέωση Συμβολαίου", "description": "Όταν ένα συμβόλαιο λήγει σε 30 ημέρες." },
+          "claim_submitted": { "label": "Υποβολή Απαίτησης", "description": "Όταν καταγράφεται μια νέα ζημιά (FNOL)." },
+          "new_message": { "label": "Νέο Μήνυμα", "description": "Άμεσα μηνύματα από πελάτες ή συναδέλφους." },
+          "task_upcoming": { "label": "Επερχόμενη Εργασία", "description": "Υπενθυμίσεις για εργασίες που λήγουν σύντομα." },
+          "opportunity_flagged": { "label": "Ευκαιρία με Σήμανση", "description": "Όταν μια ευκαιρία χρειάζεται προσοχή." },
+          "system_announcement": { "label": "Ανακοινώσεις Συστήματος", "description": "Σημαντικές ενημερώσεις της πλατφόρμας." },
+          "client_birthday": { "label": "Γενέθλια Πελατών", "description": "Καθημερινή σύνοψη γενεθλίων πελατών." },
+          "first_login_of_day": { "label": "Καθημερινή Ενημέρωση", "description": "Πρωινή σύνοψη της ημέρας σας." },
+          "campaign_results": { "label": "Αποτελέσματα Καμπάνιας", "description": "Εβδομαδιαία σύνοψη απόδοσης διαφημίσεων." }
+        },
+        "permissionDeniedWarning": {
+          "title": "Οι Ειδοποιήσεις έχουν αποκλειστεί",
+          "description": "Έχετε αποκλείσει τις ειδοποιήσεις για αυτόν τον ιστότοπο. Για να τις ενεργοποιήσετε, πρέπει να ενημερώσετε τις ρυθμίσεις του browser σας.",
+          "chrome": "Chrome",
+          "edge": "Edge",
+          "safari": "Safari",
+          "chromeSteps": "Κάντε κλικ στο εικονίδιο λουκέτου στη γραμμή διευθύνσεων -> Ρυθμίσεις ιστοτόπου -> Ειδοποιήσεις -> Να επιτρέπεται.",
+          "safariSteps": "Προτιμήσεις Safari -> Ιστότοποι -> Ειδοποιήσεις -> Να επιτρέπεται το AgentOS.",
+          "learnMore": "Μάθετε περισσότερα"
+        }
+      },
+      "appearance": {
+        "title": "Εμφάνιση",
+        "description": "Προσαρμόστε την εμφάνιση και αίσθηση της εφαρμογής.",
+        "darkMode": "Σκοτεινή Λειτουργία",
+        "lightMode": "Φωτεινή Λειτουργία"
+      },
+      "socialConnections": {
+        "title": "Συνδέσεις Social Media",
+        "statusConnected": "Συνδεδεμένο",
+        "statusNotConnected": "Μη Συνδεδεμένο",
+        "connectButton": "Σύνδεση",
+        "disconnectButton": "Αποσύνδεση",
+        "modalTitle": "Σύνδεση με {platform}",
+        "permissionsTitle": "Αιτούμενα Δικαιώματα:",
+        "complianceText": "Ζητάμε μόνο τα απαραίτητα δικαιώματα για δημοσίευση αναρτήσεων και ανάγνωση σχολίων. Δεν θα δημοσιεύσουμε ποτέ χωρίς την έγκρισή σας.",
+        "cancel": "Ακύρωση",
+        "allow": "Εξουσιοδότηση Εφαρμογής",
+        "platforms": {
+          "facebook": {
+            "tooltip": "Συνδέστε τη σελίδα σας στο Facebook για δημοσίευση αναρτήσεων και παρακολούθηση engagement.",
+            "scopes": ["pages_manage_posts", "pages_read_engagement", "read_insights"]
+          },
+          "instagram": {
+            "tooltip": "Συνδέστε τον επαγγελματικό λογαριασμό Instagram για οπτική αφήγηση.",
+            "scopes": ["instagram_basic", "instagram_content_publish", "instagram_manage_comments"]
+          },
+          "linkedin": {
+            "tooltip": "Συνδέστε την προσωπική ή εταιρική σελίδα LinkedIn για B2B δικτύωση.",
+            "scopes": ["w_member_social", "r_liteprofile", "r_emailaddress"]
+          },
+          "x": {
+            "tooltip": "Συνδέστε τον λογαριασμό X (Twitter) για ενημερώσεις σε πραγματικό χρόνο.",
+            "scopes": ["tweet.read", "tweet.write", "users.read"]
+          }
+        }
+      },
+      "integrations": {
+        "title": "Διασυνδέσεις",
+        "gbp": "Google Business Profile",
+        "statusNotConnected": "Μη Συνδεδεμένο",
+        "statusConnectedTo": "Συνδέθηκε σε: {businessName}",
+        "statusConnecting": "Σύνδεση...",
+        "statusFetchingProfiles": "Ανάκτηση προφίλ...",
+        "statusNoAccounts": "Δεν βρέθηκαν επαγγελματικοί λογαριασμοί.",
+        "statusFetchingLocations": "Ανάκτηση τοποθεσιών...",
+        "statusNoLocations": "Δεν βρέθηκαν τοποθεσίες.",
+        "statusApiError": "Σφάλμα API",
+        "statusFailed": "Η σύνδεση απέτυχε",
+        "warningNoAccounts": "Δεν βρέθηκαν λογαριασμοί Google Business που να σχετίζονται με αυτό το email.",
+        "warningNoLocations": "Δεν βρέθηκαν τοποθεσίες για τον επιλεγμένο επαγγελματικό λογαριασμό.",
+        "errorApi": "Παρουσιάστηκε σφάλμα κατά τη σύνδεση στο Google Business Profile.",
+        "errorNoClientId": "Το Google Client ID δεν έχει ρυθμιστεί. Παρακαλώ αποθηκεύστε το στην ενότητα Ρύθμισης.",
+        "errorGapiNotLoaded": "Το Google API Client δεν φορτώθηκε. Παρακαλώ ανανεώστε τη σελίδα.",
+        "errorSignIn": "Η είσοδος απέτυχε ή ακυρώθηκε.",
+        "connectButton": "Σύνδεση Google Business",
+        "successConnected": "Επιτυχής σύνδεση στο {businessName}!"
+      },
+      "setup": {
+        "title": "Ρύθμιση API & Integrations",
+        "googleClientId": "Google Client ID",
+        "googleClientIdPlaceholder": "Εισάγετε το Google Cloud Client ID σας",
+        "geminiApiKey": "Κλειδί API Gemini",
+        "geminiApiKeyPlaceholder": "Εισάγετε το κλειδί API Google Gemini σας",
+        "saveButton": "Αποθήκευση Κλειδιών",
+        "saveSuccess": "Τα κλειδιά API αποθηκεύτηκαν επιτυχώς!"
+      }
+    }
+  },
+  "gapAnalysis": {
+    "title": "AI Ανάλυση & Εφυΐα Κινδύνου",
+    "subtitle": "Ανεβάστε ένα ασφαλιστήριο συμβόλαιο (PDF) για να εκτελέσετε μια αξιολόγηση κινδύνου επιπέδου enterprise και να εντοπίσετε ευκαιρίες πώλησης.",
+    "step1": "1. Μεταφόρτωση Συμβολαίου",
+    "step2": "2. Ορισμός Πλαισίου Πελάτη",
+    "dragDrop": "Σύρετε ένα αρχείο εδώ, ή",
+    "browse": "αναζητήστε",
+    "fileTypes": "Υποστηρίζει PDF, PNG, JPG (max 10MB)",
+    "userNeedsTitle": "Ανάγκες & Στόχοι Πελάτη",
+    "userNeedsPlaceholder": "Περιγράψτε την κατάσταση του πελάτη (π.χ. νέα οικογένεια, αγόρασε σπίτι, ανησυχεί για σεισμούς). Το AI θα το χρησιμοποιήσει για να βρει σχετικά κενά.",
+    "analyzeGaps": "Εκτέλεση Σάρωσης Κινδύνου",
+    "analyzing": "Ανάλυση Κινδύνων & Ευκαιριών...",
+    "fetchingPolicy": "Εξαγωγή Δεδομένων Συμβολαίου...",
+    "resultsTitle": "Αναφορά Νοημοσύνης Κινδύνου",
+    "startOver": "Νέα Ανάλυση",
+    "coverageGaps": "Κρίσιμα Κενά Κάλυψης",
+    "upsellOpportunities": "Προτάσεις Αναβάθμισης (Upsell)",
+    "crossSellOpportunities": "Ευκαιρίες Cross-Sell",
+    "current": "Τρέχουσα Κάλυψη",
+    "recommended": "Προτεινόμενη",
+    "saveSuccess": "Τα ευρήματα της ανάλυσης αποθηκεύτηκαν επιτυχώς.",
+    "errors": {
+        "parsingFailed": "Αδυναμία ανάλυσης του εγγράφου. Βεβαιωθείτε ότι είναι καθαρή εικόνα ή PDF.",
+        "analysisFailed": "Η ανάλυση AI απέτυχε. Παρακαλώ δοκιμάστε ξανά."
+    },
+    "extractedInfo": "Εξαγόμενα Δεδομένα Συμβολαίου",
+    "policyHolder": "Συμβαλλόμενος",
+    "insuredItems": "Ασφαλισμένα Αντικείμενα",
+    "dataReviewModal": {
+        "title": "Επαλήθευση Δεδομένων",
+        "description": "Παρακαλώ ελέγξτε τα δεδομένα που εξήγαγε το AI για ακρίβεια πριν την αποθήκευση στο CRM.",
+        "approveAndSave": "Έγκριση & Αποθήκευση στο CRM",
+        "saveSuccess": "Τα δεδομένα συγχρονίστηκαν στο CRM επιτυχώς.",
+        "saveError": "Αποτυχία συγχρονισμού. Παρακαλώ δοκιμάστε ξανά.",
+        "sections": {
+            "policyholder": "Στοιχεία Συμβαλλομένου",
+            "policyDetails": "Λεπτομέρειες Συμβολαίου",
+            "coverages": "Καλύψεις & Όρια",
+            "beneficiaries": "Δικαιούχοι"
+        },
+        "fields": {
+            "policyholderName": "Ονοματεπώνυμο",
+            "address": "Διεύθυνση",
+            "policyNumber": "Αρ. Συμβολαίου",
+            "insurer": "Ασφαλιστική Εταιρεία",
+            "effectiveDate": "Ημ. Έναρξης",
+            "expirationDate": "Ημ. Λήξης",
+            "coverageType": "Τύπος Κάλυψης",
+            "coverageLimit": "Όριο / Αξία",
+            "addCoverage": "Προσθήκη Κάλυψης",
+            "beneficiaryName": "Όνομα Δικαιούχου",
+            "addBeneficiary": "Προσθήκη Δικαιούχου"
+        }
+    },
+    "riskScore": "Βαθμολογία Έκθεσης Κινδύνου",
+    "riskScoreSubtitle": "0 = Ασφαλές, 100 = Υψηλός Κίνδυνος",
+    "financialImpact": "Οικονομικός Αντίκτυπος",
+    "costOfInaction": "Κόστος Αδράνειας",
+    "salesScript": "Σενάριο Πώλησης",
+    "copyScript": "Αντιγραφή Σεναρίου",
+    "scriptCopied": "Αντιγράφηκε!",
+    "priority": {
+        "Critical": "Κρίσιμο",
+        "High": "Υψηλό",
+        "Medium": "Μεσαίο",
+        "Low": "Χαμηλό"
     }
   }
 }
