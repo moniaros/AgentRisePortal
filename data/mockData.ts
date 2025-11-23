@@ -49,7 +49,101 @@ export const MOCK_LEADS: Lead[] = [
 ];
 
 export const MOCK_CUSTOMERS: Customer[] = [
-    { id: 'cust_1', agencyId: 'agency_1', firstName: 'Charlie', lastName: 'Brown', email: 'charlie.b@example.com', policies: [], timeline: [] },
+    {
+        id: 'cust_1',
+        agencyId: 'agency_1',
+        firstName: 'Alexandros',
+        lastName: 'Papageorgiou',
+        email: 'alex.papageorgiou@example.com',
+        phone: '6971112233',
+        address: 'Λεωφ. Κηφισίας 123, Αθήνα, 11526',
+        dateOfBirth: '1985-05-20',
+        policies: [
+            {
+                id: 'pol1',
+                type: PolicyType.AUTO,
+                policyNumber: 'CAR-12345',
+                premium: 350.50,
+                startDate: '2023-01-15',
+                endDate: '2024-01-14',
+                isActive: true,
+                insurer: 'Generali',
+                coverages: [
+                    { type: 'Bodily Injury', limit: '€1,300,000' },
+                    { type: 'Property Damage', limit: '€1,300,000' },
+                    { type: 'Legal Protection', limit: 'Basic' }
+                ],
+                vehicle: { make: 'Fiat', model: '500X', year: 2019, vin: 'ZFA334000...' }
+            },
+            {
+                id: 'pol2',
+                type: PolicyType.HOME,
+                policyNumber: 'HOME-67890',
+                premium: 180.00,
+                startDate: '2023-08-01',
+                endDate: '2024-07-31',
+                isActive: true,
+                insurer: 'Interamerican',
+                coverages: [
+                    { type: 'Fire (Building)', limit: '€150,000' },
+                    { type: 'Fire (Contents)', limit: '€30,000' },
+                    { type: 'Theft', limit: '€10,000' }
+                ],
+                // Missing Earthquake coverage deliberately for Gap Analysis
+            }
+        ],
+        timeline: [],
+        attentionFlag: 'High churn risk due to recent claim denial',
+        consent: {
+            gdpr: { isGiven: true, dateGranted: '2024-01-15', channel: 'web_form' },
+            marketing: { isGiven: true, dateGranted: '2024-01-15', channel: 'email' }
+        }
+    },
+    {
+        id: 'cust_2',
+        agencyId: 'agency_1',
+        firstName: 'Jane',
+        lastName: 'Doe',
+        email: 'jane.doe@example.com',
+        phone: '555-123-4567',
+        address: 'Agia Paraskevi 45, Athens',
+        dateOfBirth: '1990-11-12',
+        policies: [
+            {
+                id: 'pol3',
+                type: PolicyType.LIFE,
+                policyNumber: 'LIFE-ABCDE',
+                premium: 1200.00,
+                startDate: '2021-06-01',
+                endDate: '2041-05-31',
+                isActive: true,
+                insurer: 'MetLife',
+                coverages: [
+                    { type: 'Term Life', limit: '€200,000' }
+                ]
+            },
+            {
+                id: 'pol4',
+                type: PolicyType.HEALTH,
+                policyNumber: 'HEALTH-FGHIJ',
+                premium: 2500.75,
+                startDate: '2023-01-01',
+                endDate: '2023-12-31',
+                isActive: true,
+                insurer: 'NN Hellas',
+                coverages: [
+                    { type: 'Hospitalization', limit: '100%' },
+                    { type: 'Room & Board', limit: 'A Class' },
+                    { type: 'Deductible', limit: '€1,500' }
+                ]
+            }
+        ],
+        timeline: [],
+        consent: {
+            gdpr: { isGiven: true, dateGranted: '2024-02-01', channel: 'in_person' },
+            marketing: { isGiven: false, dateGranted: null, channel: null }
+        }
+    }
 ];
 
 export const MOCK_AUDIT_LOGS: AuditLog[] = [
@@ -104,12 +198,13 @@ export const MOCK_USER_ACTIVITY: UserActivityEvent[] = [
 ];
 
 export const MOCK_ANALYSES: StoredAnalysis[] = [
+    // Analysis for Cust 1 (Home/Auto Gap)
     {
         id: 'analysis_mock_1',
         createdAt: new Date().toISOString(),
         fileName: 'Home_Policy_2024.pdf',
         parsedPolicy: {
-            policyNumber: 'HOME-12345',
+            policyNumber: 'HOME-67890',
             insurer: 'Interamerican',
             policyholder: { name: 'Αλέξανδρος Παπαγεωργίου', address: 'Λεωφ. Κηφισίας 123' },
             effectiveDate: '2024-01-01',
@@ -163,6 +258,59 @@ export const MOCK_ANALYSES: StoredAnalysis[] = [
                     financialImpact: '€100,000 (Κεφάλαιο)',
                     costOfImplementation: '€450 / έτος',
                     salesScript: 'Αλέξανδρε, καθώς έχεις οικογένεια, έχεις σκεφτεί τι θα γίνει με το δάνειο του σπιτιού αν συμβεί κάτι απρόοπτο; Μια ασφάλεια ζωής μπορεί να εξοφλήσει το δάνειο άμεσα.'
+                }
+            ]
+        }
+    },
+    // Analysis for Cust 2 (Health Gap)
+    {
+        id: 'analysis_mock_2',
+        createdAt: new Date(Date.now() - 86400000 * 2).toISOString(), // 2 days ago
+        fileName: 'Health_Contract_NN.pdf',
+        parsedPolicy: {
+            policyNumber: 'HEALTH-FGHIJ',
+            insurer: 'NN Hellas',
+            policyholder: { name: 'Jane Doe', address: 'Agia Paraskevi 45' },
+            effectiveDate: '2023-01-01',
+            expirationDate: '2023-12-31',
+            insuredItems: [{ id: '1', description: 'Jane Doe (Primary)', coverages: [] }]
+        },
+        analysisResult: {
+            riskScore: 45,
+            summary: 'Strong hospitalization coverage, but significant exposure to day-to-day medical costs and diagnostic tests.',
+            gaps: [
+                {
+                    area: 'Diagnostic Tests',
+                    current: 'Not Included',
+                    recommended: 'Add Diagnostic Pack (unlimited)',
+                    reason: 'Routine blood work and checkups are paid out of pocket.',
+                    priority: 'Medium',
+                    financialImpact: '€600 / year (Avg. costs)',
+                    costOfImplementation: '€90 / year',
+                    costOfInaction: 'Avoiding preventative checkups due to cost.',
+                    salesScript: 'Jane, your current plan covers surgeries perfectly, but you are paying cash for every blood test. For just €90/year, we can cover unlimited diagnostic tests at Bioiatriki/Euromedica.'
+                }
+            ],
+            upsell_opportunities: [
+                {
+                    product: 'Lower Deductible',
+                    recommendation: 'Reduce from €1,500 to €500',
+                    benefit: 'Easier access to care for minor surgeries.',
+                    priority: 'High',
+                    financialImpact: '€1,000 (Reduction in out-of-pocket)',
+                    costOfImplementation: '€180 / year',
+                    salesScript: 'If you have a small incident costing €2,000, currently you pay €1,500. By lowering the deductible, the company pays €1,500 and you only €500.'
+                }
+            ],
+            cross_sell_opportunities: [
+                {
+                    product: 'Income Protection',
+                    recommendation: 'Disability Rider',
+                    benefit: 'Ensures salary continuity if unable to work.',
+                    priority: 'High',
+                    financialImpact: '€1,500 / month (Salary replacement)',
+                    costOfImplementation: '€25 / month',
+                    salesScript: 'Since you are a freelancer, if you get sick and cant work for a month, you lose income. This rider guarantees your salary continues.'
                 }
             ]
         }

@@ -621,6 +621,8 @@ export interface TransactionInquiry {
         utm_campaign?: string;
     };
     attributionId: string;
+    policyType?: string;
+    details?: string;
 }
 
 export interface TransactionQuoteRequest {
