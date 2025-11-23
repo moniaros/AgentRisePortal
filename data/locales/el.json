@@ -57,7 +57,233 @@
     "opportunityPipeline": "Πίνακας Ευκαιριών",
     "myDay": "Η Μέρα μου",
     "tasks": "Διαχείριση Εργασιών",
-    "opportunitiesHub": "Κέντρο Ευκαιριών"
+    "opportunitiesHub": "Κέντρο Ευκαιριών",
+    "content": "Περιεχόμενο"
+  },
+  "dashboard": {
+    "basedOn": "Βασισμένο σε",
+    "reviews": "κριτικές",
+    "recentReviews": "Πρόσφατες Κριτικές",
+    "showUnreplied": "Μόνο αναπάντητες",
+    "stars": "Αστέρια",
+    "replyPosted": "Η απάντηση δημοσιεύτηκε επιτυχώς!",
+    "generatingReply": "Σύνταξη Απάντησης...",
+    "generateAiReply": "Σύνταξη με AI",
+    "postReply": "Δημοσίευση",
+    "yourReply": "Η Απάντησή σας",
+    "kpis": {
+      "newInquiriesToday": "Νέα Αιτήματα",
+      "newInquiriesSubtitle": "Σήμερα",
+      "overdueFollowUps": "Εκπρόθεσμες Ενέργειες",
+      "overdueFollowUpsSubtitle": "Απαιτείται Δράση",
+      "unreadMessages": "Αδιάβαστα Μηνύματα",
+      "unreadMessagesSubtitle": "Εισερχόμενα",
+      "newPortalSubmissions": "Δραστηριότητα Portal",
+      "newPortalSubmissionsSubtitle": "Δηλώσεις & Αιτήματα",
+      "adPerformance": "Απόδοση Διαφημίσεων",
+      "adPerformanceSubtitle": "{leads} Leads / €{spend}",
+      "activePortalUsers": "Ενεργοί Πελάτες",
+      "activePortalUsersSubtitle": "Συνδέσεις Σήμερα",
+      "upsellOpportunities": "Ευκαιρίες Αναβάθμισης",
+      "crossSellOpportunities": "Ευκαιρίες Cross-Sell",
+      "viewAll": "Προβολή Όλων",
+      "followUp": "Follow Up"
+    },
+    "emptyStates": {
+      "noReviews": "Δεν υπάρχουν διαθέσιμες κριτικές.",
+      "allReplied": "Εξαιρετικά! Έχετε απαντήσει σε όλες τις πρόσφατες κριτικές."
+    },
+    "errors": {
+      "noApiKey": "Λείπει το κλειδί API. Παρακαλώ ρυθμίστε το στις Ρυθμίσεις.",
+      "dataFetchFailed": "Αποτυχία φόρτωσης δεδομένων.",
+      "replyGenerationFailed": "Αποτυχία δημιουργίας απάντησης AI.",
+      "replyPostFailed": "Αποτυχία δημοσίευσης απάντησης."
+    }
+  },
+  "pipeline": {
+    "title": "Pipeline Ευκαιριών",
+    "inboxTitle": "Εισερχόμενα Leads",
+    "inboxDescription": "Ελέγξτε και αξιολογήστε τα εισερχόμενα αιτήματα πριν τα εντάξετε στο pipeline.",
+    "createOpportunity": "Δημιουργία Ευκαιρίας",
+    "opportunityCreated": "Η ευκαιρία δημιουργήθηκε επιτυχώς!",
+    "noNewLeads": "Άδειο Inbox! Κανένα νέο lead για έλεγχο.",
+    "familyBundle": "Οικογενειακό Πακέτο",
+    "disposition": "Γρήγορη Καταχώρηση",
+    "quickActions": {
+      "leftVm": "Μήνυμα στον Τηλεφωνητή",
+      "badTiming": "Ακατάλληλη Ώρα",
+      "wrongNumber": "Λάθος Αριθμός"
+    },
+    "stages": {
+      "new": "Νέα",
+      "contacted": "Έγινε Επαφή",
+      "proposal": "Στάλθηκε Προσφορά",
+      "won": "Κερδισμένη",
+      "lost": "Χαμένη",
+      "qualifying": "Αξιολόγηση",
+      "negotiation": "Διαπραγμάτευση",
+      "prospecting": "Έρευνα"
+    },
+    "kpis": {
+      "newLeads": "Νέα Leads",
+      "proposalsSent": "Προσφορές",
+      "wonCount": "Συμβόλαια",
+      "wonGwp": "Συνολικά Ασφάλιστρα",
+      "conversionRate": "Ποσοστό Μετατροπής"
+    },
+    "myDay": {
+      "tasksToday": "Εργασίες Σήμερα",
+      "overdue": "Εκπρόθεσμες Ευκαιρίες",
+      "dueToday": "Follow-up Σήμερα",
+      "noDueDate": "Χωρίς Ημ/νία Follow-up"
+    },
+    "opportunitiesHub": {
+      "title": "Κέντρο Ευκαιριών",
+      "description": "Κεντρική προβολή όλων των επαληθευμένων ευκαιριών Αναβάθμισης και Cross-sell που εντοπίστηκαν από την ανάλυση συμβολαίων.",
+      "opportunities": "Ενεργές Ευκαιρίες",
+      "pipelineValue": "Αξία Χαρτοφυλακίου",
+      "noOpportunities": "Δεν υπάρχουν επαληθευμένες ευκαιρίες.",
+      "noOpportunitiesSub": "Εκτελέστε το AI Policy Scanner σε υφιστάμενους πελάτες για να δημιουργήσετε νέα leads.",
+      "goToScanner": "Μετάβαση στο Policy Scanner",
+      "pitchTitle": "AI Γεννήτρια Σεναρίων Πώλησης",
+      "pitchSubtitle": "Πειστικό Σενάριο",
+      "generating": "Δημιουργία του τέλειου μηνύματος...",
+      "close": "Κλείσιμο",
+      "copy": "Αντιγραφή στο Πρόχειρο",
+      "aiPitch": "Δημιουργία Πρότασης",
+      "errorGenerating": "Αδυναμία δημιουργίας σεναρίου. Ελέγξτε το κλειδί API.",
+      "marketHook": {
+        "home": "Αυξανόμενο κόστος κατασκευής και μείωση ΕΝΦΙΑ.",
+        "health": "Μεγάλες λίστες αναμονής στα δημόσια νοσοκομεία.",
+        "auto": "Αυστηρότερα πρόστιμα για ανασφάλιστα και έλεγχοι ΚΤΕΟ."
+      }
+    }
+  },
+  "customer": {
+    "coverages": "Καλύψεις",
+    "attachments": "Συνημμένα",
+    "attachmentSize": "({size} KB)",
+    "annotationPlaceholder": "Προσθήκη προσωπικής σημείωσης...",
+    "saveAnnotation": "Αποθήκευση",
+    "flagEvent": "Σήμανση",
+    "unflagEvent": "Αφαίρεση Σήμανσης",
+    "noTimeline": "Δεν υπάρχουν καταγεγραμμένα συμβάντα.",
+    "changeAddressTitle": "Ενημέρωση Διεύθυνσης",
+    "attentionFlagTitle": "Ορισμός Σήμανσης Προσοχής",
+    "attentionReason": "Αιτιολογία",
+    "attentionReasonPlaceholder": "π.χ. Κίνδυνος ακύρωσης, Ζημιά υψηλής αξίας...",
+    "editProfile": "Επεξεργασία Προφίλ",
+    "addEventTitle": "Προσθήκη Συμβάντος",
+    "eventType": "Τύπος Συμβάντος",
+    "eventDetails": "Λεπτομέρειες",
+    "eventDetailsPlaceholder": "Περιγράψτε την αλληλεπίδραση...",
+    "uploadAttachment": "Μεταφόρτωση αρχείου (max 5MB)",
+    "analysisFor": "Ανάλυση για",
+    "analysisDate": "Σάρωση στις {date}",
+    "sms": "SMS",
+    "review": {
+      "title": "Έλεγχος Ευρημάτων AI",
+      "description": "Το AI Policy Scanner εντόπισε τις παρακάτω ευκαιρίες. Παρακαλώ επαληθεύστε τις για να προστεθούν στο pipeline.",
+      "confirm": "Επαλήθευση",
+      "dismiss": "Απόρριψη",
+      "edit": "Επεξεργασία",
+      "save": "Αποθήκευση",
+      "cancel": "Ακύρωση"
+    },
+    "opportunities": {
+      "title": "Ενεργές Ευκαιρίες Πώλησης",
+      "callNow": "Κλήση Τώρα",
+      "sendEmail": "Αποστολή Email"
+    },
+    "consent": {
+      "title": "Διαχείριση Συγκατάθεσης",
+      "gdprConsent": "Συγκατάθεση Επεξεργασίας Δεδομένων (GDPR)",
+      "marketingConsent": "Συγκατάθεση Επικοινωνίας Marketing",
+      "dateGranted": "Ημερομηνία Λήψης",
+      "channel": "Κανάλι",
+      "consentExpiredWarning": "Η συγκατάθεση είναι παλαιότερη των 6 μηνών. Απαιτείται επαλήθευση.",
+      "channelOptions": {
+        "email": "Email",
+        "sms": "SMS",
+        "phone": "Τηλέφωνο",
+        "web_form": "Φόρμα Ιστοσελίδας",
+        "in_person": "Δια ζώσης"
+      }
+    }
+  },
+  "gapAnalysis": {
+    "title": "AI Ανάλυση & Εφυΐα Κινδύνου",
+    "subtitle": "Ανεβάστε ένα ασφαλιστήριο συμβόλαιο (PDF) για να εκτελέσετε μια αξιολόγηση κινδύνου επιπέδου enterprise και να εντοπίσετε ευκαιρίες πώλησης.",
+    "step1": "1. Μεταφόρτωση Συμβολαίου",
+    "step2": "2. Ορισμός Πλαισίου Πελάτη",
+    "dragDrop": "Σύρετε ένα αρχείο εδώ, ή",
+    "browse": "αναζητήστε",
+    "fileTypes": "Υποστηρίζει PDF, PNG, JPG (max 10MB)",
+    "userNeedsTitle": "Ανάγκες & Στόχοι Πελάτη",
+    "userNeedsPlaceholder": "Περιγράψτε την κατάσταση του πελάτη (π.χ. νέα οικογένεια, αγόρασε σπίτι, ανησυχεί για σεισμούς). Το AI θα το χρησιμοποιήσει για να βρει σχετικά κενά.",
+    "analyzeGaps": "Εκτέλεση Σάρωσης Κινδύνου",
+    "analyzing": "Ανάλυση Κινδύνων & Ευκαιριών...",
+    "fetchingPolicy": "Εξαγωγή Δεδομένων Συμβολαίου...",
+    "resultsTitle": "Αναφορά Νοημοσύνης Κινδύνου",
+    "startOver": "Νέα Ανάλυση",
+    "coverageGaps": "Κρίσιμα Κενά Κάλυψης",
+    "upsellOpportunities": "Προτάσεις Αναβάθμισης (Upsell)",
+    "crossSellOpportunities": "Ευκαιρίες Cross-Sell",
+    "growthOpportunities": "Ευκαιρίες Ανάπτυξης",
+    "upsellTitle": "Βελτίωση Υπάρχοντος (Upsell)",
+    "crossSellTitle": "Προτάσεις Νέων Συμβολαίων (Cross-Sell)",
+    "current": "Τρέχουσα Κάλυψη",
+    "recommended": "Προτεινόμενη",
+    "saveSuccess": "Τα ευρήματα της ανάλυσης αποθηκεύτηκαν επιτυχώς.",
+    "errors": {
+      "parsingFailed": "Αδυναμία ανάλυσης του εγγράφου. Βεβαιωθείτε ότι είναι καθαρή εικόνα ή PDF.",
+      "analysisFailed": "Η ανάλυση AI απέτυχε. Παρακαλώ δοκιμάστε ξανά."
+    },
+    "extractedInfo": "Εξαγόμενα Δεδομένα Συμβολαίου",
+    "policyHolder": "Συμβαλλόμενος",
+    "insuredItems": "Ασφαλισμένα Αντικείμενα",
+    "dataReviewModal": {
+      "title": "Επαλήθευση Δεδομένων",
+      "description": "Παρακαλώ ελέγξτε τα δεδομένα που εξήγαγε το AI για ακρίβεια πριν την αποθήκευση στο CRM.",
+      "approveAndSave": "Έγκριση & Αποθήκευση στο CRM",
+      "saveSuccess": "Τα δεδομένα συγχρονίστηκαν στο CRM επιτυχώς.",
+      "saveError": "Αποτυχία συγχρονισμού. Παρακαλώ δοκιμάστε ξανά.",
+      "sections": {
+        "policyholder": "Στοιχεία Συμβαλλομένου",
+        "policyDetails": "Λεπτομέρειες Συμβολαίου",
+        "coverages": "Καλύψεις & Όρια",
+        "beneficiaries": "Δικαιούχοι"
+      },
+      "fields": {
+        "policyholderName": "Ονοματεπώνυμο",
+        "address": "Διεύθυνση",
+        "policyNumber": "Αρ. Συμβολαίου",
+        "insurer": "Ασφαλιστική Εταιρεία",
+        "effectiveDate": "Ημ. Έναρξης",
+        "expirationDate": "Ημ. Λήξης",
+        "coverageType": "Τύπος Κάλυψης",
+        "coverageLimit": "Όριο / Αξία",
+        "addCoverage": "Προσθήκη Κάλυψης",
+        "beneficiaryName": "Όνομα Δικαιούχου",
+        "addBeneficiary": "Προσθήκη Δικαιούχου"
+      }
+    },
+    "riskScore": "Δείκτης Κινδύνου",
+    "riskScoreSubtitle": "0 = Ασφαλές, 100 = Υψηλός Κίνδυνος",
+    "financialImpact": "Οικονομικός Αντίκτυπος (Κίνδυνος)",
+    "costOfImplementation": "Κόστος Ασφάλισης",
+    "costOfInaction": "Κόστος Αδράνειας",
+    "benefit": "Όφελος Πελάτη",
+    "estimatedValue": "Εκτιμώμενη Αξία",
+    "salesScript": "Σενάριο Πώλησης",
+    "copyScript": "Αντιγραφή Σεναρίου",
+    "scriptCopied": "Αντιγράφηκε!",
+    "priority": {
+      "Critical": "Κρίσιμο",
+      "High": "Υψηλό",
+      "Medium": "Μεσαίο",
+      "Low": "Χαμηλό"
+    }
   },
   "billing": {
     "title": "Συνδρομές & Χρεώσεις",
@@ -649,80 +875,6 @@
         "saveButton": "Αποθήκευση Κλειδιών",
         "saveSuccess": "Τα κλειδιά API αποθηκεύτηκαν επιτυχώς!"
       }
-    }
-  },
-  "gapAnalysis": {
-    "title": "AI Ανάλυση & Εφυΐα Κινδύνου",
-    "subtitle": "Ανεβάστε ένα ασφαλιστήριο συμβόλαιο (PDF) για να εκτελέσετε μια αξιολόγηση κινδύνου επιπέδου enterprise και να εντοπίσετε ευκαιρίες πώλησης.",
-    "step1": "1. Μεταφόρτωση Συμβολαίου",
-    "step2": "2. Ορισμός Πλαισίου Πελάτη",
-    "dragDrop": "Σύρετε ένα αρχείο εδώ, ή",
-    "browse": "αναζητήστε",
-    "fileTypes": "Υποστηρίζει PDF, PNG, JPG (max 10MB)",
-    "userNeedsTitle": "Ανάγκες & Στόχοι Πελάτη",
-    "userNeedsPlaceholder": "Περιγράψτε την κατάσταση του πελάτη (π.χ. νέα οικογένεια, αγόρασε σπίτι, ανησυχεί για σεισμούς). Το AI θα το χρησιμοποιήσει για να βρει σχετικά κενά.",
-    "analyzeGaps": "Εκτέλεση Σάρωσης Κινδύνου",
-    "analyzing": "Ανάλυση Κινδύνων & Ευκαιριών...",
-    "fetchingPolicy": "Εξαγωγή Δεδομένων Συμβολαίου...",
-    "resultsTitle": "Αναφορά Νοημοσύνης Κινδύνου",
-    "startOver": "Νέα Ανάλυση",
-    "coverageGaps": "Κρίσιμα Κενά Κάλυψης",
-    "upsellOpportunities": "Προτάσεις Αναβάθμισης (Upsell)",
-    "crossSellOpportunities": "Ευκαιρίες Cross-Sell",
-    "growthOpportunities": "Ευκαιρίες Ανάπτυξης",
-    "upsellTitle": "Βελτίωση Υπάρχοντος (Upsell)",
-    "crossSellTitle": "Προτάσεις Νέων Συμβολαίων (Cross-Sell)",
-    "current": "Τρέχουσα Κάλυψη",
-    "recommended": "Προτεινόμενη",
-    "saveSuccess": "Τα ευρήματα της ανάλυσης αποθηκεύτηκαν επιτυχώς.",
-    "errors": {
-      "parsingFailed": "Αδυναμία ανάλυσης του εγγράφου. Βεβαιωθείτε ότι είναι καθαρή εικόνα ή PDF.",
-      "analysisFailed": "Η ανάλυση AI απέτυχε. Παρακαλώ δοκιμάστε ξανά."
-    },
-    "extractedInfo": "Εξαγόμενα Δεδομένα Συμβολαίου",
-    "policyHolder": "Συμβαλλόμενος",
-    "insuredItems": "Ασφαλισμένα Αντικείμενα",
-    "dataReviewModal": {
-      "title": "Επαλήθευση Δεδομένων",
-      "description": "Παρακαλώ ελέγξτε τα δεδομένα που εξήγαγε το AI για ακρίβεια πριν την αποθήκευση στο CRM.",
-      "approveAndSave": "Έγκριση & Αποθήκευση στο CRM",
-      "saveSuccess": "Τα δεδομένα συγχρονίστηκαν στο CRM επιτυχώς.",
-      "saveError": "Αποτυχία συγχρονισμού. Παρακαλώ δοκιμάστε ξανά.",
-      "sections": {
-        "policyholder": "Στοιχεία Συμβαλλομένου",
-        "policyDetails": "Λεπτομέρειες Συμβολαίου",
-        "coverages": "Καλύψεις & Όρια",
-        "beneficiaries": "Δικαιούχοι"
-      },
-      "fields": {
-        "policyholderName": "Ονοματεπώνυμο",
-        "address": "Διεύθυνση",
-        "policyNumber": "Αρ. Συμβολαίου",
-        "insurer": "Ασφαλιστική Εταιρεία",
-        "effectiveDate": "Ημ. Έναρξης",
-        "expirationDate": "Ημ. Λήξης",
-        "coverageType": "Τύπος Κάλυψης",
-        "coverageLimit": "Όριο / Αξία",
-        "addCoverage": "Προσθήκη Κάλυψης",
-        "beneficiaryName": "Όνομα Δικαιούχου",
-        "addBeneficiary": "Προσθήκη Δικαιούχου"
-      }
-    },
-    "riskScore": "Δείκτης Κινδύνου",
-    "riskScoreSubtitle": "0 = Ασφαλές, 100 = Υψηλός Κίνδυνος",
-    "financialImpact": "Οικονομικός Αντίκτυπος (Κίνδυνος)",
-    "costOfImplementation": "Κόστος Ασφάλισης",
-    "costOfInaction": "Συνέπειες Αδράνειας",
-    "benefit": "Όφελος Πελάτη",
-    "estimatedValue": "Εκτιμώμενη Αξία",
-    "salesScript": "Σενάριο Πώλησης",
-    "copyScript": "Αντιγραφή Σεναρίου",
-    "scriptCopied": "Αντιγράφηκε!",
-    "priority": {
-      "Critical": "Κρίσιμο",
-      "High": "Υψηλό",
-      "Medium": "Μεσαίο",
-      "Low": "Χαμηλό"
     }
   }
 }

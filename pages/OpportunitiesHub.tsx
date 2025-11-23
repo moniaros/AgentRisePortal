@@ -55,18 +55,28 @@ const PitchGeneratorModal: React.FC<{
             }
 
             const prompt = `
-                Act as a top insurance sales agent in Greece. 
-                Write a short, persuasive sales pitch (script) to be sent via WhatsApp or Email.
-                
-                Customer: ${opportunity.customer?.firstName || 'Client'}
-                Opportunity: ${opportunity.title} (${opportunity.type})
-                Context: ${opportunity.description}
-                Market Hook: ${marketHook}
-                
-                Tone: Professional but warm.
-                Language: Greek (Modern, Polite).
-                Length: Under 50 words.
-                Structure: Greeting -> Value Prop -> Soft Question.
+                Role: You are a senior strategic insurance advisor in Greece. Your goal is to initiate a high-value conversation with an existing client, shifting from "selling" to "advising".
+
+                Client Profile:
+                - Name: ${opportunity.customer?.firstName || 'Client'}
+                - Opportunity Type: ${opportunity.type === 'upsell' ? 'Critical Policy Upgrade' : 'Strategic Cross-Sell'}
+                - Identified Risk/Gap: "${opportunity.title}"
+                - Specific Context: ${opportunity.description}
+                - Primary Benefit: ${opportunity.benefit || 'Financial Protection'}
+                - Market Driver: ${marketHook}
+
+                Task: Write a short, persuasive message (optimized for WhatsApp/Viber).
+
+                Directives:
+                1. **Psychological Trigger:** Use "Loss Aversion". Highlight what they are risking by *not* having this coverage (e.g., paying damages out of pocket, missing tax breaks, family vulnerability).
+                2. **Tone:** Professional, concise, and "Insider". Avoid generic marketing fluff. Sound like their personal advisor giving a helpful heads-up.
+                3. **Structure:**
+                   - Personal Salutation.
+                   - The "Trigger": Connect the ${marketHook} or their specific situation to the identified risk.
+                   - The "Value": Briefly state how this specific solution mitigates that risk.
+                   - Low-Friction Ask: A simple, no-pressure question (e.g., "Would you like me to send over the numbers?" or "Do you have a minute to discuss this?").
+                4. **Format:** Max 50 words. Use line breaks for readability. 1-2 relevant emojis to keep it conversational.
+                5. **Language:** Modern Business Greek (Native speaker level).
             `;
 
             const response = await ai.models.generateContent({
