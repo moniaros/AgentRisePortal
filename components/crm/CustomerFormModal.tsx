@@ -1,7 +1,7 @@
+
 import React, { useEffect } from 'react';
-import { useForm, useFieldArray, Controller, FieldError } from 'react-hook-form';
+import { useForm, useFieldArray } from 'react-hook-form';
 import { useLocalization } from '../../hooks/useLocalization';
-// FIX: Correct import path
 import { Customer, Policy, PolicyType } from '../../types';
 
 interface CustomerFormModalProps {
@@ -12,7 +12,6 @@ interface CustomerFormModalProps {
   mode: 'add' | 'edit';
 }
 
-// FIX: Removed 'agencyId' which is omitted from the type definition.
 const emptyCustomer: Omit<Customer, 'id' | 'timeline' | 'agencyId'> = {
   firstName: '', lastName: '', email: '', phone: '', address: '', dateOfBirth: '', policies: [], communicationPreferences: []
 };
@@ -27,7 +26,6 @@ const CustomerFormModal: React.FC<CustomerFormModalProps> = ({ isOpen, onClose, 
   const { fields, append, remove } = useFieldArray({
     control,
     name: "policies",
-    // FIX: Specify a keyName to avoid conflict between useFieldArray's 'id' and our data's 'id'.
     keyName: "fieldId",
   });
 
@@ -57,87 +55,157 @@ const CustomerFormModal: React.FC<CustomerFormModalProps> = ({ isOpen, onClose, 
 
   if (!isOpen) return null;
 
-  // FIX: Broaden the error type to 'any' to handle complex error objects from react-hook-form for nested fields.
-  const renderError = (error: any) => error?.message ? <span className="text-red-500 text-xs mt-1">{error.message as string}</span> : null;
+  const renderError = (error: any) => error?.message ? <span className="text-red-500 text-xs mt-1 block">{error.message as string}</span> : null;
+
+  const SectionHeader = ({ title }: { title: string }) => (
+      <div className="pb-2 mb-4 border-b border-gray-100 dark:border-gray-700">
+          <h3 className="text-sm font-bold text-slate-500 uppercase tracking-wider">{title}</h3>
+      </div>
+  );
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <form onSubmit={handleSubmit(handleFormSubmit)}>
-          <div className="p-6 border-b dark:border-gray-700">
-            <h2 className="text-xl font-bold">{t(mode === 'add' ? 'crm.addCustomer' : 'crm.editCustomer') as string}</h2>
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex justify-center items-center p-4 transition-opacity">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden">
+        <form onSubmit={handleSubmit(handleFormSubmit)} className="flex flex-col h-full">
+          
+          {/* Header */}
+          <div className="px-8 py-6 border-b dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50 flex justify-between items-center">
+            <div>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                    {t(mode === 'add' ? 'crm.addCustomer' : 'crm.editCustomer') as string}
+                </h2>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    {mode === 'add' ? 'Create a new customer profile.' : 'Update existing customer details.'}
+                </p>
+            </div>
+            <button type="button" onClick={onClose} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition">
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
           </div>
           
-          <div className="p-6 space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                {/* Fix: Use replacement syntax for translations */}
-                <input type="text" {...register("firstName", { required: t('validation.required', {fieldName: t('crm.form.firstName')}) as string })} placeholder={t('crm.form.firstName') as string} className={`w-full p-2 border rounded dark:bg-gray-700 ${errors.firstName ? 'border-red-500' : 'dark:border-gray-600'}`} />
-                {renderError(errors.firstName)}
-              </div>
-              <div>
-                {/* Fix: Use replacement syntax for translations */}
-                <input type="text" {...register("lastName", { required: t('validation.required', {fieldName: t('crm.form.lastName')}) as string })} placeholder={t('crm.form.lastName') as string} className={`w-full p-2 border rounded dark:bg-gray-700 ${errors.lastName ? 'border-red-500' : 'dark:border-gray-600'}`} />
-                {renderError(errors.lastName)}
-              </div>
-            </div>
-            <div>
-              {/* Fix: Use replacement syntax for translations */}
-              <input type="email" {...register("email", { required: t('validation.required', {fieldName: t('crm.form.email')}) as string, pattern: { value: /^\S+@\S+$/i, message: t('validation.invalidEmail') as string } })} placeholder={t('crm.form.email') as string} className={`w-full p-2 border rounded dark:bg-gray-700 ${errors.email ? 'border-red-500' : 'dark:border-gray-600'}`} />
-              {renderError(errors.email)}
-            </div>
-            <input type="tel" {...register("phone")} placeholder={t('crm.form.phone') as string} className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
-            <input type="text" {...register("address")} placeholder={t('crm.form.address') as string} className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
-            <input type="date" {...register("dateOfBirth")} placeholder={t('crm.form.dob') as string} className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
-
-            <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('crm.form.communicationPreferences') as string}</label>
-                <div className="mt-2 flex gap-4">
-                    <label className="flex items-center">
-                        <input type="checkbox" {...register("communicationPreferences")} value="email" className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
-                        <span className="ml-2 text-sm">{t('timelineTypes.email') as string}</span>
-                    </label>
-                    <label className="flex items-center">
-                        <input type="checkbox" {...register("communicationPreferences")} value="sms" className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
-                        <span className="ml-2 text-sm">{t('customer.sms') as string}</span>
-                    </label>
+          {/* Scrollable Content */}
+          <div className="p-8 overflow-y-auto flex-grow space-y-8">
+            
+            {/* Personal Information */}
+            <section>
+                <SectionHeader title="Client Details" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('crm.form.firstName') as string}</label>
+                        <input type="text" {...register("firstName", { required: t('validation.required', {fieldName: t('crm.form.firstName')}) as string })} className={`w-full px-3 py-2 border rounded-lg dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition ${errors.firstName ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}`} />
+                        {renderError(errors.firstName)}
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('crm.form.lastName') as string}</label>
+                        <input type="text" {...register("lastName", { required: t('validation.required', {fieldName: t('crm.form.lastName')}) as string })} className={`w-full px-3 py-2 border rounded-lg dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition ${errors.lastName ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}`} />
+                        {renderError(errors.lastName)}
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('crm.form.dob') as string}</label>
+                        <input type="date" {...register("dateOfBirth")} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" />
+                    </div>
                 </div>
-            </div>
+            </section>
 
-            <div className="pt-4">
-                <h3 className="text-lg font-semibold mb-2">{t('crm.form.policies') as string}</h3>
+            {/* Contact Information */}
+            <section>
+                <SectionHeader title="Contact Information" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('crm.form.email') as string}</label>
+                        <input type="email" {...register("email", { required: t('validation.required', {fieldName: t('crm.form.email')}) as string, pattern: { value: /^\S+@\S+$/i, message: t('validation.invalidEmail') as string } })} className={`w-full px-3 py-2 border rounded-lg dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition ${errors.email ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}`} />
+                        {renderError(errors.email)}
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('crm.form.phone') as string}</label>
+                        <input type="tel" {...register("phone")} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" />
+                    </div>
+                    <div className="sm:col-span-2">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('crm.form.address') as string}</label>
+                        <input type="text" {...register("address")} className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" />
+                    </div>
+                </div>
+                <div className="mt-4">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('crm.form.communicationPreferences') as string}</label>
+                    <div className="flex gap-6">
+                        <label className="inline-flex items-center cursor-pointer">
+                            <input type="checkbox" {...register("communicationPreferences")} value="email" className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                            <span className="ml-2 text-sm text-gray-600 dark:text-gray-300">{t('timelineTypes.email') as string}</span>
+                        </label>
+                        <label className="inline-flex items-center cursor-pointer">
+                            <input type="checkbox" {...register("communicationPreferences")} value="sms" className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                            <span className="ml-2 text-sm text-gray-600 dark:text-gray-300">{t('customer.sms') as string}</span>
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            {/* Policy Portfolio */}
+            <section>
+                <div className="flex justify-between items-center mb-4 pb-2 border-b border-gray-100 dark:border-gray-700">
+                    <h3 className="text-sm font-bold text-slate-500 uppercase tracking-wider">{t('crm.form.policies') as string}</h3>
+                    <button type="button" onClick={addPolicy} className="text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1 px-2 py-1 rounded hover:bg-blue-50 dark:hover:bg-blue-900/30 transition">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+                        {t('crm.form.addPolicy') as string}
+                    </button>
+                </div>
+                
                 <div className="space-y-4">
                     {fields.map((field, index) => (
-                        <div key={field.fieldId} className="p-3 border rounded-md dark:border-gray-600 space-y-2 relative">
-                             <button type="button" onClick={() => remove(index)} className="absolute top-2 right-2 text-red-500 hover:text-red-700 font-bold text-lg">&times;</button>
-                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <div key={field.fieldId} className="p-4 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50/50 dark:bg-gray-700/20 relative group hover:border-blue-300 dark:hover:border-blue-700 transition-colors">
+                             <button type="button" onClick={() => remove(index)} className="absolute top-3 right-3 text-gray-400 hover:text-red-500 transition p-1 rounded-full hover:bg-red-50 dark:hover:bg-red-900/30">
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                             </button>
+                             
+                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pr-8">
                                 <div>
-                                    <input {...register(`policies.${index}.policyNumber`, { required: t('validation.policyNumberRequired') as string })} placeholder={t('crm.form.policyNumber') as string} className={`w-full p-2 border rounded dark:bg-gray-700 ${errors.policies?.[index]?.policyNumber ? 'border-red-500' : 'dark:border-gray-600'}`} />
-                                    {renderError(errors.policies?.[index]?.policyNumber)}
+                                    <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{t('crm.form.policyNumber') as string}</label>
+                                    <input {...register(`policies.${index}.policyNumber`, { required: t('validation.policyNumberRequired') as string })} className={`w-full px-2 py-1.5 text-sm border rounded-md dark:bg-gray-700 ${errors.policies?.[index]?.policyNumber ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}`} placeholder="POL-XXXX" />
                                 </div>
-                                <select {...register(`policies.${index}.type`)} defaultValue={(field as Policy).type} className="p-2 border rounded dark:bg-gray-700 dark:border-gray-600">
-                                    {Object.values(PolicyType).map((pt: string) => <option key={pt} value={pt}>{t(`policyTypes.${pt}`) as string}</option>)}
-                                </select>
-                                <input {...register(`policies.${index}.insurer`)} placeholder={t('crm.form.insurer') as string} className="p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
-                                <input type="number" {...register(`policies.${index}.premium`, { valueAsNumber: true })} placeholder={t('crm.form.premium') as string} className="p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
-                                <input type="date" {...register(`policies.${index}.startDate`)} className="p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
-                                <input type="date" {...register(`policies.${index}.endDate`)} className="p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
-                                <select {...register(`policies.${index}.isActive`, {setValueAs: v => v === 'true'})} defaultValue={String((field as Policy).isActive)} className="p-2 border rounded dark:bg-gray-700 dark:border-gray-600">
-                                    <option value="true">{t('statusLabels.active') as string}</option>
-                                    <option value="false">{t('statusLabels.inactive') as string}</option>
-                                </select>
+                                <div>
+                                    <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Type</label>
+                                    <select {...register(`policies.${index}.type`)} defaultValue={(field as Policy).type} className="w-full px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700">
+                                        {Object.values(PolicyType).map((pt: string) => <option key={pt} value={pt}>{t(`policyTypes.${pt}`) as string}</option>)}
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{t('crm.form.insurer') as string}</label>
+                                    <input {...register(`policies.${index}.insurer`)} className="w-full px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700" placeholder="Insurer Name" />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{t('crm.form.premium') as string}</label>
+                                    <input type="number" {...register(`policies.${index}.premium`, { valueAsNumber: true })} className="w-full px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700" placeholder="0.00" />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{t('crm.form.startDate') as string}</label>
+                                    <input type="date" {...register(`policies.${index}.startDate`)} className="w-full px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700" />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">{t('crm.form.endDate') as string}</label>
+                                    <input type="date" {...register(`policies.${index}.endDate`)} className="w-full px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700" />
+                                </div>
                              </div>
                         </div>
                     ))}
                 </div>
-                {fields.length === 0 && <p className="text-sm text-gray-500">{t('crm.form.noPolicies') as string}</p>}
-                <button type="button" onClick={addPolicy} className="mt-2 px-3 py-1 text-sm bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500">+ {t('crm.form.addPolicy') as string}</button>
-            </div>
+                {fields.length === 0 && (
+                    <div className="text-center p-6 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-gray-800/50">
+                        <p className="text-sm text-gray-500">{t('crm.form.noPolicies') as string}</p>
+                        <button type="button" onClick={addPolicy} className="mt-2 text-blue-600 text-sm font-medium hover:underline">Add the first policy</button>
+                    </div>
+                )}
+            </section>
+
           </div>
 
-          <div className="p-4 bg-gray-50 dark:bg-gray-900 flex justify-end gap-2 border-t dark:border-gray-700">
-            <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-200 dark:bg-gray-600 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500">{t('crm.cancel') as string}</button>
-            <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">{t('crm.save') as string}</button>
+          {/* Footer */}
+          <div className="p-6 bg-white dark:bg-gray-800 border-t dark:border-gray-700 flex justify-end gap-3">
+            <button type="button" onClick={onClose} className="px-6 py-2.5 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 font-medium transition">
+                {t('crm.cancel') as string}
+            </button>
+            <button type="submit" className="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium shadow-lg shadow-blue-500/30 transition">
+                {t('crm.save') as string}
+            </button>
           </div>
         </form>
       </div>
