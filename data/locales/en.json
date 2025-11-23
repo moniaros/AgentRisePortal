@@ -1,4 +1,3 @@
-
 {
   "common": {
     "loading": "Loading...",
@@ -154,8 +153,14 @@
           }
         ],
         "resources": [
-          { "title": "Profile Optimization Checklist", "type": "pdf" },
-          { "title": "Boolean Search Cheat Sheet", "type": "pdf" }
+          {
+            "title": "Profile Optimization Checklist",
+            "type": "pdf"
+          },
+          {
+            "title": "Boolean Search Cheat Sheet",
+            "type": "pdf"
+          }
         ]
       },
       "c2": {
@@ -178,8 +183,14 @@
           }
         ],
         "resources": [
-          { "title": "Cadence Calendar Template", "type": "template" },
-          { "title": "5 Email Scripts that Convert", "type": "pdf" }
+          {
+            "title": "Cadence Calendar Template",
+            "type": "template"
+          },
+          {
+            "title": "5 Email Scripts that Convert",
+            "type": "pdf"
+          }
         ]
       },
       "c3": {
@@ -202,7 +213,10 @@
           }
         ],
         "resources": [
-          { "title": "Video Script Planner", "type": "pdf" }
+          {
+            "title": "Video Script Planner",
+            "type": "pdf"
+          }
         ]
       },
       "c4": {
@@ -225,7 +239,10 @@
           }
         ],
         "resources": [
-          { "title": "Social Media Compliance Checklist", "type": "pdf" }
+          {
+            "title": "Social Media Compliance Checklist",
+            "type": "pdf"
+          }
         ]
       },
       "c5": {
@@ -244,7 +261,10 @@
           }
         ],
         "resources": [
-          { "title": "Daily Engagement Tracker", "type": "template" }
+          {
+            "title": "Daily Engagement Tracker",
+            "type": "template"
+          }
         ]
       },
       "c6": {
@@ -267,7 +287,10 @@
           }
         ],
         "resources": [
-          { "title": "Brand Voice Worksheet", "type": "pdf" }
+          {
+            "title": "Brand Voice Worksheet",
+            "type": "pdf"
+          }
         ]
       },
       "c7": {
@@ -286,7 +309,10 @@
           }
         ],
         "resources": [
-          { "title": "20 AI Prompts for Agents", "type": "pdf" }
+          {
+            "title": "20 AI Prompts for Agents",
+            "type": "pdf"
+          }
         ]
       },
       "c8": {
@@ -309,7 +335,10 @@
           }
         ],
         "resources": [
-          { "title": "Objection Handling Battlecard", "type": "pdf" }
+          {
+            "title": "Objection Handling Battlecard",
+            "type": "pdf"
+          }
         ]
       },
       "c9": {
@@ -332,7 +361,10 @@
           }
         ],
         "resources": [
-          { "title": "Cross-Sell Email Templates", "type": "template" }
+          {
+            "title": "Cross-Sell Email Templates",
+            "type": "template"
+          }
         ]
       },
       "c10": {
@@ -355,7 +387,10 @@
           }
         ],
         "resources": [
-          { "title": "Google Business Setup Guide", "type": "pdf" }
+          {
+            "title": "Google Business Setup Guide",
+            "type": "pdf"
+          }
         ]
       }
     },
@@ -465,20 +500,62 @@
         "optional": "Optional Updates"
       },
       "events": {
-        "new_lead": { "label": "New Lead", "description": "When a new lead is created or assigned to you." },
-        "quote_request": { "label": "Quote Request", "description": "When a client requests a quote via the microsite." },
-        "follow_up_due": { "label": "Follow-up Due", "description": "When an opportunity follow-up date arrives." },
-        "overdue_action": { "label": "Overdue Actions", "description": "When a task or opportunity is past due." },
-        "customer_reply": { "label": "Customer Reply", "description": "When a customer replies to an email or message." },
-        "policy_renewal": { "label": "Policy Renewal", "description": "When a policy is up for renewal in 30 days." },
-        "claim_submitted": { "label": "Claim Submitted", "description": "When a new FNOL is recorded." },
-        "new_message": { "label": "New Message", "description": "Direct messages from clients or colleagues." },
-        "task_upcoming": { "label": "Task Upcoming", "description": "Reminders for tasks due soon." },
-        "opportunity_flagged": { "label": "Opportunity Flagged", "description": "When an opportunity needs attention." },
-        "system_announcement": { "label": "System Announcements", "description": "Important platform updates." },
-        "client_birthday": { "label": "Client Birthdays", "description": "Daily digest of client birthdays." },
-        "first_login_of_day": { "label": "Daily Briefing", "description": "Morning summary of your day." },
-        "campaign_results": { "label": "Campaign Results", "description": "Weekly summary of ad performance." }
+        "new_lead": {
+          "label": "New Lead",
+          "description": "When a new lead is created or assigned to you."
+        },
+        "quote_request": {
+          "label": "Quote Request",
+          "description": "When a client requests a quote via the microsite."
+        },
+        "follow_up_due": {
+          "label": "Follow-up Due",
+          "description": "When an opportunity follow-up date arrives."
+        },
+        "overdue_action": {
+          "label": "Overdue Actions",
+          "description": "When a task or opportunity is past due."
+        },
+        "customer_reply": {
+          "label": "Customer Reply",
+          "description": "When a customer replies to an email or message."
+        },
+        "policy_renewal": {
+          "label": "Policy Renewal",
+          "description": "When a policy is up for renewal in 30 days."
+        },
+        "claim_submitted": {
+          "label": "Claim Submitted",
+          "description": "When a new FNOL is recorded."
+        },
+        "new_message": {
+          "label": "New Message",
+          "description": "Direct messages from clients or colleagues."
+        },
+        "task_upcoming": {
+          "label": "Task Upcoming",
+          "description": "Reminders for tasks due soon."
+        },
+        "opportunity_flagged": {
+          "label": "Opportunity Flagged",
+          "description": "When an opportunity needs attention."
+        },
+        "system_announcement": {
+          "label": "System Announcements",
+          "description": "Important platform updates."
+        },
+        "client_birthday": {
+          "label": "Client Birthdays",
+          "description": "Daily digest of client birthdays."
+        },
+        "first_login_of_day": {
+          "label": "Daily Briefing",
+          "description": "Morning summary of your day."
+        },
+        "campaign_results": {
+          "label": "Campaign Results",
+          "description": "Weekly summary of ad performance."
+        }
       },
       "permissionDeniedWarning": {
         "title": "Notifications Blocked",
@@ -511,19 +588,35 @@
       "platforms": {
         "facebook": {
           "tooltip": "Connect your Facebook Page to publish posts and track engagement.",
-          "scopes": ["pages_manage_posts", "pages_read_engagement", "read_insights"]
+          "scopes": [
+            "pages_manage_posts",
+            "pages_read_engagement",
+            "read_insights"
+          ]
         },
         "instagram": {
           "tooltip": "Connect your Instagram Business account for visual storytelling.",
-          "scopes": ["instagram_basic", "instagram_content_publish", "instagram_manage_comments"]
+          "scopes": [
+            "instagram_basic",
+            "instagram_content_publish",
+            "instagram_manage_comments"
+          ]
         },
         "linkedin": {
           "tooltip": "Connect your personal or company LinkedIn page for B2B networking.",
-          "scopes": ["w_member_social", "r_liteprofile", "r_emailaddress"]
+          "scopes": [
+            "w_member_social",
+            "r_liteprofile",
+            "r_emailaddress"
+          ]
         },
         "x": {
           "tooltip": "Connect your X (Twitter) account for real-time updates.",
-          "scopes": ["tweet.read", "tweet.write", "users.read"]
+          "scopes": [
+            "tweet.read",
+            "tweet.write",
+            "users.read"
+          ]
         }
       }
     },
@@ -576,41 +669,42 @@
     "coverageGaps": "Critical Coverage Gaps",
     "upsellOpportunities": "Upsell Recommendations",
     "crossSellOpportunities": "Cross-Sell Opportunities",
+    "growthOpportunities": "Growth Opportunities",
     "current": "Current Coverage",
     "recommended": "Recommended",
     "saveSuccess": "Analysis findings saved successfully.",
     "errors": {
-        "parsingFailed": "Could not parse the policy document. Please ensure it is a clear image or PDF.",
-        "analysisFailed": "AI analysis failed. Please try again."
+      "parsingFailed": "Could not parse the policy document. Please ensure it is a clear image or PDF.",
+      "analysisFailed": "AI analysis failed. Please try again."
     },
     "extractedInfo": "Extracted Policy Information",
     "policyHolder": "Policyholder",
     "insuredItems": "Insured Items",
     "dataReviewModal": {
-        "title": "Verify Extracted Data",
-        "description": "Please review the AI-extracted data for accuracy before saving to the CRM.",
-        "approveAndSave": "Approve & Save to CRM",
-        "saveSuccess": "Policy data synced to CRM successfully.",
-        "saveError": "Failed to sync data. Please try again.",
-        "sections": {
-            "policyholder": "Policyholder Information",
-            "policyDetails": "Policy Details",
-            "coverages": "Coverages & Limits",
-            "beneficiaries": "Beneficiaries"
-        },
-        "fields": {
-            "policyholderName": "Full Name",
-            "address": "Address",
-            "policyNumber": "Policy Number",
-            "insurer": "Insurance Company",
-            "effectiveDate": "Effective Date",
-            "expirationDate": "Expiration Date",
-            "coverageType": "Coverage Type",
-            "coverageLimit": "Limit / Value",
-            "addCoverage": "Add Coverage Line",
-            "beneficiaryName": "Beneficiary Name",
-            "addBeneficiary": "Add Beneficiary"
-        }
+      "title": "Verify Extracted Data",
+      "description": "Please review the AI-extracted data for accuracy before saving to the CRM.",
+      "approveAndSave": "Approve & Save to CRM",
+      "saveSuccess": "Policy data synced to CRM successfully.",
+      "saveError": "Failed to sync data. Please try again.",
+      "sections": {
+        "policyholder": "Policyholder Information",
+        "policyDetails": "Policy Details",
+        "coverages": "Coverages & Limits",
+        "beneficiaries": "Beneficiaries"
+      },
+      "fields": {
+        "policyholderName": "Full Name",
+        "address": "Address",
+        "policyNumber": "Policy Number",
+        "insurer": "Insurance Company",
+        "effectiveDate": "Effective Date",
+        "expirationDate": "Expiration Date",
+        "coverageType": "Coverage Type",
+        "coverageLimit": "Limit / Value",
+        "addCoverage": "Add Coverage Line",
+        "beneficiaryName": "Beneficiary Name",
+        "addBeneficiary": "Add Beneficiary"
+      }
     },
     "riskScore": "Risk Exposure Score",
     "riskScoreSubtitle": "0 = Safe, 100 = High Risk",
@@ -620,10 +714,10 @@
     "copyScript": "Copy Script",
     "scriptCopied": "Copied!",
     "priority": {
-        "Critical": "Critical",
-        "High": "High",
-        "Medium": "Medium",
-        "Low": "Low"
+      "Critical": "Critical",
+      "High": "High",
+      "Medium": "Medium",
+      "Low": "Low"
     }
   }
 }

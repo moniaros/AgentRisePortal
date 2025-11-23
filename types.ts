@@ -183,7 +183,7 @@ export interface Task {
   completedAt: string | null;
   createdAt: string;
   relatedTo?: {
-    type: 'customer' | 'opportunity';
+    type: 'customer' | 'opportunity' | 'lead';
     id: string;
     name: string;
   };
@@ -237,7 +237,7 @@ export interface GapAnalysisResult {
         current: string;
         recommended: string;
         reason: string;
-        priority: 'Critical' | 'High' | 'Medium';
+        priority: 'Critical' | 'High' | 'Medium' | 'Low';
         financialImpact: string; // e.g., "Potential €50k loss"
         costOfInaction: string; // e.g., "Risk of bankruptcy"
         salesScript: string; // e.g., "Mr. Smith, if this happens..."

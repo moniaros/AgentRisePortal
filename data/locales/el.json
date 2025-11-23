@@ -1,4 +1,3 @@
-
 {
   "common": {
     "loading": "Φόρτωση...",
@@ -154,8 +153,14 @@
           }
         ],
         "resources": [
-          { "title": "Λίστα Ελέγχου Προφίλ LinkedIn", "type": "pdf" },
-          { "title": "Οδηγός Αναζήτησης Boolean", "type": "pdf" }
+          {
+            "title": "Λίστα Ελέγχου Προφίλ LinkedIn",
+            "type": "pdf"
+          },
+          {
+            "title": "Οδηγός Αναζήτησης Boolean",
+            "type": "pdf"
+          }
         ]
       },
       "c2": {
@@ -178,8 +183,14 @@
           }
         ],
         "resources": [
-          { "title": "Πρότυπο Ημερολογίου Επαφών", "type": "template" },
-          { "title": "5 Σενάρια Email που Πουλάνε", "type": "pdf" }
+          {
+            "title": "Πρότυπο Ημερολογίου Επαφών",
+            "type": "template"
+          },
+          {
+            "title": "5 Σενάρια Email που Πουλάνε",
+            "type": "pdf"
+          }
         ]
       },
       "c3": {
@@ -202,7 +213,10 @@
           }
         ],
         "resources": [
-          { "title": "Πλάνο Σεναρίου Βίντεο", "type": "pdf" }
+          {
+            "title": "Πλάνο Σεναρίου Βίντεο",
+            "type": "pdf"
+          }
         ]
       },
       "c4": {
@@ -225,7 +239,10 @@
           }
         ],
         "resources": [
-          { "title": "Λίστα Ελέγχου Συμμόρφωσης Social Media", "type": "pdf" }
+          {
+            "title": "Λίστα Ελέγχου Συμμόρφωσης Social Media",
+            "type": "pdf"
+          }
         ]
       },
       "c5": {
@@ -244,7 +261,10 @@
           }
         ],
         "resources": [
-          { "title": "Ημερήσιος Καταγραφέας Engagement", "type": "template" }
+          {
+            "title": "Ημερήσιος Καταγραφέας Engagement",
+            "type": "template"
+          }
         ]
       },
       "c6": {
@@ -267,7 +287,10 @@
           }
         ],
         "resources": [
-          { "title": "Φύλλο Εργασίας Brand Voice", "type": "pdf" }
+          {
+            "title": "Φύλλο Εργασίας Brand Voice",
+            "type": "pdf"
+          }
         ]
       },
       "c7": {
@@ -286,7 +309,10 @@
           }
         ],
         "resources": [
-          { "title": "20 AI Prompts για Πράκτορες", "type": "pdf" }
+          {
+            "title": "20 AI Prompts για Πράκτορες",
+            "type": "pdf"
+          }
         ]
       },
       "c8": {
@@ -309,7 +335,10 @@
           }
         ],
         "resources": [
-          { "title": "Σκονάκι Διαχείρισης Αντιρρήσεων", "type": "pdf" }
+          {
+            "title": "Σκονάκι Διαχείρισης Αντιρρήσεων",
+            "type": "pdf"
+          }
         ]
       },
       "c9": {
@@ -332,7 +361,10 @@
           }
         ],
         "resources": [
-          { "title": "Πρότυπα Email Cross-Sell", "type": "template" }
+          {
+            "title": "Πρότυπα Email Cross-Sell",
+            "type": "template"
+          }
         ]
       },
       "c10": {
@@ -355,7 +387,10 @@
           }
         ],
         "resources": [
-          { "title": "Οδηγός Ρύθμισης Google Business", "type": "pdf" }
+          {
+            "title": "Οδηγός Ρύθμισης Google Business",
+            "type": "pdf"
+          }
         ]
       }
     },
@@ -464,20 +499,62 @@
           "optional": "Προαιρετικές Ενημερώσεις"
         },
         "events": {
-          "new_lead": { "label": "Νέο Lead", "description": "Όταν δημιουργείται ή σας ανατίθεται ένα νέο lead." },
-          "quote_request": { "label": "Αίτημα Προσφοράς", "description": "Όταν ένας πελάτης ζητά προσφορά μέσω του microsite." },
-          "follow_up_due": { "label": "Οφειλόμενο Follow-up", "description": "Όταν φτάσει η ημερομηνία follow-up μιας ευκαιρίας." },
-          "overdue_action": { "label": "Εκπρόθεσμες Ενέργειες", "description": "Όταν μια εργασία ή ευκαιρία είναι εκπρόθεσμη." },
-          "customer_reply": { "label": "Απάντηση Πελάτη", "description": "Όταν ένας πελάτης απαντά σε email ή μήνυμα." },
-          "policy_renewal": { "label": "Ανανέωση Συμβολαίου", "description": "Όταν ένα συμβόλαιο λήγει σε 30 ημέρες." },
-          "claim_submitted": { "label": "Υποβολή Απαίτησης", "description": "Όταν καταγράφεται μια νέα ζημιά (FNOL)." },
-          "new_message": { "label": "Νέο Μήνυμα", "description": "Άμεσα μηνύματα από πελάτες ή συναδέλφους." },
-          "task_upcoming": { "label": "Επερχόμενη Εργασία", "description": "Υπενθυμίσεις για εργασίες που λήγουν σύντομα." },
-          "opportunity_flagged": { "label": "Ευκαιρία με Σήμανση", "description": "Όταν μια ευκαιρία χρειάζεται προσοχή." },
-          "system_announcement": { "label": "Ανακοινώσεις Συστήματος", "description": "Σημαντικές ενημερώσεις της πλατφόρμας." },
-          "client_birthday": { "label": "Γενέθλια Πελατών", "description": "Καθημερινή σύνοψη γενεθλίων πελατών." },
-          "first_login_of_day": { "label": "Καθημερινή Ενημέρωση", "description": "Πρωινή σύνοψη της ημέρας σας." },
-          "campaign_results": { "label": "Αποτελέσματα Καμπάνιας", "description": "Εβδομαδιαία σύνοψη απόδοσης διαφημίσεων." }
+          "new_lead": {
+            "label": "Νέο Lead",
+            "description": "Όταν δημιουργείται ή σας ανατίθεται ένα νέο lead."
+          },
+          "quote_request": {
+            "label": "Αίτημα Προσφοράς",
+            "description": "Όταν ένας πελάτης ζητά προσφορά μέσω του microsite."
+          },
+          "follow_up_due": {
+            "label": "Οφειλόμενο Follow-up",
+            "description": "Όταν φτάσει η ημερομηνία follow-up μιας ευκαιρίας."
+          },
+          "overdue_action": {
+            "label": "Εκπρόθεσμες Ενέργειες",
+            "description": "Όταν μια εργασία ή ευκαιρία είναι εκπρόθεσμη."
+          },
+          "customer_reply": {
+            "label": "Απάντηση Πελάτη",
+            "description": "Όταν ένας πελάτης απαντά σε email ή μήνυμα."
+          },
+          "policy_renewal": {
+            "label": "Ανανέωση Συμβολαίου",
+            "description": "Όταν ένα συμβόλαιο λήγει σε 30 ημέρες."
+          },
+          "claim_submitted": {
+            "label": "Υποβολή Απαίτησης",
+            "description": "Όταν καταγράφεται μια νέα ζημιά (FNOL)."
+          },
+          "new_message": {
+            "label": "Νέο Μήνυμα",
+            "description": "Άμεσα μηνύματα από πελάτες ή συναδέλφους."
+          },
+          "task_upcoming": {
+            "label": "Επερχόμενη Εργασία",
+            "description": "Υπενθυμίσεις για εργασίες που λήγουν σύντομα."
+          },
+          "opportunity_flagged": {
+            "label": "Ευκαιρία με Σήμανση",
+            "description": "Όταν μια ευκαιρία χρειάζεται προσοχή."
+          },
+          "system_announcement": {
+            "label": "Ανακοινώσεις Συστήματος",
+            "description": "Σημαντικές ενημερώσεις της πλατφόρμας."
+          },
+          "client_birthday": {
+            "label": "Γενέθλια Πελατών",
+            "description": "Καθημερινή σύνοψη γενεθλίων πελατών."
+          },
+          "first_login_of_day": {
+            "label": "Καθημερινή Ενημέρωση",
+            "description": "Πρωινή σύνοψη της ημέρας σας."
+          },
+          "campaign_results": {
+            "label": "Αποτελέσματα Καμπάνιας",
+            "description": "Εβδομαδιαία σύνοψη απόδοσης διαφημίσεων."
+          }
         },
         "permissionDeniedWarning": {
           "title": "Οι Ειδοποιήσεις έχουν αποκλειστεί",
@@ -510,19 +587,35 @@
         "platforms": {
           "facebook": {
             "tooltip": "Συνδέστε τη σελίδα σας στο Facebook για δημοσίευση αναρτήσεων και παρακολούθηση engagement.",
-            "scopes": ["pages_manage_posts", "pages_read_engagement", "read_insights"]
+            "scopes": [
+              "pages_manage_posts",
+              "pages_read_engagement",
+              "read_insights"
+            ]
           },
           "instagram": {
             "tooltip": "Συνδέστε τον επαγγελματικό λογαριασμό Instagram για οπτική αφήγηση.",
-            "scopes": ["instagram_basic", "instagram_content_publish", "instagram_manage_comments"]
+            "scopes": [
+              "instagram_basic",
+              "instagram_content_publish",
+              "instagram_manage_comments"
+            ]
           },
           "linkedin": {
             "tooltip": "Συνδέστε την προσωπική ή εταιρική σελίδα LinkedIn για B2B δικτύωση.",
-            "scopes": ["w_member_social", "r_liteprofile", "r_emailaddress"]
+            "scopes": [
+              "w_member_social",
+              "r_liteprofile",
+              "r_emailaddress"
+            ]
           },
           "x": {
             "tooltip": "Συνδέστε τον λογαριασμό X (Twitter) για ενημερώσεις σε πραγματικό χρόνο.",
-            "scopes": ["tweet.read", "tweet.write", "users.read"]
+            "scopes": [
+              "tweet.read",
+              "tweet.write",
+              "users.read"
+            ]
           }
         }
       },
@@ -576,41 +669,42 @@
     "coverageGaps": "Κρίσιμα Κενά Κάλυψης",
     "upsellOpportunities": "Προτάσεις Αναβάθμισης (Upsell)",
     "crossSellOpportunities": "Ευκαιρίες Cross-Sell",
+    "growthOpportunities": "Ευκαιρίες Ανάπτυξης",
     "current": "Τρέχουσα Κάλυψη",
     "recommended": "Προτεινόμενη",
     "saveSuccess": "Τα ευρήματα της ανάλυσης αποθηκεύτηκαν επιτυχώς.",
     "errors": {
-        "parsingFailed": "Αδυναμία ανάλυσης του εγγράφου. Βεβαιωθείτε ότι είναι καθαρή εικόνα ή PDF.",
-        "analysisFailed": "Η ανάλυση AI απέτυχε. Παρακαλώ δοκιμάστε ξανά."
+      "parsingFailed": "Αδυναμία ανάλυσης του εγγράφου. Βεβαιωθείτε ότι είναι καθαρή εικόνα ή PDF.",
+      "analysisFailed": "Η ανάλυση AI απέτυχε. Παρακαλώ δοκιμάστε ξανά."
     },
     "extractedInfo": "Εξαγόμενα Δεδομένα Συμβολαίου",
     "policyHolder": "Συμβαλλόμενος",
     "insuredItems": "Ασφαλισμένα Αντικείμενα",
     "dataReviewModal": {
-        "title": "Επαλήθευση Δεδομένων",
-        "description": "Παρακαλώ ελέγξτε τα δεδομένα που εξήγαγε το AI για ακρίβεια πριν την αποθήκευση στο CRM.",
-        "approveAndSave": "Έγκριση & Αποθήκευση στο CRM",
-        "saveSuccess": "Τα δεδομένα συγχρονίστηκαν στο CRM επιτυχώς.",
-        "saveError": "Αποτυχία συγχρονισμού. Παρακαλώ δοκιμάστε ξανά.",
-        "sections": {
-            "policyholder": "Στοιχεία Συμβαλλομένου",
-            "policyDetails": "Λεπτομέρειες Συμβολαίου",
-            "coverages": "Καλύψεις & Όρια",
-            "beneficiaries": "Δικαιούχοι"
-        },
-        "fields": {
-            "policyholderName": "Ονοματεπώνυμο",
-            "address": "Διεύθυνση",
-            "policyNumber": "Αρ. Συμβολαίου",
-            "insurer": "Ασφαλιστική Εταιρεία",
-            "effectiveDate": "Ημ. Έναρξης",
-            "expirationDate": "Ημ. Λήξης",
-            "coverageType": "Τύπος Κάλυψης",
-            "coverageLimit": "Όριο / Αξία",
-            "addCoverage": "Προσθήκη Κάλυψης",
-            "beneficiaryName": "Όνομα Δικαιούχου",
-            "addBeneficiary": "Προσθήκη Δικαιούχου"
-        }
+      "title": "Επαλήθευση Δεδομένων",
+      "description": "Παρακαλώ ελέγξτε τα δεδομένα που εξήγαγε το AI για ακρίβεια πριν την αποθήκευση στο CRM.",
+      "approveAndSave": "Έγκριση & Αποθήκευση στο CRM",
+      "saveSuccess": "Τα δεδομένα συγχρονίστηκαν στο CRM επιτυχώς.",
+      "saveError": "Αποτυχία συγχρονισμού. Παρακαλώ δοκιμάστε ξανά.",
+      "sections": {
+        "policyholder": "Στοιχεία Συμβαλλομένου",
+        "policyDetails": "Λεπτομέρειες Συμβολαίου",
+        "coverages": "Καλύψεις & Όρια",
+        "beneficiaries": "Δικαιούχοι"
+      },
+      "fields": {
+        "policyholderName": "Ονοματεπώνυμο",
+        "address": "Διεύθυνση",
+        "policyNumber": "Αρ. Συμβολαίου",
+        "insurer": "Ασφαλιστική Εταιρεία",
+        "effectiveDate": "Ημ. Έναρξης",
+        "expirationDate": "Ημ. Λήξης",
+        "coverageType": "Τύπος Κάλυψης",
+        "coverageLimit": "Όριο / Αξία",
+        "addCoverage": "Προσθήκη Κάλυψης",
+        "beneficiaryName": "Όνομα Δικαιούχου",
+        "addBeneficiary": "Προσθήκη Δικαιούχου"
+      }
     },
     "riskScore": "Βαθμολογία Έκθεσης Κινδύνου",
     "riskScoreSubtitle": "0 = Ασφαλές, 100 = Υψηλός Κίνδυνος",
@@ -620,10 +714,10 @@
     "copyScript": "Αντιγραφή Σεναρίου",
     "scriptCopied": "Αντιγράφηκε!",
     "priority": {
-        "Critical": "Κρίσιμο",
-        "High": "Υψηλό",
-        "Medium": "Μεσαίο",
-        "Low": "Χαμηλό"
+      "Critical": "Κρίσιμο",
+      "High": "Υψηλό",
+      "Medium": "Μεσαίο",
+      "Low": "Χαμηλό"
     }
   }
 }

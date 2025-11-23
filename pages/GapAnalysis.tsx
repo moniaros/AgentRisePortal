@@ -182,8 +182,13 @@ const GapAnalysis: React.FC = () => {
               2. Executive Summary: A punchy, 2-sentence overview of their risk profile.
               3. Coverage Gaps: Identify specific dangers. For each, estimate the 'Financial Impact' (e.g., '€50,000 potential loss') and the 'Cost of Inaction'.
               4. Opportunities (Upsell/Cross-sell): Suggest products.
-              5. Sales Scripts: Write a specific, psychological script for the agent to say to the client to close the gap. Use fear of loss or peace of mind logic.
-              6. Priority: Tag each finding as 'Critical', 'High', or 'Medium'.
+              5. Cross-Sell Strategy:
+                 - If Policy is AUTO: Suggest Home, Life, or Personal Accident.
+                 - If Policy is HOME: Suggest Auto, Earthquake, or Umbrella.
+                 - If Policy is LIFE: Suggest Health or Critical Illness.
+                 - Always explain the 'Financial Impact' of NOT having this additional coverage.
+              6. Sales Scripts: Write a specific, psychological script for the agent to say to the client to close the gap. Use fear of loss or peace of mind logic.
+              7. Priority: Tag each finding as 'Critical', 'High', or 'Medium'.
 
               Ensure the tone is professional, authoritative, yet persuasive.
             `;

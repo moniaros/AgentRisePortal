@@ -167,7 +167,7 @@ const GapAnalysisResults: React.FC<GapAnalysisResultsProps> = ({ result }) => {
                 {/* Right Col: Opportunities */}
                 <div>
                     <h3 className="text-xl font-bold text-blue-600 dark:text-blue-400 mb-4 flex items-center gap-2">
-                        🚀 Growth Opportunities
+                        🚀 {t('gapAnalysis.growthOpportunities')}
                     </h3>
                     {result.upsell_opportunities.map((opp, index) => (
                         <FindingCard key={`up-${index}`} type="upsell" data={opp} index={index} />
