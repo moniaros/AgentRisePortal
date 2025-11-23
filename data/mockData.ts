@@ -1,4 +1,4 @@
-import { User, Lead, Customer, AuditLog, AnalyticsData, ExecutiveData, NewsArticle, Testimonial, UserActivityEvent, UserSystemRole, PolicyType, LeadStatus, LicenseStatus } from '../types';
+import { User, Lead, Customer, AuditLog, AnalyticsData, ExecutiveData, NewsArticle, Testimonial, UserActivityEvent, UserSystemRole, PolicyType, LeadStatus, LicenseStatus, StoredAnalysis } from '../types';
 
 export const MOCK_USERS: User[] = [
     {
@@ -101,4 +101,70 @@ export const MOCK_TESTIMONIALS: Testimonial[] = [
 
 export const MOCK_USER_ACTIVITY: UserActivityEvent[] = [
     { id: 'act_1', userId: 'user_1', timestamp: new Date().toISOString(), type: 'login', description: 'Logged in successfully' },
+];
+
+export const MOCK_ANALYSES: StoredAnalysis[] = [
+    {
+        id: 'analysis_mock_1',
+        createdAt: new Date().toISOString(),
+        fileName: 'Home_Policy_2024.pdf',
+        parsedPolicy: {
+            policyNumber: 'HOME-12345',
+            insurer: 'Interamerican',
+            policyholder: { name: 'Αλέξανδρος Παπαγεωργίου', address: 'Λεωφ. Κηφισίας 123' },
+            effectiveDate: '2024-01-01',
+            expirationDate: '2025-01-01',
+            insuredItems: [{ id: '1', description: 'Apartment 120sqm', coverages: [] }]
+        },
+        analysisResult: {
+            riskScore: 75,
+            summary: 'Το ασφαλιστήριο κατοικίας σας έχει σημαντικά κενά. Λείπει η κάλυψη σεισμού, εκθέτοντας την περιουσία σας σε σοβαρό κίνδυνο δεδομένης της περιοχής.',
+            gaps: [
+                {
+                    area: 'Κάλυψη Σεισμού',
+                    current: 'Δεν περιλαμβάνεται',
+                    recommended: 'Πλήρης κάλυψη (Κτίριο & Περιεχόμενο)',
+                    reason: 'Η Αττική είναι σεισμογενής ζώνη. Η έλλειψη κάλυψης μπορεί να αποβεί καταστροφική.',
+                    priority: 'Critical',
+                    financialImpact: '€120,000 (Κόστος Ανακατασκευής)',
+                    costOfImplementation: '€150 / έτος',
+                    costOfInaction: 'Κίνδυνος ολικής απώλειας περιουσίας.',
+                    salesScript: 'Αλέξανδρε, παρατήρησα ότι το συμβόλαιό σου δεν καλύπτει σεισμό. Με δεδομένο ότι μένεις στο Μαρούσι, μια ζημιά €120.000 θα έπρεπε να καλυφθεί από την τσέπη σου. Μπορούμε να το προσθέσουμε με μόλις €12 το μήνα. Να το προχωρήσω;'
+                },
+                {
+                    area: 'Νομική Προστασία',
+                    current: 'Βασική',
+                    recommended: 'Πλήρης Νομική Προστασία',
+                    reason: 'Σε περίπτωση διαφορών με γείτονες ή τρίτους, τα δικαστικά έξοδα είναι υψηλά.',
+                    priority: 'Medium',
+                    financialImpact: '€3,000 (Δικαστικά έξοδα)',
+                    costOfImplementation: '€30 / έτος',
+                    costOfInaction: 'Κόστος δικηγόρων εξ ιδίων πόρων.',
+                    salesScript: 'Επίσης, είδα ότι η νομική προστασία είναι βασική. Με €30 το χρόνο, εξασφαλίζεις ότι δεν θα πληρώσεις δικηγόρο για διαφορές με γείτονες. Είναι μια έξυπνη προσθήκη.'
+                }
+            ],
+            upsell_opportunities: [
+                {
+                    product: 'Θραύση Κρυστάλλων',
+                    recommendation: 'Προσθήκη κάλυψης',
+                    benefit: 'Άμεση αντικατάσταση χωρίς εκταμίευση.',
+                    priority: 'High',
+                    financialImpact: '€500 (Κόστος τζαμιών)',
+                    costOfImplementation: '€15 / έτος',
+                    salesScript: 'Για τα τζάμια του σπιτιού, με €15 το χρόνο καλύπτεις ζημιές έως €1000. Αξίζει για την ηρεμία σου.'
+                }
+            ],
+            cross_sell_opportunities: [
+                {
+                    product: 'Ασφάλεια Ζωής',
+                    recommendation: 'Ισόβια ή Πρόσκαιρη',
+                    benefit: 'Προστασία οικογένειας & αποπληρωμή δανείων.',
+                    priority: 'High',
+                    financialImpact: '€100,000 (Κεφάλαιο)',
+                    costOfImplementation: '€450 / έτος',
+                    salesScript: 'Αλέξανδρε, καθώς έχεις οικογένεια, έχεις σκεφτεί τι θα γίνει με το δάνειο του σπιτιού αν συμβεί κάτι απρόοπτο; Μια ασφάλεια ζωής μπορεί να εξοφλήσει το δάνειο άμεσα.'
+                }
+            ]
+        }
+    }
 ];

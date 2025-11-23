@@ -708,12 +708,12 @@
         "addBeneficiary": "Προσθήκη Δικαιούχου"
       }
     },
-    "riskScore": "Βαθμολογία Έκθεσης Κινδύνου",
+    "riskScore": "Δείκτης Κινδύνου",
     "riskScoreSubtitle": "0 = Ασφαλές, 100 = Υψηλός Κίνδυνος",
-    "financialImpact": "Κόστος Κινδύνου",
+    "financialImpact": "Οικονομικός Αντίκτυπος (Κίνδυνος)",
     "costOfImplementation": "Κόστος Ασφάλισης",
-    "costOfInaction": "Κόστος Αδράνειας",
-    "benefit": "Οφέλη Πελάτη",
+    "costOfInaction": "Συνέπειες Αδράνειας",
+    "benefit": "Όφελος Πελάτη",
     "estimatedValue": "Εκτιμώμενη Αξία",
     "salesScript": "Σενάριο Πώλησης",
     "copyScript": "Αντιγραφή Σεναρίου",
