@@ -34,6 +34,18 @@ const saveStoredFindings = (agencyId: string, findings: StoredFinding[]): void =
 };
 
 /**
+ * Helper to parse value string (e.g. "€200/year") into a number (200).
+ */
+const parseValue = (str?: string): number => {
+    if (!str) return 0;
+    const matches = str.match(/[\d,.]+/);
+    if (matches) {
+        return parseFloat(matches[0].replace(/,/g, '')); 
+    }
+    return 0;
+};
+
+/**
  * Saves new findings from a gap analysis result with 'pending_review' status.
  * @param customerId The ID of the customer.
  * @param analysisId A unique ID for the analysis session.
@@ -65,6 +77,7 @@ export const savePendingFindings = (customerId: string, analysisId: string, resu
         priority: item.priority,
         financialImpact: item.financialImpact,
         costOfImplementation: item.costOfImplementation,
+        estimatedValue: parseValue(item.costOfImplementation),
         salesScript: item.salesScript
     });
 

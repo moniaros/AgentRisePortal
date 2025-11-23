@@ -1,4 +1,3 @@
-
 {
   "common": {
     "loading": "Loading...",
@@ -453,203 +452,203 @@
         "title": "Lead Management Protocols",
         "desc": "Standard operating procedures for handling new internet leads."
       }
-    }
-  },
-  "settings": {
-    "title": "Settings",
-    "nav": {
-      "general": "General",
-      "security": "Security",
-      "notifications": "Notifications",
-      "integrations": "Integrations",
-      "audit": "Audit Logs"
     },
-    "general": {
-      "title": "General Preferences",
-      "description": "Manage your personal and regional settings.",
-      "timezone": "Timezone",
-      "dateFormat": "Date Format",
-      "language": "Language"
-    },
-    "security": {
-      "title": "Security & Login",
-      "description": "Protect your account with 2FA and strong passwords.",
-      "changePassword": "Change Password",
-      "twoFactor": "Two-Factor Authentication (2FA)",
-      "twoFactorDesc": "Add an extra layer of security to your account.",
-      "enable2FA": "Enable 2FA",
-      "lastLogin": "Last login: {date}"
-    },
-    "audit": {
-      "title": "System Logs",
-      "description": "View security and access logs for your agency.",
-      "viewFullLog": "View Full Audit Log"
-    },
-    "notifications": {
-      "title": "Notification Preferences",
-      "description": "Manage how you receive alerts for important updates.",
-      "enableLabel": "Enable Browser Notifications",
-      "previewLink": "Preview Demo Notification",
-      "permissionDenied": "Notification permission denied. Please enable it in your browser settings.",
-      "enabledSuccess": "Notifications enabled successfully!",
-      "demo": {
-        "title": "New Lead!",
-        "body": "John Doe just requested a quote."
+    "settings": {
+      "title": "Settings",
+      "nav": {
+        "general": "General",
+        "security": "Security",
+        "notifications": "Notifications",
+        "integrations": "Integrations",
+        "audit": "Audit Logs"
       },
-      "eventGroups": {
-        "important": "Important Alerts",
-        "optional": "Optional Updates"
+      "general": {
+        "title": "General Preferences",
+        "description": "Manage your personal and regional settings.",
+        "timezone": "Timezone",
+        "dateFormat": "Date Format",
+        "language": "Language"
       },
-      "events": {
-        "new_lead": {
-          "label": "New Lead",
-          "description": "When a new lead is created or assigned to you."
+      "security": {
+        "title": "Security & Login",
+        "description": "Protect your account with 2FA and strong passwords.",
+        "changePassword": "Change Password",
+        "twoFactor": "Two-Factor Authentication (2FA)",
+        "twoFactorDesc": "Add an extra layer of security to your account.",
+        "enable2FA": "Enable 2FA",
+        "lastLogin": "Last login: {date}"
+      },
+      "audit": {
+        "title": "System Logs",
+        "description": "View security and access logs for your agency.",
+        "viewFullLog": "View Full Audit Log"
+      },
+      "notifications": {
+        "title": "Notification Preferences",
+        "description": "Manage how you receive alerts for important updates.",
+        "enableLabel": "Enable Browser Notifications",
+        "previewLink": "Preview Demo Notification",
+        "permissionDenied": "Notification permission denied. Please enable it in your browser settings.",
+        "enabledSuccess": "Notifications enabled successfully!",
+        "demo": {
+          "title": "New Lead!",
+          "body": "John Doe just requested a quote."
         },
-        "quote_request": {
-          "label": "Quote Request",
-          "description": "When a client requests a quote via the microsite."
+        "eventGroups": {
+          "important": "Important Alerts",
+          "optional": "Optional Updates"
         },
-        "follow_up_due": {
-          "label": "Follow-up Due",
-          "description": "When an opportunity follow-up date arrives."
+        "events": {
+          "new_lead": {
+            "label": "New Lead",
+            "description": "When a new lead is created or assigned to you."
+          },
+          "quote_request": {
+            "label": "Quote Request",
+            "description": "When a client requests a quote via the microsite."
+          },
+          "follow_up_due": {
+            "label": "Follow-up Due",
+            "description": "When an opportunity follow-up date arrives."
+          },
+          "overdue_action": {
+            "label": "Overdue Actions",
+            "description": "When a task or opportunity is past due."
+          },
+          "customer_reply": {
+            "label": "Customer Reply",
+            "description": "When a customer replies to an email or message."
+          },
+          "policy_renewal": {
+            "label": "Policy Renewal",
+            "description": "When a policy is up for renewal in 30 days."
+          },
+          "claim_submitted": {
+            "label": "Claim Submitted",
+            "description": "When a new FNOL is recorded."
+          },
+          "new_message": {
+            "label": "New Message",
+            "description": "Direct messages from clients or colleagues."
+          },
+          "task_upcoming": {
+            "label": "Task Upcoming",
+            "description": "Reminders for tasks due soon."
+          },
+          "opportunity_flagged": {
+            "label": "Opportunity Flagged",
+            "description": "When an opportunity needs attention."
+          },
+          "system_announcement": {
+            "label": "System Announcements",
+            "description": "Important platform updates."
+          },
+          "client_birthday": {
+            "label": "Client Birthdays",
+            "description": "Daily digest of client birthdays."
+          },
+          "first_login_of_day": {
+            "label": "Daily Briefing",
+            "description": "Morning summary of your day."
+          },
+          "campaign_results": {
+            "label": "Campaign Results",
+            "description": "Weekly summary of ad performance."
+          }
         },
-        "overdue_action": {
-          "label": "Overdue Actions",
-          "description": "When a task or opportunity is past due."
-        },
-        "customer_reply": {
-          "label": "Customer Reply",
-          "description": "When a customer replies to an email or message."
-        },
-        "policy_renewal": {
-          "label": "Policy Renewal",
-          "description": "When a policy is up for renewal in 30 days."
-        },
-        "claim_submitted": {
-          "label": "Claim Submitted",
-          "description": "When a new FNOL is recorded."
-        },
-        "new_message": {
-          "label": "New Message",
-          "description": "Direct messages from clients or colleagues."
-        },
-        "task_upcoming": {
-          "label": "Task Upcoming",
-          "description": "Reminders for tasks due soon."
-        },
-        "opportunity_flagged": {
-          "label": "Opportunity Flagged",
-          "description": "When an opportunity needs attention."
-        },
-        "system_announcement": {
-          "label": "System Announcements",
-          "description": "Important platform updates."
-        },
-        "client_birthday": {
-          "label": "Client Birthdays",
-          "description": "Daily digest of client birthdays."
-        },
-        "first_login_of_day": {
-          "label": "Daily Briefing",
-          "description": "Morning summary of your day."
-        },
-        "campaign_results": {
-          "label": "Campaign Results",
-          "description": "Weekly summary of ad performance."
+        "permissionDeniedWarning": {
+          "title": "Notifications Blocked",
+          "description": "You have blocked notifications for this site. To enable them, you must update your browser settings.",
+          "chrome": "Chrome",
+          "edge": "Edge",
+          "safari": "Safari",
+          "chromeSteps": "Click the lock icon in the address bar -> Site Settings -> Notifications -> Allow.",
+          "safariSteps": "Safari Preferences -> Websites -> Notifications -> Allow AgentOS.",
+          "learnMore": "Learn more"
         }
       },
-      "permissionDeniedWarning": {
-        "title": "Notifications Blocked",
-        "description": "You have blocked notifications for this site. To enable them, you must update your browser settings.",
-        "chrome": "Chrome",
-        "edge": "Edge",
-        "safari": "Safari",
-        "chromeSteps": "Click the lock icon in the address bar -> Site Settings -> Notifications -> Allow.",
-        "safariSteps": "Safari Preferences -> Websites -> Notifications -> Allow AgentOS.",
-        "learnMore": "Learn more"
-      }
-    },
-    "appearance": {
-      "title": "Appearance",
-      "description": "Customize the look and feel of the application.",
-      "darkMode": "Dark Mode",
-      "lightMode": "Light Mode"
-    },
-    "socialConnections": {
-      "title": "Social Media Connections",
-      "statusConnected": "Connected",
-      "statusNotConnected": "Not Connected",
-      "connectButton": "Connect",
-      "disconnectButton": "Disconnect",
-      "modalTitle": "Connect {platform}",
-      "permissionsTitle": "Permissions Requested:",
-      "complianceText": "We only request permissions necessary to publish posts and read comments. We will never post without your approval.",
-      "cancel": "Cancel",
-      "allow": "Authorize App",
-      "platforms": {
-        "facebook": {
-          "tooltip": "Connect your Facebook Page to publish posts and track engagement.",
-          "scopes": [
-            "pages_manage_posts",
-            "pages_read_engagement",
-            "read_insights"
-          ]
-        },
-        "instagram": {
-          "tooltip": "Connect your Instagram Business account for visual storytelling.",
-          "scopes": [
-            "instagram_basic",
-            "instagram_content_publish",
-            "instagram_manage_comments"
-          ]
-        },
-        "linkedin": {
-          "tooltip": "Connect your personal or company LinkedIn page for B2B networking.",
-          "scopes": [
-            "w_member_social",
-            "r_liteprofile",
-            "r_emailaddress"
-          ]
-        },
-        "x": {
-          "tooltip": "Connect your X (Twitter) account for real-time updates.",
-          "scopes": [
-            "tweet.read",
-            "tweet.write",
-            "users.read"
-          ]
+      "appearance": {
+        "title": "Appearance",
+        "description": "Customize the look and feel of the application.",
+        "darkMode": "Dark Mode",
+        "lightMode": "Light Mode"
+      },
+      "socialConnections": {
+        "title": "Social Media Connections",
+        "statusConnected": "Connected",
+        "statusNotConnected": "Not Connected",
+        "connectButton": "Connect",
+        "disconnectButton": "Disconnect",
+        "modalTitle": "Connect {platform}",
+        "permissionsTitle": "Permissions Requested:",
+        "complianceText": "We only request permissions necessary to publish posts and read comments. We will never post without your approval.",
+        "cancel": "Cancel",
+        "allow": "Authorize App",
+        "platforms": {
+          "facebook": {
+            "tooltip": "Connect your Facebook Page to publish posts and track engagement.",
+            "scopes": [
+              "pages_manage_posts",
+              "pages_read_engagement",
+              "read_insights"
+            ]
+          },
+          "instagram": {
+            "tooltip": "Connect your Instagram Business account for visual storytelling.",
+            "scopes": [
+              "instagram_basic",
+              "instagram_content_publish",
+              "instagram_manage_comments"
+            ]
+          },
+          "linkedin": {
+            "tooltip": "Connect your personal or company LinkedIn page for B2B networking.",
+            "scopes": [
+              "w_member_social",
+              "r_liteprofile",
+              "r_emailaddress"
+            ]
+          },
+          "x": {
+            "tooltip": "Connect your X (Twitter) account for real-time updates.",
+            "scopes": [
+              "tweet.read",
+              "tweet.write",
+              "users.read"
+            ]
+          }
         }
+      },
+      "integrations": {
+        "title": "Integrations",
+        "gbp": "Google Business Profile",
+        "statusNotConnected": "Not Connected",
+        "statusConnectedTo": "Connected to: {businessName}",
+        "statusConnecting": "Connecting...",
+        "statusFetchingProfiles": "Fetching profiles...",
+        "statusNoAccounts": "No business accounts found.",
+        "statusFetchingLocations": "Fetching locations...",
+        "statusNoLocations": "No locations found.",
+        "statusApiError": "API Error",
+        "statusFailed": "Connection Failed",
+        "warningNoAccounts": "No Google Business accounts found associated with this email.",
+        "warningNoLocations": "No locations found for the selected business account.",
+        "errorApi": "An error occurred while connecting to Google Business Profile.",
+        "errorNoClientId": "Google Client ID not configured. Please save it in the Setup section.",
+        "errorGapiNotLoaded": "Google API Client not loaded. Please refresh the page.",
+        "errorSignIn": "Sign-in failed or cancelled.",
+        "connectButton": "Connect Google Business",
+        "successConnected": "Successfully connected to {businessName}!"
+      },
+      "setup": {
+        "title": "API & Integration Setup",
+        "googleClientId": "Google Client ID",
+        "googleClientIdPlaceholder": "Enter your Google Cloud Client ID",
+        "geminiApiKey": "Gemini API Key",
+        "geminiApiKeyPlaceholder": "Enter your Google Gemini API Key",
+        "saveButton": "Save Keys",
+        "saveSuccess": "API keys saved successfully!"
       }
-    },
-    "integrations": {
-      "title": "Integrations",
-      "gbp": "Google Business Profile",
-      "statusNotConnected": "Not Connected",
-      "statusConnectedTo": "Connected to: {businessName}",
-      "statusConnecting": "Connecting...",
-      "statusFetchingProfiles": "Fetching profiles...",
-      "statusNoAccounts": "No business accounts found.",
-      "statusFetchingLocations": "Fetching locations...",
-      "statusNoLocations": "No locations found.",
-      "statusApiError": "API Error",
-      "statusFailed": "Connection Failed",
-      "warningNoAccounts": "No Google Business accounts found associated with this email.",
-      "warningNoLocations": "No locations found for the selected business account.",
-      "errorApi": "An error occurred while connecting to Google Business Profile.",
-      "errorNoClientId": "Google Client ID not configured. Please save it in the Setup section.",
-      "errorGapiNotLoaded": "Google API Client not loaded. Please refresh the page.",
-      "errorSignIn": "Sign-in failed or cancelled.",
-      "connectButton": "Connect Google Business",
-      "successConnected": "Successfully connected to {businessName}!"
-    },
-    "setup": {
-      "title": "API & Integration Setup",
-      "googleClientId": "Google Client ID",
-      "googleClientIdPlaceholder": "Enter your Google Cloud Client ID",
-      "geminiApiKey": "Gemini API Key",
-      "geminiApiKeyPlaceholder": "Enter your Google Gemini API Key",
-      "saveButton": "Save Keys",
-      "saveSuccess": "API keys saved successfully!"
     }
   },
   "gapAnalysis": {
@@ -714,6 +713,8 @@
     "financialImpact": "Cost of Risk",
     "costOfImplementation": "Cost of Insurance",
     "costOfInaction": "Cost of Inaction",
+    "benefit": "Client Benefit",
+    "estimatedValue": "Estimated Value",
     "salesScript": "Sales Script",
     "copyScript": "Copy Script",
     "scriptCopied": "Copied!",

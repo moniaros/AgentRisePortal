@@ -102,35 +102,59 @@ const GapAnalysisResults: React.FC<GapAnalysisResultsProps> = ({ result }) => {
                     )}
                 </div>
 
-                {/* Financial Contrast Card */}
-                <div className="flex flex-col sm:flex-row border-b border-gray-100 dark:border-gray-700">
-                    {/* Cost of Risk (Left Side - Red Tint) */}
-                    <div className="flex-1 p-4 bg-red-50/50 dark:bg-red-900/10 text-center border-r border-dashed border-red-200 dark:border-red-800/30">
-                        <span className="block text-xs font-bold text-red-500 uppercase tracking-wider mb-1">
-                            {t('gapAnalysis.financialImpact')}
-                        </span>
-                        <span className="block text-lg font-extrabold text-red-700 dark:text-red-400">
-                            {data.financialImpact || 'N/A'}
-                        </span>
-                        {data.costOfInaction && (
-                            <span className="block text-[10px] text-red-600/70 mt-1 leading-tight px-2 italic">
-                                {data.costOfInaction}
+                {/* Financial Contrast Card - For Gaps */}
+                {isGap && (
+                    <div className="flex flex-col sm:flex-row border-b border-gray-100 dark:border-gray-700">
+                        {/* Cost of Risk (Left Side - Red Tint) */}
+                        <div className="flex-1 p-4 bg-red-50/50 dark:bg-red-900/10 text-center border-r border-dashed border-red-200 dark:border-red-800/30">
+                            <span className="block text-xs font-bold text-red-500 uppercase tracking-wider mb-1">
+                                {t('gapAnalysis.financialImpact')}
                             </span>
-                        )}
-                    </div>
+                            <span className="block text-lg font-extrabold text-red-700 dark:text-red-400">
+                                {data.financialImpact || 'N/A'}
+                            </span>
+                            {data.costOfInaction && (
+                                <span className="block text-[10px] text-red-600/70 mt-1 leading-tight px-2 italic">
+                                    {data.costOfInaction}
+                                </span>
+                            )}
+                        </div>
 
-                    {/* Cost of Insurance (Right Side - Green Tint) */}
-                    <div className="flex-1 p-4 bg-green-50/50 dark:bg-green-900/10 text-center relative">
-                        <div className="absolute top-1/2 left-0 transform -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-full w-6 h-6 flex items-center justify-center text-[10px] font-bold text-gray-400 shadow-sm z-10">VS</div>
-                        
-                        <span className="block text-xs font-bold text-green-600 uppercase tracking-wider mb-1">
-                            {t('gapAnalysis.costOfImplementation')}
-                        </span>
-                        <span className="block text-lg font-extrabold text-green-700 dark:text-green-400">
-                            {data.costOfImplementation || 'TBD'}
-                        </span>
+                        {/* Cost of Insurance (Right Side - Green Tint) */}
+                        <div className="flex-1 p-4 bg-green-50/50 dark:bg-green-900/10 text-center relative">
+                            <div className="absolute top-1/2 left-0 transform -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-full w-6 h-6 flex items-center justify-center text-[10px] font-bold text-gray-400 shadow-sm z-10">VS</div>
+                            
+                            <span className="block text-xs font-bold text-green-600 uppercase tracking-wider mb-1">
+                                {t('gapAnalysis.costOfImplementation')}
+                            </span>
+                            <span className="block text-lg font-extrabold text-green-700 dark:text-green-400">
+                                {data.costOfImplementation || 'TBD'}
+                            </span>
+                        </div>
                     </div>
-                </div>
+                )}
+
+                {/* Value & Benefit Card - For Opportunities */}
+                {!isGap && (
+                    <div className="flex flex-col sm:flex-row border-b border-gray-100 dark:border-gray-700">
+                        <div className="flex-1 p-4 bg-blue-50/30 dark:bg-blue-900/10 text-center border-r border-dashed border-blue-200 dark:border-blue-800/30">
+                            <span className="block text-xs font-bold text-blue-600 uppercase tracking-wider mb-1">
+                                {t('gapAnalysis.benefit')}
+                            </span>
+                            <span className="block text-sm font-medium text-blue-800 dark:text-blue-300 px-2">
+                                {data.benefit || 'N/A'}
+                            </span>
+                        </div>
+                        <div className="flex-1 p-4 bg-green-50/30 dark:bg-green-900/10 text-center">
+                            <span className="block text-xs font-bold text-green-600 uppercase tracking-wider mb-1">
+                                {t('gapAnalysis.estimatedValue')}
+                            </span>
+                            <span className="block text-lg font-extrabold text-green-700 dark:text-green-400">
+                                {data.costOfImplementation || 'N/A'}
+                            </span>
+                        </div>
+                    </div>
+                )}
 
                 {/* Current vs Recommended (Only for Gaps) */}
                 {isGap && (
@@ -146,15 +170,6 @@ const GapAnalysisResults: React.FC<GapAnalysisResultsProps> = ({ result }) => {
                                 <span className="font-medium text-green-700 dark:text-green-400">{data.recommended}</span>
                             </div>
                         </div>
-                    </div>
-                )}
-                
-                {/* Benefit (For Opportunities) */}
-                {!isGap && data.benefit && (
-                     <div className="p-3 bg-blue-50/30 dark:bg-blue-900/10 border-b border-gray-100 dark:border-gray-700 text-center">
-                        <span className="text-sm text-blue-700 dark:text-blue-300 font-medium">
-                            ✨ {data.benefit}
-                        </span>
                     </div>
                 )}
 

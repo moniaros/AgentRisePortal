@@ -290,6 +290,7 @@ export interface StoredFinding {
     financialImpact?: string;
     costOfImplementation?: string;
     salesScript?: string;
+    estimatedValue?: number;
 }
 
 
