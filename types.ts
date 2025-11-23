@@ -288,6 +288,7 @@ export interface StoredFinding {
     originalAnalysisId: string;
     priority?: 'Critical' | 'High' | 'Medium' | 'Low';
     financialImpact?: string;
+    costOfImplementation?: string;
     salesScript?: string;
 }
 

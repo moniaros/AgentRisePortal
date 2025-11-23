@@ -57,15 +57,21 @@ const GapAnalysisResults: React.FC<GapAnalysisResultsProps> = ({ result }) => {
         index: number;
     }> = ({ type, data, index }) => {
         const isGap = type === 'gap';
-        const borderColor = isGap ? 'border-red-500' : type === 'upsell' ? 'border-blue-500' : 'border-purple-500';
-        const bgColor = isGap ? 'bg-red-50 dark:bg-red-900/10' : 'bg-white dark:bg-gray-800';
+        // Use requested color coding: Red (Critical), Orange (High), Blue (Medium)
         const priorityColors: Record<string, string> = {
-            'Critical': 'bg-red-600 text-white',
-            'High': 'bg-orange-500 text-white',
-            'Medium': 'bg-yellow-500 text-white',
-            'Low': 'bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
+            'Critical': 'bg-red-600 text-white border-red-700',
+            'High': 'bg-orange-500 text-white border-orange-600',
+            'Medium': 'bg-blue-500 text-white border-blue-600',
+            'Low': 'bg-gray-400 text-white border-gray-500',
         };
 
+        // Define specific border colors based on priority if available, otherwise fallback to type-based
+        let borderColor = 'border-gray-200 dark:border-gray-700';
+        if (data.priority === 'Critical') borderColor = 'border-red-500';
+        else if (data.priority === 'High') borderColor = 'border-orange-500';
+        else if (data.priority === 'Medium') borderColor = 'border-blue-500';
+        else if (isGap) borderColor = 'border-red-400';
+        
         const Icon = () => {
             if (type === 'gap') return <span className="text-red-500 text-xl">⚠️</span>;
             if (type === 'upsell') return <span className="text-blue-500 text-xl">💡</span>;
@@ -74,11 +80,12 @@ const GapAnalysisResults: React.FC<GapAnalysisResultsProps> = ({ result }) => {
         };
 
         return (
-            <div className={`rounded-lg shadow-md border-t-4 ${borderColor} ${bgColor} dark:border-opacity-50 overflow-hidden mb-6 transition-all hover:shadow-lg`}>
+            <div className={`rounded-xl shadow-sm hover:shadow-md transition-all duration-200 bg-white dark:bg-gray-800 overflow-hidden border-l-4 ${borderColor} mb-6`}>
+                
                 {/* Header */}
                 <div className="p-5 flex justify-between items-start border-b border-gray-100 dark:border-gray-700">
                     <div className="flex items-start gap-3">
-                        <Icon />
+                        <div className="mt-1"><Icon /></div>
                         <div>
                             <h4 className="font-bold text-lg text-gray-900 dark:text-white leading-tight">
                                 {data.area || data.product}
@@ -89,74 +96,88 @@ const GapAnalysisResults: React.FC<GapAnalysisResultsProps> = ({ result }) => {
                         </div>
                     </div>
                     {data.priority && (
-                        <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase shadow-sm ${priorityColors[data.priority] || 'bg-gray-200'}`}>
+                        <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase shadow-sm border ${priorityColors[data.priority] || 'bg-gray-200 text-gray-800'}`}>
                             {t(`gapAnalysis.priority.${data.priority}` as any)}
                         </span>
                     )}
                 </div>
 
-                {/* Impact Analysis / Value Proposition */}
-                <div className="grid grid-cols-2 divide-x divide-gray-200 dark:divide-gray-700 bg-gray-50 dark:bg-gray-900/30">
-                    <div className="p-4 text-center">
-                        <span className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">{t('gapAnalysis.financialImpact')}</span>
-                        <span className="block text-lg sm:text-xl font-extrabold text-red-600 dark:text-red-400">{data.financialImpact || 'N/A'}</span>
+                {/* Financial Contrast Card */}
+                <div className="flex flex-col sm:flex-row border-b border-gray-100 dark:border-gray-700">
+                    {/* Cost of Risk (Left Side - Red Tint) */}
+                    <div className="flex-1 p-4 bg-red-50/50 dark:bg-red-900/10 text-center border-r border-dashed border-red-200 dark:border-red-800/30">
+                        <span className="block text-xs font-bold text-red-500 uppercase tracking-wider mb-1">
+                            {t('gapAnalysis.financialImpact')}
+                        </span>
+                        <span className="block text-lg font-extrabold text-red-700 dark:text-red-400">
+                            {data.financialImpact || 'N/A'}
+                        </span>
                         {data.costOfInaction && (
-                            <span className="block text-[10px] text-gray-500 mt-1 leading-tight px-2">{data.costOfInaction}</span>
+                            <span className="block text-[10px] text-red-600/70 mt-1 leading-tight px-2 italic">
+                                {data.costOfInaction}
+                            </span>
                         )}
                     </div>
-                    <div className="p-4 text-center relative">
-                        <div className="absolute top-1/2 left-0 transform -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-full w-6 h-6 flex items-center justify-center text-[10px] font-bold text-gray-400">VS</div>
+
+                    {/* Cost of Insurance (Right Side - Green Tint) */}
+                    <div className="flex-1 p-4 bg-green-50/50 dark:bg-green-900/10 text-center relative">
+                        <div className="absolute top-1/2 left-0 transform -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-full w-6 h-6 flex items-center justify-center text-[10px] font-bold text-gray-400 shadow-sm z-10">VS</div>
                         
-                        <span className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">{t('gapAnalysis.costOfImplementation')}</span>
-                        <span className="block text-lg sm:text-xl font-extrabold text-green-600 dark:text-green-400">{data.costOfImplementation || 'TBD'}</span>
+                        <span className="block text-xs font-bold text-green-600 uppercase tracking-wider mb-1">
+                            {t('gapAnalysis.costOfImplementation')}
+                        </span>
+                        <span className="block text-lg font-extrabold text-green-700 dark:text-green-400">
+                            {data.costOfImplementation || 'TBD'}
+                        </span>
                     </div>
                 </div>
 
+                {/* Current vs Recommended (Only for Gaps) */}
                 {isGap && (
-                    <div className="p-4 border-b border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-800">
-                        <div className="flex items-center justify-between text-sm">
+                    <div className="p-4 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-700 text-sm">
+                        <div className="flex items-center justify-between">
                             <div className="w-[45%]">
-                                <span className="text-xs text-gray-500 uppercase block font-semibold mb-1">{t('gapAnalysis.current')}</span>
-                                <span className="font-medium text-gray-800 dark:text-gray-200">{data.current}</span>
+                                <span className="text-[10px] text-gray-500 uppercase font-bold block mb-1">{t('gapAnalysis.current')}</span>
+                                <span className="font-medium text-gray-700 dark:text-gray-300">{data.current}</span>
                             </div>
                             <div className="text-gray-300">→</div>
                             <div className="w-[45%] text-right">
-                                <span className="text-xs text-gray-500 uppercase block font-semibold mb-1">{t('gapAnalysis.recommended')}</span>
-                                <span className="font-medium text-green-700 dark:text-green-300">{data.recommended}</span>
+                                <span className="text-[10px] text-green-600 uppercase font-bold block mb-1">{t('gapAnalysis.recommended')}</span>
+                                <span className="font-medium text-green-700 dark:text-green-400">{data.recommended}</span>
                             </div>
                         </div>
                     </div>
                 )}
                 
+                {/* Benefit (For Opportunities) */}
                 {!isGap && data.benefit && (
-                     <div className="p-3 bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 text-center">
-                        <span className="text-sm text-green-700 dark:text-green-300 font-medium">
+                     <div className="p-3 bg-blue-50/30 dark:bg-blue-900/10 border-b border-gray-100 dark:border-gray-700 text-center">
+                        <span className="text-sm text-blue-700 dark:text-blue-300 font-medium">
                             ✨ {data.benefit}
                         </span>
                     </div>
                 )}
 
-                {/* Sales Script Section */}
+                {/* Prominent Sales Script */}
                 {data.salesScript && (
-                    <div className="p-5 bg-blue-50 dark:bg-blue-900/10">
-                        <div className="flex justify-between items-end mb-2">
-                            <span className="text-xs font-bold text-blue-800 dark:text-blue-300 uppercase tracking-wider flex items-center gap-1">
+                    <div className="p-5 bg-slate-50 dark:bg-slate-900/30">
+                        <div className="flex justify-between items-center mb-3">
+                            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
                                 💬 {t('gapAnalysis.salesScript')}
                             </span>
-                        </div>
-                        <div className="relative group">
-                            <div className="p-4 bg-white dark:bg-gray-800 border border-blue-100 dark:border-blue-800 rounded-lg text-sm italic text-gray-700 dark:text-gray-300 font-serif leading-relaxed shadow-sm">
-                                "{data.salesScript}"
-                            </div>
                             <button 
                                 onClick={() => handleCopy(data.salesScript, `${type}-${index}`)}
-                                className="absolute top-2 right-2 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded shadow-md transition-all transform active:scale-95 flex items-center gap-1 opacity-90 hover:opacity-100"
+                                className={`flex items-center gap-2 px-4 py-1.5 text-xs font-bold rounded-full shadow-sm transition-all transform active:scale-95 ${
+                                    copiedScriptId === `${type}-${index}` 
+                                    ? 'bg-green-500 text-white' 
+                                    : 'bg-blue-600 hover:bg-blue-700 text-white'
+                                }`}
                             >
                                 {copiedScriptId === `${type}-${index}` ? (
-                                    <span className="flex items-center gap-1">
+                                    <>
                                         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
                                         {t('gapAnalysis.scriptCopied')}
-                                    </span>
+                                    </>
                                 ) : (
                                     <>
                                         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>
@@ -164,6 +185,11 @@ const GapAnalysisResults: React.FC<GapAnalysisResultsProps> = ({ result }) => {
                                     </>
                                 )}
                             </button>
+                        </div>
+                        <div className="relative">
+                            <div className="p-4 bg-white dark:bg-gray-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm italic text-gray-700 dark:text-gray-300 font-serif leading-relaxed shadow-inner">
+                                "{data.salesScript}"
+                            </div>
                         </div>
                     </div>
                 )}

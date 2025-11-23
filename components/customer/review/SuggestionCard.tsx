@@ -53,10 +53,10 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({ finding, onConfirm, onD
     };
 
     const priorityColors: Record<string, string> = {
-        'Critical': 'bg-red-100 text-red-800',
-        'High': 'bg-orange-100 text-orange-800',
-        'Medium': 'bg-yellow-100 text-yellow-800',
-        'Low': 'bg-gray-100 text-gray-800',
+        'Critical': 'bg-red-600 text-white',
+        'High': 'bg-orange-500 text-white',
+        'Medium': 'bg-blue-500 text-white',
+        'Low': 'bg-gray-200 text-gray-800',
     };
 
     return (
@@ -98,9 +98,25 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({ finding, onConfirm, onD
                             <h4 className="font-semibold text-gray-900 dark:text-white">{finding.title}</h4>
                             <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{finding.description}</p>
                             
-                            <div className="flex flex-wrap gap-4 mt-2">
+                            <div className="flex flex-wrap gap-y-2 gap-x-4 mt-2">
                                 {finding.benefit && <p className="text-xs text-gray-500"><strong>Benefit:</strong> {finding.benefit}</p>}
-                                {finding.financialImpact && <p className="text-xs text-red-500 font-medium"><strong>Impact:</strong> {finding.financialImpact}</p>}
+                                
+                                {/* Financial Impact Display */}
+                                {(finding.financialImpact || finding.costOfImplementation) && (
+                                    <div className="flex items-center text-xs gap-2 border-l pl-2 border-gray-300 dark:border-gray-600">
+                                        {finding.financialImpact && (
+                                            <span className="text-red-500 font-medium" title={t('gapAnalysis.financialImpact') as string}>
+                                                📉 {finding.financialImpact}
+                                            </span>
+                                        )}
+                                        {finding.financialImpact && finding.costOfImplementation && <span className="text-gray-300">vs</span>}
+                                        {finding.costOfImplementation && (
+                                            <span className="text-green-600 font-medium" title={t('gapAnalysis.costOfImplementation') as string}>
+                                                🛡️ {finding.costOfImplementation}
+                                            </span>
+                                        )}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     )}

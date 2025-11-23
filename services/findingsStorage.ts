@@ -64,6 +64,7 @@ export const savePendingFindings = (customerId: string, analysisId: string, resu
         originalAnalysisId: analysisId,
         priority: item.priority,
         financialImpact: item.financialImpact,
+        costOfImplementation: item.costOfImplementation,
         salesScript: item.salesScript
     });
 
