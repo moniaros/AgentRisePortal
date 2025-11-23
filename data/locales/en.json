@@ -1,3 +1,4 @@
+
 {
   "common": {
     "loading": "Loading...",
@@ -670,6 +671,8 @@
     "upsellOpportunities": "Upsell Recommendations",
     "crossSellOpportunities": "Cross-Sell Opportunities",
     "growthOpportunities": "Growth Opportunities",
+    "upsellTitle": "Policy Improvements (Upsell)",
+    "crossSellTitle": "New Product Opportunities (Cross-Sell)",
     "current": "Current Coverage",
     "recommended": "Recommended",
     "saveSuccess": "Analysis findings saved successfully.",
@@ -708,7 +711,8 @@
     },
     "riskScore": "Risk Exposure Score",
     "riskScoreSubtitle": "0 = Safe, 100 = High Risk",
-    "financialImpact": "Financial Impact",
+    "financialImpact": "Cost of Risk",
+    "costOfImplementation": "Cost of Insurance",
     "costOfInaction": "Cost of Inaction",
     "salesScript": "Sales Script",
     "copyScript": "Copy Script",

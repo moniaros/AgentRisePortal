@@ -238,7 +238,8 @@ export interface GapAnalysisResult {
         recommended: string;
         reason: string;
         priority: 'Critical' | 'High' | 'Medium' | 'Low';
-        financialImpact: string; // e.g., "Potential €50k loss"
+        financialImpact: string; // e.g., "Potential €50k loss" (Cost of Risk)
+        costOfImplementation: string; // e.g., "€200/year" (Cost of Insurance)
         costOfInaction: string; // e.g., "Risk of bankruptcy"
         salesScript: string; // e.g., "Mr. Smith, if this happens..."
     }[];
@@ -248,6 +249,7 @@ export interface GapAnalysisResult {
         benefit: string;
         priority: 'High' | 'Medium' | 'Low';
         financialImpact: string;
+        costOfImplementation: string;
         salesScript: string;
     }[];
     cross_sell_opportunities: {
@@ -256,6 +258,7 @@ export interface GapAnalysisResult {
         benefit: string;
         priority: 'High' | 'Medium' | 'Low';
         financialImpact: string;
+        costOfImplementation: string;
         salesScript: string;
     }[];
 }
@@ -283,6 +286,9 @@ export interface StoredFinding {
     description: string; // The reason/recommendation
     benefit?: string; // Specific customer benefit
     originalAnalysisId: string;
+    priority?: 'Critical' | 'High' | 'Medium' | 'Low';
+    financialImpact?: string;
+    salesScript?: string;
 }
 
 

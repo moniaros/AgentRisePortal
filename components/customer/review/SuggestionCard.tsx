@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { StoredFinding } from '../../../types';
 import { useLocalization } from '../../../hooks/useLocalization';
@@ -51,11 +52,24 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({ finding, onConfirm, onD
         setIsEditing(false);
     };
 
+    const priorityColors: Record<string, string> = {
+        'Critical': 'bg-red-100 text-red-800',
+        'High': 'bg-orange-100 text-orange-800',
+        'Medium': 'bg-yellow-100 text-yellow-800',
+        'Low': 'bg-gray-100 text-gray-800',
+    };
+
     return (
-        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border dark:border-gray-700">
+        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border dark:border-gray-700 relative group">
+            {finding.priority && (
+                <span className={`absolute top-4 right-4 px-2 py-0.5 rounded text-[10px] font-bold uppercase ${priorityColors[finding.priority] || 'bg-gray-100'}`}>
+                    {finding.priority}
+                </span>
+            )}
+            
             <div className="flex items-start gap-3">
                 <span className={`text-2xl mt-1 ${color}`}>{icon}</span>
-                <div className="flex-grow">
+                <div className="flex-grow pr-12">
                     {isEditing ? (
                         <div className="space-y-2">
                              <input 
@@ -81,9 +95,13 @@ const SuggestionCard: React.FC<SuggestionCardProps> = ({ finding, onConfirm, onD
                         </div>
                     ) : (
                         <div>
-                            <h4 className="font-semibold">{finding.title}</h4>
+                            <h4 className="font-semibold text-gray-900 dark:text-white">{finding.title}</h4>
                             <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{finding.description}</p>
-                            {finding.benefit && <p className="text-xs text-gray-500 mt-1"><strong>Benefit:</strong> {finding.benefit}</p>}
+                            
+                            <div className="flex flex-wrap gap-4 mt-2">
+                                {finding.benefit && <p className="text-xs text-gray-500"><strong>Benefit:</strong> {finding.benefit}</p>}
+                                {finding.financialImpact && <p className="text-xs text-red-500 font-medium"><strong>Impact:</strong> {finding.financialImpact}</p>}
+                            </div>
                         </div>
                     )}
                 </div>

@@ -1,3 +1,4 @@
+
 {
   "common": {
     "loading": "Φόρτωση...",
@@ -670,6 +671,8 @@
     "upsellOpportunities": "Προτάσεις Αναβάθμισης (Upsell)",
     "crossSellOpportunities": "Ευκαιρίες Cross-Sell",
     "growthOpportunities": "Ευκαιρίες Ανάπτυξης",
+    "upsellTitle": "Βελτίωση Υπάρχοντος (Upsell)",
+    "crossSellTitle": "Προτάσεις Νέων Συμβολαίων (Cross-Sell)",
     "current": "Τρέχουσα Κάλυψη",
     "recommended": "Προτεινόμενη",
     "saveSuccess": "Τα ευρήματα της ανάλυσης αποθηκεύτηκαν επιτυχώς.",
@@ -708,7 +711,8 @@
     },
     "riskScore": "Βαθμολογία Έκθεσης Κινδύνου",
     "riskScoreSubtitle": "0 = Ασφαλές, 100 = Υψηλός Κίνδυνος",
-    "financialImpact": "Οικονομικός Αντίκτυπος",
+    "financialImpact": "Κόστος Κινδύνου",
+    "costOfImplementation": "Κόστος Ασφάλισης",
     "costOfInaction": "Κόστος Αδράνειας",
     "salesScript": "Σενάριο Πώλησης",
     "copyScript": "Αντιγραφή Σεναρίου",

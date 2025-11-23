@@ -180,15 +180,21 @@ const GapAnalysis: React.FC = () => {
               Output Requirements (${targetLang}):
               1. Risk Score (0-100): Calculate a risk score where 100 is High Risk/Dangerous and 0 is Fully Protected. Based on coverage gaps vs needs.
               2. Executive Summary: A punchy, 2-sentence overview of their risk profile.
-              3. Coverage Gaps: Identify specific dangers. For each, estimate the 'Financial Impact' (e.g., '€50,000 potential loss') and the 'Cost of Inaction'.
-              4. Opportunities (Upsell/Cross-sell): Suggest products.
-              5. Cross-Sell Strategy:
-                 - If Policy is AUTO: Suggest Home, Life, or Personal Accident.
-                 - If Policy is HOME: Suggest Auto, Earthquake, or Umbrella.
-                 - If Policy is LIFE: Suggest Health or Critical Illness.
-                 - Always explain the 'Financial Impact' of NOT having this additional coverage.
-              6. Sales Scripts: Write a specific, psychological script for the agent to say to the client to close the gap. Use fear of loss or peace of mind logic.
-              7. Priority: Tag each finding as 'Critical', 'High', or 'Medium'.
+              3. Coverage Gaps: Identify specific dangers. For each, estimate:
+                 - 'financialImpact': Potential loss amount in Euros (e.g., '€50,000 potential loss').
+                 - 'costOfImplementation': Estimated annual premium cost to fix this gap (e.g., '€150/year').
+                 - 'Cost of Inaction': A brief phrase describing the dire consequence.
+              
+              4. OPPORTUNITY CATEGORIZATION RULES:
+                 - UPSELL: Improvements to the CURRENT policy (e.g., adding Glass Breakage to Auto, Lowering Deductible on Home, Increasing Liability Limits).
+                 - CROSS-SELL: Selling a NEW, SEPARATE policy based on lifestyle inference.
+                    - If Policy is AUTO: Suggest Home (Renters/Owners), Life (Driver Safety), or Personal Accident.
+                    - If Policy is HOME: Suggest Auto, Earthquake (if missing), or Umbrella Liability.
+                    - If Policy is LIFE: Suggest Health or Critical Illness.
+                 - For every Cross-Sell/Upsell, estimate the 'costOfImplementation' (Annual Premium) vs the 'financialImpact' (Coverage Amount).
+
+              5. Sales Scripts: Write a specific, psychological script for the agent to say to the client to close the gap. Use fear of loss or peace of mind logic.
+              6. Priority: Tag each finding as 'Critical', 'High', or 'Medium'.
 
               Ensure the tone is professional, authoritative, yet persuasive.
             `;
@@ -214,10 +220,11 @@ const GapAnalysis: React.FC = () => {
                                         reason: { type: Type.STRING },
                                         priority: { type: Type.STRING, enum: ["Critical", "High", "Medium"] },
                                         financialImpact: { type: Type.STRING, description: "E.g., Potential €30k cost" },
+                                        costOfImplementation: { type: Type.STRING, description: "E.g., €200/year" },
                                         costOfInaction: { type: Type.STRING },
                                         salesScript: { type: Type.STRING, description: "Direct speech script for agent" },
                                     },
-                                    required: ["area", "current", "recommended", "reason", "priority", "financialImpact", "salesScript"],
+                                    required: ["area", "current", "recommended", "reason", "priority", "financialImpact", "costOfImplementation", "salesScript"],
                                 },
                             },
                             upsell_opportunities: {
@@ -230,6 +237,7 @@ const GapAnalysis: React.FC = () => {
                                         benefit: { type: Type.STRING },
                                         priority: { type: Type.STRING, enum: ["High", "Medium", "Low"] },
                                         financialImpact: { type: Type.STRING },
+                                        costOfImplementation: { type: Type.STRING },
                                         salesScript: { type: Type.STRING },
                                     },
                                     required: ["product", "recommendation", "benefit", "salesScript"],
@@ -245,6 +253,7 @@ const GapAnalysis: React.FC = () => {
                                         benefit: { type: Type.STRING },
                                         priority: { type: Type.STRING, enum: ["High", "Medium", "Low"] },
                                         financialImpact: { type: Type.STRING },
+                                        costOfImplementation: { type: Type.STRING },
                                         salesScript: { type: Type.STRING },
                                     },
                                     required: ["product", "recommendation", "benefit", "salesScript"],

@@ -1,3 +1,4 @@
+
 import { StoredFinding, GapAnalysisResult, FindingStatus, FindingType } from '../types';
 import { useAuth } from '../hooks/useAuth';
 
@@ -61,6 +62,9 @@ export const savePendingFindings = (customerId: string, analysisId: string, resu
         description: item.recommendation || item.reason,
         benefit: item.benefit,
         originalAnalysisId: analysisId,
+        priority: item.priority,
+        financialImpact: item.financialImpact,
+        salesScript: item.salesScript
     });
 
     result.gaps.forEach(item => newFindings.push(createFinding('gap', item)));

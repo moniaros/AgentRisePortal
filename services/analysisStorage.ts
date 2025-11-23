@@ -1,3 +1,4 @@
+
 import { StoredAnalysis } from '../types';
 
 const STORAGE_KEY_PREFIX = 'agentos_analysis_';
