@@ -1,11 +1,13 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocalization } from '../hooks/useLocalization';
 import { BillingUsage } from '../types';
 import CreditUsageCard from '../components/billing/CreditUsageCard';
+import { useNotification } from '../hooks/useNotification';
 
 const Billing: React.FC = () => {
     const { t } = useLocalization();
+    const { addNotification } = useNotification();
     const [activeTab, setActiveTab] = useState<'overview' | 'plans' | 'history'>('overview');
 
     // Mock data simulating backend response with local state for interactivity
@@ -14,11 +16,42 @@ const Billing: React.FC = () => {
         seats: { used: 2, limit: 5, percent: 40 },
         storage: { used: 1.2, limit: 10, unit: 'GB', percent: 12 },
         overage: {
-            isEnabled: false,
+            isEnabled: true,
             monthlyBudgetCap: 50.00,
             currentUsageCost: 0
         }
     });
+
+    // Refs to track if alerts have been shown this session to avoid spamming
+    const alertsShown = useRef({ approaching: false, limitReached: false });
+
+    // Monitor usage for alerts
+    useEffect(() => {
+        if (!usageData.overage.isEnabled || usageData.overage.monthlyBudgetCap <= 0) return;
+
+        const percent = (usageData.overage.currentUsageCost / usageData.overage.monthlyBudgetCap) * 100;
+
+        // 100% Threshold
+        if (percent >= 100) {
+            if (!alertsShown.current.limitReached) {
+                addNotification(t('billing.alerts.limitReached'), 'error');
+                alertsShown.current.limitReached = true;
+                alertsShown.current.approaching = true; // Suppress lower alert if jumping straight to 100
+            }
+        } 
+        // 80% Threshold
+        else if (percent >= 80) {
+            if (!alertsShown.current.approaching) {
+                // Fix: use replacement syntax for percent
+                addNotification(t('billing.alerts.approachingLimit', { percent: percent.toFixed(0) }), 'warning');
+                alertsShown.current.approaching = true;
+            }
+        } 
+        // Reset if manually cleared (simulated scenario)
+        else {
+            alertsShown.current = { approaching: false, limitReached: false };
+        }
+    }, [usageData.overage.currentUsageCost, usageData.overage.monthlyBudgetCap, usageData.overage.isEnabled, t, addNotification]);
 
     const handleUpdateOverage = (enabled: boolean, cap: number) => {
         setUsageData(prev => ({
@@ -29,6 +62,21 @@ const Billing: React.FC = () => {
                 monthlyBudgetCap: cap
             }
         }));
+    };
+
+    const simulateUsage = () => {
+        const costIncrement = 5.00;
+        setUsageData(prev => {
+            const newCost = prev.overage.currentUsageCost + costIncrement;
+            return {
+                ...prev,
+                overage: {
+                    ...prev.overage,
+                    currentUsageCost: newCost
+                }
+            };
+        });
+        addNotification(t('billing.alerts.usageSimulated', { cost: costIncrement.toFixed(2) }), 'info');
     };
 
     const plans = [
@@ -237,10 +285,19 @@ const Billing: React.FC = () => {
 
     return (
         <div className="max-w-6xl mx-auto pb-12 space-y-8 px-4 sm:px-6 lg:px-8">
-            {/* Header */}
-            <div>
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">{t('billing.title')}</h1>
-                <p className="text-gray-500 dark:text-gray-400 max-w-2xl">{t('billing.subtitle')}</p>
+            {/* Header & Simulation Tool */}
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">{t('billing.title')}</h1>
+                    <p className="text-gray-500 dark:text-gray-400 max-w-2xl">{t('billing.subtitle')}</p>
+                </div>
+                <button 
+                    onClick={simulateUsage}
+                    disabled={!usageData.overage.isEnabled || (usageData.overage.currentUsageCost >= usageData.overage.monthlyBudgetCap)}
+                    className="px-4 py-2 bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-200 text-xs font-bold rounded-md border border-amber-200 dark:border-amber-800 hover:bg-amber-200 dark:hover:bg-amber-900/60 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                >
+                    <span>🧪</span> Test AI Usage (+€5)
+                </button>
             </div>
 
             {/* Tabs */}

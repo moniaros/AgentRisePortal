@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { MicrositeBlock, MicrositeConfig } from '../types';
+import { MicrositeBlock, MicrositeConfig, MicrositeTemplate, BlockType } from '../types';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useNotification } from '../hooks/useNotification';
@@ -8,6 +8,7 @@ import { useNotification } from '../hooks/useNotification';
 import BuilderControls from '../components/microsite/BuilderControls';
 import BlockEditor from '../components/microsite/BlockEditor';
 import SitePreview from '../components/microsite/SitePreview';
+import ConfirmationModal from '../components/ui/ConfirmationModal';
 
 // Mock initial data
 const initialBlocks: MicrositeBlock[] = [
@@ -36,6 +37,9 @@ const MicrositeBuilder: React.FC = () => {
     const [publishedUrl, setPublishedUrl] = useState<string | null>(null);
     const { addNotification } = useNotification();
 
+    // Template Confirmation State
+    const [pendingTemplate, setPendingTemplate] = useState<MicrositeTemplate | null>(null);
+
     const selectedBlock = blocks.find(b => b.id === selectedBlockId) || null;
 
     const handleSelectBlock = (id: string) => {
@@ -50,6 +54,52 @@ const MicrositeBuilder: React.FC = () => {
 
     const handleUpdateBlock = (updatedBlock: MicrositeBlock) => {
         setBlocks(blocks.map(b => b.id === updatedBlock.id ? updatedBlock : b));
+    };
+
+    const handleAddBlock = (type: BlockType) => {
+        const newBlock: MicrositeBlock = {
+            id: `block_${Date.now()}`,
+            type: type as any,
+            // Default properties for each block type could be more robust here
+            title: `New ${type.charAt(0).toUpperCase() + type.slice(1)} Section`,
+            // @ts-ignore - simpler for now, a real factory would handle specific props per type
+            content: 'Edit this text...',
+            subtitle: 'Add a subtitle',
+            services: [],
+            testimonials: [],
+            items: [],
+            members: [],
+            awards: [],
+            certificates: [],
+            highlights: []
+        } as any;
+        
+        setBlocks([...blocks, newBlock]);
+        // Auto-scroll to bottom would be nice here
+        setTimeout(() => setSelectedBlockId(newBlock.id), 100);
+    };
+
+    const handleApplyTemplateRequest = (template: MicrositeTemplate) => {
+        setPendingTemplate(template);
+    };
+
+    const confirmApplyTemplate = () => {
+        if (pendingTemplate) {
+            // Regenerate IDs to ensure they are unique
+            const newBlocks = pendingTemplate.blocks.map(b => ({
+                ...b,
+                id: `block_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+            }));
+            setBlocks(newBlocks);
+            
+            if (pendingTemplate.defaultConfig) {
+                setConfig(prev => ({ ...prev, ...pendingTemplate.defaultConfig }));
+            }
+            
+            addNotification(`Applied template: ${pendingTemplate.name}`, 'success');
+            setPendingTemplate(null);
+            setSelectedBlockId(null);
+        }
     };
 
     const handlePublish = () => {
@@ -88,10 +138,12 @@ const MicrositeBuilder: React.FC = () => {
 
                 <div className="flex flex-grow overflow-hidden">
                     {/* Left Panel: Controls */}
-                    <div className="w-64 bg-white dark:bg-gray-800 p-4 overflow-y-auto border-r dark:border-gray-700 flex-shrink-0">
+                    <div className="w-72 bg-white dark:bg-gray-800 p-4 overflow-y-auto border-r dark:border-gray-700 flex-shrink-0">
                         <BuilderControls 
                             onOpenSettings={handleOpenSettings} 
                             onSetBlocks={setBlocks}
+                            onApplyTemplate={handleApplyTemplateRequest}
+                            onAddBlock={handleAddBlock}
                         />
                     </div>
 
@@ -120,6 +172,17 @@ const MicrositeBuilder: React.FC = () => {
                         />
                     </div>
                 </div>
+
+                <ConfirmationModal
+                    isOpen={!!pendingTemplate}
+                    onClose={() => setPendingTemplate(null)}
+                    onConfirm={confirmApplyTemplate}
+                    title="Apply Template?"
+                    confirmText="Apply & Overwrite"
+                    confirmButtonClass="bg-red-600 hover:bg-red-700"
+                >
+                    <p>Warning: Applying a new template will <strong>overwrite</strong> your current block layout. This action cannot be undone.</p>
+                </ConfirmationModal>
             </div>
         </DndProvider>
     );

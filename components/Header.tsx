@@ -25,7 +25,7 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
   };
   
   return (
-    <header className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 border-b dark:border-gray-700">
+    <header className="flex items-center justify-between p-4 bg-white dark:bg-gray-800 border-b dark:border-gray-700 transition-colors duration-200">
       <div className="flex items-center">
         <button
           onClick={onToggleSidebar}
@@ -41,7 +41,7 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
             type="search"
             name="search"
             placeholder={t('header.search')}
-            className="bg-gray-100 dark:bg-gray-700 h-10 px-5 pr-10 rounded-full text-sm focus:outline-none"
+            className="bg-gray-100 dark:bg-gray-700 h-10 px-5 pr-10 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-colors duration-200"
           />
           <button type="submit" className="absolute right-0 top-0 mt-3 mr-4">
             <svg className="h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -52,7 +52,7 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
       </div>
 
       <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2 text-sm">
+        <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
             <span className={`h-2 w-2 rounded-full ${isOnline ? 'bg-green-500' : 'bg-red-500'}`}></span>
             <span className="hidden sm:inline">{isOnline ? t('header.online') : t('header.offline')}</span>
         </div>
@@ -60,25 +60,27 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar }) => {
         <select
           value={language}
           onChange={handleLanguageChange}
-          className="bg-transparent text-sm p-1 rounded border border-gray-300 dark:border-gray-600 focus:outline-none"
+          className="bg-transparent text-sm p-1 rounded border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800"
         >
           <option value={Language.EN}>EN</option>
           <option value={Language.EL}>EL</option>
         </select>
 
         <div className="relative" ref={profileMenuRef}>
-          <button onClick={() => setProfileMenuOpen(!isProfileMenuOpen)} aria-label="Your avatar">
+          <button onClick={() => setProfileMenuOpen(!isProfileMenuOpen)} aria-label="Your avatar" className="focus:outline-none">
             <img
-              className="h-9 w-9 rounded-full object-cover"
+              className="h-9 w-9 rounded-full object-cover border-2 border-transparent hover:border-blue-500 transition-colors"
               src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
               alt="User avatar"
             />
           </button>
           {isProfileMenuOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-20">
+            <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-20 border dark:border-gray-700 animate-fade-in">
               {/* FIX: Property 'name' does not exist on type 'User'. Use party.partyName properties instead. */}
-              <div className="px-4 py-2 text-sm text-gray-500 dark:text-gray-400 border-b dark:border-gray-700">{currentUser ? `${currentUser.party.partyName.firstName} ${currentUser.party.partyName.lastName}` : ''}</div>
-              <Link to="/logout" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">{t('header.logout')}</Link>
+              <div className="px-4 py-2 text-sm text-gray-500 dark:text-gray-400 border-b dark:border-gray-700 font-semibold">{currentUser ? `${currentUser.party.partyName.firstName} ${currentUser.party.partyName.lastName}` : ''}</div>
+              <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">{t('nav.profile')}</Link>
+              <Link to="/settings" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">{t('nav.settings')}</Link>
+              <Link to="/logout" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">{t('header.logout')}</Link>
             </div>
           )}
         </div>

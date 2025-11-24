@@ -50,9 +50,9 @@ const Login: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col justify-center items-center p-4">
+        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col justify-center items-center p-4 transition-colors duration-200">
             <div className="absolute top-4 right-4">
-                <button onClick={handleLanguageToggle} className="px-3 py-1.5 text-sm font-semibold border rounded-full dark:border-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+                <button onClick={handleLanguageToggle} className="px-3 py-1.5 text-sm font-semibold border rounded-full border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition">
                     {language === Language.EN ? 'ΕΛ' : 'EN'}
                 </button>
             </div>
@@ -62,7 +62,7 @@ const Login: React.FC = () => {
                     <h2 className="mt-2 text-xl text-gray-700 dark:text-gray-300">{t('login.title')}</h2>
                     <p className="mt-1 text-gray-500 dark:text-gray-400">{t('login.subtitle')}</p>
                 </div>
-                <div className="bg-white dark:bg-gray-800 shadow-xl rounded-lg p-8">
+                <div className="bg-white dark:bg-gray-800 shadow-xl rounded-lg p-8 border dark:border-gray-700 transition-colors duration-200">
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                         {authError && <div className="p-3 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-md text-sm">{authError}</div>}
                         
@@ -78,7 +78,7 @@ const Login: React.FC = () => {
                                     required: t('validation.required', {fieldName: t('login.emailLabel')}),
                                     pattern: { value: /^\S+@\S+$/i, message: t('validation.invalidEmail') }
                                 })}
-                                className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 dark:bg-gray-700 focus:outline-none sm:text-sm ${errors.email ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500'}`}
+                                className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 dark:bg-gray-700 dark:text-white focus:outline-none sm:text-sm ${errors.email ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500'}`}
                                 placeholder={t('login.emailPlaceholder')}
                             />
                             {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message as string}</p>}
@@ -93,20 +93,20 @@ const Login: React.FC = () => {
                                 type="password"
                                 // Fix: Use replacement syntax for translations
                                 {...register('password', { required: t('validation.required', {fieldName: t('login.passwordLabel')}) })}
-                                className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 dark:bg-gray-700 focus:outline-none sm:text-sm ${errors.password ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500'}`}
+                                className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 dark:bg-gray-700 dark:text-white focus:outline-none sm:text-sm ${errors.password ? 'border-red-500 focus:ring-red-500 focus:border-red-500' : 'border-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500'}`}
                             />
                              {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password.message as string}</p>}
                         </div>
 
                         <div className="flex items-center justify-between">
                             <div className="flex items-center">
-                                <input id="remember-me" {...register('rememberMe')} type="checkbox" className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
+                                <input id="remember-me" {...register('rememberMe')} type="checkbox" className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600" />
                                 <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900 dark:text-gray-300">
                                     {t('login.rememberMe')}
                                 </label>
                             </div>
                             <div className="text-sm">
-                                <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
+                                <a href="#" className="font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300">
                                     {t('login.forgotPassword')}
                                 </a>
                             </div>
@@ -116,7 +116,7 @@ const Login: React.FC = () => {
                             <button
                                 type="submit"
                                 disabled={isLoading}
-                                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-400"
+                                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-400 dark:disabled:bg-gray-600 transition-colors duration-200"
                             >
                                 {isLoading ? t('login.authenticating') : t('login.loginButton')}
                             </button>

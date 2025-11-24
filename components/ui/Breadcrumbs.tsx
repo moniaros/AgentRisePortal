@@ -39,7 +39,7 @@ const Breadcrumbs: React.FC = () => {
     <nav aria-label="breadcrumb" className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-4">
       <ol className="list-none p-0 inline-flex items-center">
         <li className="flex items-center">
-          <Link to="/" className="hover:text-blue-500">Home</Link>
+          <Link to="/" className="hover:text-blue-500 dark:hover:text-blue-400">Home</Link>
         </li>
         {parentKey && (
             <li className="flex items-center">
@@ -59,7 +59,7 @@ const Breadcrumbs: React.FC = () => {
               {isLast ? (
                 <span className="text-gray-700 dark:text-gray-200">{label}</span>
               ) : (
-                <Link to={to} className="hover:text-blue-500">{label}</Link>
+                <Link to={to} className="hover:text-blue-500 dark:hover:text-blue-400">{label}</Link>
               )}
             </li>
           );

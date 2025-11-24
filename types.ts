@@ -56,6 +56,10 @@ export interface User {
     permissionsScope: 'agency' | 'global';
     licenses?: AcordLicense[];
   };
+  // Added for Marketplace logic
+  plan?: {
+      tier: 'free' | 'pro' | 'enterprise';
+  }
 }
 
 // CRM types
@@ -374,7 +378,6 @@ export interface ExecutiveData {
   riskExposure: { area: string; exposure: number; mitigation: number }[];
 }
 
-// FIX: Added missing NewsArticle and Testimonial types.
 // News & Content
 export interface NewsArticle {
     id: string;
@@ -497,6 +500,22 @@ export interface MicrositeConfig {
         x: string;
     };
 }
+
+// Template Marketplace Types
+export type TemplateTier = 'free' | 'pro' | 'enterprise';
+export type TemplateCategory = 'general' | 'auto' | 'home' | 'life' | 'business';
+
+export interface MicrositeTemplate {
+    id: string;
+    name: string;
+    description: string;
+    thumbnailUrl: string;
+    tier: TemplateTier;
+    category: TemplateCategory;
+    blocks: MicrositeBlock[];
+    defaultConfig?: Partial<MicrositeConfig>;
+}
+
 // Automation Rules
 export type RuleCategory = 'lead_conversion' | 'communication_automation';
 export type ConditionField = 'lead_status' | 'lead_score' | 'policy_interest';
@@ -569,8 +588,6 @@ export interface SimulationResult {
     conditionResults: ConditionResult[];
 }
 // Other Dashboard Data
-// FIX: Removed duplicate/conflicting interface definitions for TransactionInquiry, Opportunity__EXT, and Interaction.
-// The more detailed definitions are kept below.
 export interface FirstNoticeOfLoss { id: string; agencyId: string; createdAt: string; }
 export interface ServiceRequest { id: string; agencyId: string; createdAt: string; }
 export interface PerfSample { id: string; date: string; agencyId: string; spend: number; conversions: { lead: number } }
