@@ -1,5 +1,4 @@
 
-
 import { User, Lead, Customer, AuditLog, AnalyticsData, ExecutiveData, NewsArticle, Testimonial, UserActivityEvent, UserSystemRole, PolicyType, LeadStatus, LicenseStatus, StoredAnalysis } from '../types';
 
 export const MOCK_USERS: User[] = [
@@ -595,6 +594,158 @@ export const MOCK_ANALYSES: StoredAnalysis[] = [
                 }
             ],
             cross_sell_opportunities: []
+        }
+    },
+    // New Greek Analysis for Customer 1 (Alexandros Papageorgiou) - Retirement Plan
+    {
+        id: 'analysis_mock_9_el',
+        createdAt: new Date(Date.now() - 86400000 * 0.5).toISOString(), // 12 hours ago
+        fileName: 'Μελέτη_Συνταξιοδοτικού.pdf',
+        parsedPolicy: {
+            policyNumber: 'N/A',
+            insurer: 'N/A',
+            policyholder: { name: 'Αλέξανδρος Παπαγεωργίου', address: 'Λεωφ. Κηφισίας 123' },
+            effectiveDate: new Date().toISOString().split('T')[0],
+            expirationDate: new Date().toISOString().split('T')[0],
+            insuredItems: [{ id: '1', description: 'Financial Profile', coverages: [] }]
+        },
+        analysisResult: {
+            riskScore: 60,
+            summary: 'Η ανάλυση του συνταξιοδοτικού προφίλ δείχνει σημαντικό κενό αναπλήρωσης εισοδήματος (Pension Gap). Η εξάρτηση αποκλειστικά από την κοινωνική ασφάλιση θα οδηγήσει σε πτώση βιοτικού επιπέδου κατά 45% κατά τη συνταξιοδότηση.',
+            gaps: [
+                {
+                    area: 'Αναπλήρωση Εισοδήματος Συντάξεως',
+                    current: 'Βασική Κρατική Σύνταξη (Εκτιμώμενη)',
+                    recommended: 'Ιδιωτικό Συνταξιοδοτικό Πρόγραμμα',
+                    reason: 'Ο δείκτης αναπλήρωσης της κρατικής σύνταξης βαίνει μειούμενος. Υπάρχει κίνδυνος ανεπάρκειας πόρων για τη διατήρηση του τρέχοντος βιοτικού επιπέδου.',
+                    priority: 'High',
+                    financialImpact: '€800/μήνα (Εκτιμώμενο έλλειμμα)',
+                    costOfImplementation: '€100 / μήνα',
+                    costOfInaction: 'Σημαντική μείωση αγοραστικής δύναμης στην τρίτη ηλικία.',
+                    salesScript: 'Αλέξανδρε, κοιτάζοντας τα δεδομένα, βλέπουμε ότι όταν βγεις στη σύνταξη, τα έσοδά σου θα μειωθούν σχεδόν στο μισό. Με €100 το μήνα σήμερα, μπορούμε να χτίσουμε ένα κεφάλαιο που θα σου καλύπτει αυτό το κενό, ώστε να μη χρειαστεί να αλλάξεις τρόπο ζωής.'
+                }
+            ],
+            upsell_opportunities: [],
+            cross_sell_opportunities: []
+        }
+    },
+    // New English Analysis for Customer 2 (Jane Doe) - Professional Liability
+    {
+        id: 'analysis_mock_10_en',
+        createdAt: new Date(Date.now() - 86400000 * 0.2).toISOString(), // 5 hours ago
+        fileName: 'Freelancer_Liability_Scan.pdf',
+        parsedPolicy: {
+            policyNumber: 'N/A',
+            insurer: 'N/A',
+            policyholder: { name: 'Jane Doe', address: 'Agia Paraskevi 45' },
+            effectiveDate: new Date().toISOString().split('T')[0],
+            expirationDate: new Date().toISOString().split('T')[0],
+            insuredItems: [{ id: '1', description: 'Professional Activity (Consulting)', coverages: [] }]
+        },
+        analysisResult: {
+            riskScore: 75,
+            summary: 'As a freelance consultant, you operate with significant exposure to professional liability claims. A single client lawsuit alleging negligence or error could result in financial ruin without Professional Indemnity coverage.',
+            gaps: [
+                {
+                    area: 'Professional Indemnity (Errors & Omissions)',
+                    current: 'Uninsured',
+                    recommended: 'Professional Indemnity Policy with €250k limit',
+                    reason: 'Consultants are liable for the advice they give. If a client claims financial loss due to your advice, defense costs and damages fall on you personally.',
+                    priority: 'Critical',
+                    financialImpact: '€50,000+ (Legal defense & settlement)',
+                    costOfImplementation: '€350 / year',
+                    costOfInaction: 'Bankruptcy risk from a single lawsuit.',
+                    salesScript: 'Jane, in your line of work, your advice is your product. If a client ever claims that your advice caused them to lose money, they can sue you. Even if you win, the legal fees alone are crushing. For about €1 a day, Professional Indemnity insurance handles the lawyers and the payout, protecting your personal assets.'
+                }
+            ],
+            upsell_opportunities: [],
+            cross_sell_opportunities: [
+                 {
+                    product: 'Cyber Insurance',
+                    recommendation: 'Standalone Cyber Liability Policy',
+                    benefit: 'Protects against data breaches and gdpr fines.',
+                    priority: 'Medium',
+                    financialImpact: '€20,000 (Fines & IT Forensics)',
+                    costOfImplementation: '€200 / year',
+                    salesScript: 'Since you handle client data digitally, a hack or data breach could lead to GDPR fines. A basic Cyber policy covers these costs and helps you recover data quickly.'
+                }
+            ]
+        }
+    },
+    // New Greek Analysis for Customer 1 (Alexandros Papageorgiou) - Cyber Risks
+    {
+        id: 'analysis_mock_11_el',
+        createdAt: new Date(Date.now() - 86400000 * 0.1).toISOString(), // 2 hours ago
+        fileName: 'Αξιολόγηση_Ψηφιακών_Κινδύνων.pdf',
+        parsedPolicy: {
+            policyNumber: 'N/A',
+            insurer: 'N/A',
+            policyholder: { name: 'Αλέξανδρος Παπαγεωργίου', address: 'Λεωφ. Κηφισίας 123' },
+            effectiveDate: new Date().toISOString().split('T')[0],
+            expirationDate: new Date().toISOString().split('T')[0],
+            insuredItems: [{ id: '1', description: 'Family Digital Footprint', coverages: [] }]
+        },
+        analysisResult: {
+            riskScore: 50,
+            summary: 'Η οικογένεια έχει υψηλή έκθεση σε διαδικτυακούς κινδύνους λόγω της χρήσης πολλαπλών συσκευών και της έλλειψης εξειδικευμένης προστασίας. Δεν υπάρχει κάλυψη για ηλεκτρονική απάτη ή εκφοβισμό.',
+            gaps: [
+                {
+                    area: 'Προστασία από Διαδικτυακούς Κινδύνους (Cyber)',
+                    current: 'Καμία',
+                    recommended: 'Οικογενειακό πρόγραμμα Cyber Protection',
+                    reason: 'Με παιδιά στην εφηβεία και αυξημένες ηλεκτρονικές συναλλαγές, ο κίνδυνος υποκλοπής στοιχείων, ηλεκτρονικής απάτης (phishing) ή cyberbullying είναι υπαρκτός.',
+                    priority: 'Medium',
+                    financialImpact: '€5,000+ (Νομικά έξοδα, απώλεια χρημάτων, ψυχολογική υποστήριξη)',
+                    costOfImplementation: '€60 / έτος',
+                    costOfInaction: 'Οικονομική ζημία από υποκλοπή καρτών και νομικά μπλεξίματα.',
+                    salesScript: 'Αλέξανδρε, ζούμε online. Τα παιδιά είναι στα social media, εσύ κάνεις e-banking. Αν κάποιος χακάρει τους λογαριασμούς σας ή παρενοχλήσει το παιδί, ποιος θα καλύψει τα νομικά έξοδα και την τεχνική υποστήριξη; Με €5 το μήνα, έχετε πλήρη ψηφιακή προστασία.'
+                }
+            ],
+            upsell_opportunities: [],
+            cross_sell_opportunities: []
+        }
+    },
+    // New English Analysis for Customer 2 (Jane Doe) - Renters/Home Content
+    {
+        id: 'analysis_mock_12_en',
+        createdAt: new Date(Date.now() - 86400000 * 6).toISOString(), // 6 days ago
+        fileName: 'Apartment_Risk_Scan.pdf',
+        parsedPolicy: {
+            policyNumber: 'N/A',
+            insurer: 'N/A',
+            policyholder: { name: 'Jane Doe', address: 'Agia Paraskevi 45' },
+            effectiveDate: new Date().toISOString().split('T')[0],
+            expirationDate: new Date().toISOString().split('T')[0],
+            insuredItems: [{ id: '1', description: 'Rented Apartment Contents', coverages: [] }]
+        },
+        analysisResult: {
+            riskScore: 65,
+            summary: 'While you do not own the building, your personal belongings (electronics, furniture, clothes) are completely uninsured against fire, theft, or water damage.',
+            gaps: [
+                {
+                    area: 'Content Insurance (Renters)',
+                    current: 'Uninsured',
+                    recommended: 'Home Contents Policy (Fire, Theft, Liability)',
+                    reason: 'The landlord\'s insurance covers the walls, not your laptop, jewelry, or furniture. In case of a burglary or pipe burst, you would bear the full replacement cost.',
+                    priority: 'High',
+                    financialImpact: '€25,000 (Est. value of contents)',
+                    costOfImplementation: '€80 / year',
+                    costOfInaction: 'Total loss of personal possessions without compensation.',
+                    salesScript: 'Jane, if there is a fire or robbery at your apartment, the landlord gets paid for the building, but you get nothing for your stuff. For less than €7 a month, we can cover your laptop, clothes, and furniture fully. It also covers you if you accidentally damage the landlord\'s property.'
+                }
+            ],
+            upsell_opportunities: [],
+            cross_sell_opportunities: [
+                 {
+                    product: 'Pet Insurance',
+                    recommendation: 'Comprehensive Pet Cover',
+                    benefit: 'Covers vet bills for illness and accidents.',
+                    priority: 'Low',
+                    financialImpact: '€1,000+ (Emergency Vet Bills)',
+                    costOfImplementation: '€150 / year',
+                    salesScript: 'I noticed you have a dog. Vet bills can be unexpected and expensive. A pet policy ensures your furry friend gets the best care without you worrying about the cost.'
+                }
+            ]
         }
     }
 ];

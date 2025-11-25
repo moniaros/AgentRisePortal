@@ -1,3 +1,4 @@
+
 import { useState, useCallback, useEffect } from 'react';
 import { StoredAnalysis } from '../types';
 import { getAnalysesForCustomer } from '../services/analysisStorage';
@@ -14,22 +15,32 @@ export const useAnalysisData = (customerId: string | undefined) => {
             return;
         }
         setIsLoading(true);
-        // Simulate async loading in case this becomes a real API call later
+        // Simulate async loading
         setTimeout(() => {
             const storedData = getAnalysesForCustomer(customerId);
             
-            // Inject mock data for the demo customer 'cust1'
+            // Inject mock data based on customer ID
             let combinedData = [...storedData];
-            if (customerId === 'cust1') {
-                // Avoid duplicates if already saved (simple check by ID)
-                const existingIds = new Set(storedData.map(a => a.id));
-                const newMocks = MOCK_ANALYSES.filter(m => !existingIds.has(m.id));
-                combinedData = [...combinedData, ...newMocks];
-            }
+            const existingIds = new Set(storedData.map(a => a.id));
+            
+            // Filter mocks relevant to this customer
+            const relevantMocks = MOCK_ANALYSES.filter(m => {
+                // Simple name matching logic for the mock data
+                if (customerId === 'cust_1' || customerId === 'cust1') {
+                    return m.parsedPolicy.policyholder.name.includes('Alexandros') || m.parsedPolicy.policyholder.name.includes('Αλέξανδρος');
+                }
+                if (customerId === 'cust_2' || customerId === 'cust2') {
+                    return m.parsedPolicy.policyholder.name.includes('Jane');
+                }
+                return false;
+            });
+
+            const newMocks = relevantMocks.filter(m => !existingIds.has(m.id));
+            combinedData = [...combinedData, ...newMocks];
 
             setAnalyses(combinedData.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()));
             setIsLoading(false);
-        }, 300); // Short delay to mimic loading
+        }, 300); 
     }, [customerId]);
 
     useEffect(() => {
