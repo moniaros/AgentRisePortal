@@ -1,4 +1,4 @@
-import React, { ErrorInfo, ReactNode } from 'react';
+import React, { Component, ErrorInfo, ReactNode } from 'react';
 
 interface Props {
   children?: ReactNode;
@@ -9,7 +9,7 @@ interface State {
   error?: Error;
 }
 
-class ErrorBoundary extends React.Component<Props, State> {
+class ErrorBoundary extends Component<Props, State> {
   // FIX: Using a class property initializer for state. This is a more modern and concise
   // syntax that avoids potential issues with constructors (e.g., forgetting `super(props)`)
   // which can lead to errors like "Property 'state' does not exist on type 'ErrorBoundary'".
