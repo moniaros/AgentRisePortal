@@ -1,6 +1,6 @@
 
 import { 
-    MOCK_USERS, MOCK_LEADS, MOCK_CUSTOMERS, MOCK_AUDIT_LOGS, 
+    MOCK_USERS, MOCK_CUSTOMERS, MOCK_AUDIT_LOGS, 
     MOCK_ANALYTICS_DATA, MOCK_EXECUTIVE_DATA, MOCK_NEWS_ARTICLES, 
     MOCK_TESTIMONIALS, MOCK_USER_ACTIVITY 
 } from '../data/mockData';
@@ -16,16 +16,33 @@ import {
 } from '../types';
 import { generateId, delay } from './utils';
 
+// Static Data Imports
+import allLeads from '../data/allLeads.json';
+import automationRules from '../data/rules/automation_rules.json';
+import automationEvents from '../data/analytics/automation_events.json';
+import transactionInquiries from '../data/transaction_inquiries.json';
+import opportunitiesExt from '../data/opportunities_ext.json';
+import prospects from '../data/prospects.json';
+import interactions from '../data/interactions.json';
+import tasks from '../data/tasks.json';
+import allConversions from '../data/allConversions.json';
+import quoteRequests from '../data/transaction_quoterequests.json';
+import allKpiSnapshots from '../data/allKpiSnapshots.json';
+import allPerformanceSamples from '../data/allPerformanceSamples.json';
+import allFunnelRuns from '../data/allFunnelRuns.json';
+import firstNoticeOfLoss from '../data/firstNoticeOfLoss.json';
+import serviceRequests from '../data/serviceRequests.json';
+import portalAccounts from '../data/portalAccounts.json';
+
 // --- MOCK BACKEND REPOSITORY ---
 
 class MockRepository<T extends { id: string }> {
     private storageKey: string;
-    private initialDataOrUrl: T[] | string;
-    private initialized: boolean = false;
+    private initialData: T[];
 
-    constructor(key: string, initialDataOrUrl: T[] | string) {
+    constructor(key: string, initialData: T[]) {
         this.storageKey = `agentos_db_${key}`;
-        this.initialDataOrUrl = initialDataOrUrl;
+        this.initialData = initialData;
     }
 
     private async loadData(): Promise<T[]> {
@@ -41,20 +58,8 @@ class MockRepository<T extends { id: string }> {
         }
 
         // 2. If empty, load initial data
-        let data: T[] = [];
-        if (Array.isArray(this.initialDataOrUrl)) {
-            data = JSON.parse(JSON.stringify(this.initialDataOrUrl)); // Deep copy
-        } else {
-            // It's a URL
-            try {
-                const response = await fetch(this.initialDataOrUrl);
-                if (!response.ok) throw new Error(`Failed to fetch ${this.initialDataOrUrl}`);
-                data = await response.json();
-            } catch (e) {
-                console.error(`Failed to load initial data for ${this.storageKey}`, e);
-                data = [];
-            }
-        }
+        // Deep copy to avoid mutation issues with the imported JSON modules
+        const data = JSON.parse(JSON.stringify(this.initialData));
 
         // 3. Save to Storage
         this.saveData(data);
@@ -63,13 +68,6 @@ class MockRepository<T extends { id: string }> {
 
     private saveData(data: T[]) {
         localStorage.setItem(this.storageKey, JSON.stringify(data));
-    }
-
-    private async ensureInitialized() {
-        if (!this.initialized) {
-            // Pre-load checking? For now we just rely on getALL to load.
-            // Actually, let's just let methods call loadData internally which handles caching.
-        }
     }
 
     // --- CRUD Operations ---
@@ -124,12 +122,11 @@ class MockRepository<T extends { id: string }> {
 // --- SERVICE INSTANCES ---
 
 export const userService = new MockRepository<User>('users', MOCK_USERS);
-export const leadService = new MockRepository<Lead>('leads', '/data/allLeads.json'); // Using the larger dataset
+export const leadService = new MockRepository<Lead>('leads', allLeads as Lead[]);
 export const customerService = new MockRepository<Customer>('customers', MOCK_CUSTOMERS);
 export const auditLogService = new MockRepository<AuditLog>('audit_logs', MOCK_AUDIT_LOGS);
-export const analyticsService = new MockRepository<any>('analytics', MOCK_ANALYTICS_DATA); // Using any for simpler transition if type mismatches
+export const analyticsService = new MockRepository<any>('analytics', MOCK_ANALYTICS_DATA); 
 export const campaignService = new MockRepository<Campaign>('campaigns', [
-    // Mock campaigns directly here as they were in the hook previously
     {
         id: 'camp_1',
         name: 'Summer Auto Insurance Promo',
@@ -175,8 +172,8 @@ export const campaignService = new MockRepository<Campaign>('campaigns', [
 ]);
 export const newsService = new MockRepository<NewsArticle>('news', MOCK_NEWS_ARTICLES);
 export const testimonialService = new MockRepository<Testimonial>('testimonials', MOCK_TESTIMONIALS);
-export const automationRuleService = new MockRepository<AutomationRule>('automation_rules', '/data/rules/automation_rules.json');
-export const automationEventService = new MockRepository<AutomationEvent>('automation_events', '/data/analytics/automation_events.json');
+export const automationRuleService = new MockRepository<AutomationRule>('automation_rules', automationRules as AutomationRule[]);
+export const automationEventService = new MockRepository<AutomationEvent>('automation_events', automationEvents as AutomationEvent[]);
 export const templateService = new MockRepository<MessageTemplate>('templates', [
     { id: 'tmpl_1', name: 'Welcome Email', channel: 'email', content: 'Welcome to our agency, {{Lead.FirstName}}! We are excited to help you.' },
     { id: 'tmpl_2', name: 'Policy Renewal Reminder', channel: 'email', content: 'Dear {{Lead.FirstName}}, your policy is due for renewal soon.' },
@@ -187,26 +184,24 @@ export const templateService = new MockRepository<MessageTemplate>('templates', 
 export const micrositeTemplateService = new MockRepository<MicrositeTemplate>('microsite_templates', MICROSITE_TEMPLATES);
 
 // Pipeline Services
-export const inquiryService = new MockRepository<TransactionInquiry>('inquiries', '/data/transaction_inquiries.json');
-export const opportunityService = new MockRepository<Opportunity__EXT>('opportunities', '/data/opportunities_ext.json');
-export const prospectService = new MockRepository<Prospect>('prospects', '/data/prospects.json');
-export const interactionService = new MockRepository<Interaction>('interactions', '/data/interactions.json');
-export const taskService = new MockRepository<Task>('tasks', '/data/tasks.json');
-export const conversionService = new MockRepository<Conversion>('conversions', '/data/allConversions.json');
-export const quoteRequestService = new MockRepository<TransactionQuoteRequest>('quote_requests', '/data/transaction_quoterequests.json');
+export const inquiryService = new MockRepository<TransactionInquiry>('inquiries', transactionInquiries as TransactionInquiry[]);
+export const opportunityService = new MockRepository<Opportunity__EXT>('opportunities', opportunitiesExt as Opportunity__EXT[]);
+export const prospectService = new MockRepository<Prospect>('prospects', prospects as Prospect[]);
+export const interactionService = new MockRepository<Interaction>('interactions', interactions as Interaction[]);
+export const taskService = new MockRepository<Task>('tasks', tasks as Task[]);
+export const conversionService = new MockRepository<Conversion>('conversions', allConversions as Conversion[]);
+export const quoteRequestService = new MockRepository<TransactionQuoteRequest>('quote_requests', quoteRequests as TransactionQuoteRequest[]);
 
 // Executive / Dashboard Data 
-// (Some of these are read-only aggregates in a real app, but we treat them as repositories for the mock)
-export const kpiService = new MockRepository<KPISnapshot>('kpi_snapshots', '/data/allKpiSnapshots.json');
-export const performanceService = new MockRepository<PerfSample>('performance', '/data/allPerformanceSamples.json');
-export const funnelService = new MockRepository<FunnelRun>('funnel_runs', '/data/allFunnelRuns.json');
-export const ftnolService = new MockRepository<FirstNoticeOfLoss>('ftnol', '/data/firstNoticeOfLoss.json');
-export const serviceRequestService = new MockRepository<ServiceRequest>('service_requests', '/data/serviceRequests.json');
-export const portalAccountService = new MockRepository<PortalAccount__EXT>('portal_accounts', '/data/portalAccounts.json');
+export const kpiService = new MockRepository<KPISnapshot>('kpi_snapshots', allKpiSnapshots as KPISnapshot[]);
+export const performanceService = new MockRepository<PerfSample>('performance', allPerformanceSamples as PerfSample[]);
+export const funnelService = new MockRepository<FunnelRun>('funnel_runs', allFunnelRuns as FunnelRun[]);
+export const ftnolService = new MockRepository<FirstNoticeOfLoss>('ftnol', firstNoticeOfLoss as FirstNoticeOfLoss[]);
+export const serviceRequestService = new MockRepository<ServiceRequest>('service_requests', serviceRequests as ServiceRequest[]);
+export const portalAccountService = new MockRepository<PortalAccount__EXT>('portal_accounts', portalAccounts as PortalAccount__EXT[]);
 
 
 // --- LEGACY API FUNCTIONS (Wrappers) ---
-// These allow the existing application to function while we migrate to using the services directly.
 
 export const fetchUsers = () => userService.getAll();
 export const fetchAuditLogs = () => auditLogService.getAll();
@@ -252,13 +247,13 @@ export const fetchExecutiveData = async (): Promise<ExecutiveData> => {
 };
 
 export const fetchGbpData = async (locationName: string): Promise<{ summary: GbpLocationSummary, reviews: GbpReview[] }> => {
-    // This simulates an external API call that doesn't persist to our "DB" in the same way
     await delay();
     const summary: GbpLocationSummary = {
         title: 'Alpha Omega Insurance',
         averageRating: 4.8,
         totalReviewCount: 134,
     };
+    // Dynamic import for larger datasets or code splitting is fine, as Vite handles this
     const reviewsJson = await import('../data/gbp_reviews.json');
     return { summary, reviews: reviewsJson.reviews as any };
 };
@@ -270,7 +265,6 @@ export const fetchParsedPolicy = async (): Promise<DetailedPolicy> => {
 };
 
 export const fetchAutomationSettings = async (): Promise<AutomationChannelSettings> => {
-    // Settings are unique, usually a singleton. We can use local storage directly or a repo.
     await delay();
     const stored = localStorage.getItem('agentos_settings_automation');
     if (stored) return JSON.parse(stored);
@@ -290,10 +284,10 @@ export const fetchAutomationAnalytics = async (): Promise<AutomationAnalytics> =
     return data as unknown as AutomationAnalytics;
 };
 
-// Dashboard Dashboard specific subsets (simulated by filtering the main repos)
-export const fetchInquiries = () => inquiryService.getAll(); // Already fetched by main repo
-export const fetchOpportunities = () => opportunityService.getAll(); // Already fetched by main repo
-export const fetchInteractions = () => interactionService.getAll(); // Already fetched by main repo
+// Dashboard specific subsets
+export const fetchInquiries = () => inquiryService.getAll();
+export const fetchOpportunities = () => opportunityService.getAll();
+export const fetchInteractions = () => interactionService.getAll();
 
 export const toggleMicrositeTemplateFavorite = async (userId: string, templateId: string): Promise<User | null> => {
     await delay();
