@@ -1,3 +1,4 @@
+
 import { User, Lead, Customer, AuditLog, AnalyticsData, ExecutiveData, NewsArticle, Testimonial, UserActivityEvent, UserSystemRole, PolicyType, LeadStatus, LicenseStatus, StoredAnalysis } from '../types';
 
 export const MOCK_USERS: User[] = [
@@ -20,7 +21,9 @@ export const MOCK_USERS: User[] = [
             licenses: [
                 { type: 'P&C', licenseNumber: 'PC12345', expirationDate: '2025-12-31', status: LicenseStatus.VALID },
             ]
-        }
+        },
+        plan: { tier: 'pro' },
+        favoriteTemplateIds: []
     },
     {
         id: 'user_2',
@@ -39,7 +42,9 @@ export const MOCK_USERS: User[] = [
             department: 'Management',
             permissionsScope: 'agency',
             licenses: []
-        }
+        },
+        plan: { tier: 'enterprise' },
+        favoriteTemplateIds: []
     },
 ];
 
@@ -132,7 +137,7 @@ export const MOCK_CUSTOMERS: Customer[] = [
                 isActive: true,
                 insurer: 'NN Hellas',
                 coverages: [
-                    { type: 'Hospitalization', limit: '100%' },
+                    { type: 'Hospitalization', limit: '100%"' },
                     { type: 'Room & Board', limit: 'A Class' },
                     { type: 'Deductible', limit: '€1,500' }
                 ]

@@ -59,7 +59,8 @@ export interface User {
   // Added for Marketplace logic
   plan?: {
       tier: 'free' | 'pro' | 'enterprise';
-  }
+  };
+  favoriteTemplateIds?: string[];
 }
 
 // CRM types

@@ -4,6 +4,7 @@ import {
     MOCK_ANALYTICS_DATA, MOCK_EXECUTIVE_DATA, MOCK_NEWS_ARTICLES, 
     MOCK_TESTIMONIALS, MOCK_USER_ACTIVITY 
 } from '../data/mockData';
+import { MICROSITE_TEMPLATES } from '../data/micrositeTemplates';
 import { 
     GbpLocationSummary, GbpReview, User, AuditLog, AnalyticsData, Campaign, 
     ExecutiveData, NewsArticle, Testimonial, UserActivityEvent, AutomationRule, 
@@ -11,7 +12,7 @@ import {
     FirstNoticeOfLoss, ServiceRequest, PerfSample, PortalAccount__EXT, 
     KPISnapshot, Lead, Conversion, FunnelRun, DetailedPolicy, 
     AutomationChannelSettings, AutomationEvent, AutomationAnalytics, 
-    TransactionQuoteRequest, Prospect, Task, Customer 
+    TransactionQuoteRequest, Prospect, Task, Customer, MicrositeTemplate 
 } from '../types';
 import { generateId, delay } from './utils';
 
@@ -183,6 +184,7 @@ export const templateService = new MockRepository<MessageTemplate>('templates', 
     { id: 'tmpl_4', name: 'Special Offer', channel: 'viber', content: 'Check out our exclusive offer for you, {{Lead.FirstName}}!' },
     { id: 'tmpl_5', name: 'Document Request', channel: 'whatsapp', content: 'Hello {{Lead.FirstName}}, could you please send over the requested documents?' }
 ]);
+export const micrositeTemplateService = new MockRepository<MicrositeTemplate>('microsite_templates', MICROSITE_TEMPLATES);
 
 // Pipeline Services
 export const inquiryService = new MockRepository<TransactionInquiry>('inquiries', '/data/transaction_inquiries.json');
@@ -214,6 +216,7 @@ export const fetchTestimonials = () => testimonialService.getAll();
 export const fetchAutomationRules = () => automationRuleService.getAll();
 export const fetchAutomationEvents = () => automationEventService.getAll();
 export const fetchTemplates = () => templateService.getAll();
+export const fetchMicrositeTemplates = () => micrositeTemplateService.getAll();
 
 export const fetchTransactionInquiries = () => inquiryService.getAll();
 export const fetchTransactionQuoteRequests = () => quoteRequestService.getAll();
@@ -290,3 +293,18 @@ export const fetchAutomationAnalytics = async (): Promise<AutomationAnalytics> =
 export const fetchInquiries = () => inquiryService.getAll(); // Already fetched by main repo
 export const fetchOpportunities = () => opportunityService.getAll(); // Already fetched by main repo
 export const fetchInteractions = () => interactionService.getAll(); // Already fetched by main repo
+
+export const toggleMicrositeTemplateFavorite = async (userId: string, templateId: string): Promise<User | null> => {
+    await delay();
+    const user = await userService.getById(userId);
+    if (!user) return null;
+
+    const favorites = user.favoriteTemplateIds || [];
+    const isFavorite = favorites.includes(templateId);
+    const newFavorites = isFavorite 
+        ? favorites.filter(id => id !== templateId) 
+        : [...favorites, templateId];
+
+    const updatedUser = await userService.update(userId, { favoriteTemplateIds: newFavorites });
+    return updatedUser;
+}
