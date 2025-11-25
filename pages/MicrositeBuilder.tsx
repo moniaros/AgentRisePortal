@@ -9,6 +9,9 @@ import BuilderControls from '../components/microsite/BuilderControls';
 import BlockEditor from '../components/microsite/BlockEditor';
 import SitePreview from '../components/microsite/SitePreview';
 import ConfirmationModal from '../components/ui/ConfirmationModal';
+import TemplateSelector from '../components/microsite/TemplateSelector';
+import { useAuth } from '../hooks/useAuth';
+
 
 // Mock initial data
 const initialBlocks: MicrositeBlock[] = [
@@ -26,6 +29,45 @@ const initialConfig: MicrositeConfig = {
     social: { facebook: '#', linkedin: '#', x: '#' },
 };
 
+interface TemplatePanelProps {
+    isOpen: boolean;
+    onClose: () => void;
+    onApplyTemplate: (template: MicrositeTemplate) => void;
+}
+
+const TemplatePanel: React.FC<TemplatePanelProps> = ({ isOpen, onClose, onApplyTemplate }) => {
+    const { currentUser } = useAuth();
+    const userTier = currentUser?.plan?.tier || 'free';
+
+    return (
+        <>
+            {/* Backdrop */}
+            <div 
+                className={`fixed inset-0 bg-black/30 z-20 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+                onClick={onClose}
+            />
+
+            {/* Panel */}
+            <div 
+                className={`absolute top-0 left-0 h-full bg-white dark:bg-gray-800 shadow-2xl z-30 transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'} w-full max-w-md md:max-w-lg border-r dark:border-gray-700 flex flex-col`}
+            >
+                {/* Header */}
+                <div className="flex justify-between items-center p-4 border-b dark:border-gray-700 flex-shrink-0">
+                    <h2 className="text-lg font-bold">Choose a Template</h2>
+                    <button onClick={onClose} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <svg className="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                </div>
+                
+                {/* Content */}
+                <div className="p-4 overflow-y-auto flex-grow custom-scrollbar">
+                    <TemplateSelector onSelect={onApplyTemplate} userTier={userTier} />
+                </div>
+            </div>
+        </>
+    );
+};
+
 
 const MicrositeBuilder: React.FC = () => {
     const [blocks, setBlocks] = useState<MicrositeBlock[]>(initialBlocks);
@@ -39,6 +81,8 @@ const MicrositeBuilder: React.FC = () => {
 
     // Template Confirmation State
     const [pendingTemplate, setPendingTemplate] = useState<MicrositeTemplate | null>(null);
+    const [isTemplatePanelOpen, setIsTemplatePanelOpen] = useState(false);
+
 
     const selectedBlock = blocks.find(b => b.id === selectedBlockId) || null;
 
@@ -81,6 +125,7 @@ const MicrositeBuilder: React.FC = () => {
 
     const handleApplyTemplateRequest = (template: MicrositeTemplate) => {
         setPendingTemplate(template);
+        setIsTemplatePanelOpen(false);
     };
 
     const confirmApplyTemplate = () => {
@@ -136,13 +181,19 @@ const MicrositeBuilder: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="flex flex-grow overflow-hidden">
+                <div className="flex flex-grow overflow-hidden relative">
+                     <TemplatePanel
+                        isOpen={isTemplatePanelOpen}
+                        onClose={() => setIsTemplatePanelOpen(false)}
+                        onApplyTemplate={handleApplyTemplateRequest}
+                    />
+                    
                     {/* Left Panel: Controls */}
                     <div className="w-72 bg-white dark:bg-gray-800 p-4 overflow-y-auto border-r dark:border-gray-700 flex-shrink-0">
                         <BuilderControls 
                             onOpenSettings={handleOpenSettings} 
                             onSetBlocks={setBlocks}
-                            onApplyTemplate={handleApplyTemplateRequest}
+                            onOpenTemplatePanel={() => setIsTemplatePanelOpen(true)}
                             onAddBlock={handleAddBlock}
                         />
                     </div>

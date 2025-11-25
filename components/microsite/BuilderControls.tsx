@@ -1,15 +1,13 @@
 
 import React, { useState } from 'react';
 import { useLocalization } from '../../hooks/useLocalization';
-import { BlockType, MicrositeBlock, MicrositeTemplate } from '../../types';
+import { BlockType, MicrositeBlock } from '../../types';
 import GenerateSiteModal from './GenerateSiteModal';
-import TemplateSelector from './TemplateSelector';
-import { useAuth } from '../../hooks/useAuth';
 
 interface BuilderControlsProps {
     onOpenSettings: () => void;
     onSetBlocks: (blocks: MicrositeBlock[]) => void;
-    onApplyTemplate: (template: MicrositeTemplate) => void;
+    onOpenTemplatePanel: () => void;
     onAddBlock: (type: BlockType) => void;
 }
 
@@ -30,14 +28,9 @@ const blockTypes: { type: BlockType, label: string }[] = [
     { type: 'downloads', label: 'Downloads' },
 ];
 
-const BuilderControls: React.FC<BuilderControlsProps> = ({ onOpenSettings, onSetBlocks, onApplyTemplate, onAddBlock }) => {
+const BuilderControls: React.FC<BuilderControlsProps> = ({ onOpenSettings, onSetBlocks, onOpenTemplatePanel, onAddBlock }) => {
     const { t } = useLocalization();
-    const { currentUser } = useAuth();
     const [isAIModalOpen, setIsAIModalOpen] = useState(false);
-    const [activeTab, setActiveTab] = useState<'blocks' | 'templates'>('blocks');
-
-    // Mock plan tier from user (fallback to free if not present in mock)
-    const userTier = currentUser?.plan?.tier || 'pro'; 
 
     return (
         <div className="flex flex-col h-full">
@@ -65,14 +58,13 @@ const BuilderControls: React.FC<BuilderControlsProps> = ({ onOpenSettings, onSet
             {/* Tabs */}
             <div className="flex border-b dark:border-gray-700 mb-4 flex-shrink-0">
                 <button 
-                    onClick={() => setActiveTab('blocks')}
-                    className={`flex-1 py-2 text-sm font-medium border-b-2 transition ${activeTab === 'blocks' ? 'border-blue-600 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+                    className={`flex-1 py-2 text-sm font-medium border-b-2 transition border-blue-600 text-blue-600 dark:text-blue-400`}
                 >
                     Blocks
                 </button>
                 <button 
-                    onClick={() => setActiveTab('templates')}
-                    className={`flex-1 py-2 text-sm font-medium border-b-2 transition ${activeTab === 'templates' ? 'border-blue-600 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+                    onClick={onOpenTemplatePanel}
+                    className={`flex-1 py-2 text-sm font-medium border-b-2 transition border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300`}
                 >
                     Templates
                 </button>
@@ -80,22 +72,18 @@ const BuilderControls: React.FC<BuilderControlsProps> = ({ onOpenSettings, onSet
             
             {/* Scrollable Content Area */}
             <div className="flex-grow overflow-y-auto pr-1 custom-scrollbar">
-                {activeTab === 'blocks' ? (
-                    <div className="grid grid-cols-2 gap-2">
-                        {blockTypes.map(block => (
-                            <button 
-                                key={block.type}
-                                onClick={() => onAddBlock(block.type)}
-                                className="p-3 text-xs text-center bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded hover:border-blue-400 hover:shadow-sm transition flex flex-col items-center justify-center gap-1 h-20"
-                            >
-                                <span className="text-gray-400 text-lg">+</span>
-                                {block.label}
-                            </button>
-                        ))}
-                    </div>
-                ) : (
-                    <TemplateSelector onSelect={onApplyTemplate} userTier={userTier} />
-                )}
+                <div className="grid grid-cols-2 gap-2">
+                    {blockTypes.map(block => (
+                        <button 
+                            key={block.type}
+                            onClick={() => onAddBlock(block.type)}
+                            className="p-3 text-xs text-center bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded hover:border-blue-400 hover:shadow-sm transition flex flex-col items-center justify-center gap-1 h-20"
+                        >
+                            <span className="text-gray-400 text-lg">+</span>
+                            {block.label}
+                        </button>
+                    ))}
+                </div>
             </div>
 
             <GenerateSiteModal 

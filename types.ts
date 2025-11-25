@@ -1,4 +1,5 @@
 
+
 // FIX: Import React to resolve 'Cannot find namespace React' error.
 import React from 'react';
 
@@ -252,7 +253,8 @@ export interface GapAnalysisResult {
         product: string;
         recommendation: string;
         benefit: string;
-        priority: 'High' | 'Medium' | 'Low';
+// FIX: The priority for upsell_opportunities was too restrictive. Added 'Critical' to allow for critical upsell suggestions, matching the 'gaps' and 'StoredFinding' types.
+        priority: 'Critical' | 'High' | 'Medium' | 'Low';
         financialImpact: string;
         costOfImplementation: string;
         salesScript: string;
@@ -261,7 +263,8 @@ export interface GapAnalysisResult {
         product: string;
         recommendation: string;
         benefit: string;
-        priority: 'High' | 'Medium' | 'Low';
+// FIX: The priority for cross_sell_opportunities was too restrictive. Added 'Critical' to match the type in 'gaps' and 'StoredFinding', resolving an error with mock data where a critical illness opportunity was correctly marked as 'Critical'.
+        priority: 'Critical' | 'High' | 'Medium' | 'Low';
         financialImpact: string;
         costOfImplementation: string;
         salesScript: string;

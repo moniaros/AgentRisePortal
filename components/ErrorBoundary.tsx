@@ -10,7 +10,10 @@ interface State {
 }
 
 class ErrorBoundary extends React.Component<Props, State> {
-  public state: State = {
+  // FIX: Using a class property initializer for state. This is a more modern and concise
+  // syntax that avoids potential issues with constructors (e.g., forgetting `super(props)`)
+  // which can lead to errors like "Property 'state' does not exist on type 'ErrorBoundary'".
+  state: State = {
     hasError: false,
   };
 
