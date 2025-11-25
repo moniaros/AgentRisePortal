@@ -217,6 +217,7 @@ export const fetchAutomationRules = () => automationRuleService.getAll();
 export const fetchAutomationEvents = () => automationEventService.getAll();
 export const fetchTemplates = () => templateService.getAll();
 export const fetchMicrositeTemplates = () => micrositeTemplateService.getAll();
+export const fetchMicrositeTemplateById = (id: string) => micrositeTemplateService.getById(id);
 
 export const fetchTransactionInquiries = () => inquiryService.getAll();
 export const fetchTransactionQuoteRequests = () => quoteRequestService.getAll();

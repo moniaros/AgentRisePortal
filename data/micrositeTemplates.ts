@@ -7,8 +7,13 @@ export const MICROSITE_TEMPLATES: MicrositeTemplate[] = [
         name: 'Standard Agency',
         description: 'A clean, professional layout suitable for any general insurance agency.',
         thumbnailUrl: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=500&auto=format&fit=crop&q=60',
+        previewImages: [
+            'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&auto=format&fit=crop&q=80',
+            'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1200&q=80'
+        ],
         tier: 'free',
         category: 'general',
+        tags: ['clean', 'corporate', 'simple'],
         blocks: [
             { id: 'b1', type: 'hero', title: 'Protecting What Matters', subtitle: 'Reliable insurance solutions for your family and business.', ctaText: 'Get a Quote', imageUrl: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1200&q=80' },
             { id: 'b2', type: 'services', title: 'Our Products', services: [
@@ -27,8 +32,13 @@ export const MICROSITE_TEMPLATES: MicrositeTemplate[] = [
         name: 'Auto Specialist Pro',
         description: 'High-conversion layout designed specifically for auto insurance leads.',
         thumbnailUrl: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=500&auto=format&fit=crop&q=60',
+        previewImages: [
+            'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=1200&auto=format&fit=crop&q=80',
+            'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1200&q=80'
+        ],
         tier: 'pro',
         category: 'auto',
+        tags: ['modern', 'high-energy', 'dark-mode-friendly'],
         blocks: [
             { id: 'b1', type: 'hero', title: 'Drive with Confidence', subtitle: 'Affordable rates. 24/7 Roadside Assistance.', ctaText: 'Start Saving Today', imageUrl: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1200&q=80' },
             { id: 'b2', type: 'testimonials', title: 'Happy Drivers', testimonials: [
@@ -50,8 +60,13 @@ export const MICROSITE_TEMPLATES: MicrositeTemplate[] = [
         name: 'Home Sweet Home',
         description: 'Warm and inviting design for property and homeowners insurance.',
         thumbnailUrl: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=500&auto=format&fit=crop&q=60',
+        previewImages: [
+            'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&auto=format&fit=crop&q=80',
+            'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=1200&q=80'
+        ],
         tier: 'free',
         category: 'home',
+        tags: ['warm', 'family', 'secure'],
         blocks: [
             { id: 'b1', type: 'hero', title: 'Your Safe Haven', subtitle: 'Complete protection for your home and belongings.', ctaText: 'View Plans', imageUrl: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=1200&q=80' },
             { id: 'b2', type: 'about', title: 'Why Choose Us', content: 'We specialize in comprehensive home coverage, including fire, theft, and natural disasters.', imageUrl: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80' },
@@ -66,8 +81,13 @@ export const MICROSITE_TEMPLATES: MicrositeTemplate[] = [
         name: 'Corporate Elite',
         description: 'Sophisticated B2B design for commercial lines and liability.',
         thumbnailUrl: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=500&auto=format&fit=crop&q=60',
+        previewImages: [
+            'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&auto=format&fit=crop&q=80',
+            'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80'
+        ],
         tier: 'pro',
         category: 'business',
+        tags: ['sleek', 'trustworthy', 'b2b'],
         blocks: [
             { id: 'b1', type: 'hero', title: 'Risk Management Solutions', subtitle: 'Tailored insurance for growing businesses.', ctaText: 'Consultation', imageUrl: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80' },
             { id: 'b2', type: 'team', title: 'Our Experts', members: [

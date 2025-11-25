@@ -305,7 +305,7 @@ export interface AuditLog {
     agencyId: string;
     timestamp: string;
     actorName: string;
-    action: 'user_invited' | 'user_removed' | 'role_changed';
+    action: 'user_invited' | 'user_removed' | 'role_changed' | 'policy_sync' | 'gap_analysis_run' | 'policy_review_approved';
     targetName: string;
     details: string;
 }
@@ -511,8 +511,10 @@ export interface MicrositeTemplate {
     name: string;
     description: string;
     thumbnailUrl: string;
+    previewImages: string[];
     tier: TemplateTier;
     category: TemplateCategory;
+    tags: string[];
     blocks: MicrositeBlock[];
     defaultConfig?: Partial<MicrositeConfig>;
 }
