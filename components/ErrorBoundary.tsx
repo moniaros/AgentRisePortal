@@ -10,13 +10,6 @@ interface State {
 }
 
 class ErrorBoundary extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-  }
-
-  // FIX: Using a class property initializer for state. This is a more modern and concise
-  // syntax that avoids potential issues with constructors (e.g., forgetting `super(props)`)
-  // which can lead to errors like "Property 'state' does not exist on type 'ErrorBoundary'".
   public state: State = {
     hasError: false,
   };
