@@ -33,6 +33,10 @@ import allFunnelRuns from '../data/allFunnelRuns.json';
 import firstNoticeOfLoss from '../data/firstNoticeOfLoss.json';
 import serviceRequests from '../data/serviceRequests.json';
 import portalAccounts from '../data/portalAccounts.json';
+import gbpReviewsData from '../data/gbp_reviews.json';
+import parsedPolicyData from '../data/parsedPolicy.json';
+import automationSettingsData from '../data/settings/automation.json';
+import automationSummaryData from '../data/analytics/automation_summary.json';
 
 // --- MOCK BACKEND REPOSITORY ---
 
@@ -253,15 +257,14 @@ export const fetchGbpData = async (locationName: string): Promise<{ summary: Gbp
         averageRating: 4.8,
         totalReviewCount: 134,
     };
-    // Dynamic import for larger datasets or code splitting is fine, as Vite handles this
-    const reviewsJson = await import('../data/gbp_reviews.json');
-    return { summary, reviews: reviewsJson.reviews as any };
+    // Using static import to avoid runtime fetch 404s
+    return { summary, reviews: gbpReviewsData.reviews as any };
 };
 
 export const fetchParsedPolicy = async (): Promise<DetailedPolicy> => {
     await delay();
-    const policy = await import('../data/parsedPolicy.json');
-    return policy as unknown as DetailedPolicy;
+    // Using static import
+    return parsedPolicyData as unknown as DetailedPolicy;
 };
 
 export const fetchAutomationSettings = async (): Promise<AutomationChannelSettings> => {
@@ -269,8 +272,8 @@ export const fetchAutomationSettings = async (): Promise<AutomationChannelSettin
     const stored = localStorage.getItem('agentos_settings_automation');
     if (stored) return JSON.parse(stored);
     
-    const defaults = await import('../data/settings/automation.json');
-    return defaults as unknown as AutomationChannelSettings;
+    // Using static import
+    return automationSettingsData as unknown as AutomationChannelSettings;
 };
 
 export const saveAutomationSettings = async (settings: AutomationChannelSettings): Promise<void> => {
@@ -280,8 +283,8 @@ export const saveAutomationSettings = async (settings: AutomationChannelSettings
 
 export const fetchAutomationAnalytics = async (): Promise<AutomationAnalytics> => {
     await delay();
-    const data = await import('../data/analytics/automation_summary.json');
-    return data as unknown as AutomationAnalytics;
+    // Using static import
+    return automationSummaryData as unknown as AutomationAnalytics;
 };
 
 // Dashboard specific subsets
