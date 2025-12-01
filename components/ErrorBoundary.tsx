@@ -1,9 +1,7 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 
 // FIX: Use React.PropsWithChildren to correctly type the 'children' prop.
-interface ErrorBoundaryProps extends React.PropsWithChildren {
-  // No other props are needed, but this ensures 'children' is available.
-}
+interface ErrorBoundaryProps extends React.PropsWithChildren {}
 
 interface ErrorBoundaryState {
   hasError: boolean;
@@ -11,25 +9,21 @@ interface ErrorBoundaryState {
 }
 
 class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  // FIX: Initialize state as a class property instead of in the constructor.
-  // This modern syntax resolves issues where TypeScript might not correctly recognize
-  // 'this.state' and 'this.props' when assigned in the constructor, especially with
-  // certain tsconfig settings like `useDefineForClassFields`. This fixes all errors
-  // related to accessing 'this.state' and 'this.props'.
+  // FIX: Initialize state as a class property for modern syntax and to avoid constructor issues.
   state: ErrorBoundaryState = {
     hasError: false,
     error: undefined,
   };
 
-  public static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
     return { hasError: true, error };
   }
 
-  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error("Uncaught error:", error, errorInfo);
   }
 
-  public render() {
+  render() {
     if (this.state.hasError) {
       return (
         <div className="flex flex-col justify-center items-center h-screen bg-red-100 text-red-700 p-4">
@@ -44,6 +38,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
       );
     }
 
+    // FIX: Accessing props on a class component instance is done via `this.props`.
     return this.props.children;
   }
 }
