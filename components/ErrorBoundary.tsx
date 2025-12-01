@@ -1,7 +1,8 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 
-interface ErrorBoundaryProps {
-  children?: ReactNode;
+// FIX: Use React.PropsWithChildren to correctly type the 'children' prop.
+interface ErrorBoundaryProps extends React.PropsWithChildren {
+  // No other props are needed, but this ensures 'children' is available.
 }
 
 interface ErrorBoundaryState {
@@ -10,12 +11,15 @@ interface ErrorBoundaryState {
 }
 
 class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  constructor(props: ErrorBoundaryProps) {
-    super(props);
-    this.state = {
-      hasError: false
-    };
-  }
+  // FIX: Initialize state as a class property instead of in the constructor.
+  // This modern syntax resolves issues where TypeScript might not correctly recognize
+  // 'this.state' and 'this.props' when assigned in the constructor, especially with
+  // certain tsconfig settings like `useDefineForClassFields`. This fixes all errors
+  // related to accessing 'this.state' and 'this.props'.
+  state: ErrorBoundaryState = {
+    hasError: false,
+    error: undefined,
+  };
 
   public static getDerivedStateFromError(error: Error): ErrorBoundaryState {
     return { hasError: true, error };
