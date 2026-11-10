@@ -26,7 +26,6 @@ const Settings: React.FC = () => {
     
     // General Settings State
     const [clientId, setClientId] = useState('');
-    const [apiKey, setApiKey] = useState('');
     const [timezone, setTimezone] = useState('Europe/Athens');
     const [dateFormat, setDateFormat] = useState('DD/MM/YYYY');
 
@@ -48,9 +47,9 @@ const Settings: React.FC = () => {
 
     useEffect(() => {
         const savedClientId = localStorage.getItem('google_client_id');
-        const savedApiKey = localStorage.getItem('gemini_api_key');
         if (savedClientId) setClientId(savedClientId);
-        if (savedApiKey) setApiKey(savedApiKey);
+        // Clean up any legacy client-stored key
+        localStorage.removeItem('gemini_api_key');
 
         const savedLocationTitle = localStorage.getItem('gbp_location_title');
         if (savedLocationTitle) {
@@ -76,7 +75,6 @@ const Settings: React.FC = () => {
 
     const handleSaveKeys = () => {
         localStorage.setItem('google_client_id', clientId);
-        localStorage.setItem('gemini_api_key', apiKey);
         addNotification(t('settings.setup.saveSuccess'), 'success');
     };
 
@@ -359,32 +357,37 @@ const Settings: React.FC = () => {
                 <h3 className="text-lg font-semibold mb-4">{t('settings.setup.title')}</h3>
                 <div className="grid grid-cols-1 gap-4">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('settings.setup.googleClientId')}</label>
-                        <input
-                            type="text"
-                            value={clientId}
-                            onChange={(e) => setClientId(e.target.value)}
-                            className="mt-1 w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
-                            placeholder={t('settings.setup.googleClientIdPlaceholder') as string}
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('settings.setup.geminiApiKey')}</label>
-                        <div className="flex gap-2">
+                        <label htmlFor="google-client-id" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('settings.setup.googleClientId')}</label>
+                        <div className="flex gap-2 mt-1">
                             <input
-                                type="password"
-                                value={apiKey}
-                                onChange={(e) => setApiKey(e.target.value)}
-                                className="mt-1 w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
-                                placeholder={t('settings.setup.geminiApiKeyPlaceholder') as string}
+                                id="google-client-id"
+                                type="text"
+                                value={clientId}
+                                onChange={(e) => setClientId(e.target.value)}
+                                className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
+                                placeholder={t('settings.setup.googleClientIdPlaceholder') as string}
                             />
                             <button
+                                type="button"
                                 onClick={handleSaveKeys}
-                                className="mt-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 shadow-sm whitespace-nowrap"
+                                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 shadow-sm whitespace-nowrap"
                             >
                                 {t('settings.setup.saveButton')}
                             </button>
                         </div>
+                    </div>
+                    <div className="pt-3 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between gap-4">
+                        <div>
+                            <p className="text-sm font-medium text-gray-900 dark:text-white">Server-Managed AI Underwriting & Studio Engine</p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">All multimodal policy parsing, gap analysis, and creative studio requests are authenticated server-side with Flex-Budget credit governance.</p>
+                        </div>
+                        <button
+                            type="button"
+                            onClick={() => navigate('/billing')}
+                            className="px-3 py-1.5 text-xs font-semibold text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-md hover:bg-blue-100 transition whitespace-nowrap"
+                        >
+                            Manage AI Credits
+                        </button>
                     </div>
                 </div>
             </div>
@@ -428,7 +431,11 @@ const Settings: React.FC = () => {
             </div>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{t('settings.audit.title')}</h3>
             <p className="text-gray-500 dark:text-gray-400 mt-2 max-w-sm mx-auto">{t('settings.audit.description')}</p>
-            <button className="mt-6 px-6 py-2 bg-white dark:bg-gray-700 border dark:border-gray-600 rounded-md shadow-sm hover:bg-gray-50 dark:hover:bg-gray-600 text-sm font-medium">
+            <button
+                type="button"
+                onClick={() => navigate('/user-management')}
+                className="mt-6 px-6 py-2 bg-white dark:bg-gray-700 border dark:border-gray-600 rounded-md shadow-sm hover:bg-gray-50 dark:hover:bg-gray-600 text-sm font-medium"
+            >
                 {t('settings.audit.viewFullLog')}
             </button>
         </div>

@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useCallback } from 'react';
 import { useOfflineSync } from './useOfflineSync';
 import { fetchServiceRequests } from '../services/api';
 import { ServiceRequest } from '../types';
@@ -12,12 +12,32 @@ export const useServiceRequestsData = () => {
         data: allServiceRequests,
         isLoading,
         error,
-    } = useOfflineSync<ServiceRequest[]>('service_requests_data', fetchServiceRequests, []);
+        updateData,
+    } = useOfflineSync<ServiceRequest[]>(
+        'agentos_db_service_requests',
+        fetchServiceRequests,
+        []
+    );
 
     const serviceRequests = useMemo(() => {
-        if (!agencyId) return [];
-        return allServiceRequests.filter(sr => sr.agencyId === agencyId);
+        if (!agencyId) return allServiceRequests;
+        return allServiceRequests.filter((sr) => sr.agencyId === agencyId);
     }, [allServiceRequests, agencyId]);
 
-    return { serviceRequests, isLoading, error };
+    const submitServiceRequest = useCallback(
+        (req: Omit<ServiceRequest, 'id' | 'createdAt'>): ServiceRequest => {
+            const created: ServiceRequest = {
+                ...req,
+                id: `sr_${Date.now()}`,
+                agencyId: req.agencyId || agencyId || 'agency_1',
+                createdAt: new Date().toISOString(),
+                status: req.status || 'open',
+            };
+            updateData([created, ...allServiceRequests]);
+            return created;
+        },
+        [agencyId, allServiceRequests, updateData]
+    );
+
+    return { serviceRequests, allServiceRequests, isLoading, error, submitServiceRequest };
 };

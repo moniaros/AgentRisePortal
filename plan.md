@@ -322,3 +322,81 @@ To elevate AgentRise / AgentOS from a capable AI-assisted portal into a **$1B+ c
 - **Server-Side AI Credit Ledger & Stripe Billing (`Billing.tsx` & `server.ts`)**: Enforce `monthlyBudgetCap` middleware on `/api/gemini/*`, real-time token accounting, automated top-ups, and Greek myDATA / EU VAT e-invoicing.
 - **Automated Carrier Commission & Sub-Agent Accounting (`ExecutiveDashboard` & `UserManagement`)**: Ingest monthly carrier bordereaux CSV/XML statements, auto-match against bound `PolicyACORD` premiums, flag unpaid/clawed-back commissions, and calculate sub-agent payout splits.
 - **Premium Financing & Embedded Insurance API**: Offer monthly installment financing ("Buy Now, Pay Monthly" on annual commercial/home policies) and expose white-label embeddable quote widgets that real-estate agencies, car dealerships, and mortgage brokers can drop onto their own sites, routing deals directly into the agent's `LeadsInbox`.
+
+
+---
+
+## 6. Unicorn Execution Log (10-Iteration Build & Verification Tracker)
+
+### Iteration 1/10 — COMPLETED: Security Hardening, HMAC Session Auth, Multi-Tenant Persistence & Server-Side Credit Ledger
+- **Server Security Kernel (`server/security.ts`)**: Implemented PBKDF2-SHA256 (100,000 iterations + timing-safe comparison) credential verification, HMAC-SHA256 signed session tokens (`Bearer`), iframe-compatible security headers (`X-Content-Type-Options: nosniff`, `Referrer-Policy`, `Permissions-Policy`), and sliding-window API rate limiting.
+- **Server-Side Flex-Budget Credit Gate (`server/creditLedger.ts` & `server.ts`)**: Enforced credit metering (`25`–`100` credits/op) and monthly overage cap (`402 Payment Required` hard stop at 100%, warning header at 80%) directly on all `/api/gemini/*` endpoints, with Greek **myDATA MARK** VAT-compliant invoice generation.
+- **Atomic Multi-Tenant Store & Hash-Chained Audit Log (`server/persistence.ts`)**: Added atomic `.tmp`-rename disk persistence (`.data/agentos_store.json`) and SHA-256 hash-chained (`prevHash -> entryHash`) tamper-evident audit logs (`/api/audit-logs`).
+- **Client Secret Elimination & Instant Session Bootstrap (`Settings.tsx`, `AuthContext.tsx`, `OnboardingContext.tsx`, `Login.tsx`)**: Removed legacy client-side API key input from `Settings.tsx`, wired `AuthContext` to `/api/auth/login`, eliminated `ProtectedRoute` onboarding flicker via synchronous state initialization, and added `?autostart=1` + 1-click Demo Role access.
+
+### Iteration 2/10 — COMPLETED: Unified Data Graph, Split-Store Elimination & Zero-Broken-Image Resilience
+- **Reactive Multi-Hook & Server Store Sync (`hooks/useOfflineSync.ts`)**: Fixed critical overwrite bug where route transitions reset user-created records back to static mocks; added canonical key aliasing, `CustomEvent('agentos:sync')` intra-tab instant reactivity, and `PUT /api/store/:collection` Express synchronization.
+- **Eliminated Silos 1, 2 & 4**:
+  - *Silo 1*: Unified `customers_data` / `agentos_db_customers` and `leads_data` / `agentos_db_leads` across `useCrmData.ts` and `services/api.ts`.
+  - *Silo 2*: Bridged `addLead` (including unauthenticated public `LeadCapturePage` submissions via explicit `campaign.agencyId`) to automatically emit `TransactionInquiry` records into `LeadsInbox` and `Dashboard` KPI counters.
+  - *Silo 4*: Wired `services/policyStorage.ts` so `savePolicyForCustomer` & `deletePolicyForCustomer` automatically project `PolicyACORD` updates into `Customer.policies`.
+- **Zero-Broken-Image Assets (`lib/avatars.ts`)**: Replaced external `via.placeholder.com` and `i.pravatar.cc` links in `services/api.ts` and `data/mockData.ts` with crisp deterministic SVG data-URI avatars and campaign banners.
+
+### Iteration 3/10 — COMPLETED: Production Event-Driven Automation Engine & Omnichannel Execution
+- **Multi-Entity Rule Evaluator (`lib/rule-engine.ts`)**: Added `AND`/`OR` combinators, `contains`/numeric operators, fields across `potential_value`, `lead_source`, and `days_to_renewal`, plus `renderTemplateContent()` dynamic `{{Lead.*}}` merge-tag interpolation.
+- **Live Event-Driven Rule Runner (`services/automationExecutor.ts`)**: Wired real-time `agentos:lead-created` and `agentos:lead-status-changed` listeners in `App.tsx` that automatically evaluate active agency rules, render templates, create SLA follow-up `Task`s, spawn `Opportunity__EXT` deals, and log live `AutomationEvent` records.
+- **Crash Fix & Natural-Language Rule Studio (`RuleBuilder.tsx`, `ConditionRow.tsx`, `ActionRow.tsx`)**: Fixed the missing `FormProvider` / `useFormContext` crash when adding conditions or actions, added `create_task` and `create_opportunity` actions, and introduced a plain-language AI Rule Builder bar.
+
+### Iteration 4/10 — COMPLETED: Multi-Carrier Comparative Rater, 1-Click Bind & Opportunity-to-Customer Promotion
+- **Actuarial Comparative Rater (`lib/comparativeRater.ts`)**: Built live comparative tariff engine across 6 major carriers (**Hellas Direct**, **Interamerican**, **Generali Hellas**, **Ethniki Asfalistiki**, **ERGO**, **Allianz Europe**) for Auto, Home (including automatic **ENFIA -20% Property Tax Discount** verification), Health, and Life lines, calculating gross/net premium, deductibles, coverages, agency commission, and value fit score.
+- **3-Tab Deal Cockpit & Silo 3 Elimination (`OpportunityDetailModal.tsx`, `usePipelineData.ts`, `OpportunityPipeline.tsx`, `PipelineColumn.tsx`)**:
+  - Wired previously disconnected `OpportunityDetailModal` into `OpportunityPipeline` and fixed `PipelineColumn` blocking drops into `'won'`/`'lost'`.
+  - Added **1-Click Bind & Issue Policy** (`IRIS`, `Viva Wallet`, `SEPA`, `Card`) that promotes `Prospect -> Customer` in Micro-CRM, issues an active `PolicyACORD` synced to `Customer.policies`, logs a `TimelineEvent`, marks the deal `'won'`, and records a `Conversion`.
+- **Verified Finding -> Kanban Bridge (`OpportunitiesHub.tsx`)**: Added **Send to Pipeline** 1-click conversion from AI-verified upsell/cross-sell findings directly onto the Kanban board, while replacing decorative `border-l-4` and `animate-ping` elements with clean SaaS surfaces and `tabular-nums`.
+
+### Iteration 5/10 — COMPLETED: Automated Renewal Radar (T-90/T-60/T-30), Household Risk Graph & EU IDD Coverage Audit Export
+- **Renewal & Household Risk Engine (`lib/renewalEngine.ts`)**:
+  - Built `computeRenewalRadar()` scanning customer portfolios and bucketing expiring contracts into `overdue`, `due30` (T-30), `due60` (T-60), and `due90` (T-90) retention windows with total at-risk GWP.
+  - Built `evaluateCustomerHouseholdProfile()` computing a 0–100 **Household Protection Index** across the 4 core pillars (`Auto`, `Home`, `Health`, `Life`) and auditing Home coverages for statutory **ENFIA -20% Property Tax Discount** compliance (`Fire + Earthquake + Flood`).
+- **Customer 360 Risk & Audit Dossier (`pages/CustomerProfile.tsx` & `components/gap-analysis/GapAnalysisResults.tsx`)**:
+  - Added live Household Protection Completeness panel, ENFIA -20% Catastrophe upgrade banner (catching missing Earthquake & Flood on `HOME-67890`), 1-click **Quote in Pipeline** action, **Open Client Wallet** link, and **Export Coverage Audit** HTML dossier download.
+  - Added **EU IDD E&O Client Declination Waiver** checkboxes and advisory export on `GapAnalysisResults.tsx`, while replacing `border-l-4` card borders with clean SaaS surfaces and `tabular-nums`.
+- **Dashboard Retention Command (`pages/Dashboard.tsx`)**: Added interactive T-90 Renewal & Retention Radar with bucket filters and 1-click **Re-Shop in Pipeline** deal creation.
+
+### Iteration 6/10 — COMPLETED: Client Self-Service Insurance Wallet & 24/7 AI FNOL Claims Concierge
+- **Digital Policyholder Wallet (`pages/CustomerMicrosite.tsx` & `App.tsx`)**: Replaced the 13-line placeholder stub with a full standalone & embedded **Client Insurance Wallet** mounted at `/wallet/:customerId` (public magic-link) and `/client-wallet` (advisor view):
+  - **Digital Policy Cards**: Displays active policies, renewals, coverage limits, and 1-click **Certificate / EU Green Card** downloads.
+  - **Coverage Upgrades & ENFIA -20% Self-Service**: Surfaces household gaps and ENFIA catastrophe eligibility, allowing clients to request quotes in 1 click (emitting both a `ServiceRequest` and a qualified `Lead`/`TransactionInquiry` into `LeadsInbox`).
+  - **24/7 AI FNOL Claims Concierge**: Interactive First Notice of Loss intake with live AI coverage/deductible triage (`generateGeminiContent` + deterministic fallback), writing real `FirstNoticeOfLoss` records (`agentos_db_ftnol`) and `Customer.timeline` claim events while immediately incrementing Dashboard `Portal Submissions`.
+
+### Iteration 7/10 — COMPLETED: Public Lead Capture Instant Quote Calculator, Microsite Form Wiring & Closed-Loop ROAS Attribution
+- **Interactive 6-Carrier Quote Magnet (`pages/LeadCapturePage.tsx`)**:
+  - Replaced external `i.pravatar.cc` social proof avatars with deterministic inline SVG data-URIs.
+  - Embedded a live **Instant 6-Carrier Estimator** (`getQuickQuoteRange`) with property rebuild capital / vehicle value sliders, sq.m. input, and Greek **ENFIA -20% Tax Discount** verification, passing `campaign.agencyId` and `potentialValue` into `addLead()` so public submissions flow directly into CRM, `LeadsInbox`, and `AutomationRule` execution.
+- **Microsite Live Lead Capture (`components/microsite/blocks/ContactFormPreview.tsx`)**: Replaced the non-functional `e.preventDefault()` form stub with live CRM + `LeadsInbox` lead creation and confirmation feedback.
+- **Closed-Loop Attribution & True ROAS (`pages/Analytics.tsx`)**: Joined `Campaign` ad spend with attributed CRM `Lead` pipeline values and `Conversion` bound GWP to compute true per-campaign ROAS alongside direct landing-funnel preview links.
+
+### Iteration 8/10 — COMPLETED: Carrier Commission Accounting, Sub-Agent Splits, EU IDD Compliance & Live Server Billing
+- **Carrier Bordereaux & Commission Engine (`lib/commissionEngine.ts` & `pages/ExecutiveDashboard.tsx`)**:
+  - Built `computeAgencyCommissions()` calculating Gross Written Premium (GWP), Net Premium, Gross Carrier Commissions by line of business, 60/40 Brokerage-to-Sub-Agent splits, settlement status (`Matched` vs `Pending Remittance`), and 1-click **Export Bordereaux CSV**.
+- **Server-Connected Billing & AADE myDATA Invoices (`pages/Billing.tsx`)**:
+  - Connected `Billing.tsx` directly to `/api/billing/usage`, `/api/billing/overage`, `/api/billing/plan`, and `/api/billing/simulate` with live `agentos:credits-updated` synchronization, interactive plan tier switching (`Starter`, `Pro Agency`, `Enterprise Network`), and downloadable **AADE myDATA MARK** VAT (24%) tax invoices.
+- **EU IDD License Governance & Iframe Safety (`components/users/UsersTable.tsx`)**: Added Bank of Greece / EU IDD license verification badges (`AcordLicense`) and replaced `window.alert`/`window.confirm` dialogs with clean inline confirmation controls.
+
+### Iteration 9/10 — COMPLETED: Global `Cmd+K` Omnibar Command Palette, Quick-Create Menu & SaaS Shell Polish
+- **Global `Cmd+K` Omnibar (`components/CommandPalette.tsx` & `components/Layout.tsx`)**: Added keyboard-navigable (`⌘K` / `Ctrl+K`, `↑↓`, `Enter`, `Esc`) search across CRM Clients, Pipeline Deals, Workspace Routes, Theme toggling, and EN/EL bilingual switching.
+- **SaaS Typography & Tabular Financials (`index.html`)**: Configured `Plus Jakarta Sans` + `JetBrains Mono` typography with global `.tabular-nums` alignment and removed unused external legacy scripts.
+- **Header & Sidebar Refinement (`components/Header.tsx` & `components/Sidebar.tsx`)**:
+  - Replaced the last external `i.pravatar.cc` URLs with inline SVG data-URI avatars and removed decorative green status dots.
+  - Added a **`+ New` Quick Create** menu, live **AI Credits** balance link synced via `agentos:credits-updated`, Dark/Light toggle, `Client Wallet & FNOL` navigation entry, and live `tabular-nums` count badges on `Leads Inbox` and `Tasks`.
+
+### Iteration 10/10 — COMPLETED: Automated Engine Unit Tests, Real-Browser Visual Audit, Greek i18n Fix & Mobile Drawer Perfection
+- **Deterministic `node:test` Suite (`tests/unicornEngines.test.ts`)**: Verified all 6 pure core engines (`server/security.ts`, `server/creditLedger.ts`, `lib/comparativeRater.ts`, `lib/rule-engine.ts`, `lib/renewalEngine.ts`, `lib/commissionEngine.ts`, and `lib/avatars.ts`) with 100% passing assertions.
+- **Headless Chromium E2E & Visual Critique (`playwright-cli`)**:
+  - Audited Desktop (`1440x900`) and Mobile (`390x844`) viewports across Dashboard, Sales Pipeline, Multi-Carrier Rater & 1-Click Policy Bind, Customer 360° Dossier, Client Self-Service Wallet & AI FNOL, Public Lead Capture Calculator, Executive Commission Bordereaux, Server-Metered Billing, and `Cmd+K` Omnibar.
+  - **Visual & Runtime Fixes Verified**:
+    1. *Zero Console Errors*: Moved Tailwind script load order before `tailwind.config` in `index.html`, eliminating startup `ReferenceError` and achieving `0` console errors across every route.
+    2. *Greek Localization Hierarchy Fix (`data/locales/el.json`)*: Fixed a malformed brace nesting in `el.json` where `executive`, `automationRules`, and `leadCapture` were trapped inside `support`, restoring full Greek translations across Executive Dashboard KPIs, Automation Studio, and Public Lead Funnels.
+    3. *Responsive Mobile Slide-Over Drawer (`Layout.tsx`, `Sidebar.tsx`)*: Auto-collapsed sidebar below `1024px` (`lg`) and converted mobile navigation into a clean slide-over drawer with backdrop overlay.
+    4. *Public Lead Capture & XML-Safe SVG Banners (`hooks/useCampaigns.ts`, `pages/LeadCapturePage.tsx`, `lib/avatars.ts`)*: Enabled unauthenticated public lookup on `/campaign/lead/:campaignId`, synced Home rebuild capital slider defaults (`€150,000`), and XML-escaped `&` entities in generated SVG campaign banners so zero broken images occur across the entire platform.
+

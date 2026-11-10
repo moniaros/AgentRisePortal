@@ -1,5 +1,6 @@
 
 import { User, Lead, Customer, AuditLog, AnalyticsData, ExecutiveData, NewsArticle, Testimonial, UserActivityEvent, UserSystemRole, PolicyType, LeadStatus, LicenseStatus, StoredAnalysis } from '../types';
+import { getAvatarDataUri } from '../lib/avatars';
 
 export const MOCK_USERS: User[] = [
     {
@@ -9,7 +10,7 @@ export const MOCK_USERS: User[] = [
             partyName: { firstName: 'John', lastName: 'Agent' },
             contactInfo: { email: 'moniaros@gmail.com', workPhone: '555-0101' },
             addressInfo: { fullAddress: 'Main Street Branch' },
-            profilePhotoUrl: 'https://i.pravatar.cc/150?u=a042581f4e29026704d',
+            profilePhotoUrl: getAvatarDataUri('John Agent', '#2563eb'),
             signature: ''
         },
         partyRole: {
@@ -32,7 +33,7 @@ export const MOCK_USERS: User[] = [
             partyName: { firstName: 'Admin', lastName: 'User' },
             contactInfo: { email: 'admin@agency1.com', workPhone: '555-0100' },
             addressInfo: { fullAddress: 'Main Street Branch' },
-            profilePhotoUrl: 'https://i.pravatar.cc/150?u=a042581f4e29026704e',
+            profilePhotoUrl: getAvatarDataUri('Admin User', '#0f766e'),
             signature: ''
         },
         partyRole: {
@@ -53,6 +54,12 @@ export const MOCK_LEADS: Lead[] = [
     { id: 'lead_2', agencyId: 'agency_1', firstName: 'Bob', lastName: 'Johnson', email: 'b.johnson@example.com', source: 'Website', status: LeadStatus.CONTACTED, createdAt: '2023-10-25T14:30:00Z', potentialValue: 800, policyType: PolicyType.HOME, score: 65 },
 ];
 
+const offsetDateIso = (daysOffset: number): string => {
+    const d = new Date();
+    d.setDate(d.getDate() + daysOffset);
+    return d.toISOString().split('T')[0];
+};
+
 export const MOCK_CUSTOMERS: Customer[] = [
     {
         id: 'cust_1',
@@ -69,8 +76,8 @@ export const MOCK_CUSTOMERS: Customer[] = [
                 type: PolicyType.AUTO,
                 policyNumber: 'CAR-12345',
                 premium: 350.50,
-                startDate: '2023-01-15',
-                endDate: '2024-01-14',
+                startDate: offsetDateIso(-347),
+                endDate: offsetDateIso(18),
                 isActive: true,
                 insurer: 'Generali',
                 coverages: [
@@ -85,8 +92,8 @@ export const MOCK_CUSTOMERS: Customer[] = [
                 type: PolicyType.HOME,
                 policyNumber: 'HOME-67890',
                 premium: 180.00,
-                startDate: '2023-08-01',
-                endDate: '2024-07-31',
+                startDate: offsetDateIso(-318),
+                endDate: offsetDateIso(47),
                 isActive: true,
                 insurer: 'Interamerican',
                 coverages: [
@@ -94,7 +101,7 @@ export const MOCK_CUSTOMERS: Customer[] = [
                     { type: 'Fire (Contents)', limit: '€30,000' },
                     { type: 'Theft', limit: '€10,000' }
                 ],
-                // Missing Earthquake coverage deliberately for Gap Analysis
+                // Missing Earthquake coverage deliberately for Gap Analysis & ENFIA -20% check
             }
         ],
         timeline: [],
@@ -120,7 +127,7 @@ export const MOCK_CUSTOMERS: Customer[] = [
                 policyNumber: 'LIFE-ABCDE',
                 premium: 1200.00,
                 startDate: '2021-06-01',
-                endDate: '2041-05-31',
+                endDate: offsetDateIso(78),
                 isActive: true,
                 insurer: 'MetLife',
                 coverages: [
@@ -132,8 +139,8 @@ export const MOCK_CUSTOMERS: Customer[] = [
                 type: PolicyType.HEALTH,
                 policyNumber: 'HEALTH-FGHIJ',
                 premium: 2500.75,
-                startDate: '2023-01-01',
-                endDate: '2023-12-31',
+                startDate: offsetDateIso(-371),
+                endDate: offsetDateIso(-6),
                 isActive: true,
                 insurer: 'NN Hellas',
                 coverages: [

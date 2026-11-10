@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, ReactNode, useMemo } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useMemo } from 'react';
 
 type Theme = 'light' | 'dark';
 
@@ -8,6 +8,14 @@ interface ThemeContextType {
 }
 
 export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+
+export const useTheme = (): ThemeContextType => {
+  const ctx = useContext(ThemeContext);
+  if (!ctx) {
+    return { theme: 'light', toggleTheme: () => {} };
+  }
+  return ctx;
+};
 
 export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [theme, setTheme] = useState<Theme>(() => {
@@ -19,8 +27,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     } catch (error) {
       console.error("Could not read theme from localStorage", error);
     }
-    // Default to dark mode
-    return 'dark';
+    return 'light';
   });
 
   useEffect(() => {

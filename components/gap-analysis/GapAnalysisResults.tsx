@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useLocalization } from '../../hooks/useLocalization';
 import { GapAnalysisResult } from '../../types';
@@ -9,33 +8,40 @@ interface GapAnalysisResultsProps {
 
 const RiskGauge: React.FC<{ score: number }> = ({ score }) => {
     const { t } = useLocalization();
-    
+
     const getColor = (s: number) => {
-        if (s < 30) return '#22c55e'; // Green
-        if (s < 70) return '#eab308'; // Yellow
-        return '#ef4444'; // Red
+        if (s < 30) return '#22c55e';
+        if (s < 70) return '#eab308';
+        return '#ef4444';
     };
 
     return (
         <div className="flex flex-col items-center">
-            <div className="relative w-48 h-24 overflow-hidden">
-                 <svg viewBox="0 0 100 50" className="absolute top-0 left-0 w-full h-full">
-                    <path d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke="#e5e7eb" strokeWidth="10" />
-                    <path 
-                        d="M 10 50 A 40 40 0 0 1 90 50" 
-                        fill="none" 
-                        stroke={getColor(score)} 
-                        strokeWidth="10" 
-                        strokeDasharray={`${(score / 100) * 126} 126`} 
-                        className="transition-all duration-1000 ease-out"
+            <div className="relative w-44 h-24 overflow-hidden">
+                <svg viewBox="0 0 100 50" className="absolute top-0 left-0 w-full h-full">
+                    <path
+                        d="M 10 50 A 40 40 0 0 1 90 50"
+                        fill="none"
+                        stroke="#e5e7eb"
+                        strokeWidth="10"
                     />
-                 </svg>
+                    <path
+                        d="M 10 50 A 40 40 0 0 1 90 50"
+                        fill="none"
+                        stroke={getColor(score)}
+                        strokeWidth="10"
+                        strokeDasharray={`${(score / 100) * 126} 126`}
+                        className="transition-all duration-700 ease-out"
+                    />
+                </svg>
             </div>
-            <div className="-mt-2 text-center">
-                <span className="text-4xl font-bold text-gray-900 dark:text-white">{score}</span>
-                <span className="text-sm text-gray-500 block">/ 100</span>
+            <div className="-mt-2 text-center tabular-nums">
+                <span className="text-3xl font-bold text-gray-900 dark:text-white">{score}</span>
+                <span className="text-xs text-gray-500 block">/ 100</span>
             </div>
-            <p className="mt-2 font-semibold text-gray-700 dark:text-gray-300">{t('gapAnalysis.riskScore')}</p>
+            <p className="mt-1.5 text-sm font-semibold text-gray-700 dark:text-gray-300">
+                {t('gapAnalysis.riskScore')}
+            </p>
             <p className="text-xs text-gray-500">{t('gapAnalysis.riskScoreSubtitle')}</p>
         </div>
     );
@@ -44,6 +50,7 @@ const RiskGauge: React.FC<{ score: number }> = ({ score }) => {
 const GapAnalysisResults: React.FC<GapAnalysisResultsProps> = ({ result }) => {
     const { t } = useLocalization();
     const [copiedScriptId, setCopiedScriptId] = useState<string | null>(null);
+    const [declinedItems, setDeclinedItems] = useState<Record<string, boolean>>({});
 
     const handleCopy = (text: string, id: string) => {
         navigator.clipboard.writeText(text);
@@ -51,233 +58,286 @@ const GapAnalysisResults: React.FC<GapAnalysisResultsProps> = ({ result }) => {
         setTimeout(() => setCopiedScriptId(null), 2000);
     };
 
-    const FindingCard: React.FC<{ 
+    const toggleDeclination = (key: string) => {
+        setDeclinedItems((prev) => ({ ...prev, [key]: !prev[key] }));
+    };
+
+    const handleExportProposal = () => {
+        const lines = [
+            'EU IDD INSURANCE COVERAGE ADVISORY & E&O SIGN-OFF RECORD',
+            `Generated: ${new Date().toISOString()}`,
+            `Risk Exposure Score: ${result.riskScore || 0}/100`,
+            '',
+            `Executive Summary: ${result.summary}`,
+            '',
+            '--- IDENTIFIED COVERAGE GAPS & CLIENT DECISIONS ---',
+            ...result.gaps.map((gap, idx) => {
+                const key = `gap-${idx}`;
+                const status = declinedItems[key]
+                    ? '[DECLINED BY CLIENT — E&O WAIVER LOGGED]'
+                    : '[RECOMMENDED FOR BINDING]';
+                return `${idx + 1}. ${gap.area} (${gap.priority || 'High'}) ${status}\n   Current: ${gap.current} -> Recommended: ${gap.recommended}\n   Estimated Premium: ${gap.costOfImplementation || 'Quote Pending'}`;
+            }),
+        ];
+        const blob = new Blob([lines.join('\n')], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `IDD-Gap-Advisory-${Date.now()}.txt`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    };
+
+    const FindingCard: React.FC<{
         type: 'gap' | 'upsell' | 'cross-sell';
         data: any;
         index: number;
     }> = ({ type, data, index }) => {
         const isGap = type === 'gap';
-        // Use requested color coding: Red (Critical), Orange (High), Blue (Medium)
-        const priorityColors: Record<string, string> = {
-            'Critical': 'bg-red-600 text-white border-red-700',
-            'High': 'bg-orange-500 text-white border-orange-600',
-            'Medium': 'bg-blue-500 text-white border-blue-600',
-            'Low': 'bg-gray-400 text-white border-gray-500',
-        };
+        const itemKey = `${type}-${index}`;
+        const isDeclined = Boolean(declinedItems[itemKey]);
 
-        // Define specific border colors based on priority if available, otherwise fallback to type-based
-        let borderColor = 'border-gray-200 dark:border-gray-700';
-        if (data.priority === 'Critical') borderColor = 'border-red-500';
-        else if (data.priority === 'High') borderColor = 'border-orange-500';
-        else if (data.priority === 'Medium') borderColor = 'border-blue-500';
-        else if (isGap) borderColor = 'border-red-400';
-        
-        const Icon = () => {
-            if (type === 'gap') return <span className="text-red-500 text-xl">⚠️</span>;
-            if (type === 'upsell') return <span className="text-blue-500 text-xl">💡</span>;
-            if (type === 'cross-sell') return <span className="text-purple-500 text-xl">➕</span>;
-            return null;
+        const priorityStyles: Record<string, string> = {
+            Critical: 'bg-red-50 text-red-700 border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-800',
+            High: 'bg-amber-50 text-amber-800 border-amber-200 dark:bg-amber-900/30 dark:text-amber-300 dark:border-amber-800',
+            Medium: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800',
+            Low: 'bg-gray-100 text-gray-700 border-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600',
         };
 
         return (
-            <div className={`rounded-xl shadow-sm hover:shadow-md transition-all duration-200 bg-white dark:bg-gray-800 overflow-hidden border-l-4 ${borderColor} mb-6`}>
-                
-                {/* Header */}
-                <div className="p-5 flex justify-between items-start border-b border-gray-100 dark:border-gray-700">
-                    <div className="flex items-start gap-3">
-                        <div className="mt-1"><Icon /></div>
-                        <div>
-                            <h4 className="font-bold text-lg text-gray-900 dark:text-white leading-tight">
-                                {data.area || data.product}
-                            </h4>
-                            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                                {data.reason || data.recommendation}
-                            </p>
-                        </div>
+            <div className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm overflow-hidden mb-5">
+                <div className="p-5 flex justify-between items-start gap-4 border-b border-gray-100 dark:border-gray-700">
+                    <div>
+                        <h4 className="font-semibold text-base text-gray-900 dark:text-white leading-snug">
+                            {data.area || data.product}
+                        </h4>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                            {data.reason || data.recommendation}
+                        </p>
                     </div>
                     {data.priority && (
-                        <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase shadow-sm border ${priorityColors[data.priority] || 'bg-gray-200 text-gray-800'}`}>
+                        <span
+                            className={`px-2.5 py-0.5 rounded-md text-xs font-semibold border whitespace-nowrap ${
+                                priorityStyles[data.priority] || priorityStyles.Low
+                            }`}
+                        >
                             {t(`gapAnalysis.priority.${data.priority}` as any)}
                         </span>
                     )}
                 </div>
 
-                {/* Financial Contrast Card - For Gaps */}
-                {isGap && (
-                    <div className="flex flex-col sm:flex-row border-b border-gray-100 dark:border-gray-700">
-                        {/* Cost of Risk (Left Side - Red Tint) */}
-                        <div className="flex-1 p-4 bg-red-50/50 dark:bg-red-900/10 text-center border-r border-dashed border-red-200 dark:border-red-800/30">
-                            <span className="block text-xs font-bold text-red-500 uppercase tracking-wider mb-1">
+                {isGap ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 border-b border-gray-100 dark:border-gray-700 tabular-nums">
+                        <div className="p-4 bg-red-50/40 dark:bg-red-900/10 border-b sm:border-b-0 sm:border-r border-gray-100 dark:border-gray-700">
+                            <span className="block text-xs font-semibold text-red-600 dark:text-red-400 uppercase tracking-wider mb-1">
                                 {t('gapAnalysis.financialImpact')}
                             </span>
-                            <span className="block text-lg font-extrabold text-red-700 dark:text-red-400">
-                                {data.financialImpact || 'N/A'}
+                            <span className="block text-base font-bold text-red-700 dark:text-red-300">
+                                {data.financialImpact || 'Uninsured Exposure'}
                             </span>
                             {data.costOfInaction && (
-                                <span className="block text-[10px] text-red-600/70 mt-1 leading-tight px-2 italic">
+                                <span className="block text-xs text-red-600/80 dark:text-red-400/80 mt-1">
                                     {data.costOfInaction}
                                 </span>
                             )}
                         </div>
-
-                        {/* Cost of Insurance (Right Side - Green Tint) */}
-                        <div className="flex-1 p-4 bg-green-50/50 dark:bg-green-900/10 text-center relative">
-                            <div className="absolute top-1/2 left-0 transform -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-full w-6 h-6 flex items-center justify-center text-[10px] font-bold text-gray-400 shadow-sm z-10">VS</div>
-                            
-                            <span className="block text-xs font-bold text-green-600 uppercase tracking-wider mb-1">
+                        <div className="p-4 bg-emerald-50/40 dark:bg-emerald-900/10">
+                            <span className="block text-xs font-semibold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider mb-1">
                                 {t('gapAnalysis.costOfImplementation')}
                             </span>
-                            <span className="block text-lg font-extrabold text-green-700 dark:text-green-400">
-                                {data.costOfImplementation || 'TBD'}
+                            <span className="block text-base font-bold text-emerald-800 dark:text-emerald-300">
+                                {data.costOfImplementation || 'Quote Ready'}
                             </span>
                         </div>
                     </div>
-                )}
-
-                {/* Value & Benefit Card - For Opportunities */}
-                {!isGap && (
-                    <div className="flex flex-col sm:flex-row border-b border-gray-100 dark:border-gray-700">
-                        <div className="flex-1 p-4 bg-blue-50/30 dark:bg-blue-900/10 text-center border-r border-dashed border-blue-200 dark:border-blue-800/30">
-                            <span className="block text-xs font-bold text-blue-600 uppercase tracking-wider mb-1">
+                ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 border-b border-gray-100 dark:border-gray-700 tabular-nums">
+                        <div className="p-4 bg-blue-50/30 dark:bg-blue-900/10 border-b sm:border-b-0 sm:border-r border-gray-100 dark:border-gray-700">
+                            <span className="block text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-1">
                                 {t('gapAnalysis.benefit')}
                             </span>
-                            <span className="block text-sm font-medium text-blue-800 dark:text-blue-300 px-2">
-                                {data.benefit || 'N/A'}
+                            <span className="block text-sm font-medium text-gray-800 dark:text-gray-200">
+                                {data.benefit || 'Portfolio Enhancement'}
                             </span>
                         </div>
-                        <div className="flex-1 p-4 bg-green-50/30 dark:bg-green-900/10 text-center">
-                            <span className="block text-xs font-bold text-green-600 uppercase tracking-wider mb-1">
+                        <div className="p-4 bg-emerald-50/30 dark:bg-emerald-900/10">
+                            <span className="block text-xs font-semibold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider mb-1">
                                 {t('gapAnalysis.estimatedValue')}
                             </span>
-                            <span className="block text-lg font-extrabold text-green-700 dark:text-green-400">
+                            <span className="block text-base font-bold text-emerald-800 dark:text-emerald-300">
                                 {data.costOfImplementation || 'N/A'}
                             </span>
                         </div>
                     </div>
                 )}
 
-                {/* Current vs Recommended (Only for Gaps) */}
                 {isGap && (
-                    <div className="p-4 bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-700 text-sm">
-                        <div className="flex items-center justify-between">
-                            <div className="w-[45%]">
-                                <span className="text-[10px] text-gray-500 uppercase font-bold block mb-1">{t('gapAnalysis.current')}</span>
-                                <span className="font-medium text-gray-700 dark:text-gray-300">{data.current}</span>
+                    <div className="p-4 bg-gray-50/70 dark:bg-gray-800/60 border-b border-gray-100 dark:border-gray-700 text-sm">
+                        <div className="flex items-center justify-between gap-3">
+                            <div className="w-[46%]">
+                                <span className="text-[11px] text-gray-500 uppercase font-semibold block mb-0.5">
+                                    {t('gapAnalysis.current')}
+                                </span>
+                                <span className="font-medium text-gray-800 dark:text-gray-200">
+                                    {data.current}
+                                </span>
                             </div>
-                            <div className="text-gray-300">→</div>
-                            <div className="w-[45%] text-right">
-                                <span className="text-[10px] text-green-600 uppercase font-bold block mb-1">{t('gapAnalysis.recommended')}</span>
-                                <span className="font-medium text-green-700 dark:text-green-400">{data.recommended}</span>
+                            <span className="text-gray-400">→</span>
+                            <div className="w-[46%] text-right">
+                                <span className="text-[11px] text-emerald-600 uppercase font-semibold block mb-0.5">
+                                    {t('gapAnalysis.recommended')}
+                                </span>
+                                <span className="font-medium text-emerald-700 dark:text-emerald-400">
+                                    {data.recommended}
+                                </span>
                             </div>
                         </div>
                     </div>
                 )}
 
-                {/* Prominent Sales Script */}
                 {data.salesScript && (
-                    <div className="p-5 bg-slate-50 dark:bg-slate-900/30">
-                        <div className="flex justify-between items-center mb-3">
-                            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
-                                💬 {t('gapAnalysis.salesScript')}
+                    <div className="p-4 bg-slate-50/80 dark:bg-slate-900/30 border-b border-gray-100 dark:border-gray-700">
+                        <div className="flex justify-between items-center mb-2">
+                            <span className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+                                {t('gapAnalysis.salesScript')}
                             </span>
-                            <button 
-                                onClick={() => handleCopy(data.salesScript, `${type}-${index}`)}
-                                className={`flex items-center gap-2 px-4 py-1.5 text-xs font-bold rounded-full shadow-sm transition-all transform active:scale-95 ${
-                                    copiedScriptId === `${type}-${index}` 
-                                    ? 'bg-green-500 text-white' 
-                                    : 'bg-blue-600 hover:bg-blue-700 text-white'
+                            <button
+                                onClick={() => handleCopy(data.salesScript, itemKey)}
+                                className={`px-3 py-1 text-xs font-semibold rounded-md transition-colors ${
+                                    copiedScriptId === itemKey
+                                        ? 'bg-emerald-600 text-white'
+                                        : 'bg-blue-600 hover:bg-blue-700 text-white'
                                 }`}
                             >
-                                {copiedScriptId === `${type}-${index}` ? (
-                                    <>
-                                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                                        {t('gapAnalysis.scriptCopied')}
-                                    </>
-                                ) : (
-                                    <>
-                                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>
-                                        {t('gapAnalysis.copyScript')}
-                                    </>
-                                )}
+                                {copiedScriptId === itemKey
+                                    ? t('gapAnalysis.scriptCopied')
+                                    : t('gapAnalysis.copyScript')}
                             </button>
                         </div>
-                        <div className="relative">
-                            <div className="p-4 bg-white dark:bg-gray-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm italic text-gray-700 dark:text-gray-300 font-serif leading-relaxed shadow-inner">
-                                "{data.salesScript}"
-                            </div>
+                        <div className="p-3 bg-white dark:bg-gray-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                            "{data.salesScript}"
                         </div>
                     </div>
                 )}
+
+                {/* E&O Client Declination Waiver Toggle */}
+                <div className="px-4 py-3 bg-white dark:bg-gray-800 flex items-center justify-between text-xs">
+                    <label className="flex items-center gap-2 text-gray-600 dark:text-gray-300 cursor-pointer select-none">
+                        <input
+                            type="checkbox"
+                            checked={isDeclined}
+                            onChange={() => toggleDeclination(itemKey)}
+                            className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        />
+                        <span>
+                            Log E&amp;O Client Declination Waiver (EU IDD Compliance Record)
+                        </span>
+                    </label>
+                    {isDeclined && (
+                        <span className="font-semibold text-amber-700 dark:text-amber-400">
+                            Waiver Recorded
+                        </span>
+                    )}
+                </div>
             </div>
         );
     };
 
     return (
         <div className="space-y-8">
-            {/* Executive Summary Section */}
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border dark:border-gray-700 flex flex-col md:flex-row items-center gap-8">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 flex flex-col md:flex-row items-center gap-8">
                 <div className="flex-shrink-0">
                     <RiskGauge score={result.riskScore || 0} />
                 </div>
-                <div className="flex-grow">
-                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Executive Summary</h3>
-                    <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
+                <div className="flex-grow space-y-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                            Executive Underwriting Summary
+                        </h3>
+                        <button
+                            onClick={handleExportProposal}
+                            className="px-3.5 py-1.5 text-xs font-semibold bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-lg hover:opacity-90 transition-opacity"
+                        >
+                            Export Advisory &amp; E&amp;O Sign-Off
+                        </button>
+                    </div>
+                    <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
                         {result.summary}
                     </p>
                 </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {/* Left Col: Gaps */}
                 <div>
-                    <div className="flex items-center gap-2 mb-4 pb-2 border-b-2 border-red-100 dark:border-red-900">
-                        <span className="text-2xl">⚠️</span>
-                        <h3 className="text-xl font-bold text-gray-800 dark:text-white">
+                    <div className="flex items-center justify-between mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">
+                        <h3 className="text-lg font-bold text-gray-900 dark:text-white">
                             {t('gapAnalysis.coverageGaps')}
                         </h3>
+                        <span className="text-xs font-medium text-gray-500 tabular-nums">
+                            {result.gaps.length} findings
+                        </span>
                     </div>
                     {result.gaps.length > 0 ? (
-                        result.gaps.map((gap, index) => <FindingCard key={index} type="gap" data={gap} index={index} />)
+                        result.gaps.map((gap, index) => (
+                            <FindingCard key={index} type="gap" data={gap} index={index} />
+                        ))
                     ) : (
                         <div className="p-8 text-center bg-gray-50 dark:bg-gray-800 rounded-lg border border-dashed border-gray-300 dark:border-gray-700">
-                            <p className="text-gray-500">No critical gaps detected.</p>
+                            <p className="text-sm text-gray-500">No critical gaps detected.</p>
                         </div>
                     )}
                 </div>
 
-                {/* Right Col: Opportunities (Split) */}
                 <div className="space-y-8">
-                    {/* Upsells */}
                     <div>
-                        <div className="flex items-center gap-2 mb-4 pb-2 border-b-2 border-blue-100 dark:border-blue-900">
-                            <span className="text-2xl">💡</span>
-                            <h3 className="text-xl font-bold text-gray-800 dark:text-white">
+                        <div className="flex items-center justify-between mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">
+                            <h3 className="text-lg font-bold text-gray-900 dark:text-white">
                                 {t('gapAnalysis.upsellTitle')}
                             </h3>
+                            <span className="text-xs font-medium text-gray-500 tabular-nums">
+                                {result.upsell_opportunities.length} options
+                            </span>
                         </div>
                         {result.upsell_opportunities.length > 0 ? (
                             result.upsell_opportunities.map((opp, index) => (
-                                <FindingCard key={`up-${index}`} type="upsell" data={opp} index={index} />
+                                <FindingCard
+                                    key={`up-${index}`}
+                                    type="upsell"
+                                    data={opp}
+                                    index={index}
+                                />
                             ))
                         ) : (
-                            <p className="text-gray-500 italic text-sm pl-4">No immediate policy improvements found.</p>
+                            <p className="text-gray-500 text-sm">
+                                No immediate policy improvements found.
+                            </p>
                         )}
                     </div>
 
-                    {/* Cross-sells */}
                     <div>
-                        <div className="flex items-center gap-2 mb-4 pb-2 border-b-2 border-purple-100 dark:border-purple-900">
-                            <span className="text-2xl">➕</span>
-                            <h3 className="text-xl font-bold text-gray-800 dark:text-white">
+                        <div className="flex items-center justify-between mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">
+                            <h3 className="text-lg font-bold text-gray-900 dark:text-white">
                                 {t('gapAnalysis.crossSellTitle')}
                             </h3>
+                            <span className="text-xs font-medium text-gray-500 tabular-nums">
+                                {result.cross_sell_opportunities.length} options
+                            </span>
                         </div>
                         {result.cross_sell_opportunities.length > 0 ? (
                             result.cross_sell_opportunities.map((opp, index) => (
-                                <FindingCard key={`cross-${index}`} type="cross-sell" data={opp} index={index} />
+                                <FindingCard
+                                    key={`cross-${index}`}
+                                    type="cross-sell"
+                                    data={opp}
+                                    index={index}
+                                />
                             ))
                         ) : (
-                            <p className="text-gray-500 italic text-sm pl-4">No cross-sell opportunities identified.</p>
+                            <p className="text-gray-500 text-sm">
+                                No cross-sell opportunities identified.
+                            </p>
                         )}
                     </div>
                 </div>

@@ -528,9 +528,27 @@ export interface MicrositeTemplate {
 
 // Automation Rules
 export type RuleCategory = 'lead_conversion' | 'communication_automation';
-export type ConditionField = 'lead_status' | 'lead_score' | 'policy_interest';
-export type ConditionOperator = 'is' | 'is_not' | 'equals' | 'greater_than' | 'less_than';
-export type ActionType = 'send_email' | 'send_sms' | 'send_viber' | 'send_whatsapp';
+export type ConditionField =
+    | 'lead_status'
+    | 'lead_score'
+    | 'policy_interest'
+    | 'potential_value'
+    | 'lead_source'
+    | 'days_to_renewal';
+export type ConditionOperator =
+    | 'is'
+    | 'is_not'
+    | 'equals'
+    | 'greater_than'
+    | 'less_than'
+    | 'contains';
+export type ActionType =
+    | 'send_email'
+    | 'send_sms'
+    | 'send_viber'
+    | 'send_whatsapp'
+    | 'create_task'
+    | 'create_opportunity';
 
 export interface RuleCondition {
     id: string;
@@ -543,6 +561,7 @@ export interface RuleAction {
     id: string;
     type: ActionType;
     templateId: string;
+    taskTitle?: string;
 }
 
 export interface AutomationRule {
@@ -551,7 +570,8 @@ export interface AutomationRule {
     name: string;
     description: string;
     category: RuleCategory;
-    triggerType: 'on_lead_creation' | 'on_status_change';
+    triggerType: 'on_lead_creation' | 'on_status_change' | 'on_renewal_approaching';
+    logicalOperator?: 'AND' | 'OR';
     conditions: RuleCondition[];
     actions: RuleAction[];
     isEnabled: boolean;
@@ -598,8 +618,30 @@ export interface SimulationResult {
     conditionResults: ConditionResult[];
 }
 // Other Dashboard Data
-export interface FirstNoticeOfLoss { id: string; agencyId: string; createdAt: string; }
-export interface ServiceRequest { id: string; agencyId: string; createdAt: string; }
+export interface FirstNoticeOfLoss {
+    id: string;
+    agencyId: string;
+    createdAt: string;
+    customerId?: string;
+    customerName?: string;
+    policyNumber?: string;
+    incidentDate?: string;
+    location?: string;
+    severity?: 'minor' | 'moderate' | 'severe';
+    description?: string;
+    aiTriageSummary?: string;
+    status?: 'submitted' | 'in_review' | 'dispatched' | 'settled';
+}
+export interface ServiceRequest {
+    id: string;
+    agencyId: string;
+    createdAt: string;
+    customerId?: string;
+    customerName?: string;
+    requestType?: 'coverage_upgrade' | 'address_change' | 'green_card' | 'general';
+    details?: string;
+    status?: 'open' | 'completed';
+}
 export interface PerfSample { id: string; date: string; agencyId: string; spend: number; conversions: { lead: number } }
 export interface PortalAccount__EXT { id: string; agencyId: string; lastLoginAt: string; }
 

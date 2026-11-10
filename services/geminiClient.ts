@@ -19,11 +19,30 @@ export interface GenerateImageResponse {
 }
 
 async function postJson<T>(url: string, body: unknown): Promise<T> {
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+  if (typeof window !== 'undefined') {
+    const token = sessionStorage.getItem('agentos_token');
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+  }
+
   const response = await fetch(url, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers,
     body: JSON.stringify(body),
   });
+
+  if (typeof window !== 'undefined' && response.headers.get('X-AgentOS-Credits-Used')) {
+    window.dispatchEvent(
+      new CustomEvent('agentos:credits-updated', {
+        detail: {
+          used: Number(response.headers.get('X-AgentOS-Credits-Used')),
+          warningLevel: response.headers.get('X-AgentOS-Warning-Level') || 'none',
+        },
+      })
+    );
+  }
 
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {

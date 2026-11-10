@@ -7,8 +7,10 @@ import { useCrmData } from '../hooks/useCrmData';
 import { StoredFinding, Customer, Language } from '../types';
 import { useAuth } from '../hooks/useAuth';
 import SkeletonLoader from '../components/ui/SkeletonLoader';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { generateGeminiContent } from '../services/geminiClient';
+import { usePipelineData } from '../hooks/usePipelineData';
+import { useNotification } from '../hooks/useNotification';
 
 // --- Types ---
 interface EnrichedOpportunity extends StoredFinding {
@@ -154,71 +156,76 @@ const PitchGeneratorModal: React.FC<{
     );
 };
 
-const OpportunityCard: React.FC<{ item: EnrichedOpportunity, onPitch: (item: EnrichedOpportunity) => void }> = ({ item, onPitch }) => {
+const OpportunityCard: React.FC<{
+    item: EnrichedOpportunity;
+    onPitch: (item: EnrichedOpportunity) => void;
+    onCreateDeal: (item: EnrichedOpportunity) => void;
+}> = ({ item, onPitch, onCreateDeal }) => {
     const { t } = useLocalization();
-    
-    const isHot = item.estimatedValue > 500;
-    const typeColor = item.type === 'upsell' ? 'border-blue-500' : 'border-purple-500';
-    const bgBadge = item.type === 'upsell' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800';
 
     const emailSubject = `Important: ${item.title}`;
     const emailBody = `Hi ${item.customer?.firstName},\n\nI was reviewing your current policies and identified a potential opportunity that might benefit you: ${item.title}.\n\n${item.description}\n\nWould you be open to a quick chat about this?\n\nBest,`;
 
     return (
-        <div className={`bg-white dark:bg-gray-800 rounded-xl shadow-sm border-l-4 ${typeColor} p-5 hover:shadow-md transition-all duration-200 relative group`}>
-            {isHot && (
-                <span className="absolute top-4 right-4 flex h-3 w-3">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
-                </span>
-            )}
-
-            <div className="flex justify-between items-start mb-2">
-                <span className={`text-[10px] font-bold uppercase px-2 py-1 rounded ${bgBadge}`}>
-                    {item.type}
-                </span>
-                <span className="text-sm font-bold text-gray-900 dark:text-white">
-                    €{item.estimatedValue}/yr
-                </span>
-            </div>
-
-            <h3 className="font-bold text-gray-900 dark:text-white mb-1">{item.title}</h3>
-            
-            <div className="flex items-center gap-2 mb-3">
-                <div className="h-6 w-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold text-gray-600">
-                    {item.customer?.firstName.charAt(0)}
+        <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-5 hover:border-blue-400 dark:hover:border-blue-600 transition-colors flex flex-col justify-between">
+            <div>
+                <div className="flex justify-between items-center mb-2 text-xs text-slate-500 dark:text-slate-400">
+                    <span className="font-semibold capitalize">{item.type}</span>
+                    <span className="font-bold text-slate-900 dark:text-white tabular-nums">
+                        €{item.estimatedValue}/yr
+                    </span>
                 </div>
-                <Link to={`/customer/${item.customerId}`} className="text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:underline">
-                    {item.customer?.firstName} {item.customer?.lastName}
-                </Link>
+
+                <h3 className="font-bold text-slate-900 dark:text-white mb-1.5">{item.title}</h3>
+
+                <div className="flex items-center gap-2 mb-3 text-xs text-slate-600 dark:text-slate-300">
+                    <Link
+                        to={`/customer/${item.customerId}`}
+                        className="font-medium hover:text-blue-600 hover:underline"
+                    >
+                        {item.customer?.firstName} {item.customer?.lastName}
+                    </Link>
+                    {item.priority && (
+                        <>
+                            <span aria-hidden="true">·</span>
+                            <span>{item.priority} Priority</span>
+                        </>
+                    )}
+                </div>
+
+                <p className="text-xs text-slate-500 dark:text-slate-400 mb-4 line-clamp-2">
+                    {item.description}
+                </p>
             </div>
 
-            <p className="text-xs text-gray-500 dark:text-gray-400 mb-4 line-clamp-2">
-                {item.description}
-            </p>
-
-            <div className="grid grid-cols-4 gap-2 pt-3 border-t dark:border-gray-700">
-                <button 
-                    onClick={() => onPitch(item)}
-                    className="col-span-2 flex items-center justify-center gap-2 py-2 px-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-xs font-bold rounded-md hover:opacity-90 transition"
-                >
-                    <span>✨</span> {t('pipeline.opportunitiesHub.aiPitch')}
-                </button>
-                
-                <a 
-                    href={`tel:${item.customer?.phone}`}
-                    className="flex items-center justify-center py-2 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-md hover:bg-green-100 hover:text-green-700 transition"
-                    title="Call"
-                >
-                    📞
-                </a>
-                <a 
-                    href={`mailto:${item.customer?.email}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`}
-                    className="flex items-center justify-center py-2 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-md hover:bg-blue-100 hover:text-blue-700 transition"
-                    title="Email"
-                >
-                    ✉️
-                </a>
+            <div className="space-y-2 pt-3 border-t border-slate-100 dark:border-slate-800">
+                <div className="grid grid-cols-2 gap-2">
+                    <button
+                        type="button"
+                        onClick={() => onPitch(item)}
+                        className="py-2 px-3 bg-slate-900 dark:bg-slate-800 text-white text-xs font-semibold rounded-lg hover:opacity-90 transition whitespace-nowrap"
+                    >
+                        {t('pipeline.opportunitiesHub.aiPitch')}
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => onCreateDeal(item)}
+                        className="py-2 px-3 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg transition whitespace-nowrap"
+                    >
+                        Send to Pipeline
+                    </button>
+                </div>
+                <div className="flex justify-between text-xs text-slate-500 pt-1">
+                    <a href={`tel:${item.customer?.phone || ''}`} className="hover:text-slate-900 dark:hover:text-white">
+                        Call Client
+                    </a>
+                    <a
+                        href={`mailto:${item.customer?.email || ''}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`}
+                        className="hover:text-slate-900 dark:hover:text-white"
+                    >
+                        Send Email
+                    </a>
+                </div>
             </div>
         </div>
     );
@@ -229,6 +236,9 @@ const OpportunitiesHub: React.FC = () => {
     const { currentUser } = useAuth();
     const { customers } = useCrmData();
     const { isLoading } = useAllVerifiedOpportunities();
+    const { createOpportunityFromFinding } = usePipelineData();
+    const { addNotification } = useNotification();
+    const navigate = useNavigate();
 
     const [pitchModalOpen, setPitchModalOpen] = useState(false);
     const [selectedOpp, setSelectedOpp] = useState<EnrichedOpportunity | null>(null);
@@ -237,7 +247,7 @@ const OpportunitiesHub: React.FC = () => {
         if (!currentUser?.agencyId) return { opportunities: [], totalPipelineValue: 0 };
 
         const allFindings = getStoredFindings(currentUser.agencyId);
-        
+
         const enriched: EnrichedOpportunity[] = allFindings
             .filter(f => f.status === 'verified' && (f.type === 'upsell' || f.type === 'cross-sell'))
             .map(f => {
@@ -245,19 +255,25 @@ const OpportunitiesHub: React.FC = () => {
                 return {
                     ...f,
                     customer,
-                    estimatedValue: estimateValue(f)
+                    estimatedValue: f.estimatedValue || estimateValue(f)
                 };
             })
-            .sort((a, b) => b.estimatedValue - a.estimatedValue); // Sort by Value
+            .sort((a, b) => b.estimatedValue - a.estimatedValue);
 
         const totalValue = enriched.reduce((sum, item) => sum + item.estimatedValue, 0);
 
         return { opportunities: enriched, totalPipelineValue: totalValue };
     }, [currentUser, customers]);
-    
+
     const handlePitch = (opp: EnrichedOpportunity) => {
         setSelectedOpp(opp);
         setPitchModalOpen(true);
+    };
+
+    const handleCreateDeal = (opp: EnrichedOpportunity) => {
+        createOpportunityFromFinding(opp, opp.customer);
+        addNotification(`Created Pipeline Proposal for ${opp.title}`, 'success');
+        navigate('/pipeline/board');
     };
 
     if (isLoading) {
@@ -307,7 +323,8 @@ const OpportunitiesHub: React.FC = () => {
                         <OpportunityCard 
                             key={opp.id} 
                             item={opp} 
-                            onPitch={handlePitch} 
+                            onPitch={handlePitch}
+                            onCreateDeal={handleCreateDeal}
                         />
                     ))}
                 </div>

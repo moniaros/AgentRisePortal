@@ -33,6 +33,7 @@ import AutomationEventLog from './pages/AutomationEventLog';
 import Support from './pages/Support';
 import Sitemap from './pages/Sitemap';
 import LeadCapturePage from './pages/LeadCapturePage';
+import CustomerMicrosite from './pages/CustomerMicrosite';
 import ExecutiveDashboard from './pages/ExecutiveDashboard';
 import LeadsInbox from './pages/LeadsInbox';
 import OpportunityPipeline from './pages/OpportunityPipeline';
@@ -52,6 +53,9 @@ import GTMProvider from './components/GTMProvider';
 import RouteAnalyticsTracker from './components/RouteAnalyticsTracker';
 import { useOnboardingStatus } from './hooks/useOnboardingStatus';
 import { OnboardingProvider } from './context/OnboardingContext';
+import { registerGlobalAutomationListeners } from './services/automationExecutor';
+
+registerGlobalAutomationListeners();
 
 // A wrapper to handle protected routes and onboarding redirection
 const ProtectedRoute: React.FC<{ children: React.ReactElement }> = ({ children }) => {
@@ -81,6 +85,7 @@ const AppRoutes: React.FC = () => {
         <Route path="/logout" element={<Logout />} />
         <Route path="/sitemap" element={<Sitemap />} />
         <Route path="/campaign/lead/:campaignId" element={<LeadCapturePage />} />
+        <Route path="/wallet/:customerId" element={<CustomerMicrosite />} />
         
         {/* FIX: This route should only be available if the user is logged in AND hasn't skipped onboarding. */}
         {!isSkipped && currentUser && (
@@ -106,6 +111,7 @@ const AppRoutes: React.FC = () => {
 
                 <Route path="/micro-crm" element={<MicroCRM />} />
                 <Route path="/customer/:customerId" element={<CustomerProfile />} />
+                <Route path="/client-wallet" element={<CustomerMicrosite />} />
                 <Route path="/gap-analysis" element={<GapAnalysis />} />
                 <Route path="/billing" element={<Billing />} />
                 <Route path="/profile" element={<Profile />} />

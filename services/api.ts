@@ -15,6 +15,8 @@ import {
     TransactionQuoteRequest, Prospect, Task, Customer, MicrositeTemplate 
 } from '../types';
 import { generateId, delay } from './utils';
+import { broadcastStoreUpdate } from '../hooks/useOfflineSync';
+import { getCampaignBannerDataUri } from '../lib/avatars';
 
 // Static Data Imports
 import allLeads from '../data/allLeads.json';
@@ -71,7 +73,7 @@ class MockRepository<T extends { id: string }> {
     }
 
     private saveData(data: T[]) {
-        localStorage.setItem(this.storageKey, JSON.stringify(data));
+        broadcastStoreUpdate(this.storageKey, data);
     }
 
     // --- CRUD Operations ---
@@ -141,13 +143,20 @@ export const campaignService = new MockRepository<Campaign>('campaigns', [
         budget: 500,
         startDate: '2024-07-01',
         endDate: '2024-07-31',
-        creative: { headline: 'Save Big on Car Insurance This Summer!', body: 'Get a free quote today and see how much you can save.', image: 'https://via.placeholder.com/1200x628.png?text=Summer+Car+Insurance' },
+        creative: { headline: 'Save Big on Car Insurance This Summer!', body: 'Get a free quote today and see how much you can save.', image: getCampaignBannerDataUri('auto') },
         status: 'active',
         agencyId: 'agency_1',
+        leadCaptureForm: {
+            fields: [
+                { name: 'name', type: 'text', required: true },
+                { name: 'email', type: 'email', required: true },
+                { name: 'phone', type: 'tel', required: true },
+            ]
+        }
     },
     {
         id: 'camp_2',
-        name: 'Προσφορά Ασφάλειας Κατοικίας',
+        name: 'Προσφορά Ασφάλειας Κατοικίας & ΕΝΦΙΑ -20%',
         objective: 'brand_awareness' as any,
         network: 'instagram',
         language: 'el' as any,
@@ -155,9 +164,16 @@ export const campaignService = new MockRepository<Campaign>('campaigns', [
         budget: 750,
         startDate: '2024-08-01',
         endDate: '2024-08-31',
-        creative: { headline: 'Προστατέψτε το Σπίτι σας!', body: 'Ασφάλεια κατοικίας με κορυφαίες καλύψεις. Ζητήστε προσφορά.', image: 'https://via.placeholder.com/1080x1080.png?text=Home+Insurance' },
+        creative: { headline: 'Προστατέψτε το Σπίτι σας & Κερδίστε -20% στον ΕΝΦΙΑ!', body: 'Πλήρης κάλυψη σεισμού, πυρκαγιάς & πλημμύρας με άμεση τιμολόγηση.', image: getCampaignBannerDataUri('home') },
         status: 'active',
         agencyId: 'agency_1',
+        leadCaptureForm: {
+            fields: [
+                { name: 'name', type: 'text', required: true },
+                { name: 'email', type: 'email', required: true },
+                { name: 'phone', type: 'tel', required: true },
+            ]
+        }
     },
     {
         id: 'camp_3',

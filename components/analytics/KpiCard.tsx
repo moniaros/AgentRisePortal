@@ -71,13 +71,13 @@ const KpiCard: React.FC<KpiCardProps> = ({ title, value, subtitle, variant = 'de
   const style = variantStyles[variant];
 
   return (
-    <div className={`${style.bg} rounded-xl border ${style.border} p-5 shadow-sm hover:shadow-md transition-shadow duration-200 flex items-start justify-between`}>
-        <div>
-            <h3 className={`text-xs font-bold uppercase tracking-wider mb-1 ${style.titleColor}`}>{title}</h3>
-            <p className={`text-2xl font-bold tracking-tight ${style.valueColor}`}>{value}</p>
-            {subtitle && <p className={`text-xs font-medium mt-2 ${style.subColor}`}>{subtitle}</p>}
+    <div className={`${style.bg} rounded-xl border ${style.border} p-5 shadow-sm hover:shadow-md transition-shadow duration-200 flex items-start justify-between gap-3`}>
+        <div className="min-w-0 flex-1">
+            <h3 className={`text-xs font-bold uppercase tracking-wider mb-1 break-words ${style.titleColor}`}>{title}</h3>
+            <p className={`text-2xl font-bold tracking-tight tabular-nums ${style.valueColor}`}>{value}</p>
+            {subtitle && <p className={`text-xs font-medium mt-2 break-words ${style.subColor}`}>{subtitle}</p>}
         </div>
-        <div className={`flex items-center justify-center w-12 h-12 rounded-lg ${style.iconBg} ${style.iconColor} flex-shrink-0`}>
+        <div className={`flex items-center justify-center w-10 h-10 rounded-lg ${style.iconBg} ${style.iconColor} flex-shrink-0`}>
             {style.icon}
         </div>
     </div>
