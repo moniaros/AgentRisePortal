@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { GbpReview, GbpStarRating } from '../../types';
 import { useLocalization } from '../../hooks/useLocalization';
 import StarRating from '../ui/StarRating';
-import { GoogleGenAI } from '@google/genai';
+import { generateGeminiContent } from '../../services/geminiClient';
 
 interface ReviewCardProps {
     review: GbpReview;
@@ -37,12 +37,6 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, onReplyPosted }) => {
         setAiError(null);
         setPostError(null);
 
-        if (!process.env.API_KEY) {
-            setAiError(t('dashboard.errors.noApiKey') as string);
-            setIsLoading(false);
-            return;
-        }
-
         try {
             const tone = "You are a helpful and friendly manager for an insurance agency. Your goal is to respond to customer reviews in a professional and appreciative manner.";
             let criteria = '';
@@ -53,13 +47,11 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review, onReplyPosted }) => {
             }
             const fullPrompt = `${tone}\n\n${criteria}\n\nHere is the review:\nStar Rating: ${rating}/5\nReviewer Name: ${review.reviewer.displayName}\nReview Text: "${review.comment}"`;
             
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-            const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash',
+            const text = await generateGeminiContent({
                 contents: fullPrompt,
             });
 
-            setReplyContent(response.text);
+            setReplyContent(text);
             setIsReplying(true);
         } catch (error) {
             console.error("AI Generation Error:", error);

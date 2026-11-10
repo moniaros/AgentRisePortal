@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { GoogleGenAI } from '@google/genai';
+import { generateGeminiImage } from '../../services/geminiClient';
 import { useLocalization } from '../../hooks/useLocalization';
 
 const ProfilePhotoEnhancer: React.FC = () => {
@@ -25,13 +25,11 @@ const ProfilePhotoEnhancer: React.FC = () => {
     };
 
     const handleEnhance = async () => {
-        if (!selectedImage || !process.env.API_KEY) return;
+        if (!selectedImage) return;
         setIsProcessing(true);
         setError(null);
 
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-            
             // Extract base64 data (remove data:image/png;base64, prefix)
             const base64Data = selectedImage.split(',')[1];
             const mimeType = selectedImage.split(';')[0].split(':')[1];
@@ -51,49 +49,25 @@ const ProfilePhotoEnhancer: React.FC = () => {
 
             const prompt = `${stylePrompt} Maintain facial identity strongly. Improve lighting and skin texture. Output a high quality image.`;
 
-            const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash-image',
-                contents: {
-                    parts: [
-                        { inlineData: { data: base64Data, mimeType: mimeType } },
-                        { text: prompt }
-                    ]
-                },
-                config: {
-                    imageConfig: {
-                        aspectRatio: '1:1'
-                    }
-                }
+            const { imageUrl, text } = await generateGeminiImage({
+                base64Data,
+                mimeType,
+                prompt,
+                aspectRatio: '1:1',
             });
 
-            // Parse response for image
-            let imageFound = false;
-            if (response.candidates && response.candidates[0].content.parts) {
-                for (const part of response.candidates[0].content.parts) {
-                    if (part.inlineData) {
-                        const newBase64 = part.inlineData.data;
-                        const newMime = part.inlineData.mimeType || 'image/png';
-                        setEnhancedImage(`data:${newMime};base64,${newBase64}`);
-                        imageFound = true;
-                        break;
-                    }
-                }
-            }
-
-            if (!imageFound) {
-               // Fallback check if model returns just text description
-               const textPart = response.candidates?.[0]?.content?.parts?.find(p => p.text);
-               if (textPart) {
-                   console.warn("AI returned text:", textPart.text);
-                   setError("AI returned a description instead of an image. Please try a different photo.");
-               } else {
-                   setError("Failed to generate image. Please try again.");
-               }
+            if (imageUrl) {
+                setEnhancedImage(imageUrl);
+            } else if (text) {
+                console.warn("AI returned text:", text);
+                setError("AI returned a description instead of an image. Please try a different photo.");
+            } else {
+                setError("Failed to generate image. Please try again.");
             }
 
         } catch (err) {
             console.error("Enhancement error:", err);
-            setError("An error occurred during processing. Please check your API key and quota.");
+            setError("An error occurred during processing. Please try again.");
         } finally {
             setIsProcessing(false);
         }

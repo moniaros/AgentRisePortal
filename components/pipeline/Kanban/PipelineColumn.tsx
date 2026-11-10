@@ -38,7 +38,7 @@ const PipelineColumn: React.FC<PipelineColumnProps> = ({ stage, opportunities, p
 
     return (
         <div 
-            ref={drop} 
+            ref={(node) => { drop(node); }} 
             className={`w-full md:w-64 lg:w-80 flex-shrink-0 p-3 bg-gray-100 dark:bg-gray-900 rounded-lg transition-colors duration-300 ${isOver && canDrop ? 'border-2 border-dashed border-blue-400 bg-blue-50 dark:bg-blue-900/40' : ''}`}
         >
             <div className="mb-3">

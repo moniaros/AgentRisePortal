@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useLocalization } from '../hooks/useLocalization';
 // FIX: Correct import path
@@ -6,7 +5,7 @@ import { DetailedPolicy, GapAnalysisResult } from '../types';
 import FileUploader from '../components/gap-analysis/FileUploader';
 import PolicyReviewForm from '../components/gap-analysis/PolicyReviewForm';
 import GapAnalysisResults from '../components/gap-analysis/GapAnalysisResults';
-import { GoogleGenAI, Type } from "@google/genai";
+import { parsePolicyDocument, analyzePolicyGaps } from '../services/geminiClient';
 import { trackEvent } from '../services/analytics';
 import { useNotification } from '../hooks/useNotification';
 import { savePendingFindings } from '../services/findingsStorage';
@@ -33,23 +32,13 @@ const GapAnalysis: React.FC = () => {
         setParsedPolicy(null);
         setAnalysisResult(null);
         setDataForReview(null);
-        
-        if (!process.env.API_KEY) {
-            const errorMsg = t('dashboard.errors.noApiKey');
-            setError(errorMsg);
-            addNotification(errorMsg, 'error');
-            return;
-        }
 
         setIsLoading(true);
         setLoadingStep(t('gapAnalysis.fetchingPolicy'));
 
         try {
-            // Convert file to base64 for Gemini
+            // Convert file to base64 for server-side Gemini endpoint
             const base64Data = await fileToBase64(uploadedFile);
-            
-            // STEP 1: Use Gemini to parse the document (Multimodal)
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             
             const prompt = `
                 You are an expert insurance policy parser. Analyze the provided document (image or PDF) and extract the policy details into a structured JSON format.
@@ -65,69 +54,11 @@ const GapAnalysis: React.FC = () => {
                 If specific values are missing, use null or an empty string. Do not hallucinate data.
             `;
             
-            const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash',
-                contents: {
-                    parts: [
-                        {
-                            inlineData: {
-                                mimeType: uploadedFile.type,
-                                data: base64Data
-                            }
-                        },
-                        { text: prompt }
-                    ]
-                },
-                config: {
-                    responseMimeType: 'application/json',
-                    responseSchema: {
-                        type: Type.OBJECT,
-                        properties: {
-                            policyNumber: { type: Type.STRING },
-                            insurer: { type: Type.STRING },
-                            policyholder: {
-                                type: Type.OBJECT,
-                                properties: {
-                                    name: { type: Type.STRING },
-                                    address: { type: Type.STRING },
-                                },
-                                required: ["name", "address"],
-                            },
-                            effectiveDate: { type: Type.STRING, description: "The policy start date in YYYY-MM-DD format." },
-                            expirationDate: { type: Type.STRING, description: "The policy end date in YYYY-MM-DD format." },
-                            insuredItems: {
-                                type: Type.ARRAY,
-                                items: {
-                                    type: Type.OBJECT,
-                                    properties: {
-                                        id: { type: Type.STRING },
-                                        description: { type: Type.STRING },
-                                        coverages: {
-                                            type: Type.ARRAY,
-                                            items: {
-                                                type: Type.OBJECT,
-                                                properties: {
-                                                    type: { type: Type.STRING },
-                                                    limit: { type: Type.STRING },
-                                                    deductible: { type: Type.STRING },
-                                                    premium: { type: Type.NUMBER },
-                                                },
-                                                required: ["type", "limit"],
-                                            },
-                                        },
-                                    },
-                                    required: ["id", "description", "coverages"],
-                                },
-                            },
-                        },
-                        required: ["policyNumber", "insurer", "policyholder", "effectiveDate", "expirationDate", "insuredItems"],
-                    },
-                }
+            const policyData = await parsePolicyDocument({
+                base64Data,
+                mimeType: uploadedFile.type,
+                prompt,
             });
-            
-            const jsonStr = response.text;
-            if (!jsonStr) throw new Error("No data returned from AI");
-            const policyData = JSON.parse(jsonStr) as DetailedPolicy;
             
             // Open the review modal instead of setting the policy directly
             setDataForReview(policyData);
@@ -154,12 +85,6 @@ const GapAnalysis: React.FC = () => {
 
     const handleAnalyzeGaps = async () => {
         if (!parsedPolicy || !userNeeds || !file) return;
-        
-        if (!process.env.API_KEY) {
-            setError(t('dashboard.errors.noApiKey'));
-            addNotification(t('dashboard.errors.noApiKey'), 'error');
-            return;
-        }
 
         setIsLoading(true);
         setLoadingStep(t('gapAnalysis.analyzing'));
@@ -167,8 +92,6 @@ const GapAnalysis: React.FC = () => {
         setAnalysisResult(null);
 
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-            
             // Determine prompt language
             const targetLang = language === 'el' ? 'Greek' : 'English';
 
@@ -202,80 +125,7 @@ const GapAnalysis: React.FC = () => {
               Ensure the tone is professional, authoritative, yet persuasive.
             `;
 
-            const response = await ai.models.generateContent({
-                model: 'gemini-3-pro-preview', // Use Pro model for complex reasoning
-                contents: prompt,
-                config: {
-                    responseMimeType: 'application/json',
-                    responseSchema: {
-                        type: Type.OBJECT,
-                        properties: {
-                            riskScore: { type: Type.NUMBER, description: "A score from 0 (safe) to 100 (risky)." },
-                            summary: { type: Type.STRING },
-                            gaps: {
-                                type: Type.ARRAY,
-                                items: {
-                                    type: Type.OBJECT,
-                                    properties: {
-                                        area: { type: Type.STRING },
-                                        current: { type: Type.STRING },
-                                        recommended: { type: Type.STRING },
-                                        reason: { type: Type.STRING },
-                                        priority: { type: Type.STRING, enum: ["Critical", "High", "Medium", "Low"] },
-                                        financialImpact: { type: Type.STRING, description: "E.g., Potential €30k cost" },
-                                        costOfImplementation: { type: Type.STRING, description: "E.g., €200/year" },
-                                        costOfInaction: { type: Type.STRING },
-                                        salesScript: { type: Type.STRING, description: "Direct speech script for agent" },
-                                    },
-                                    required: ["area", "current", "recommended", "reason", "priority", "financialImpact", "costOfImplementation", "salesScript"],
-                                },
-                            },
-                            upsell_opportunities: {
-                                type: Type.ARRAY,
-                                items: {
-                                    type: Type.OBJECT,
-                                    properties: {
-                                        product: { type: Type.STRING },
-                                        recommendation: { type: Type.STRING },
-                                        benefit: { type: Type.STRING },
-                                        priority: { type: Type.STRING, enum: ["High", "Medium", "Low"] },
-                                        financialImpact: { type: Type.STRING },
-                                        costOfImplementation: { type: Type.STRING },
-                                        salesScript: { type: Type.STRING },
-                                    },
-                                    required: ["product", "recommendation", "benefit", "salesScript"],
-                                },
-                            },
-                            cross_sell_opportunities: {
-                                type: Type.ARRAY,
-                                items: {
-                                    type: Type.OBJECT,
-                                    properties: {
-                                        product: { type: Type.STRING },
-                                        recommendation: { type: Type.STRING },
-                                        benefit: { type: Type.STRING },
-                                        priority: { type: Type.STRING, enum: ["High", "Medium", "Low"] },
-                                        financialImpact: { type: Type.STRING },
-                                        costOfImplementation: { type: Type.STRING },
-                                        salesScript: { type: Type.STRING },
-                                    },
-                                    required: ["product", "recommendation", "benefit", "salesScript"],
-                                },
-                            },
-                        },
-                        required: ["riskScore", "summary", "gaps", "upsell_opportunities", "cross_sell_opportunities"],
-                    }
-                }
-            });
-
-            let jsonStr = response.text;
-            if (!jsonStr) throw new Error("No response from AI");
-            
-            if (jsonStr.includes('```json')) {
-                jsonStr = jsonStr.replace(/^```json\s*/, '').replace(/^```\s*/, '').replace(/\s*```$/, '');
-            }
-            
-            const result = JSON.parse(jsonStr) as GapAnalysisResult;
+            const result = await analyzePolicyGaps(prompt);
             setAnalysisResult(result);
             trackEvent('ai_tool', 'Gap Analysis', 'analysis_success', undefined, language);
 

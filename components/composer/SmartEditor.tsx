@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { GoogleGenAI } from '@google/genai';
+import { generateGeminiContent } from '../../services/geminiClient';
 import HashtagManager from './HashtagManager';
 import { useLocalization } from '../../hooks/useLocalization';
 import { Language } from '../../types';
@@ -16,12 +15,10 @@ const SmartEditor: React.FC<SmartEditorProps> = ({ value, onChange, platform }) 
     const [isThinking, setIsThinking] = useState(false);
 
     const handleAiAction = async (action: 'shorten' | 'expand' | 'emojify' | 'fix') => {
-        if (!value || !process.env.API_KEY) return;
+        if (!value) return;
         setIsThinking(true);
 
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-            
             const targetLang = language === Language.EL ? 'Greek' : 'English';
             const langInstruction = `IMPORTANT: The output MUST be in ${targetLang}. Do not switch languages.`;
 
@@ -42,13 +39,12 @@ const SmartEditor: React.FC<SmartEditorProps> = ({ value, onChange, platform }) 
                     break;
             }
 
-            const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash',
+            const text = await generateGeminiContent({
                 contents: prompt,
             });
 
-            if (response.text) {
-                onChange(response.text.trim());
+            if (text) {
+                onChange(text.trim());
             }
         } catch (err) {
             console.error("AI Action failed", err);

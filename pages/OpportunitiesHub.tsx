@@ -8,7 +8,7 @@ import { StoredFinding, Customer, Language } from '../types';
 import { useAuth } from '../hooks/useAuth';
 import SkeletonLoader from '../components/ui/SkeletonLoader';
 import { Link } from 'react-router-dom';
-import { GoogleGenAI } from '@google/genai';
+import { generateGeminiContent } from '../services/geminiClient';
 
 // --- Types ---
 interface EnrichedOpportunity extends StoredFinding {
@@ -38,12 +38,9 @@ const PitchGeneratorModal: React.FC<{
     const [isGenerating, setIsGenerating] = useState(false);
 
     const generatePitch = async () => {
-        if (!process.env.API_KEY) return;
         setIsGenerating(true);
         
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-            
             let marketHook = "";
             const lowerTitle = opportunity.title.toLowerCase();
             if (lowerTitle.includes('home') || lowerTitle.includes('fire')) {
@@ -79,12 +76,11 @@ const PitchGeneratorModal: React.FC<{
                 5. **Language:** Modern Business Greek (Native speaker level).
             `;
 
-            const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash',
+            const text = await generateGeminiContent({
                 contents: prompt,
             });
 
-            setScript(response.text?.trim() || '');
+            setScript(text.trim());
         } catch (e) {
             console.error(e);
             setScript(t('pipeline.opportunitiesHub.errorGenerating'));

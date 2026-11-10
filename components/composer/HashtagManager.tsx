@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { GoogleGenAI } from '@google/genai';
+import { generateGeminiContent } from '../../services/geminiClient';
 import { useLocalization } from '../../hooks/useLocalization';
 import { Language } from '../../types';
 
@@ -15,11 +14,10 @@ const HashtagManager: React.FC<HashtagManagerProps> = ({ content, onAddHashtag }
     const [isLoading, setIsLoading] = useState(false);
 
     const generateHashtags = async () => {
-        if (!content || !process.env.API_KEY) return;
+        if (!content) return;
         setIsLoading(true);
 
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             const targetLang = language === Language.EL ? 'Greek' : 'English';
             
             const prompt = `
@@ -29,12 +27,10 @@ const HashtagManager: React.FC<HashtagManagerProps> = ({ content, onAddHashtag }
             
                 Post: "${content}"`;
 
-            const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash',
+            const text = await generateGeminiContent({
                 contents: prompt,
             });
 
-            const text = response.text || '';
             // Split by space or newline, filter empty
             const tags = text.split(/[\s\n]+/).filter(t => t.startsWith('#'));
             setSuggestions(tags);

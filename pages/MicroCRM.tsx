@@ -10,7 +10,7 @@ import SkeletonLoader from '../components/ui/SkeletonLoader';
 import LeadsTable from '../components/leads/LeadsTable';
 import LeadDetailModal from '../components/leads/LeadDetailModal';
 import { useNotification } from '../hooks/useNotification';
-import { GoogleGenAI, Type } from '@google/genai';
+import { generateGeminiContent } from '../services/geminiClient';
 import { fileToBase64 } from '../services/utils';
 import { mapToPolicyACORD, mapAcordToCrmPolicy } from '../services/acordMapper';
 
@@ -98,15 +98,9 @@ const MicroCRM: React.FC = () => {
         const file = e.target.files?.[0];
         if (!file) return;
 
-        if (!process.env.API_KEY) {
-            addNotification(t('dashboard.errors.noApiKey') as string, 'error');
-            return;
-        }
-
         setIsImporting(true);
         try {
             const base64Data = await fileToBase64(file);
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
             const prompt = `
                 Extract customer and policy information from this insurance document.
@@ -130,21 +124,18 @@ const MicroCRM: React.FC = () => {
                 }
             `;
 
-            const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash',
+            const rawText = await generateGeminiContent({
                 contents: {
                     parts: [
                         { inlineData: { mimeType: file.type, data: base64Data } },
                         { text: prompt }
                     ]
                 },
-                config: {
-                    responseMimeType: 'application/json'
-                }
+                responseMimeType: 'application/json',
             });
 
-            const jsonStr = response.text;
-            if (!jsonStr) throw new Error("No data returned from AI");
+            if (!rawText) throw new Error("No data returned from AI");
+            const jsonStr = rawText.replace(/^```json\s*/, '').replace(/^```\s*/, '').replace(/\s*```$/, '');
             
             const extractedData = JSON.parse(jsonStr);
             

@@ -1,9 +1,8 @@
-
 import React, { useState } from 'react';
 import { useLocalization } from '../../hooks/useLocalization';
 import { Customer, GapAnalysisResult, DetailedPolicy } from '../../types';
 import FileUploader from '../gap-analysis/FileUploader';
-import { GoogleGenAI, Type } from '@google/genai';
+import { parsePolicyDocument, analyzePolicyGaps } from '../../services/geminiClient';
 import { useCrmData } from '../../hooks/useCrmData';
 import { useAuth } from '../../hooks/useAuth';
 import ErrorMessage from '../ui/ErrorMessage';
@@ -42,18 +41,12 @@ const EmbeddedGapAnalysis: React.FC<EmbeddedGapAnalysisProps> = ({ customer }) =
         setAnalysisResult(null);
         setDataForReview(null);
 
-        if (!process.env.API_KEY) {
-            setError("API Key not configured.");
-            return;
-        }
-
         setIsLoading(true);
         try {
-            // 1. "Parse" the policy using Gemini
+            // 1. "Parse" the policy using server-side Gemini endpoint
             setLoadingStep(t('gapAnalysis.fetchingPolicy'));
             
             const base64Data = await fileToBase64(uploadedFile);
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             
             const prompt = `
                 You are an expert insurance policy parser. Analyze the provided document (image or PDF) and extract the policy details into a structured JSON format.
@@ -69,69 +62,11 @@ const EmbeddedGapAnalysis: React.FC<EmbeddedGapAnalysisProps> = ({ customer }) =
                 If specific values are missing, use null or an empty string.
             `;
 
-            const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash',
-                contents: {
-                    parts: [
-                        {
-                            inlineData: {
-                                mimeType: uploadedFile.type,
-                                data: base64Data
-                            }
-                        },
-                        { text: prompt }
-                    ]
-                },
-                config: {
-                    responseMimeType: 'application/json',
-                    responseSchema: {
-                        type: Type.OBJECT,
-                        properties: {
-                            policyNumber: { type: Type.STRING },
-                            insurer: { type: Type.STRING },
-                            policyholder: {
-                                type: Type.OBJECT,
-                                properties: {
-                                    name: { type: Type.STRING },
-                                    address: { type: Type.STRING },
-                                },
-                                required: ["name", "address"],
-                            },
-                            effectiveDate: { type: Type.STRING },
-                            expirationDate: { type: Type.STRING },
-                            insuredItems: {
-                                type: Type.ARRAY,
-                                items: {
-                                    type: Type.OBJECT,
-                                    properties: {
-                                        id: { type: Type.STRING },
-                                        description: { type: Type.STRING },
-                                        coverages: {
-                                            type: Type.ARRAY,
-                                            items: {
-                                                type: Type.OBJECT,
-                                                properties: {
-                                                    type: { type: Type.STRING },
-                                                    limit: { type: Type.STRING },
-                                                    deductible: { type: Type.STRING },
-                                                    premium: { type: Type.NUMBER },
-                                                },
-                                                required: ["type", "limit"],
-                                            },
-                                        },
-                                    },
-                                    required: ["id", "description", "coverages"],
-                                },
-                            },
-                        },
-                        required: ["policyNumber", "insurer", "policyholder", "effectiveDate", "expirationDate", "insuredItems"],
-                    },
-                }
+            const policyData = await parsePolicyDocument({
+                base64Data,
+                mimeType: uploadedFile.type,
+                prompt,
             });
-
-            const jsonStr = response.text;
-            if (!jsonStr) throw new Error("No data returned from AI");
-            const policyData = JSON.parse(jsonStr) as DetailedPolicy;
             
             // Pause for review
             setDataForReview(policyData);
@@ -158,7 +93,6 @@ const EmbeddedGapAnalysis: React.FC<EmbeddedGapAnalysisProps> = ({ customer }) =
 
             // 2. Analyze for gaps using Risk Intelligence Prompt
             setLoadingStep(t('gapAnalysis.analyzing'));
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             const targetLang = language === 'el' ? 'Greek' : 'English';
 
             const prompt = `
@@ -186,79 +120,7 @@ const EmbeddedGapAnalysis: React.FC<EmbeddedGapAnalysisProps> = ({ customer }) =
               6. Priority: Tag each finding as 'Critical', 'High', or 'Medium'.
             `;
 
-            const response = await ai.models.generateContent({
-                model: 'gemini-3-pro-preview',
-                contents: prompt,
-                config: {
-                    responseMimeType: 'application/json',
-                    responseSchema: {
-                        type: Type.OBJECT,
-                        properties: {
-                            riskScore: { type: Type.NUMBER },
-                            summary: { type: Type.STRING },
-                            gaps: {
-                                type: Type.ARRAY,
-                                items: {
-                                    type: Type.OBJECT,
-                                    properties: {
-                                        area: { type: Type.STRING },
-                                        current: { type: Type.STRING },
-                                        recommended: { type: Type.STRING },
-                                        reason: { type: Type.STRING },
-                                        priority: { type: Type.STRING, enum: ["Critical", "High", "Medium", "Low"] },
-                                        financialImpact: { type: Type.STRING },
-                                        costOfImplementation: { type: Type.STRING },
-                                        costOfInaction: { type: Type.STRING },
-                                        salesScript: { type: Type.STRING },
-                                    },
-                                    required: ["area", "current", "recommended", "reason", "priority", "financialImpact", "costOfImplementation", "salesScript"],
-                                },
-                            },
-                            upsell_opportunities: {
-                                type: Type.ARRAY,
-                                items: {
-                                    type: Type.OBJECT,
-                                    properties: {
-                                        product: { type: Type.STRING },
-                                        recommendation: { type: Type.STRING },
-                                        benefit: { type: Type.STRING },
-                                        priority: { type: Type.STRING, enum: ["High", "Medium", "Low"] },
-                                        financialImpact: { type: Type.STRING },
-                                        costOfImplementation: { type: Type.STRING },
-                                        salesScript: { type: Type.STRING },
-                                    },
-                                    required: ["product", "recommendation", "benefit", "salesScript"],
-                                },
-                            },
-                            cross_sell_opportunities: {
-                                type: Type.ARRAY,
-                                items: {
-                                    type: Type.OBJECT,
-                                    properties: {
-                                        product: { type: Type.STRING },
-                                        recommendation: { type: Type.STRING },
-                                        benefit: { type: Type.STRING },
-                                        priority: { type: Type.STRING, enum: ["High", "Medium", "Low"] },
-                                        financialImpact: { type: Type.STRING },
-                                        costOfImplementation: { type: Type.STRING },
-                                        salesScript: { type: Type.STRING },
-                                    },
-                                    required: ["product", "recommendation", "benefit", "salesScript"],
-                                },
-                            },
-                        },
-                        required: ["riskScore", "summary", "gaps", "upsell_opportunities", "cross_sell_opportunities"],
-                    }
-                }
-            });
-
-            let jsonStr = response.text;
-            if (!jsonStr) throw new Error("No response from AI");
-            if (jsonStr.includes('```json')) {
-                jsonStr = jsonStr.replace(/^```json\s*/, '').replace(/^```\s*/, '').replace(/\s*```$/, '');
-            }
-
-            const result = JSON.parse(jsonStr) as GapAnalysisResult;
+            const result = await analyzePolicyGaps(prompt);
             setAnalysisResult(result);
             
             // 3. Save findings for agent review & Save full analysis to history

@@ -230,6 +230,10 @@ export interface DetailedPolicy {
         id: string;
         description: string;
         coverages: Coverage[];
+        beneficiaries?: {
+            name: string;
+            address: string;
+        }[];
     }[];
     effectiveDate?: string;
     expirationDate?: string;

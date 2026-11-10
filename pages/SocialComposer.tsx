@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocalization } from '../hooks/useLocalization';
-import { GoogleGenAI } from '@google/genai';
+import { generateGeminiContent } from '../services/geminiClient';
 import { SOCIAL_PLATFORMS } from '../constants';
 import { SocialPlatform } from '../types';
 import PostPreview from '../components/composer/PostPreview';
@@ -83,12 +83,10 @@ const SocialComposer: React.FC = () => {
     };
 
     const handleGenerateCampaign = async () => {
-        if (!strategy.keyMessage || !process.env.API_KEY) return;
+        if (!strategy.keyMessage) return;
         setIsGenerating(true);
 
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-            
             const platforms = ['facebook', 'instagram', 'linkedin', 'x'];
             
             // Localization Context
@@ -129,13 +127,12 @@ const SocialComposer: React.FC = () => {
                         break;
                 }
 
-                const response = await ai.models.generateContent({
-                    model: 'gemini-2.5-flash',
+                const text = await generateGeminiContent({
                     contents: `Write a social media post about: "${strategy.keyMessage}"`,
-                    config: { systemInstruction }
+                    systemInstruction,
                 });
                 
-                return { platform, text: response.text || '' };
+                return { platform, text };
             });
 
             const results = await Promise.all(promises);
@@ -151,7 +148,6 @@ const SocialComposer: React.FC = () => {
 
         } catch (error) {
             console.error("Error generating campaign", error);
-            alert("Failed to generate campaign. Please try again.");
         } finally {
             setIsGenerating(false);
         }

@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { GoogleGenAI } from '@google/genai';
+import { generateGeminiContent } from '../../services/geminiClient';
 
 interface AIContentRefinerProps {
     initialValue: string;
@@ -13,11 +12,9 @@ const AIContentRefiner: React.FC<AIContentRefinerProps> = ({ initialValue, field
     const [isGenerating, setIsGenerating] = useState(false);
 
     const handleRefine = async () => {
-        if (!process.env.API_KEY) return;
         setIsGenerating(true);
 
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             const prompt = `
                 Rewrite the following text for an insurance agency website.
                 Context: This is the '${fieldName}' for a '${context}' section.
@@ -27,13 +24,12 @@ const AIContentRefiner: React.FC<AIContentRefinerProps> = ({ initialValue, field
                 Return ONLY the rewritten text.
             `;
 
-            const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash',
+            const text = await generateGeminiContent({
                 contents: prompt,
             });
 
-            if (response.text) {
-                onAccept(response.text.trim());
+            if (text) {
+                onAccept(text.trim());
             }
         } catch (err) {
             console.error("Refinement failed", err);

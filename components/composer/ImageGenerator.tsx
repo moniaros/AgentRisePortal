@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GoogleGenAI } from '@google/genai';
+import { generateGeminiImage } from '../../services/geminiClient';
 
 interface ImageGeneratorProps {
     topic: string;
@@ -14,9 +14,6 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({ topic, currentContent, 
 
     // Auto-suggest a prompt based on the content
     const suggestPrompt = async () => {
-        if (!process.env.API_KEY) return;
-        
-        // Use simple logic or AI to create a prompt if needed, for now we construct it
         const baseText = currentContent || topic;
         if (!baseText) return;
 
@@ -25,47 +22,20 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({ topic, currentContent, 
     };
 
     const handleGenerate = async () => {
-        if (!prompt || !process.env.API_KEY) return;
+        if (!prompt) return;
         setIsGenerating(true);
         setError(null);
 
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-            
-            // Use Gemini 2.5 Flash Image for generation (as per guidelines for general image tasks)
-            const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash-image',
-                contents: {
-                    parts: [
-                        { text: prompt }
-                    ]
-                },
-                config: {
-                    imageConfig: {
-                        aspectRatio: '1:1', 
-                        // numberOfImages: 1 // Default
-                    }
-                }
+            const { imageUrl } = await generateGeminiImage({
+                prompt,
+                aspectRatio: '1:1',
             });
 
-            // Handle response parsing for image
-            // The guidelines say we must iterate to find the image part
-            let imageFound = false;
-            if (response.candidates && response.candidates[0].content.parts) {
-                for (const part of response.candidates[0].content.parts) {
-                    if (part.inlineData) {
-                        const base64String = part.inlineData.data;
-                        const mimeType = part.inlineData.mimeType || 'image/png';
-                        onImageGenerated(`data:${mimeType};base64,${base64String}`);
-                        imageFound = true;
-                        break;
-                    }
-                }
-            }
-
-            if (!imageFound) {
+            if (!imageUrl) {
                 throw new Error("No image data received.");
             }
+            onImageGenerated(imageUrl);
 
         } catch (err) {
             console.error("Image generation error:", err);

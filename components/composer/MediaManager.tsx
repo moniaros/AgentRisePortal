@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { GoogleGenAI } from '@google/genai';
+import { generateGeminiImage } from '../../services/geminiClient';
 
 interface MediaManagerProps {
     topic: string;
@@ -16,38 +16,23 @@ const MediaManager: React.FC<MediaManagerProps> = ({ topic, currentContent, onMe
 
     // Auto-suggest a prompt based on the content
     const suggestPrompt = async () => {
-        if (!process.env.API_KEY) return;
         const baseText = currentContent || topic;
         if (!baseText) return;
         setPrompt(`A professional, high-quality photo for an insurance advertisement about: ${topic}. Bright, trustworthy, warm lighting, 4k resolution.`);
     };
 
     const handleGenerate = async () => {
-        if (!prompt || !process.env.API_KEY) return;
+        if (!prompt) return;
         setIsGenerating(true);
         setError(null);
 
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-            const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash-image',
-                contents: { parts: [{ text: prompt }] },
-                config: { imageConfig: { aspectRatio: '1:1' } }
+            const { imageUrl } = await generateGeminiImage({
+                prompt,
+                aspectRatio: '1:1',
             });
-
-            let imageFound = false;
-            if (response.candidates && response.candidates[0].content.parts) {
-                for (const part of response.candidates[0].content.parts) {
-                    if (part.inlineData) {
-                        const base64String = part.inlineData.data;
-                        const mimeType = part.inlineData.mimeType || 'image/png';
-                        onMediaSelected(`data:${mimeType};base64,${base64String}`);
-                        imageFound = true;
-                        break;
-                    }
-                }
-            }
-            if (!imageFound) throw new Error("No image data received.");
+            if (!imageUrl) throw new Error("No image data received.");
+            onMediaSelected(imageUrl);
 
         } catch (err) {
             console.error("Image generation error:", err);

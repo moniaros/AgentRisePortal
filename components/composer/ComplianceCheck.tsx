@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { GoogleGenAI } from '@google/genai';
+import { generateGeminiContent } from '../../services/geminiClient';
 import { useLocalization } from '../../hooks/useLocalization';
 import { Language } from '../../types';
 
@@ -14,12 +13,11 @@ const ComplianceCheck: React.FC<ComplianceCheckProps> = ({ content }) => {
     const [issues, setIssues] = useState<string[]>([]);
 
     const handleScan = async () => {
-        if (!content || !process.env.API_KEY) return;
+        if (!content) return;
         setStatus('scanning');
         setIssues([]);
 
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             const targetLang = language === Language.EL ? 'Greek' : 'English';
             
             const prompt = `
@@ -38,12 +36,11 @@ const ComplianceCheck: React.FC<ComplianceCheckProps> = ({ content }) => {
                 Text: "${content}"
             `;
 
-            const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash',
+            const rawText = await generateGeminiContent({
                 contents: prompt,
             });
 
-            const text = response.text?.trim() || '';
+            const text = rawText.trim();
             
             if (text.includes("SAFE") && text.length < 10) {
                 setStatus('safe');

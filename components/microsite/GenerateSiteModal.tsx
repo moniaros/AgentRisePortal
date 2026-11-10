@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocalization } from '../../hooks/useLocalization';
-import { GoogleGenAI } from '@google/genai';
+import { generateGeminiContent } from '../../services/geminiClient';
 import { MicrositeBlock } from '../../types';
 import { useAuth } from '../../hooks/useAuth';
 import { useCrmData } from '../../hooks/useCrmData';
@@ -65,14 +65,12 @@ Tone: Trustworthy, Professional, Community-Oriented, and Responsive.`;
     }, [isOpen, currentUser, customers, articles, testimonials]);
 
     const handleGenerate = async () => {
-        if (!prompt || !process.env.API_KEY) return;
+        if (!prompt) return;
 
         setIsGenerating(true);
         setError(null);
 
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-            
             const systemInstruction = `
                 You are an expert web designer for the insurance industry. 
                 Generate a JSON array of MicrositeBlocks based on the user's agency description.
@@ -92,16 +90,11 @@ Tone: Trustworthy, Professional, Community-Oriented, and Responsive.`;
                 4. Return ONLY the JSON array. No markdown formatting.
             `;
 
-            const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash',
+            let jsonStr = await generateGeminiContent({
                 contents: [{ parts: [{ text: prompt }] }],
-                config: {
-                    systemInstruction: systemInstruction,
-                    responseMimeType: 'application/json',
-                }
+                systemInstruction,
+                responseMimeType: 'application/json',
             });
-
-            let jsonStr = response.text;
             // Sanitize JSON if the model returns markdown blocks
             if (jsonStr) {
                 jsonStr = jsonStr.replace(/^```json\s*/, '').replace(/^```\s*/, '').replace(/\s*```$/, '');

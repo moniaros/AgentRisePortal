@@ -4,7 +4,7 @@ import { Opportunity__EXT, Prospect, TransactionInquiry } from '../../../types';
 import { useLocalization } from '../../../hooks/useLocalization';
 import { isPast, isToday, parseISO, differenceInDays } from 'date-fns';
 import { usePrevious } from '../../../hooks/usePrevious';
-import { GoogleGenAI } from '@google/genai';
+import { generateGeminiContent } from '../../../services/geminiClient';
 
 interface OpportunityCardProps {
     opportunity: Opportunity__EXT;
@@ -46,14 +46,8 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ opportunity, prospect
         setShowPitch(true);
         if (pitchText) return; // Already generated
 
-        if (!process.env.API_KEY) {
-            setPitchText("API Key missing.");
-            return;
-        }
-
         setIsGenerating(true);
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             const targetLang = language === 'el' ? 'Greek' : 'English';
             
             const prompt = `
@@ -70,12 +64,11 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ opportunity, prospect
                 Goal: Schedule a call.
             `;
 
-            const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash',
+            const text = await generateGeminiContent({
                 contents: prompt,
             });
 
-            setPitchText(response.text?.trim() || "Could not generate pitch.");
+            setPitchText(text.trim() || "Could not generate pitch.");
         } catch (err) {
             console.error("Pitch generation failed", err);
             setPitchText("Error generating pitch.");
@@ -114,7 +107,7 @@ const OpportunityCard: React.FC<OpportunityCardProps> = ({ opportunity, prospect
 
     return (
         <div
-            ref={drag}
+            ref={(node) => { drag(node); }}
             className={`p-4 bg-white dark:bg-slate-800 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 ${statusBorderClass} ${dynamicClasses} relative group border border-slate-100 dark:border-slate-700`}
         >
             {/* Badges */}

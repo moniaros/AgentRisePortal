@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TransactionInquiry, Language } from '../../../types';
 import { useLocalization } from '../../../hooks/useLocalization';
-import { GoogleGenAI } from '@google/genai';
+import { generateGeminiContent } from '../../../services/geminiClient';
 
 interface LeadQuickViewProps {
     inquiry: TransactionInquiry | null;
@@ -27,12 +27,10 @@ const LeadQuickView: React.FC<LeadQuickViewProps> = ({ inquiry, isOpen, onClose,
     ];
 
     const handleGenerateScript = async (angle: 'tax' | 'value' | 'bank_objection' | 'expensive_objection' | 'kteo_reminder') => {
-        if (!process.env.API_KEY) return;
         setIsGenerating(true);
         setGeneratedScript('');
 
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             const targetLang = language === Language.EL ? 'Greek' : 'English';
             
             let context = '';
@@ -76,12 +74,11 @@ const LeadQuickView: React.FC<LeadQuickViewProps> = ({ inquiry, isOpen, onClose,
                 3. Soft Call to Action (Question).
             `;
 
-            const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash',
+            const text = await generateGeminiContent({
                 contents: prompt,
             });
 
-            setGeneratedScript(response.text?.trim() || '');
+            setGeneratedScript(text.trim());
         } catch (error) {
             console.error("Error generating script", error);
         } finally {

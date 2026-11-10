@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom';
+import '@testing-library/jest-dom/jest-globals';
 import { describe, it, expect, jest } from '@jest/globals';
 import Header from '../Header';
 import { LanguageProvider } from '../../context/LanguageContext';

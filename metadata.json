@@ -1,5 +1,8 @@
 {
   "name": "Aσφαλιστική Πύλη (Insurance Portal)",
   "description": "A comprehensive lead generation and management platform for insurance professionals. Features a bilingual interface (Greek/English), offline capabilities, and a micro-CRM for effective client management.",
-  "requestFramePermissions": []
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }

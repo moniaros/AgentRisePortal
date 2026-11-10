@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { TransactionInquiry, Language } from '../../../types';
 import { useLocalization } from '../../../hooks/useLocalization';
-import { GoogleGenAI } from '@google/genai';
+import { generateGeminiContent } from '../../../services/geminiClient';
 import { useCrmData } from '../../../hooks/useCrmData';
 
 interface LeadRowProps {
@@ -68,10 +68,8 @@ const LeadRow: React.FC<LeadRowProps> = ({ inquiry, onCreateOpportunity, onViewD
     };
 
     const generateIceBreaker = async () => {
-        if (!process.env.API_KEY) return;
         setIsThinking(true);
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             const targetLang = language === Language.EL ? 'Greek' : 'English';
             
             const prompt = `
@@ -83,11 +81,10 @@ const LeadRow: React.FC<LeadRowProps> = ({ inquiry, onCreateOpportunity, onViewD
                 Goal: Get a reply. End with a simple question. No hashtags. Max 2 sentences.
             `;
 
-            const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash',
+            const text = await generateGeminiContent({
                 contents: prompt,
             });
-            setAiScript(response.text?.trim() || '');
+            setAiScript(text.trim());
         } catch (error) {
             console.error("AI Script Error", error);
         } finally {
